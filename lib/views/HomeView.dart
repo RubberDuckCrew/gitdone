@@ -40,7 +40,7 @@ class _HomeviewState extends State<Homeview> {
     return Scaffold(
       appBar: NormalAppBar(),
       body: Center(
-        child: Text(_response),
+        child: Text(_response, style: TextStyle(fontSize: 8),),
       ),
     );
   }
