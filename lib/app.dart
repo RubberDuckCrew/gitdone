@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/scheme/AppColors.dart';
-import 'package:gitdone/utility/TokenHandler.dart';
-import 'package:gitdone/views/HomeView.dart';
-import 'package:gitdone/views/loginView.dart';
+import 'package:gitdone/scheme/app_color.dart';
+import 'package:gitdone/utility/token_handler.dart';
+import 'package:gitdone/views/home_view.dart';
+import 'package:gitdone/views/login_view.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -11,7 +11,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
-          colorScheme: AppColors.colorScheme,
+          colorScheme: AppColor.colorScheme,
           useMaterial3: true,
         ),
         home: FutureBuilder(

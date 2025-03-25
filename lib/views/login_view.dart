@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/utility/TokenHandler.dart';
-import 'package:gitdone/views/HomeView.dart';
-import 'package:gitdone/widgets/Appbar.dart';
+import 'package:gitdone/utility/token_handler.dart';
+import 'package:gitdone/views/home_view.dart';
+import 'package:gitdone/widgets/app_bar.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
