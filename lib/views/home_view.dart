@@ -20,7 +20,7 @@ class _HomeviewState extends State<Homeview> {
     return Scaffold(
       appBar: NormalAppBar(),
       body: Center(
-        child: Octocat(),
+        child: OctoCat(),
       ),
     );
   }
