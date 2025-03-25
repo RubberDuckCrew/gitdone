@@ -14,15 +14,37 @@ class OctoCat extends StatefulWidget {
 class _OctoCatState extends State<OctoCat> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: _fetchData(), builder: (context, snapshot){
-      if(snapshot.connectionState == ConnectionState.waiting){
-        return const Center(child: CircularProgressIndicator());
-      }
-      if(snapshot.hasData){
-        return Center(child: Text(snapshot.data!.body.toString(), style: TextStyle(fontSize: 10),));
-      }
-      return const Center(child: Text("Could not fetch octocat"));
-    });
+    return Column(
+      children: [
+        FutureBuilder(
+            future: _fetchData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasData) {
+                return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Text.rich(
+                      TextSpan(
+                          text: snapshot.data!.body.toString(),
+                          style: TextStyle(
+                              fontSize: 8,
+                              letterSpacing: 1,
+                              fontFamily: "Courier")),
+                      textAlign: TextAlign.left,
+                    ));
+              }
+              return const Center(child: Text("Could not fetch octocat"));
+            }),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {});
+          },
+          child: Text("Fetch new octocat"),
+        )
+      ],
+    );
   }
 
   Future<Response> _fetchData() async {
@@ -34,5 +56,4 @@ class _OctoCatState extends State<OctoCat> {
     }
     return Response('No token', 401);
   }
-
 }
