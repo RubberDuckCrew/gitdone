@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gitdone/utility/token_handler.dart';
 import 'package:gitdone/views/home_view.dart';
 import 'package:gitdone/widgets/app_bar.dart';
+import 'package:gitdone/widgets/login.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -32,7 +33,9 @@ class _LoginViewState extends State<LoginView> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(onPressed: login, child: const Text("Login")),
           ),
-          const Spacer()
+          const Spacer(),
+          LoginButton(),
+          Spacer(),
         ],
       ),
     ));
