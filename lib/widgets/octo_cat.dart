@@ -20,6 +20,7 @@ class _OctoCatState extends State<OctoCat> {
         child: Consumer<OctoCatProvider>(builder: (context, provider, child) {
           return Column(
             children: [
+              Spacer(),
               FutureBuilder(
                   future: provider.futureResponse,
                   builder: (context, snapshot) {
@@ -41,11 +42,14 @@ class _OctoCatState extends State<OctoCat> {
                     }
                     return const Center(child: Text("Could not fetch octocat"));
                   }),
-              ElevatedButton(
+              FilledButton(
                 onPressed: () {
                   provider.refreshData();
                 },
                 child: Text("Fetch new octocat"),
+              ),
+              Spacer(
+                flex: 2,
               )
             ],
           );
