@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 class GitHubAuth {
-  final String clientId = "Ov23lifY3CBW4TAInvhW";
+  final String clientId = "Ov23li2QBbpgRa3P0GHJ";
   final tokenHandler = TokenHandler();
 
   Future<bool> login(BuildContext context) async {
