@@ -28,15 +28,13 @@ class _OctoCatState extends State<OctoCat> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (snapshot.hasData) {
-                      return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Text.rich(
-                            TextSpan(
-                                text: snapshot.data!.body.toString(),
+                      return FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(snapshot.data!.body.toString(),
                                 style: TextStyle(
                                     fontSize: 8,
                                     letterSpacing: 1,
-                                    fontFamily: "Courier")),
+                                    fontFamily: "Courier"),
                             textAlign: TextAlign.left,
                           ));
                     }
