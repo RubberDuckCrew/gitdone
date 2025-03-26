@@ -30,11 +30,12 @@ class _OctoCatState extends State<OctoCat> {
                     if (snapshot.hasData) {
                       return FittedBox(
                           fit: BoxFit.fitWidth,
-                          child: Text(snapshot.data!.body.toString(),
-                                style: TextStyle(
-                                    fontSize: 8,
-                                    letterSpacing: 1,
-                                    fontFamily: "Courier"),
+                          child: Text(
+                            snapshot.data!.body.toString(),
+                            style: TextStyle(
+                                fontSize: 8,
+                                letterSpacing: 1,
+                                fontFamily: "Courier"),
                             textAlign: TextAlign.left,
                           ));
                     }
