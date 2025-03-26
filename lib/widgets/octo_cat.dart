@@ -80,7 +80,7 @@ class OctoCatProvider extends ChangeNotifier {
   void refreshData() {
     _futureResponse = null;
     //TODO: Does this need to be called?
-    //notifyListeners();
+    notifyListeners();
     fetchData();
   }
 }
