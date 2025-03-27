@@ -21,7 +21,7 @@ class _GithubCodeDialogState extends State<GithubCodeDialog> {
           Text("Bitte diesen Code eingeben: ${widget.userCode}"),
           SizedBox(height: 10),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: pressed,
             child: Text("Code kopieren"),
           ),
         ],
