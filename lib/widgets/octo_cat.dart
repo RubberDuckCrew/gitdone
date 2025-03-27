@@ -20,7 +20,7 @@ class _OctoCatState extends State<OctoCat> {
         child: Consumer<OctoCatProvider>(builder: (context, provider, child) {
           return Column(
             children: [
-              Spacer(),
+              // Spacer(),
               FutureBuilder(
                   future: provider.futureResponse,
                   builder: (context, snapshot) {
@@ -47,9 +47,9 @@ class _OctoCatState extends State<OctoCat> {
                 },
                 child: Text("Fetch new octocat"),
               ),
-              Spacer(
-                flex: 2,
-              )
+              // Spacer(
+              //   flex: 2,
+              // )
             ],
           );
         }));
