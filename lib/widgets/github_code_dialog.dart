@@ -18,9 +18,12 @@ class _GithubCodeDialogState extends State<GithubCodeDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("Bitte diesen Code eingeben: ${widget.userCode}"),
+          Row(children: [
+            Text("Bitte diesen Code eingeben: "),
+            SelectableText("${widget.userCode}"),
+          ]),
           SizedBox(height: 10),
-          ElevatedButton(
+          FilledButton(
             onPressed: pressed,
             child: Text("Code kopieren"),
           ),

@@ -17,6 +17,19 @@ class _LoginButtonState extends State<LoginButton> {
   Widget build(BuildContext context) {
     return FilledButton(
       onPressed: () async {
+        showGeneralDialog(
+          context: context,
+          barrierDismissible: false,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          pageBuilder: (BuildContext context, Animation<double> animation,
+              Animation<double> secondaryAnimation) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+          transitionDuration: Duration(milliseconds: 200),
+        );
         bool result = await githubAuth.login(context);
         if (result) {
           if (context.mounted) {
