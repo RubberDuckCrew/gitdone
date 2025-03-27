@@ -1,9 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gitdone/utility/token_handler.dart';
 import 'package:gitdone/widgets/github_code_dialog.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import '../widgets/webview_page.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class GitHubAuth {
   final String clientId = "Ov23li2QBbpgRa3P0GHJ";
@@ -23,18 +24,17 @@ class GitHubAuth {
       final verificationUri = data["verification_uri"];
       final interval = data["interval"];
       if (context.mounted) await _showGitHubCodeDialog(context, userCode);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => WebViewPage(url: "$verificationUri?user_code=$userCode"),
-        ),
-      );
+
+      await launchUrlString("$verificationUri?user_code=$userCode",
+          mode: LaunchMode.inAppBrowserView);
+
       return await _pollForToken(deviceCode, interval);
     }
     return false;
   }
 
-  Future<void> _showGitHubCodeDialog(BuildContext context, String userCode) async {
+  Future<void> _showGitHubCodeDialog(
+      BuildContext context, String userCode) async {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -66,7 +66,8 @@ class GitHubAuth {
           success = true;
           break;
         } else {
-          if (data.containsKey("error") && data["error"] == "authorization_pending") {
+          if (data.containsKey("error") &&
+              data["error"] == "authorization_pending") {
             continue;
           } else {
             break;
