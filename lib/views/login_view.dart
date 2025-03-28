@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/utility/token_handler.dart';
-import 'package:gitdone/views/home_view.dart';
-import 'package:gitdone/widgets/app_bar.dart';
-import 'package:gitdone/widgets/login.dart';
+import 'package:gitdone/widgets/github_login_button.dart';
+import 'package:gitdone/widgets/github_token_input.dart';
+import 'package:gitdone/widgets/title.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -12,42 +11,56 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final TextEditingController _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: NormalAppBar(),
         body: Center(
       child: Column(
         children: [
-          const Spacer(),
-          const Text("Please enter your GitHub token:", style: TextStyle(fontSize: 20),),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: TextField(
-              controller: _controller,
-            ),
+          const Spacer(
+            flex: 2,
           ),
+          const TitleWidget(),
+          const Spacer(
+            flex: 1,
+          ),
+          const GithubLoginButton(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(onPressed: login, child: const Text("Login")),
+            child: FilledButton(
+                onPressed: openLoginBottomSheet,
+                child: const Text("Login with Personal Access Token")),
           ),
-          const Spacer(),
-          LoginButton(),
-          Spacer(),
+          const Spacer(
+            flex: 1,
+          ),
         ],
       ),
     ));
   }
 
-  void login() {
-    if (_controller.text.isNotEmpty) {
-      TokenHandler tokenHandler = TokenHandler();
-      tokenHandler.saveToken(_controller.text);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Homeview()));
-    }else{
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please enter a token")));
-    }
+  void openLoginBottomSheet() {
+    showModalBottomSheet(
+      showDragHandle: true,
+      isScrollControlled: true,
+      scrollControlDisabledMaxHeightRatio: 0.5,
+      context: context,
+      builder: (context) {
+        return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.75,
+            child: Column(
+              children: [
+                Expanded(child: TitleWidget()),
+                Expanded(
+                  flex: 2,
+                  child: GithubTokenInput(),
+                ),
+                Spacer(
+                  flex: 2,
+                )
+              ],
+            ));
+      },
+    );
   }
 }

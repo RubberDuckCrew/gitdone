@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import '../utility/github_oauth_handler.dart';
 import '../views/home_view.dart';
 
-class LoginButton extends StatefulWidget {
-  const LoginButton({super.key});
+/*
+  Widget to handle the GitHub device flow login.
+ */
+class GithubLoginButton extends StatefulWidget {
+  const GithubLoginButton({super.key});
 
   @override
-  State<LoginButton> createState() => _LoginButtonState();
+  State<GithubLoginButton> createState() => _GithubLoginButtonState();
 }
 
-class _LoginButtonState extends State<LoginButton> {
+class _GithubLoginButtonState extends State<GithubLoginButton> {
   final GitHubAuth githubAuth = GitHubAuth();
 
   @override
@@ -38,7 +41,7 @@ class _LoginButtonState extends State<LoginButton> {
           }
         }
       },
-      child: Text("Mit GitHub einloggen"),
+      child: Text("Login with GitHub"),
     );
   }
 }
