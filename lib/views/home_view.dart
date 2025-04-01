@@ -20,6 +20,7 @@ class _HomeviewState extends State<Homeview> {
   void logout() async {
     TokenHandler tokenHandler = TokenHandler();
     await tokenHandler.deleteToken();
+    if (!mounted) return;
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginView()));
   }
 
