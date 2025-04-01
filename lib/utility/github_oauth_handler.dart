@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 import 'package:gitdone/utility/token_handler.dart';
@@ -47,9 +48,9 @@ class GitHubAuth {
     bool success = false;
     while (true) {
       await Future.delayed(Duration(seconds: interval));
-      http.Client _client = http.Client();
+      http.Client client = http.Client();
       try {
-        final response = await _client.post(
+        final response = await client.post(
           Uri.https("github.com", "/login/oauth/access_token"),
           headers: {"Accept": "application/json"},
           body: {
@@ -58,7 +59,7 @@ class GitHubAuth {
             "grant_type": "urn:ietf:params:oauth:grant-type:device_code"
           },
         );
-        _client.close();
+        client.close();
 
         final data = jsonDecode(response.body);
         if (data.containsKey("access_token")) {
@@ -74,7 +75,11 @@ class GitHubAuth {
           }
         }
       } catch (e) {
-        print("Unexpected error: $e");
+        developer.log(
+            "Unexpected error",
+            name: "com.GitDone.gitdone.github_oauth_handler",
+            error: jsonEncode(e)
+        );
       }
     }
     return success;
