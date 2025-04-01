@@ -27,7 +27,6 @@ class _GithubTokenInputState extends State<GithubTokenInput> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: TextField(
-            obscureText: true,
             controller: _controller,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
