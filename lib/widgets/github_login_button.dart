@@ -15,7 +15,8 @@ class GithubLoginButton extends StatefulWidget {
   State<GithubLoginButton> createState() => _GithubLoginButtonState();
 }
 
-class _GithubLoginButtonState extends State<GithubLoginButton> with WidgetsBindingObserver {
+class _GithubLoginButtonState extends State<GithubLoginButton>
+    with WidgetsBindingObserver {
   final GitHubAuth githubAuth = GitHubAuth();
 
   @override

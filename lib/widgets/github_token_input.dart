@@ -68,7 +68,9 @@ class _GithubTokenInputState extends State<GithubTokenInput> {
                     "Please ensure that your access token is correct and that you have an active internet connection. Try again."),
                 actions: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     child: Text("OK"),
                   ),
                 ],
