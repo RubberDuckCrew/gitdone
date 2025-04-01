@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 
 import '../utility/github_oauth_handler.dart';
@@ -10,8 +12,31 @@ class LoginButton extends StatefulWidget {
   State<LoginButton> createState() => _LoginButtonState();
 }
 
-class _LoginButtonState extends State<LoginButton> {
+class _LoginButtonState extends State<LoginButton> with WidgetsBindingObserver {
   final GitHubAuth githubAuth = GitHubAuth();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    githubAuth.resetHandler();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    developer.log("AppLifecycleState changed to: $state",
+        name: "com.GitDone.gitdone.login");
+    if (state == AppLifecycleState.resumed && githubAuth.inLoginProcess) {
+      continueLogin();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,15 +55,17 @@ class _LoginButtonState extends State<LoginButton> {
           },
           transitionDuration: Duration(milliseconds: 200),
         );
-        bool result = await githubAuth.login(context);
-        if (result) {
-          if (context.mounted) {
-            await Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Homeview()));
-          }
-        }
+        await githubAuth.startLoginProcess(context);
       },
       child: Text("Mit GitHub einloggen"),
     );
+  }
+
+  Future<void> continueLogin() async {
+    var authenticated = await githubAuth.pollForToken();
+    if (mounted && authenticated) {
+      await Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Homeview()));
+    }
   }
 }
