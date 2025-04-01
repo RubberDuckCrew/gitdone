@@ -82,7 +82,7 @@ class GitHubAuth {
 
         if (await _retrieveDataFromResponse(response)) {
           developer.log("Successfully retrieved access token",
-              name: "com.GitDone.gitdone.github_oauth_handler");
+              level: 800, name: "com.GitDone.gitdone.github_oauth_handler");
           return true;
         }
       } catch (e) {
@@ -100,7 +100,7 @@ class GitHubAuth {
     _result = null;
     inLoginProcess = false;
     developer.log("GitHubAuthHandler reset",
-        name: "com.GitDone.gitdone.github_oauth_handler");
+        level: 800, name: "com.GitDone.gitdone.github_oauth_handler");
   }
 
   Future<bool> _retrieveDataFromResponse(http.Response response) async {

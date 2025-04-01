@@ -32,7 +32,7 @@ class _LoginButtonState extends State<LoginButton> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     developer.log("AppLifecycleState changed to: $state",
-        name: "com.GitDone.gitdone.login");
+        level: 800, name: "com.GitDone.gitdone.login");
     if (state == AppLifecycleState.resumed && githubAuth.inLoginProcess) {
       continueLogin();
     }
