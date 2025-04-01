@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gitdone/utility/github_api_handler.dart';
 
 import '../utility/token_handler.dart';
 import '../views/home_view.dart';
@@ -48,12 +49,38 @@ class _GithubTokenInputState extends State<GithubTokenInput> {
     );
   }
 
-  void login() {
+  Future<void> login() async {
     if (_controller.text.isNotEmpty) {
-      TokenHandler tokenHandler = TokenHandler();
-      tokenHandler.saveToken(_controller.text);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Homeview()));
+      if (await GithubApiHandler(_controller.text).isTokenValid()) {
+        TokenHandler tokenHandler = TokenHandler();
+        tokenHandler.saveToken(_controller.text);
+        if (mounted) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Homeview()));
+        }
+      } else if (mounted) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text("Could not login"),
+                content: Text(
+                    "Please ensure that your access token is correct and that you have an active internet connection. Try again."),
+                actions: [
+                  TextButton(
+                    onPressed: () {},
+                    child: Text("OK"),
+                  ),
+                ],
+              );
+            });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Invalid token. Please try again."),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
     }
   }
 }
