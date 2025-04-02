@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gitdone/scheme/app_color.dart';
 
 class TitleWidget extends StatelessWidget {
-  const TitleWidget({super.key});
+  final double fontSize;
+
+  const TitleWidget({super.key, this.fontSize = 30});
 
   @override
   Widget build(BuildContext context) {
@@ -10,13 +12,13 @@ class TitleWidget extends StatelessWidget {
       Text(
         "Git",
         style: TextStyle(
-            fontSize: 45,
+            fontSize: fontSize,
             color: AppColor.colorScheme.primary,
             fontWeight: FontWeight.bold),
       ),
       Text(
         "Done",
-        style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
       )
     ]);
   }

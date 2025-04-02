@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gitdone/widgets/github_login_button.dart';
 import 'package:gitdone/widgets/github_token_input.dart';
 import 'package:gitdone/widgets/title.dart';
@@ -20,7 +21,12 @@ class _LoginViewState extends State<LoginView> {
           const Spacer(
             flex: 2,
           ),
-          const TitleWidget(),
+          Expanded(
+              flex: 2,
+              child: SvgPicture.asset(
+                "assets/icons/app/gitdone.svg",
+              )),
+          const TitleWidget(fontSize: 45),
           const Spacer(
             flex: 1,
           ),
