@@ -61,7 +61,7 @@ class _GithubLoginButtonState extends State<GithubLoginButton>
         );
         await githubAuth.startLoginProcess(context);
       },
-      child: Text("Mit GitHub einloggen"),
+      child: Text("Login with GitHub"),
     );
   }
 
@@ -70,6 +70,20 @@ class _GithubLoginButtonState extends State<GithubLoginButton>
     if (mounted && authenticated) {
       await Navigator.push(
           context, MaterialPageRoute(builder: (context) => Homeview()));
+    } else {
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.of(context).pop();
+      }
+      showLoginError();
     }
+  }
+
+  void showLoginError() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Login failed. Please try again."),
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 }

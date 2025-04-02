@@ -12,8 +12,12 @@ class GitHubAuth {
   final tokenHandler = TokenHandler();
   bool inLoginProcess = false;
   Map<String, dynamic>? _result;
+  final int maxLoginAttempts = 5;
 
   Future<void> startLoginProcess(BuildContext context) async {
+    developer.log("Starting GitHub login process",
+        level: 300, name: "com.GitDone.gitdone.github_oauth_handler");
+
     _result ??= <String, dynamic>{};
 
     final response = await http.post(
@@ -65,7 +69,7 @@ class GitHubAuth {
       return false;
     }
 
-    while (true && attempts < 10) {
+    while (true && attempts < maxLoginAttempts) {
       await Future.delayed(Duration(seconds: interval));
       http.Client client = http.Client();
       try {
@@ -82,8 +86,10 @@ class GitHubAuth {
 
         if (await _retrieveDataFromResponse(response)) {
           developer.log("Successfully retrieved access token",
-              level: 800, name: "com.GitDone.gitdone.github_oauth_handler");
+              level: 300, name: "com.GitDone.gitdone.github_oauth_handler");
           return true;
+        } else if (response.body.contains("interval")) {
+          _result?['interval'] = jsonDecode(response.body)["interval"];
         }
       } catch (e) {
         developer.log("Unexpected error occurred while polling for token",
@@ -93,6 +99,10 @@ class GitHubAuth {
       }
       attempts++;
     }
+    if (attempts >= maxLoginAttempts) {
+      developer.log("Exceeded maximum attempts to poll for token",
+          level: 900, name: "com.GitDone.gitdone.github_oauth_handler");
+    }
     return false;
   }
 
@@ -100,7 +110,7 @@ class GitHubAuth {
     _result = null;
     inLoginProcess = false;
     developer.log("GitHubAuthHandler reset",
-        level: 800, name: "com.GitDone.gitdone.github_oauth_handler");
+        level: 300, name: "com.GitDone.gitdone.github_oauth_handler");
   }
 
   Future<bool> _retrieveDataFromResponse(http.Response response) async {
