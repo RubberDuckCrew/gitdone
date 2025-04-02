@@ -38,13 +38,13 @@ dependencies:
   http: ^1.3.0
   provider: ^6.1.2
   url_launcher: ^6.3.1
-  mocktail: ^1.0.4
   flutter_svg: ^2.0.17
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.14.3
+  mocktail: ^1.0.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
