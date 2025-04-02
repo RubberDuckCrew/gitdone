@@ -13,6 +13,10 @@ class GitHubAuth {
   bool inLoginProcess = false;
   Map<String, dynamic>? _result;
   final int maxLoginAttempts = 5;
+  int attempts = 1;
+  Function(String) callbackFunction;
+
+  GitHubAuth({required this.callbackFunction});
 
   Future<void> startLoginProcess(BuildContext context) async {
     developer.log("Starting GitHub login process",
@@ -61,7 +65,7 @@ class GitHubAuth {
   }
 
   Future<bool> pollForToken() async {
-    int attempts = 0;
+    attempts = 1;
 
     if (_result == null) {
       developer.log("pollForToken called with result being null",
@@ -69,7 +73,7 @@ class GitHubAuth {
       return false;
     }
 
-    while (true && attempts < maxLoginAttempts) {
+    while (true && attempts <= maxLoginAttempts) {
       await Future.delayed(Duration(seconds: interval));
       http.Client client = http.Client();
       try {
@@ -119,6 +123,8 @@ class GitHubAuth {
       await tokenHandler.saveToken(data["access_token"]);
       return true;
     } else {
+      callbackFunction(
+          "Could not verfiy. Retrying... (${attempts}/$maxLoginAttempts)");
       developer.log("Error retrieving access token",
           level: 900,
           name: "com.GitDone.gitdone.github_oauth_handler",

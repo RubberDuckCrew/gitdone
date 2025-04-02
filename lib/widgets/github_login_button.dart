@@ -17,11 +17,12 @@ class GithubLoginButton extends StatefulWidget {
 
 class _GithubLoginButtonState extends State<GithubLoginButton>
     with WidgetsBindingObserver {
-  final GitHubAuth githubAuth = GitHubAuth();
+  late GitHubAuth githubAuth;
 
   @override
   void initState() {
     super.initState();
+    githubAuth = GitHubAuth(callbackFunction: showSnackbar);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -74,14 +75,14 @@ class _GithubLoginButtonState extends State<GithubLoginButton>
       if (mounted && Navigator.canPop(context)) {
         Navigator.of(context).pop();
       }
-      showLoginError();
+      showSnackbar("Login failed. Please try again.");
     }
   }
 
-  void showLoginError() {
+  void showSnackbar(String text) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text("Login failed. Please try again."),
+        content: Text(text),
         duration: Duration(seconds: 2),
       ),
     );
