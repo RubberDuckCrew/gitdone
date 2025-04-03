@@ -19,7 +19,7 @@ class _GithubCodeDialogState extends State<GithubCodeDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Column(children: [
-            Text("Bitte diesen Code im Browser eingeben: "),
+            Text("Please enter this code in the browser: "),
             SelectableText(
               "${widget.userCode}",
               style: TextStyle(fontSize: 20),
@@ -28,7 +28,7 @@ class _GithubCodeDialogState extends State<GithubCodeDialog> {
           SizedBox(height: 10),
           FilledButton(
             onPressed: pressed,
-            child: Text("Code kopieren"),
+            child: Text("Copy code and open browser"),
           ),
         ],
       ),
@@ -38,7 +38,7 @@ class _GithubCodeDialogState extends State<GithubCodeDialog> {
   void pressed() {
     Clipboard.setData(ClipboardData(text: widget.userCode));
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Code in die Zwischenablage kopiert")),
+      SnackBar(content: Text("Code copied to clipboard")),
     );
     Navigator.pop(context);
   }
