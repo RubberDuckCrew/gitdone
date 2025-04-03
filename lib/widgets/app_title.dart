@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/scheme/app_color.dart';
 
-class TitleWidget extends StatelessWidget {
+class AppTitleWidget extends StatelessWidget {
   final double fontSize;
 
-  const TitleWidget({super.key, this.fontSize = 30});
+  const AppTitleWidget({super.key, required this.fontSize});
 
   @override
   Widget build(BuildContext context) {
