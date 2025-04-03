@@ -69,8 +69,9 @@ class _GithubLoginButtonState extends State<GithubLoginButton>
   Future<void> continueLogin() async {
     var authenticated = await githubAuth.pollForToken();
     if (mounted && authenticated) {
-      await Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Homeview()));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Homeview()),
+          (Route route) => false);
     } else {
       if (mounted && Navigator.canPop(context)) {
         Navigator.of(context).pop();

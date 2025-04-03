@@ -42,8 +42,9 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
         TokenHandler tokenHandler = TokenHandler();
         tokenHandler.saveToken(_controller.text);
         if (mounted) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Homeview()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => Homeview()),
+              (Route route) => false);
         }
       } else if (mounted) {
         showDialog(
