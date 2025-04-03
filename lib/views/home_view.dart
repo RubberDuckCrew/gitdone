@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gitdone/views/welcome_view.dart';
 import 'package:gitdone/widgets/app_bar.dart';
 import 'package:gitdone/widgets/octo_cat.dart';
-import 'package:gitdone/views/login_view.dart';
+
 import '../utility/token_handler.dart';
 
 class Homeview extends StatefulWidget {
@@ -21,7 +22,8 @@ class _HomeviewState extends State<Homeview> {
     TokenHandler tokenHandler = TokenHandler();
     await tokenHandler.deleteToken();
     if (!mounted) return;
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginView()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const WelcomeView()));
   }
 
   @override

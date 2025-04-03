@@ -11,6 +11,6 @@ class AppColor {
     onError: Colors.white,
     surface: Colors.grey[900]!,
     onSurface: Colors.white,
-    surfaceContainer: Colors.grey[500]!,
+    surfaceContainer: Colors.grey[800]!,
   );
 }

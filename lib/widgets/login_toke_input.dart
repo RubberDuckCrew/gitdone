@@ -4,47 +4,34 @@ import 'package:gitdone/utility/github_api_handler.dart';
 import '../utility/token_handler.dart';
 import '../views/home_view.dart';
 
-class GithubTokenInput extends StatefulWidget {
-  const GithubTokenInput({super.key});
+class LoginTokenInput extends StatefulWidget {
+  const LoginTokenInput({super.key});
 
   @override
-  State<GithubTokenInput> createState() => _GithubTokenInputState();
+  State<LoginTokenInput> createState() => _LoginTokenInputState();
 }
 
-class _GithubTokenInputState extends State<GithubTokenInput> {
+class _LoginTokenInputState extends State<LoginTokenInput> {
   final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
-        Spacer(),
-        Text(
-          "Please enter your GitHub token:",
-          style: TextStyle(fontSize: 20),
-        ),
-        SizedBox(height: 15),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'GitHub Token',
-            ),
-          ),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'GitHub Token',
+              ),
+            )),
+        Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+        FilledButton(
+          onPressed: login,
+          child: Text("Login with Personal Access Token"),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 16.0),
-          child: FilledButton(
-            onPressed: login,
-            child: Text("Login with Personal Access Token"),
-          ),
-        ),
-        Spacer(
-          flex: 2,
-        )
       ],
     );
   }
