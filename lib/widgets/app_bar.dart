@@ -9,9 +9,19 @@ class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      automaticallyImplyLeading: false,
       title: const AppTitleWidget(fontSize: 30),
       backgroundColor: AppColor.colorScheme.surfaceContainer,
+      leading: Navigator.canPop(context)
+          ? IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          : SizedBox(width: 48),
+      actions: [
+        const SizedBox(width: 48),
+      ],
     );
   }
 
