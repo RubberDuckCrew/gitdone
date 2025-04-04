@@ -3,7 +3,9 @@ import 'package:gitdone/scheme/app_color.dart';
 import 'package:gitdone/widgets/app_title.dart';
 
 class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const NormalAppBar({super.key});
+  final dynamic backVisible;
+
+  const NormalAppBar({super.key, this.backVisible = true});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +13,7 @@ class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: const AppTitleWidget(fontSize: 30),
       backgroundColor: AppColor.colorScheme.surfaceContainer,
-      leading: Navigator.canPop(context)
+      leading: (Navigator.canPop(context) && backVisible)
           ? IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
