@@ -58,29 +58,4 @@ class _WelcomeViewState extends State<WelcomeView> {
       MaterialPageRoute(builder: (context) => const LoginTokenView()),
     );
   }
-
-  // void openLoginBottomSheet() {
-  //   showModalBottomSheet(
-  //     showDragHandle: true,
-  //     isScrollControlled: true,
-  //     scrollControlDisabledMaxHeightRatio: 0.5,
-  //     context: context,
-  //     builder: (context) {
-  //       return SizedBox(
-  //           height: MediaQuery.of(context).size.height * 0.75,
-  //           child: Column(
-  //             children: [
-  //               Expanded(child: TitleWidget()),
-  //               Expanded(
-  //                 flex: 2,
-  //                 child: GithubTokenInput(),
-  //               ),
-  //               Spacer(
-  //                 flex: 2,
-  //               )
-  //             ],
-  //           ));
-  //     },
-  //   );
-  // }
 }

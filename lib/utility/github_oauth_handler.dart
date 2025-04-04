@@ -3,22 +3,21 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 import 'package:gitdone/utility/token_handler.dart';
-import 'package:gitdone/widgets/github_code_dialog.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GitHubAuth {
   final String clientId = "Ov23li2QBbpgRa3P0GHJ";
   final tokenHandler = TokenHandler();
   bool inLoginProcess = false;
   Map<String, dynamic>? _result;
-  final int maxLoginAttempts = 5;
+  final int maxLoginAttempts = 2;
   int attempts = 1;
   Function(String) callbackFunction;
 
   GitHubAuth({required this.callbackFunction});
 
-  Future<void> startLoginProcess(BuildContext context) async {
+  Future<String> startLoginProcess(BuildContext context) async {
     developer.log("Starting GitHub login process",
         level: 300, name: "com.GitDone.gitdone.github_oauth_handler");
 
@@ -38,30 +37,28 @@ class GitHubAuth {
       _result?['verificationUri'] = data["verification_uri"];
       _result?['interval'] = data["interval"];
 
-      if (context.mounted) {
-        await showGitHubCodeDialog(context, _result?["userCode"]);
-      }
-
       inLoginProcess = true;
-      await launchUrlString(
-          "${_result?['verificationUri']}?user_code=${_result?['userCode']}",
-          mode: LaunchMode.inAppBrowserView);
+      return _result?["userCode"];
     } else {
       developer.log("Could not retrieve oauth information from GitHub",
           name: "com.GitDone.gitdone.github_oauth_handler",
           level: 900,
           error: jsonEncode(response.body));
+      return "";
     }
   }
 
-  Future<void> showGitHubCodeDialog(
-      BuildContext context, String userCode) async {
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return GithubCodeDialog(userCode: userCode);
-      },
-    );
+  Future<void> launchBrowser() async {
+    String url = "${_result?['verificationUri']}?user_code=${_result?['userCode']}";
+    if (await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
+      developer.log("Launching URL: $url",
+          name: "com.GitDone.gitdone.github_oauth_handler",
+          level: 300);
+    } else {
+      developer.log("Could not launch URL: $url",
+          name: "com.GitDone.gitdone.github_oauth_handler",
+          level: 900);
+    }
   }
 
   Future<bool> pollForToken() async {
