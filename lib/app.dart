@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gitdone/scheme/app_color.dart';
 import 'package:gitdone/utility/token_handler.dart';
 import 'package:gitdone/views/home_view.dart';
-import 'package:gitdone/views/login_view.dart';
+import 'package:gitdone/views/welcome_view.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -19,13 +19,12 @@ class App extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Scaffold(
-                    body: Center(
-                        child: CircularProgressIndicator()));
+                    body: Center(child: CircularProgressIndicator()));
               }
               if (snapshot.hasData && snapshot.data == true) {
                 return Homeview();
               } else {
-                return LoginView();
+                return WelcomeView();
               }
             }));
   }
