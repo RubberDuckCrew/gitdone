@@ -5,7 +5,7 @@ on:
 
 jobs:
   analyze:
-    name: Analyze & Test
+    name: Test, Format & Analyze
     runs-on: ubuntu-latest
 
     steps:
