@@ -17,6 +17,21 @@ phone.
 
 > ⚠️ Project is in early development. Currently, only GitHub login is implemented.
 
+## 📅 Roadmap
+
+### Alpha Release
+
+- [ ] Create GitHub issues from to-dos
+- [ ] Sync to-dos with GitHub issues
+- [ ] View and manage GitHub issues
+
+### Future Features
+
+- [ ] Notifications for issue updates
+- [ ] Offline support
+- [ ] User settings
+- [ ] Multi-account support
+
 ## 🛠️ Development
 
 ### Requirements
@@ -58,8 +73,6 @@ We welcome contributions! To keep things clean and consistent, please follow the
 
 ### 📐 Code Style
 
--   Follow Dart and Flutter best practices
--   Run `flutter analyze` before committing
 - Follow Dart and Flutter best practices
 - Run `flutter analyze` before committing
 
