@@ -49,15 +49,14 @@ class GitHubAuth {
   }
 
   Future<void> launchBrowser() async {
-    String url = "${_result?['verificationUri']}?user_code=${_result?['userCode']}";
+    String url =
+        "${_result?['verificationUri']}?user_code=${_result?['userCode']}";
     if (await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
       developer.log("Launching URL: $url",
-          name: "com.GitDone.gitdone.github_oauth_handler",
-          level: 300);
+          name: "com.GitDone.gitdone.github_oauth_handler", level: 300);
     } else {
       developer.log("Could not launch URL: $url",
-          name: "com.GitDone.gitdone.github_oauth_handler",
-          level: 900);
+          name: "com.GitDone.gitdone.github_oauth_handler", level: 900);
     }
   }
 
