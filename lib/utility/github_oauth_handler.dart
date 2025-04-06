@@ -121,7 +121,7 @@ class GitHubAuth {
       return true;
     } else {
       callbackFunction(
-          "Could not verfiy. Retrying... (${attempts}/$maxLoginAttempts)");
+          "Could not verfiy. Retrying... ($attempts/$maxLoginAttempts)");
       developer.log("Error retrieving access token",
           level: 900,
           name: "com.GitDone.gitdone.github_oauth_handler",
