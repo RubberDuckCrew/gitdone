@@ -22,7 +22,7 @@ jobs:
         run: flutter pub get
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
