@@ -78,5 +78,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            build/app/outputs/flutter-apk/GitDone_${{ github.event.ref }}.apk
-            build/app/outputs/bundle/release/GitDone_${{ github.event.ref }}.aab
+            build/app/outputs/flutter-apk/GitDone_${{ github.event.ref_name }}.apk
+            build/app/outputs/bundle/release/GitDone_${{ github.event.ref_name }}.aab
