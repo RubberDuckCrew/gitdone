@@ -57,8 +57,8 @@ jobs:
 
       - name: Rename APK & App Bundle
         run: |
-          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/GitDone_${{ github.event.ref }}.apk
-          mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/GitDone_${{ github.event.ref }}.aab
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/GitDone_${{ github.event.ref_name }}.apk
+          mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/GitDone_${{ github.event.ref_name }}.aab
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
