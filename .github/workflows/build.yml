@@ -19,10 +19,10 @@ jobs:
     steps:
       - uses: actions/cache@v4
         with:
-          path: ~/android/sdk/
+          path: /usr/local/lib/android/sdk/ndk
           key: ${{ runner.os }}-ndk-${{ hashFiles('**/build.gradle') }}
           restore-keys: |
-            ${{ runner.os }}-sdk-
+            ${{ runner.os }}-ndk-
 
       - uses: actions/checkout@v4
 
@@ -48,6 +48,9 @@ jobs:
           echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
           echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
           echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > android/app/key.jks
+
+      - name: List installed NDK versions
+        run: ls $ANDROID_SDK_ROOT/ndk
 
       - name: Build APK
         run: flutter build apk --release
