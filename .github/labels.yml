@@ -1,0 +1,63 @@
+- name: 🐛 Bug
+  description: Something isn't working
+  color: "d73a4a"
+- name: 📌 Dependencies
+  description: External library or package updates
+  color: "1d76db"
+- name: 💬 Discussion
+  description: Open discussion or brainstorming
+  color: "6f42c1"
+- name: 📝 Documentation
+  description: Improvements or additions to documentation
+  color: "0075ca"
+- name: 🔄 Duplicate
+  description: This issue or pull request already exists
+  color: "cfd3d7"
+- name: ✨ Enhancement
+  description: New feature or request
+  color: "a2eeef"
+- name: 🏷️ Good First Issue
+  description: Good for newcomers
+  color: "7057ff"
+- name: 🙌 Help wanted
+  description: Extra attention is needed
+  color: "008672"
+- name: 🚑️ Hotfix
+  description: Critical or emergency fix
+  color: "ff003c"
+- name: 🌍 Internationalization
+  description: Translation or localization improvements
+  color: "2e8b57"
+- name: 🚫 Invalid
+  description: This doesn't seem right
+  color: "e4e669"
+- name: 🛠️ Maintenance
+  description: General maintenance and updates
+  color: "6a737d"
+- name: ⚡️ Performance
+  description: Improve performance or efficiency
+  color: "ff9f1c"
+- name: ❓ Question
+  description: Further information is requested
+  color: "d876e3"
+- name: ♻️ Refactor
+  description: Code improvements without changing functionality
+  color: "8bdc8b"
+- name: 📦 Release
+  description: Preparation or updates for a release
+  color: "0e8a16"
+- name: 🔒️ Security
+  description: Address security vulnerabilities
+  color: "b60205"
+- name: 🧪 Testing
+  description: Add or improve tests
+  color: "c5def5"
+- name: 🎨 UI/UX
+  description: Changes related to design or user experience
+  color: "ff69b4"
+- name: ❌ Wontfix
+  description: This will not be worked on
+  color: "ffffff"
+- name: 🚧 Work in Progress
+  description: This is not yet complete
+  color: "ffa500"
