@@ -3,7 +3,7 @@ name: Build APK & App Bundle
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+(-[a-zA-Z0-9]+)?'
+      - 'v*'
 env:
   FLUTTER_VERSION: "3.29.2"
   FLUTTER_CHANNEL: "stable"
