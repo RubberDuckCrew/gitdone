@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v*'
+permissions:
+  contents: write
 env:
   FLUTTER_VERSION: "3.29.2"
   FLUTTER_CHANNEL: "stable"
@@ -15,6 +17,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/cache@v4
+        with:
+          path: ${{ runner.tool_cache }}/android-sdk
+          key: ${{ runner.os }}-android-sdk-${{ hashFiles('**/build.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-android-sdk-
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ runner.tool_cache }}/cmake
+          key: ${{ runner.os }}-cmake-${{ hashFiles('**/build.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-cmake-
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ runner.tool_cache }}/ndk
+          key: ${{ runner.os }}-ndk-${{ hashFiles('**/build.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-ndk-
+
       - uses: actions/checkout@v4
 
       - uses: subosito/flutter-action@v2
