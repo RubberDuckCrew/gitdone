@@ -64,13 +64,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-apk
-          path: build/app/outputs/flutter-apk/GitDone_${{ github.event.ref }}.apk
+          path: build/app/outputs/flutter-apk/GitDone_${{ github.event.ref_name }}.apk
 
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4
         with:
           name: release-appbundle
-          path: build/app/outputs/bundle/release/GitDone_${{ github.event.ref }}.aab
+          path: build/app/outputs/bundle/release/GitDone_${{ github.event.ref_name }}.aab
 
       - name: Release Artifacts
         uses: softprops/action-gh-release@v2
