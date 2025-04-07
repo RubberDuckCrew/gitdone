@@ -1,9 +1,7 @@
-name: Build APK
+name: Build APK & App Bundle
 
 on:
   push:
-    branches:
-      - ci/build-cert # Temporyry branch for testing
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+(-[a-zA-Z0-9]+)?'
 env:
@@ -57,5 +55,13 @@ jobs:
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.aab
+          name: release-appbundle
+          path: build/app/outputs/bundle/release/app-release.aab
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
