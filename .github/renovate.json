@@ -25,6 +25,12 @@
       ],
       "commitMessagePrefix": "⬇️",
       "commitMessageAction": "Downgrade"
+    },
+    {
+      "matchPackageNames": [
+        "dev.flutter.flutter-plugin-loader"
+      ],
+      "enabled": false
     }
   ],
   "dependencyDashboardTitle": "📌 Dependency Dashboard",
