@@ -16,7 +16,7 @@ jobs:
 
       - name: Clone Package Repository
         run: |
-          git clone https://github.com/GitDoned/github_flutter
+          git clone -b main https://github.com/GitDoned/github_flutter
 
       - uses: subosito/flutter-action@v2
         with:
