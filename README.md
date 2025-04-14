@@ -19,11 +19,9 @@ phone.
 
 ## 📅 Roadmap
 
-### Alpha Release
+### [Alpha Release](https://github.com/RubberDuckCrew/gitdone/milestone/1)
 
-- [ ] Create GitHub issues from to-dos
-- [ ] Sync to-dos with GitHub issues
-- [ ] View and manage GitHub issues
+See [milestone](https://github.com/RubberDuckCrew/gitdone/milestone/1) for future features and improvements.
 
 ### Future Features
 
