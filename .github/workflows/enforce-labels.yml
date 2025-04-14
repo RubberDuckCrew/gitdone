@@ -18,7 +18,7 @@ jobs:
         with:
           mode: minimum
           count: 1
-          labels: "*"
+          labels: ".*"
           use_regex: true
           add_comment: true
           message: "You need to assign at least one label before merging this pull request."
