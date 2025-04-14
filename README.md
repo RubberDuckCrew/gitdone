@@ -104,12 +104,9 @@ the following format:
 
 ## 🧪 CI/CD
 
-Planned:
-
-- GitHub Actions for:
-    - Building APKs
-    - Running tests
-    - Code analysis and formatting checks
+- Building APKs
+- Running tests
+- Code analysis and formatting checks
 
 ## 📄 License
 
