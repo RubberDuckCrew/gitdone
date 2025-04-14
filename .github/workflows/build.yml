@@ -10,15 +10,12 @@ permissions:
 env:
   FLUTTER_VERSION: "3.29.2"
   FLUTTER_CHANNEL: "stable"
-  PROPERTIES_PATH: "android/key.properties"
+  PROPERTIES_PATH: "./app/android/key.properties"
 
 jobs:
   build:
     name: Build APK & App Bundle
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: app
 
     steps:
       - name: Checkout App Repository
@@ -39,6 +36,7 @@ jobs:
           cache: true
 
       - name: Install dependencies
+        working-directory: app
         run: flutter pub get
 
       - name: Set up JDK
@@ -52,42 +50,31 @@ jobs:
           echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
           echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
           echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
-          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > android/app/key.jks
-
+          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
       - name: Build APK
+        working-directory: app
         run: flutter build apk --release
 
       - name: Build App Bundle
+        working-directory: app
         run: flutter build appbundle --release
 
       - name: Rename APK & App Bundle
+        working-directory: app
         run: |
-          tree ./
-          mv ./build/app/outputs/flutter-apk/app-release.apk ./build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
-          mv ./build/app/outputs/bundle/release/app-release.aab ./build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
+          mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          working-directory: app
           name: release-apk
-          path: ./build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
-
-      - name: Test
-        run: |
-          pwd
-          tree ~/
-
-      - name: Check files
-        run: |
-          ls -l ./build/app/outputs/flutter-apk/
-          ls -l ./build/app/outputs/bundle/release/
+          path: app/build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
 
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4
         with:
           name: release-appbundle
-          working-directory: app
-          path: ./build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
+          path: app/build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
 
       - name: Release Artifacts
         if: startsWith(github.ref, 'refs/tags/')
@@ -95,5 +82,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            ./build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
-            ./build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
+            app/build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
+            app/build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
