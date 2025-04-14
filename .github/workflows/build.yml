@@ -63,21 +63,19 @@ jobs:
       - name: Rename APK & App Bundle
         run: |
           tree ./
-          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
-          mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
-          tree
-          tree app/
+          mv ./build/app/outputs/flutter-apk/app-release.apk ./build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
+          mv ./build/app/outputs/bundle/release/app-release.aab ./build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: release-apk
-          path: build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
+          path: ./build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
 
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4
         with:
           name: release-appbundle
-          path: build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
+          path: ./build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
 
       - name: Release Artifacts
         if: startsWith(github.ref, 'refs/tags/')
@@ -85,5 +83,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
-            build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
+            ./build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
+            ./build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
