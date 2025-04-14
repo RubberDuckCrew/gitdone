@@ -71,10 +71,16 @@ jobs:
           name: release-apk
           path: ./build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
 
+      - name: Test
+        run: |
+          pwd
+          tree ~/
+
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4
         with:
           name: release-appbundle
+          working-directory: app
           path: ./build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
 
       - name: Release Artifacts
