@@ -2,8 +2,6 @@ name: Build APK & App Bundle
 
 on:
   push:
-    branches:
-      - chore/updateWorkflows
     tags:
       - 'v*'
 
