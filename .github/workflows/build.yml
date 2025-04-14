@@ -68,8 +68,14 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
+          working-directory: app
           name: release-apk
           path: ./build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
+
+      - name: Check files
+        run: |
+          ls -l ./build/app/outputs/flutter-apk/
+          ls -l ./build/app/outputs/bundle/release/
 
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4
