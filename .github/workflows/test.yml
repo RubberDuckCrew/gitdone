@@ -15,8 +15,10 @@ jobs:
           path: app
 
       - name: Clone Package Repository
-        run: |
-          git clone -b main https://github.com/GitDoned/github_flutter
+        uses: actions/checkout@v4
+        with:
+          repository: RubberDuckCrew/github_flutter
+          path: github_flutter
 
       - uses: subosito/flutter-action@v2
         with:
