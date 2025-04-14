@@ -84,7 +84,7 @@ Once your work is ready, open a **Pull Request** to merge your branch into `main
 the following format:
 
 ```
-🔀[gitmoji] [Description]
+[gitmoji] [Description]
 ```
 
 **Tip:** Use short, descriptive branch names. Prefer dashes (`-`) to separate words.
