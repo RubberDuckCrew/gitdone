@@ -36,7 +36,6 @@ jobs:
         working-directory: app
         run: flutter pub get
 
-
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
@@ -66,24 +65,21 @@ jobs:
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
-        working-directory: app
         with:
           name: release-apk
-          path: build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
+          path: app/build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
 
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4
-        working-directory: app
         with:
           name: release-appbundle
-          path: build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
+          path: app/build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
 
       - name: Release Artifacts
-        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
-        working-directory: app
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
-            build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
+            app/build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
+            app/build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
