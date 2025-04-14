@@ -10,7 +10,7 @@ permissions:
 env:
   FLUTTER_VERSION: "3.29.2"
   FLUTTER_CHANNEL: "stable"
-  PROPERTIES_PATH: "~/app/android/key.properties"
+  PROPERTIES_PATH: "/app/android/key.properties"
 
 jobs:
   build:
