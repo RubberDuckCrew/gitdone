@@ -1,10 +1,9 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:gitdone/ui/view_models/login_github_view_model.dart';
 import 'package:gitdone/ui/widgets/app_bar.dart';
 import 'package:gitdone/ui/widgets/page_title.dart';
-import 'package:gitdone/utility/github_oauth_handler.dart';
 
 import 'home_view.dart';
 
@@ -17,19 +16,19 @@ class LoginGithubView extends StatefulWidget {
 
 class _LoginGithubViewState extends State<LoginGithubView>
     with WidgetsBindingObserver {
-  late GitHubAuth githubAuth;
+  late LoginGithubViewModel viewModel;
 
   @override
   void initState() {
     super.initState();
-    githubAuth = GitHubAuth(callbackFunction: showSnackbar);
+    viewModel = LoginGithubViewModel(context: context);
     WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    githubAuth.resetHandler();
+    viewModel.disposeHandler();
     super.dispose();
   }
 
@@ -38,8 +37,20 @@ class _LoginGithubViewState extends State<LoginGithubView>
     super.didChangeAppLifecycleState(state);
     developer.log("AppLifecycleState changed to: $state",
         level: 800, name: "com.GitDone.gitdone.login");
-    if (state == AppLifecycleState.resumed && githubAuth.inLoginProcess) {
-      continueLogin();
+    if (state == AppLifecycleState.resumed && viewModel.inLoginProcess) {
+      viewModel.continueLogin(
+        onSuccess: () {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => Homeview()),
+              (Route route) => false);
+        },
+        onFailure: () {
+          if (mounted && Navigator.canPop(context)) {
+            Navigator.of(context).pop();
+          }
+          showSnackbar("Login failed. Please try again.");
+        },
+      );
     }
   }
 
@@ -64,7 +75,7 @@ class _LoginGithubViewState extends State<LoginGithubView>
             Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             Center(
               child: FutureBuilder(
-                  future: githubAuth.startLoginProcess(context),
+                  future: viewModel.startLogin(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting ||
                         !snapshot.hasData) {
@@ -78,7 +89,8 @@ class _LoginGithubViewState extends State<LoginGithubView>
                           style: TextStyle(fontSize: 20),
                         ),
                         FilledButton(
-                          onPressed: () => copyAndLaunch(snapshot.data!),
+                          onPressed: () =>
+                              viewModel.launchBrowser(snapshot.data!),
                           child: Text("Copy code and open browser"),
                         )
                       ],
@@ -89,39 +101,6 @@ class _LoginGithubViewState extends State<LoginGithubView>
         ),
       ),
     );
-  }
-
-  Future<void> copyAndLaunch(String userCode) async {
-    developer.log("Copying code and launching browser",
-        level: 300, name: "com.GitDone.gitdone.login");
-    Clipboard.setData(ClipboardData(text: userCode));
-    githubAuth.launchBrowser();
-    showGeneralDialog(
-      context: context,
-      barrierDismissible: false,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      pageBuilder: (BuildContext context, Animation<double> animation,
-          Animation<double> secondaryAnimation) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-      transitionDuration: Duration(milliseconds: 200),
-    );
-  }
-
-  Future<void> continueLogin() async {
-    var authenticated = await githubAuth.pollForToken();
-    if (mounted && authenticated) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Homeview()),
-          (Route route) => false);
-    } else {
-      if (mounted && Navigator.canPop(context)) {
-        Navigator.of(context).pop();
-      }
-      showSnackbar("Login failed. Please try again.");
-    }
   }
 
   void showSnackbar(String text) {
