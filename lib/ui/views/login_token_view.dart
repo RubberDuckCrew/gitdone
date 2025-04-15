@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/widgets/text_link.dart';
+import 'package:gitdone/ui/widgets/text_link.dart';
 
 import '../widgets/app_bar.dart';
-import '../widgets/login_toke_input.dart';
+import '../widgets/login_token_input.dart';
 import '../widgets/page_title.dart';
 
 class LoginTokenView extends StatefulWidget {

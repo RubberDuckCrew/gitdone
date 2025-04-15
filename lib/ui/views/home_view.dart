@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/views/welcome_view.dart';
-import 'package:gitdone/widgets/app_bar.dart';
-import 'package:gitdone/widgets/octo_cat.dart';
-
-import '../utility/token_handler.dart';
+import 'package:gitdone/ui/views/welcome_view.dart';
+import 'package:gitdone/ui/widgets/app_bar.dart';
+import 'package:gitdone/ui/widgets/octo_cat.dart';
+import 'package:gitdone/utility/token_handler.dart';
 
 class Homeview extends StatefulWidget {
   const Homeview({super.key});
