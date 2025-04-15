@@ -15,24 +15,16 @@ phone.
 - 🔄 GitHub integration for issue syncing (planned)
 - 📦 Lightweight Flutter Android app
 
-> ⚠️ Project is in early development. Currently, only GitHub login is implemented.
+> ⚠️ Project is in early development.
 
 ## 📅 Roadmap
 
-### Alpha Release
-
-- [ ] Create GitHub issues from to-dos
-- [ ] Sync to-dos with GitHub issues
-- [ ] View and manage GitHub issues
-
-### Future Features
-
-- [ ] Notifications for issue updates
-- [ ] Offline support
-- [ ] User settings
-- [ ] Multi-account support
+See [milestones](https://github.com/RubberDuckCrew/gitdone/milestones) for upcoming features and
+improvements.
 
 ## 🛠️ Development
+
+> ⚠️ Check out the Wiki for more details on the architecture and design decisions.
 
 ### Requirements
 
@@ -86,7 +78,7 @@ Once your work is ready, open a **Pull Request** to merge your branch into `main
 the following format:
 
 ```
-🔀[gitmoji] [Description]
+[gitmoji] [Description]
 ```
 
 **Tip:** Use short, descriptive branch names. Prefer dashes (`-`) to separate words.
@@ -106,12 +98,9 @@ the following format:
 
 ## 🧪 CI/CD
 
-Planned:
-
-- GitHub Actions for:
-    - Building APKs
-    - Running tests
-    - Code analysis and formatting checks
+- Building APKs
+- Running tests
+- Code analysis and formatting checks
 
 ## 📄 License
 
