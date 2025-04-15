@@ -15,22 +15,16 @@ phone.
 - 🔄 GitHub integration for issue syncing (planned)
 - 📦 Lightweight Flutter Android app
 
-> ⚠️ Project is in early development. Currently, only GitHub login is implemented.
+> ⚠️ Project is in early development.
 
 ## 📅 Roadmap
 
-### [Alpha Release](https://github.com/RubberDuckCrew/gitdone/milestone/1)
-
-See [milestone](https://github.com/RubberDuckCrew/gitdone/milestone/1) for future features and improvements.
-
-### Future Features
-
-- [ ] Notifications for issue updates
-- [ ] Offline support
-- [ ] User settings
-- [ ] Multi-account support
+See [milestones](https://github.com/RubberDuckCrew/gitdone/milestones) for upcoming features and
+improvements.
 
 ## 🛠️ Development
+
+> ⚠️ Check out the Wiki for more details on the architecture and design decisions.
 
 ### Requirements
 
