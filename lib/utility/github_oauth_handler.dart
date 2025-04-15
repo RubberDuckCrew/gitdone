@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
-import 'package:flutter/material.dart';
 import 'package:gitdone/utility/token_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -17,7 +16,7 @@ class GitHubAuth {
 
   GitHubAuth({required this.callbackFunction});
 
-  Future<String> startLoginProcess(BuildContext context) async {
+  Future<String> startLoginProcess() async {
     developer.log("Starting GitHub login process",
         level: 300, name: "com.GitDone.gitdone.github_oauth_handler");
 
