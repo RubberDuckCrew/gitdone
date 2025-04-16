@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/scheme/app_color.dart';
-import 'package:gitdone/ui/views/home_view.dart';
-import 'package:gitdone/ui/views/welcome_view.dart';
-import 'package:gitdone/utility/token_handler.dart';
+import 'package:gitdone/core/models/token_handler.dart';
+import 'package:gitdone/core/theme/app_color.dart';
+import 'package:gitdone/ui/home/home_view.dart';
+import 'package:gitdone/ui/welcome/welcome_view.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

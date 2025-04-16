@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
-import 'package:gitdone/utility/token_handler.dart';
+import 'package:gitdone/core/models/token_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 

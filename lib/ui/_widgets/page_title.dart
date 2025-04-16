@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/scheme/app_color.dart';
+import 'package:gitdone/core/theme/app_color.dart';
 
 class PageTitleWidget extends StatelessWidget {
   final String title;

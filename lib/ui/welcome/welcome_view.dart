@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gitdone/ui/screens/login_github_screen.dart';
-import 'package:gitdone/ui/views/login_token_view.dart';
-import 'package:gitdone/ui/widgets/app_title.dart';
+import 'package:gitdone/ui/_widgets/app_title.dart';
+import 'package:gitdone/ui/login/oauth/login_oauth_screen.dart';
+import 'package:gitdone/ui/login/token/login_token_view.dart';
 
 class WelcomeView extends StatefulWidget {
   const WelcomeView({super.key});

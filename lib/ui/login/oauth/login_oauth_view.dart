@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/ui/view_models/login_github_view_model.dart';
-import 'package:gitdone/ui/widgets/app_bar.dart';
-import 'package:gitdone/ui/widgets/page_title.dart';
+import 'package:gitdone/ui/_widgets/app_bar.dart';
+import 'package:gitdone/ui/_widgets/page_title.dart';
+import 'package:gitdone/ui/login/oauth/login_oauth_view_model.dart';
 import 'package:provider/provider.dart';
 
 class LoginGithubView extends StatefulWidget {
