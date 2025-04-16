@@ -6,9 +6,12 @@ import 'package:gitdone/ui/home/home_view.dart';
 class LoginGithubViewModel extends ChangeNotifier {
   final GitHubAuth _githubAuth;
 
+  /// Notifier to show/hide the progress indicator.
   final ValueNotifier<bool> showProgressIndicatorNotifier =
       ValueNotifier(false);
-  final ValueNotifier<bool> fetchedUserCode = ValueNotifier(false);
+
+  /// Notifier to hold the fetched user code.
+  final ValueNotifier<String> fetchedUserCode = ValueNotifier("");
 
   /// Callback function to show the user an informational message.
   Function(String) infoCallback;
@@ -17,14 +20,15 @@ class LoginGithubViewModel extends ChangeNotifier {
   LoginGithubViewModel({required this.infoCallback})
       : _githubAuth = GitHubAuth(callbackFunction: infoCallback);
 
-  bool get inLoginProcess => _githubAuth.inLoginProcess;
-
   /// Starts the login process and returns the user code.
   ///
   /// Returns the `userCode` to be displayed to the user.
   Future<String?> startLogin() async {
     String? userCode = await _githubAuth.startLoginProcess();
-    if (userCode.isNotEmpty) fetchedUserCode.value = true;
+
+    if (userCode.isNotEmpty) {
+      fetchedUserCode.value = userCode;
+    }
     return userCode;
   }
 
@@ -42,7 +46,7 @@ class LoginGithubViewModel extends ChangeNotifier {
       required VoidCallback onFailure}) async {
     final authenticated = await _githubAuth.pollForToken();
 
-    // Reactively notify the login process state
+    // Notify listeners that the progress indicator should be hidden
     showProgressIndicatorNotifier.value = false;
 
     if (authenticated) {
@@ -54,7 +58,7 @@ class LoginGithubViewModel extends ChangeNotifier {
 
   /// Handles Lifecycle events from the UI
   void handleAppLifecycleState(AppLifecycleState state, BuildContext context) {
-    if (state == AppLifecycleState.resumed && inLoginProcess) {
+    if (state == AppLifecycleState.resumed && _githubAuth.inLoginProcess) {
       continueLogin(
         onSuccess: () {
           Navigator.of(context).pushAndRemoveUntil(
@@ -72,11 +76,5 @@ class LoginGithubViewModel extends ChangeNotifier {
     }
   }
 
-  /// Resets the GitHub authentication handler.
-  void disposeHandler() {
-    _githubAuth.resetHandler();
-  }
-
-  bool get authenticated => _githubAuth.isAuthenticated;
   String get userCode => _githubAuth.userCode;
 }
