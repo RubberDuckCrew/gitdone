@@ -9,6 +9,7 @@ class GitHubAuth {
   final String clientId = "Ov23li2QBbpgRa3P0GHJ";
   final tokenHandler = TokenHandler();
   bool inLoginProcess = false;
+  bool _authenticated = false;
   Map<String, dynamic>? _result;
   final int maxLoginAttempts = 2;
   int attempts = 1;
@@ -86,6 +87,8 @@ class GitHubAuth {
         if (await _retrieveDataFromResponse(response)) {
           developer.log("Successfully retrieved access token",
               level: 300, name: "com.GitDone.gitdone.github_oauth_handler");
+          inLoginProcess = false;
+          _authenticated = true;
           return true;
         } else if (response.body.contains("interval")) {
           _result?['interval'] = jsonDecode(response.body)["interval"];
@@ -130,4 +133,6 @@ class GitHubAuth {
 
   int get interval => _result?['interval'] ?? 0;
   String get deviceCode => _result?['deviceCode'] ?? "";
+  String get userCode => _result?['userCode'] ?? "";
+  bool get isAuthenticated => _authenticated;
 }
