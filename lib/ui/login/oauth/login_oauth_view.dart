@@ -23,7 +23,6 @@ class _LoginGithubViewState extends State<LoginGithubView>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    context.read<LoginGithubViewModel>().disposeHandler();
     super.dispose();
   }
 
@@ -38,68 +37,64 @@ class _LoginGithubViewState extends State<LoginGithubView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: NormalAppBar(),
-        body: ChangeNotifierProvider(
-          create: (_) => LoginGithubViewModel(
-            infoCallback: (text) {},
-          ),
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PageTitleWidget(
-                  title: "GitHub OAuth Login",
-                ),
-                RichText(
-                    text: TextSpan(
-                  style: TextStyle(fontSize: 18),
-                  text:
-                      "To log in with GitHub, please copy the code below and open the browser. There authenticate with your GitHub account, paste the device code and authorize the app. After that, close the browser.",
-                )),
-                Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                Center(
-                  child: ValueListenableBuilder<bool>(
-                      valueListenable:
-                          context.watch<LoginGithubViewModel>().fetchedUserCode,
-                      builder: (context, fetchedUserCode, child) {
-                        if (!fetchedUserCode) {
-                          return CircularProgressIndicator();
-                        }
-                        return Column(
-                          children: [
-                            Text("Please enter this code in the browser: "),
-                            SelectableText(
-                              context.watch<LoginGithubViewModel>().userCode,
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            FilledButton(
-                              onPressed: () =>
-                                  Provider.of<LoginGithubViewModel>(context,
-                                          listen: false)
-                                      .launchBrowser(),
-                              child: Text("Copy code and open browser"),
-                            )
-                          ],
-                        );
-                      }),
-                ),
-                ValueListenableBuilder(
-                    valueListenable: context
-                        .watch<LoginGithubViewModel>()
-                        .showProgressIndicatorNotifier,
-                    builder: (context, showProgressIndicatorNotifier, child) {
-                      if (showProgressIndicatorNotifier) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          _showProgressIndicator();
-                        });
-                      }
-                      return SizedBox.shrink();
-                    })
-              ],
+      appBar: NormalAppBar(),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            PageTitleWidget(
+              title: "GitHub OAuth Login",
             ),
-          ),
-        ));
+            RichText(
+                text: TextSpan(
+              style: TextStyle(fontSize: 18),
+              text:
+                  "To log in with GitHub, please copy the code below and open the browser. There authenticate with your GitHub account, paste the device code and authorize the app. After that, close the browser.",
+            )),
+            Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            Center(
+              child: ValueListenableBuilder<String>(
+                  valueListenable:
+                      context.watch<LoginGithubViewModel>().fetchedUserCode,
+                  builder: (context, fetchedUserCode, child) {
+                    if (fetchedUserCode == "") {
+                      return CircularProgressIndicator();
+                    }
+                    return Column(
+                      children: [
+                        Text("Please enter this code in the browser: "),
+                        SelectableText(
+                          fetchedUserCode,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        FilledButton(
+                          onPressed: () => Provider.of<LoginGithubViewModel>(
+                                  context,
+                                  listen: false)
+                              .launchBrowser(),
+                          child: Text("Copy code and open browser"),
+                        )
+                      ],
+                    );
+                  }),
+            ),
+            ValueListenableBuilder(
+                valueListenable: context
+                    .watch<LoginGithubViewModel>()
+                    .showProgressIndicatorNotifier,
+                builder: (context, showProgressIndicatorNotifier, child) {
+                  if (showProgressIndicatorNotifier) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      _showProgressIndicator();
+                    });
+                  }
+                  return SizedBox.shrink();
+                })
+          ],
+        ),
+      ),
+    );
   }
 
   void _showProgressIndicator() {
