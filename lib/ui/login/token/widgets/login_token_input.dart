@@ -50,9 +50,9 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
             context: context,
             builder: (_) {
               return AlertDialog(
-                title: Text("Could not login"),
+                title: Text("Login Failed"),
                 content: Text(
-                    "Please ensure that your access token is correct and that you have an active internet connection. Try again."),
+                    "Please verify that your access token is correct and that you have a stable internet connection, then try again."),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -63,12 +63,6 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
                 ],
               );
             });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Invalid token. Please try again."),
-            duration: Duration(seconds: 2),
-          ),
-        );
       }
     }
   }

@@ -43,15 +43,36 @@ class _LoginGithubViewState extends State<LoginGithubView>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Padding(padding: EdgeInsets.symmetric(vertical: 32.0)),
             PageTitleWidget(
               title: "GitHub OAuth Login",
             ),
-            RichText(
+            Align(
+              alignment: Alignment.centerLeft,
+              child: RichText(
                 text: TextSpan(
-              style: TextStyle(fontSize: 18),
-              text:
-                  "To log in with GitHub, please copy the code below and open the browser. There authenticate with your GitHub account, paste the device code and authorize the app. After that, close the browser.",
-            )),
+                  style: TextStyle(fontSize: 18, height: 1.3),
+                  children: [
+                    TextSpan(
+                      text:
+                          "To log in with GitHub, please follow these steps:\n\n",
+                    ),
+                    TextSpan(
+                      text: "1. Copy the code below to open the browser\n",
+                    ),
+                    TextSpan(
+                      text: "2. Log in with your GitHub account\n",
+                    ),
+                    TextSpan(
+                      text: "3. Paste the device code and authorize the app\n",
+                    ),
+                    TextSpan(
+                      text: "4. Close the browser\n",
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             Center(
               child: ValueListenableBuilder<String>(
@@ -90,7 +111,7 @@ class _LoginGithubViewState extends State<LoginGithubView>
                     });
                   }
                   return SizedBox.shrink();
-                })
+                }),
           ],
         ),
       ),
