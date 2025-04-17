@@ -5,7 +5,7 @@ import 'package:github_flutter/github.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GitHubAuth {
-  static const String clientId = "Ov23li2QBbpgRa3P0GHJ";
+  static const String clientId = "Iv23liytEkcJOjMjS9No";
   final tokenHandler = TokenHandler();
   bool inLoginProcess = false;
   bool _authenticated = false;
@@ -97,5 +97,6 @@ class GitHubAuth {
   }
 
   String get userCode => _userCode ?? "";
+
   bool get isAuthenticated => _authenticated;
 }
