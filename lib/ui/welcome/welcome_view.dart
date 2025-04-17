@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gitdone/views/login_github_view.dart';
-import 'package:gitdone/views/login_token_view.dart';
-import 'package:gitdone/widgets/app_title.dart';
+import 'package:gitdone/ui/_widgets/app_title.dart';
+import 'package:gitdone/ui/login/oauth/login_oauth_screen.dart';
+import 'package:gitdone/ui/login/token/login_token_view.dart';
 
 class WelcomeView extends StatefulWidget {
   const WelcomeView({super.key});
@@ -48,7 +48,7 @@ class _WelcomeViewState extends State<WelcomeView> {
   void goToLoginGithubView() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const LoginGithubView()),
+      MaterialPageRoute(builder: (context) => const LoginGithubScreen()),
     );
   }
 

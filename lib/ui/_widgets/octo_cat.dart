@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gitdone/core/github_api_handler.dart';
+import 'package:gitdone/core/models/token_handler.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-
-import '../utility/github_api_handler.dart';
-import '../utility/token_handler.dart';
 
 class OctoCat extends StatefulWidget {
   const OctoCat({super.key});

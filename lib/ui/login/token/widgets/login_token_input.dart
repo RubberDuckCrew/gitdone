@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/utility/github_api_handler.dart';
-
-import '../utility/token_handler.dart';
-import '../views/home_view.dart';
+import 'package:gitdone/core/github_api_handler.dart';
+import 'package:gitdone/core/models/token_handler.dart';
+import 'package:gitdone/ui/home/home_view.dart';
 
 class LoginTokenInput extends StatefulWidget {
   const LoginTokenInput({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gitdone/utility/token_handler.dart';
+import 'package:gitdone/core/models/token_handler.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}

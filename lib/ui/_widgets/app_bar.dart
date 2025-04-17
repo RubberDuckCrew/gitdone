@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/scheme/app_color.dart';
-import 'package:gitdone/widgets/app_title.dart';
+import 'package:gitdone/core/theme/app_color.dart';
+import 'package:gitdone/ui/_widgets/app_title.dart';
 
 class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {
   final dynamic backVisible;

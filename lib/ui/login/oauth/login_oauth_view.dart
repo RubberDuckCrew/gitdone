@@ -1,12 +1,8 @@
-import 'dart:developer' as developer;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-import '../utility/github_oauth_handler.dart';
-import '../widgets/app_bar.dart';
-import '../widgets/page_title.dart';
-import 'home_view.dart';
+import 'package:gitdone/ui/_widgets/app_bar.dart';
+import 'package:gitdone/ui/_widgets/page_title.dart';
+import 'package:gitdone/ui/login/oauth/login_oauth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class LoginGithubView extends StatefulWidget {
   const LoginGithubView({super.key});
@@ -17,30 +13,25 @@ class LoginGithubView extends StatefulWidget {
 
 class _LoginGithubViewState extends State<LoginGithubView>
     with WidgetsBindingObserver {
-  late GitHubAuth githubAuth;
-
   @override
   void initState() {
     super.initState();
-    githubAuth = GitHubAuth(callbackFunction: showSnackbar);
     WidgetsBinding.instance.addObserver(this);
+    context.read<LoginGithubViewModel>().startLogin();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    githubAuth.resetHandler();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    developer.log("AppLifecycleState changed to: $state",
-        level: 800, name: "com.GitDone.gitdone.login");
-    if (state == AppLifecycleState.resumed && githubAuth.inLoginProcess) {
-      continueLogin();
-    }
+    context
+        .read<LoginGithubViewModel>()
+        .handleAppLifecycleState(state, context);
   }
 
   @override
@@ -63,39 +54,50 @@ class _LoginGithubViewState extends State<LoginGithubView>
             )),
             Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             Center(
-              child: FutureBuilder(
-                  future: githubAuth.startLoginProcess(context),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting ||
-                        !snapshot.hasData) {
+              child: ValueListenableBuilder<String>(
+                  valueListenable:
+                      context.watch<LoginGithubViewModel>().fetchedUserCode,
+                  builder: (context, fetchedUserCode, child) {
+                    if (fetchedUserCode == "") {
                       return CircularProgressIndicator();
                     }
                     return Column(
                       children: [
                         Text("Please enter this code in the browser: "),
                         SelectableText(
-                          snapshot.data!,
+                          fetchedUserCode,
                           style: TextStyle(fontSize: 20),
                         ),
                         FilledButton(
-                          onPressed: () => copyAndLaunch(snapshot.data!),
+                          onPressed: () => Provider.of<LoginGithubViewModel>(
+                                  context,
+                                  listen: false)
+                              .launchBrowser(),
                           child: Text("Copy code and open browser"),
                         )
                       ],
                     );
                   }),
             ),
+            ValueListenableBuilder(
+                valueListenable: context
+                    .watch<LoginGithubViewModel>()
+                    .showProgressIndicatorNotifier,
+                builder: (context, showProgressIndicatorNotifier, child) {
+                  if (showProgressIndicatorNotifier) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      _showProgressIndicator();
+                    });
+                  }
+                  return SizedBox.shrink();
+                })
           ],
         ),
       ),
     );
   }
 
-  Future<void> copyAndLaunch(String userCode) async {
-    developer.log("Copying code and launching browser",
-        level: 300, name: "com.GitDone.gitdone.login");
-    Clipboard.setData(ClipboardData(text: userCode));
-    githubAuth.launchBrowser();
+  void _showProgressIndicator() {
     showGeneralDialog(
       context: context,
       barrierDismissible: false,
@@ -107,29 +109,6 @@ class _LoginGithubViewState extends State<LoginGithubView>
         );
       },
       transitionDuration: Duration(milliseconds: 200),
-    );
-  }
-
-  Future<void> continueLogin() async {
-    var authenticated = await githubAuth.pollForToken();
-    if (mounted && authenticated) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => Homeview()),
-          (Route route) => false);
-    } else {
-      if (mounted && Navigator.canPop(context)) {
-        Navigator.of(context).pop();
-      }
-      showSnackbar("Login failed. Please try again.");
-    }
-  }
-
-  void showSnackbar(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(text),
-        duration: Duration(seconds: 2),
-      ),
     );
   }
 }
