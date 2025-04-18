@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/token_handler.dart';
 import 'package:gitdone/core/theme/app_color.dart';
-import 'package:gitdone/ui/home/home_view.dart';
+import 'package:gitdone/ui/home/home_screen.dart';
 import 'package:gitdone/ui/welcome/welcome_view.dart';
 
 class App extends StatelessWidget {
@@ -22,7 +22,7 @@ class App extends StatelessWidget {
                     body: Center(child: CircularProgressIndicator()));
               }
               if (snapshot.hasData && snapshot.data == true) {
-                return Homeview();
+                return HomeScreen();
               } else {
                 return WelcomeView();
               }
