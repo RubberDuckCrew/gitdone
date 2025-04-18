@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gitdone/core/models/github_oauth_model.dart';
-import 'package:gitdone/ui/home/home_view.dart';
+import 'package:gitdone/ui/home/home_screen.dart';
 
 class LoginGithubViewModel extends ChangeNotifier {
   final GitHubAuth _githubAuth;
@@ -62,7 +62,7 @@ class LoginGithubViewModel extends ChangeNotifier {
       continueLogin(
         onSuccess: () {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => Homeview()),
+            MaterialPageRoute(builder: (context) => HomeScreen()),
             (Route route) => false,
           );
         },
