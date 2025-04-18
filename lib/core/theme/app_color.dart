@@ -12,5 +12,6 @@ class AppColor {
     surface: Colors.grey[900]!,
     onSurface: Colors.white,
     surfaceContainer: Colors.grey[800]!,
+    secondaryContainer: Color(0xFFFF6A00),
   );
 }
