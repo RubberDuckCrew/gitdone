@@ -61,7 +61,7 @@ jobs:
         run: flutter build appbundle --release
       
       - name: Prepare version name
-        uses: step-security/actions-find-and-replace@v5
+        uses: step-security/actions-find-and-replace-string@v5
         id: version_name
         with:
           source: ${{ github.ref_name }}
