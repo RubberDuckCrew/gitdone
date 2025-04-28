@@ -61,12 +61,10 @@ jobs:
         run: flutter build appbundle --release
       
       - name: Prepare version name
-        uses: step-security/actions-find-and-replace-string@v5
         id: version_name
-        with:
-          source: ${{ github.ref_name }}
-          find: '/'
-          replace: '-'
+        run: |
+          VERSION_NAME=$(echo "${{ github.ref_name }}" | tr '/' '-')
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
         
       - name: Rename APK & App Bundle
         working-directory: app
