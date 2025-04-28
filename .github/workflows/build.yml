@@ -59,23 +59,31 @@ jobs:
       - name: Build App Bundle
         working-directory: app
         run: flutter build appbundle --release
-
+      
+      - name: Prepare version name
+        uses: step-security/actions-find-and-replace-string@v5
+        id: version_name
+        with:
+          source: ${{ github.ref_name }}
+          find: '/'
+          replace: '-'
+        
       - name: Rename APK & App Bundle
         working-directory: app
         run: |
-          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
-          mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/GitDone_${{ steps.version_name.outputs.value }}.apk
+          mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/GitDone_${{ steps.version_name.outputs.value }}.aab
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: release-apk
-          path: app/build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
+          path: app/build/app/outputs/flutter-apk/GitDone_${{ steps.version_name.outputs.value }}.apk
 
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4
         with:
           name: release-appbundle
-          path: app/build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
+          path: app/build/app/outputs/bundle/release/GitDone_${{ steps.version_name.outputs.value }}.aab
 
       - name: Release Artifacts
         if: startsWith(github.ref, 'refs/tags/')
@@ -83,5 +91,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
-            app/build/app/outputs/flutter-apk/GitDone_${{ github.ref_name }}.apk
-            app/build/app/outputs/bundle/release/GitDone_${{ github.ref_name }}.aab
+            app/build/app/outputs/flutter-apk/GitDone_${{ steps.version_name.outputs.value }}.apk
+            app/build/app/outputs/bundle/release/GitDone_${{ steps.version_name.outputs.value }}.aab
