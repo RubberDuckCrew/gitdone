@@ -55,12 +55,7 @@ jobs:
 
       - name: Prepare version name
         id: version_name
-        run: |
-          echo "${{ github.ref_name }}"
-          echo "${{ github.ref }}"
-          echo "${{ github.ref_name }}" | tr / _
-          echo "version_name=$(echo "${{github.ref_name}}" | tr / _)"
-          echo "version_name=$(echo "${{github.ref_name}}" | tr / _)" >> $GITHUB_OUTPUT
+        run: echo "version_name=$(echo "${{github.ref_name}}" | tr / _)" >> $GITHUB_OUTPUT
         
       - name: Build APK
         working-directory: app
