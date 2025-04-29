@@ -23,6 +23,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: app
+          ref: ${{ github.ref_name }}
 
       - name: Clone Package Repository
         uses: actions/checkout@v4
