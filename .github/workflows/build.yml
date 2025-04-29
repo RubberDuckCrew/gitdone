@@ -64,9 +64,9 @@ jobs:
         id: version_name
         run: |
           REF_NAME="${{ github.ref_name || github.ref }}"
-          VERSION_NAME="${REF_NAME#refs/*/}"
-          VERSION_NAME="${VERSION_NAME//\//-}"
-          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "${{ github.ref_name }}"
+          echo "${{ github.ref }}"
+          echo "version_name=REF_NAME" | tr / _ >> $GITHUB_OUTPUT
         
       - name: Rename APK & App Bundle
         working-directory: app
