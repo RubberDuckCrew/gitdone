@@ -61,7 +61,7 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                     label: Text(viewModel.getLabel(widget.initialLabel)),
                     iconTheme: IconThemeData(
                       color: viewModel.isSelected
-                          ? Theme.of(context).colorScheme.primary
+                          ? Theme.of(context).colorScheme.onPrimary
                           : Theme.of(context).colorScheme.onSurface,
                     ),
                     labelStyle: TextStyle(
@@ -83,8 +83,10 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                     onSelected: viewModel.toggleDropdown),
                 if (viewModel.isDropdownOpen)
                   Material(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    clipBehavior: Clip.antiAlias,
                     elevation: 4.0,
-                    borderRadius: BorderRadius.circular(4),
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         return ConstrainedBox(
