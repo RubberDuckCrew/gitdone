@@ -230,6 +230,10 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
     _iconWidth = iconWidth;
   }
 
+  /// Returns `initialLabel` if no items are selected, otherwise
+  ///
+  /// returns ```${_selectedLabels.length} initialLabel``` if multiple items are selected and allowMultipleSelection is true,
+  /// or ```_selectedLabels.first``` if allowMultipleSelection is false.
   String getLabel(String initialLabel) {
     if (allowMultipleSelection && _selectedLabels.isNotEmpty) {
       return "${_selectedLabels.length} $initialLabel";
