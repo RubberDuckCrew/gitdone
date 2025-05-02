@@ -18,11 +18,6 @@ class FilterChipDropdown extends StatefulWidget {
   final List<FilterChipItem> items;
   final Widget? leading;
   final String initialLabel;
-  final Color unselectedColor;
-  final Color unselectedLabelColor;
-  final Color selectedColor;
-  final Color selectedLabelColor;
-  final Function(String?) onSelectionChanged;
   final double labelPadding;
   final bool allowMultipleSelection;
 
@@ -31,11 +26,6 @@ class FilterChipDropdown extends StatefulWidget {
     required this.items,
     this.leading,
     required this.initialLabel,
-    required this.unselectedColor,
-    required this.unselectedLabelColor,
-    required this.selectedColor,
-    required this.selectedLabelColor,
-    required this.onSelectionChanged,
     required this.allowMultipleSelection,
     this.labelPadding = 16,
   });
@@ -68,28 +58,25 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                 FilterChip.elevated(
                     key: _chipKey,
                     avatar: widget.leading,
-                    label: Text(
-                      viewModel.isSelected
-                          ? viewModel.selectedLabels.join(", ")
-                          : widget.initialLabel,
-                    ),
+                    label: Text(viewModel.getLabel(widget.initialLabel)),
                     iconTheme: IconThemeData(
                       color: viewModel.isSelected
-                          ? widget.selectedLabelColor
-                          : widget.unselectedLabelColor,
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.onSurface,
                     ),
                     labelStyle: TextStyle(
                       color: viewModel.isSelected
-                          ? widget.selectedLabelColor
-                          : widget.unselectedLabelColor,
+                          ? Theme.of(context).colorScheme.onPrimary
+                          : Theme.of(context).colorScheme.onSurface,
                     ),
                     backgroundColor: viewModel.isSelected
-                        ? widget.selectedColor
-                        : widget.unselectedColor,
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.surfaceContainer,
                     deleteIcon: viewModel.isSelected
-                        ? Icon(Icons.close, color: widget.selectedLabelColor)
+                        ? Icon(Icons.close,
+                            color: Theme.of(context).colorScheme.onPrimary)
                         : Icon(Icons.arrow_drop_down,
-                            color: widget.unselectedLabelColor),
+                            color: Theme.of(context).colorScheme.onSurface),
                     onDeleted: viewModel.isSelected
                         ? viewModel.clearSelection
                         : () => viewModel.toggleDropdown(false),
@@ -112,7 +99,7 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                             children: widget.items.map((item) {
                               return Material(
                                 color: viewModel.isItemSelected(item)
-                                    ? widget.selectedColor
+                                    ? Theme.of(context).colorScheme.primary
                                     : Colors.transparent,
                                 child: InkWell(
                                   onTap: () => viewModel.isItemSelected(item) &&
@@ -174,6 +161,7 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
   bool get isSelected => _selectedLabels.isNotEmpty;
   double get maxItemWidth => _maxItemWidth;
   double get iconWidth => _iconWidth;
+  int get amountOfSelectedItems => _selectedLabels.length;
 
   /// Needs to have parameter `bool?` to be compatible with the FilterChip widget
   void toggleDropdown(bool? value) {
@@ -240,5 +228,15 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
   void calculateIconWidth(BuildContext context) {
     final double iconWidth = IconTheme.of(context).size ?? 24.0;
     _iconWidth = iconWidth;
+  }
+
+  String getLabel(String initialLabel) {
+    if (allowMultipleSelection && _selectedLabels.isNotEmpty) {
+      return "${_selectedLabels.length} $initialLabel";
+    }
+    if (!allowMultipleSelection && _selectedLabels.isNotEmpty) {
+      return _selectedLabels.first;
+    }
+    return initialLabel;
   }
 }
