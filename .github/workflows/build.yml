@@ -60,11 +60,11 @@ jobs:
         
       - name: Build APK
         working-directory: app
-        run: flutter build apk --release
+        run: flutter build apk --release --flavor production
 
       - name: Build App Bundle
         working-directory: app
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --flavor production
       
       - name: Rename APK & App Bundle
         working-directory: app
