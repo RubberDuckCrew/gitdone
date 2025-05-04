@@ -60,17 +60,18 @@ jobs:
         
       - name: Build APK
         working-directory: app
-        run: flutter build apk --release
+        run: flutter build apk --release --flavor production
 
       - name: Build App Bundle
         working-directory: app
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --flavor production
       
       - name: Rename APK & App Bundle
         working-directory: app
         run: |
-          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/GitDone_${{ steps.version_name.outputs.version_name }}.apk
-          mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/GitDone_${{ steps.version_name.outputs.version_name }}.aab
+          mv build/app/outputs/flutter-apk/app-production-release.apk build/app/outputs/flutter-apk/GitDone_${{ steps.version_name.outputs.version_name }}.apk
+          mv build/app/outputs/bundle/productionRelease/app-production-release.aab build/app/outputs/bundle/productionRelease/GitDone_${{ steps.version_name.outputs.version_name }}.aab
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
@@ -81,7 +82,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: GitDone_${{ steps.version_name.outputs.version_name }}.aab
-          path: app/build/app/outputs/bundle/release/GitDone_${{ steps.version_name.outputs.version_name }}.aab
+          path: app/build/app/outputs/bundle/productionRelease/GitDone_${{ steps.version_name.outputs.version_name }}.aab
 
       - name: Release Artifacts
         if: startsWith(github.ref, 'refs/tags/')
@@ -90,4 +91,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
             app/build/app/outputs/flutter-apk/GitDone_${{ steps.version_name.outputs.version_name }}.apk
-            app/build/app/outputs/bundle/release/GitDone_${{ steps.version_name.outputs.version_name }}.aab
+            app/build/app/outputs/bundle/productionRelease/GitDone_${{ steps.version_name.outputs.version_name }}.aab
