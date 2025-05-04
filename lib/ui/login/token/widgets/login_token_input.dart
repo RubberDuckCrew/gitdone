@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/github_api_handler.dart';
 import 'package:gitdone/core/models/token_handler.dart';
-import 'package:gitdone/ui/home/home_view.dart';
+import 'package:gitdone/ui/home/home_screen.dart';
 
 class LoginTokenInput extends StatefulWidget {
   const LoginTokenInput({super.key});
@@ -42,7 +42,7 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
         tokenHandler.saveToken(_controller.text);
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => Homeview()),
+              MaterialPageRoute(builder: (context) => HomeScreen()),
               (Route route) => false);
         }
       } else if (mounted) {
