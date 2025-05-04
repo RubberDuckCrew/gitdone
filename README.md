@@ -96,11 +96,11 @@ the following format:
 - Follow Dart and Flutter best practices
 - Run `flutter analyze` before committing
 
-## 🧪 CI/CD
+### 👥 Contributors
 
-- Building APKs
-- Running tests
-- Code analysis and formatting checks
+<a href="https://github.com/RubberDuckCrew/gitdone/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=RubberDuckCrew/gitdone" />
+</a>
 
 ## 📄 License
 
