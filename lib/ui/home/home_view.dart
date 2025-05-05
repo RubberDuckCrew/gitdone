@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/token_handler.dart';
-import 'package:gitdone/ui/_widgets/app_bar.dart';
 import 'package:gitdone/ui/_widgets/octo_cat.dart';
 import 'package:gitdone/ui/welcome/welcome_view.dart';
 
@@ -27,19 +26,16 @@ class _HomeviewState extends State<Homeview> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: NormalAppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OctoCat(),
-            ElevatedButton(
-              onPressed: logout,
-              child: const Text("Logout"),
-            ),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          OctoCat(),
+          ElevatedButton(
+            onPressed: logout,
+            child: const Text("Logout"),
+          ),
+        ],
       ),
     );
   }
