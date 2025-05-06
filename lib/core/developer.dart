@@ -63,9 +63,14 @@ enum LogLevel {
 class Developer {
   /// Logs a message with the specified level, time, sequence number, name,
   /// zone, error, and stack trace.
-  static void log(String message, DateTime? time, int? sequenceNumber,
-      String name, Zone? zone, Object? error, StackTrace? stackTrace,
-      {LogLevel level = LogLevel.info}) {
+  /// @param message The message to log.
+  /// @param name The name of the file logging the message. Example: "com.GitDone.gitdone.core.models.github_oauth_model"
+  static void log(String message, String name, LogLevel level,
+      {DateTime? time,
+      int? sequenceNumber,
+      Zone? zone,
+      Object? error,
+      StackTrace? stackTrace}) {
     int logLevel = level.logLevel;
     dev.log(message,
         time: time,
@@ -79,25 +84,58 @@ class Developer {
 
   /// Logs a error with time, sequence number, name,
   /// zone, error, and stack trace.
-  static void logError(String message, DateTime? time, int? sequenceNumber,
-      String name, Zone? zone, Object? error, StackTrace? stackTrace) {
-    log(message, time, sequenceNumber, name, zone, error, stackTrace,
-        level: LogLevel.severe);
+  static void logError(String message, String name,
+      {DateTime? time,
+      int? sequenceNumber,
+      Zone? zone,
+      Object? error,
+      StackTrace? stackTrace}) {
+    log(
+        message,
+        time: time,
+        sequenceNumber: sequenceNumber,
+        name,
+        zone: zone,
+        error: error,
+        stackTrace: stackTrace,
+        LogLevel.severe);
   }
 
   /// Logs a warning with time, sequence number, name,
   /// zone, error, and stack trace.
-  static void logWarning(String message, DateTime? time, int? sequenceNumber,
-      String name, Zone? zone, Object? error, StackTrace? stackTrace) {
-    log(message, time, sequenceNumber, name, zone, error, stackTrace,
-        level: LogLevel.warning);
+  static void logWarning(String message, String name,
+      {DateTime? time,
+      int? sequenceNumber,
+      Zone? zone,
+      Object? error,
+      StackTrace? stackTrace}) {
+    log(
+        message,
+        time: time,
+        sequenceNumber: sequenceNumber,
+        name,
+        zone: zone,
+        error: error,
+        stackTrace: stackTrace,
+        LogLevel.warning);
   }
 
   /// Logs a info message with time, sequence number, name,
   /// zone, error, and stack trace.
-  static void logInfo(String message, DateTime? time, int? sequenceNumber,
-      String name, Zone? zone, Object? error, StackTrace? stackTrace) {
-    log(message, time, sequenceNumber, name, zone, error, stackTrace,
-        level: LogLevel.info);
+  static void logInfo(String message, String name,
+      {DateTime? time,
+      int? sequenceNumber,
+      Zone? zone,
+      Object? error,
+      StackTrace? stackTrace}) {
+    log(
+        message,
+        time: time,
+        sequenceNumber: sequenceNumber,
+        name,
+        zone: zone,
+        error: error,
+        stackTrace: stackTrace,
+        LogLevel.info);
   }
 }
