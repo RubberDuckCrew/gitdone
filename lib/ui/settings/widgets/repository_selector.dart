@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/token_handler.dart';
 import 'package:github_flutter/github.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RepositorySelector extends StatefulWidget {
   const RepositorySelector({super.key});
@@ -50,8 +49,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
                   value: model.selectedRepository,
                   items: model.repositories.map(convertToRepo).toList(),
                   onChanged: model.selectRepository),
-              FilledButton(
-                  onPressed: model.saveSelectedRepository, child: Text("Save"))
+              // TODO: Add a button to persist the selected repository
             ],
           );
         }));
@@ -68,18 +66,12 @@ class RepositorySelectorViewModel extends ChangeNotifier {
   RepositorySelectorViewModel() {
     _model.addListener(notifyListeners);
     _model.init().then((value) {
-      _model.getRepositories();
+      _model.getAllUserRepositories();
     });
   }
 
   void selectRepository(Repository? repo) {
     _model.selectRepository(repo);
-  }
-
-  void saveSelectedRepository() async {
-    if (selectedRepository != null) {
-      _model.saveRepository(selectedRepository!);
-    }
   }
 }
 
@@ -107,9 +99,9 @@ class RepositorySelectorModel extends ChangeNotifier {
     return false;
   }
 
-  void getRepositories() async {
+  void getAllUserRepositories() async {
     if (_github == null) {
-      log("Called getRepositories() while GitHub is null. Initializing...",
+      log("Called getAllUserRepositories() while GitHub is null. Initializing...",
           name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
           level: 300);
       await init();
@@ -122,14 +114,6 @@ class RepositorySelectorModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void saveRepository(Repository repository) async {
-    log("Saving repository: ${repository.name} to shared preferences",
-        name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-        level: 300);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('selected_repository', repository.id);
-  }
-
   void selectRepository(Repository? repo) {
     log("Selected repository: ${repo?.name}",
         name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
@@ -137,9 +121,7 @@ class RepositorySelectorModel extends ChangeNotifier {
     _selectedRepository = repo;
     notifyListeners();
   }
-
-  Future<int?> getSavedRepository() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('selected_repository');
-  }
 }
+// TODO: How to persist the selected repository across app restarts?
+// TODO: Add a method to get the selected repository from local storage
+// TODO: Add a method to save the selected repository to local storage
