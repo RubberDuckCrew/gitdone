@@ -84,11 +84,10 @@ class Developer {
 
   /// Logs a error with time, sequence number, name,
   /// zone, error, and stack trace.
-  static void logError(String message, String name,
+  static void logError(String message, String name, Object? error,
       {DateTime? time,
       int? sequenceNumber,
       Zone? zone,
-      Object? error,
       StackTrace? stackTrace}) {
     log(
         message,

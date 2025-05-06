@@ -74,8 +74,7 @@ class GitHubAuth {
         }
       } catch (e) {
         Developer.logError("Unexpected error occurred while polling for token",
-            "com.GitDone.gitdone.github_oauth_handler",
-            error: e);
+            "com.GitDone.gitdone.github_oauth_handler", e);
       }
       await Future.delayed(Duration(seconds: interval));
       attempts++;
