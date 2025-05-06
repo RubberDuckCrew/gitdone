@@ -6,6 +6,6 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Repositoryselector());
+    return Center(child: RepositorySelector());
   }
 }
