@@ -1,5 +1,5 @@
-import 'package:gitdone/core/developer.dart';
 import 'package:gitdone/core/models/token_handler.dart';
+import 'package:gitdone/core/utils/developer.dart';
 import 'package:github_flutter/github.dart';
 import 'package:url_launcher/url_launcher.dart';
 
