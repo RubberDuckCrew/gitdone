@@ -4,15 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/token_handler.dart';
 import 'package:github_flutter/github.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Repositoryselector extends StatefulWidget {
-  const Repositoryselector({super.key});
+class RepositorySelector extends StatefulWidget {
+  const RepositorySelector({super.key});
 
   @override
-  State<Repositoryselector> createState() => _RepositoryselectorState();
+  State<RepositorySelector> createState() => _RepositorySelectorState();
 }
 
-class _RepositoryselectorState extends State<Repositoryselector> {
+class _RepositorySelectorState extends State<RepositorySelector> {
   DropdownMenuItem<Repository> convertToRepo(Repository repo) {
     return DropdownMenuItem(
       value: repo,
@@ -42,24 +43,56 @@ class _RepositoryselectorState extends State<Repositoryselector> {
           if (!model.isReady) {
             return const Center(child: CircularProgressIndicator());
           }
-          return DropdownButton<Repository>(
-              hint: const Text("Select a repository"),
-              value: model.selectedRepository,
-              items: model.repositories.map(convertToRepo).toList(),
-              onChanged: model.selectRepository);
+          return Column(
+            children: [
+              DropdownButton<Repository>(
+                  hint: const Text("Select a repository"),
+                  value: model.selectedRepository,
+                  items: model.repositories.map(convertToRepo).toList(),
+                  onChanged: model.selectRepository),
+              FilledButton(
+                  onPressed: model.saveSelectedRepository, child: Text("Save"))
+            ],
+          );
         }));
   }
 }
 
 class RepositorySelectorViewModel extends ChangeNotifier {
-  List<Repository>? _repositories = [];
+  final RepositorySelectorModel _model = RepositorySelectorModel();
+
+  List<Repository> get repositories => _model.repositories;
+  Repository? get selectedRepository => _model.selectedRepository;
+  bool get isReady => _model.isReady;
+
+  RepositorySelectorViewModel() {
+    _model.addListener(notifyListeners);
+    _model.init().then((value) {
+      _model.getRepositories();
+    });
+  }
+
+  void selectRepository(Repository? repo) {
+    _model.selectRepository(repo);
+  }
+
+  void saveSelectedRepository() async {
+    if (selectedRepository != null) {
+      _model.saveRepository(selectedRepository!);
+    }
+  }
+}
+
+class RepositorySelectorModel extends ChangeNotifier {
   GitHub? _github;
+  List<Repository>? _repositories = [];
+
   Repository? _selectedRepository;
   Repository? get selectedRepository => _selectedRepository;
   bool get isReady => _github != null;
   List<Repository> get repositories => _repositories ?? [];
 
-  Future<void> init() async {
+  Future<bool> init() async {
     log("Calling init method",
         name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
         level: 300);
@@ -69,15 +102,9 @@ class RepositorySelectorViewModel extends ChangeNotifier {
       log("Initialized GitHub",
           name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
           level: 300);
+      return true;
     }
-  }
-
-  RepositorySelectorViewModel() {
-    init().then(
-      (value) {
-        getRepositories();
-      },
-    );
+    return false;
   }
 
   void getRepositories() async {
@@ -95,11 +122,24 @@ class RepositorySelectorViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void saveRepository(Repository repository) async {
+    log("Saving repository: ${repository.name} to shared preferences",
+        name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+        level: 300);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('selected_repository', repository.id);
+  }
+
   void selectRepository(Repository? repo) {
     log("Selected repository: ${repo?.name}",
         name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
         level: 300);
     _selectedRepository = repo;
     notifyListeners();
+  }
+
+  Future<int?> getSavedRepository() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('selected_repository');
   }
 }
