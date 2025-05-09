@@ -1,10 +1,13 @@
+import 'dart:developer' as developer;
+
 import 'package:gitdone/core/models/token_handler.dart';
-import 'package:gitdone/core/utils/developer.dart';
 import 'package:github_flutter/github.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GitHubAuth {
   static const String clientId = "Iv23liytEkcJOjMjS9No";
+  static const String fileName =
+      "com.GitDone.gitdone.core.models.github_oauth_handler";
   final tokenHandler = TokenHandler();
   bool inLoginProcess = false;
   bool _authenticated = false;
@@ -18,19 +21,17 @@ class GitHubAuth {
       : _deviceFlow = DeviceFlow(clientId, scopes: ["repo", "user"]);
 
   Future<String> startLoginProcess() async {
-    Developer.log("Starting GitHub login process",
-        "com.GitDone.gitdone.github_oauth_handler", LogLevel.finest);
+    developer.log("Starting GitHub login process", level: 300, name: fileName);
 
     try {
       _userCode = await _deviceFlow.fetchUserCode();
       inLoginProcess = true;
-      Developer.log("Could retrieve oauth information from GitHub",
-          "com.GitDone.gitdone.github_oauth_handler", LogLevel.finest);
+      developer.log("Could retrieve oauth information from GitHub",
+          name: fileName, level: 300);
       return _userCode ?? "";
     } catch (e) {
-      Developer.logWarning("Could not retrieve oauth information from GitHub",
-          "com.GitDone.gitdone.github_oauth_handler",
-          error: e);
+      developer.log("Could not retrieve oauth information from GitHub",
+          name: fileName, level: 900, error: e);
       return "";
     }
   }
@@ -38,11 +39,9 @@ class GitHubAuth {
   Future<void> launchBrowser() async {
     String url = _deviceFlow.createAuthorizeUrl();
     if (await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
-      Developer.log("Launching URL: $url",
-          "com.GitDone.gitdone.github_oauth_handler", LogLevel.finest);
+      developer.log("Launching URL: $url", name: fileName, level: 300);
     } else {
-      Developer.logWarning("Could not launch URL: $url",
-          "com.GitDone.gitdone.github_oauth_handler");
+      developer.log("Could not launch URL: $url", name: fileName, level: 900);
     }
   }
 
@@ -51,12 +50,12 @@ class GitHubAuth {
     int interval = 0;
 
     if (userCode.isEmpty) {
-      Developer.logWarning("pollForToken called with result being null",
-          "com.GitDone.gitdone.github_oauth_handler");
+      developer.log("pollForToken called with result being null",
+          level: 900, name: fileName);
       return false;
     }
 
-    while (true && attempts <= maxLoginAttempts) {
+    while (attempts <= maxLoginAttempts) {
       DeviceFlowExchangeResponse response;
       try {
         response = await _deviceFlow.exchange();
@@ -64,8 +63,8 @@ class GitHubAuth {
         if (response.token != null) {
           tokenHandler.saveToken(response.token!);
 
-          Developer.log("Successfully retrieved access token",
-              "com.GitDone.gitdone.github_oauth_handler", LogLevel.finest);
+          developer.log("Successfully retrieved access token",
+              level: 300, name: fileName);
           inLoginProcess = false;
           _authenticated = true;
           return true;
@@ -73,23 +72,22 @@ class GitHubAuth {
           interval = response.interval;
         }
       } catch (e) {
-        Developer.logError("Unexpected error occurred while polling for token",
-            "com.GitDone.gitdone.github_oauth_handler", e);
+        developer.log("Unexpected error occurred while polling for token",
+            name: fileName, level: 1000, error: e);
       }
       await Future.delayed(Duration(seconds: interval));
       attempts++;
     }
     if (attempts >= maxLoginAttempts) {
-      Developer.logWarning("Exceeded maximum attempts to poll for token",
-          "com.GitDone.gitdone.github_oauth_handler");
+      developer.log("Exceeded maximum attempts to poll for token",
+          level: 900, name: fileName);
     }
     return false;
   }
 
   Future<void> resetHandler() async {
     inLoginProcess = false;
-    Developer.log("GitHubAuthHandler reset",
-        "com.GitDone.gitdone.github_oauth_handler", LogLevel.finest);
+    developer.log("GitHubAuthHandler reset", level: 300, name: fileName);
   }
 
   String get userCode => _userCode ?? "";
