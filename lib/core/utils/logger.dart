@@ -16,13 +16,13 @@ enum LogLevel {
   ///
   /// Very detailed debugging information.
   /// Suitable for internal method calls, detailed state changes, or non-critical performance measurements.
-  finer(400),
+  detailed(400),
 
   /// **Fine**
   ///
   /// General debugging information.
   /// Use this to log successful function executions, non-critical events, or moderate detail useful during development.
-  fine(500),
+  general(500),
 
   /// **Config**
   ///
