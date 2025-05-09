@@ -60,7 +60,7 @@ enum LogLevel {
   int get logLevel => _value;
 }
 
-class Developer {
+class Logger {
   /// Logs a message with the specified level, time, sequence number, name,
   /// zone, error, and stack trace.
   /// @param message The message to log.
