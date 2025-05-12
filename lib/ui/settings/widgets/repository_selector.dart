@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/repository_details.dart';
 import 'package:gitdone/core/models/token_handler.dart';
+import 'package:gitdone/core/utils/logger.dart';
 import 'package:github_flutter/github.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -93,15 +92,17 @@ class RepositorySelectorModel extends ChangeNotifier {
   List<RepositoryDetails> get repositories => _repositories ?? [];
 
   Future<bool> init() async {
-    log("Calling init method",
-        name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-        level: 300);
+    Logger.log(
+        "Calling init method",
+        "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+        LogLevel.finest);
     if (_github == null) {
       String? token = await TokenHandler().getToken();
       _github = GitHub(auth: Authentication.bearerToken(token!));
-      log("Initialized GitHub",
-          name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-          level: 300);
+      Logger.log(
+          "Initialized GitHub",
+          "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+          LogLevel.finest);
       return true;
     }
     return false;
@@ -109,14 +110,16 @@ class RepositorySelectorModel extends ChangeNotifier {
 
   void getAllUserRepositories() async {
     if (_github == null) {
-      log("Called getAllUserRepositories() while GitHub is null. Initializing...",
-          name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-          level: 300);
+      Logger.log(
+          "Called getAllUserRepositories() while GitHub is null. Initializing...",
+          "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+          LogLevel.finest);
       await init();
     }
-    log("Fetching repositories",
-        name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-        level: 300);
+    Logger.log(
+        "Fetching repositories",
+        "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+        LogLevel.finest);
     _repositories = await _github!.repositories
         .listRepositories(type: "all")
         .map(RepositoryDetails.fromRepository)
@@ -125,18 +128,20 @@ class RepositorySelectorModel extends ChangeNotifier {
   }
 
   void saveRepository(RepositoryDetails repository) async {
-    log("Saving repository: ${repository.name} to shared preferences",
-        name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-        level: 300);
+    Logger.log(
+        "Saving repository: ${repository.name} to shared preferences",
+        "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+        LogLevel.finest);
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(
         'selected_repository', repository.toJson().toString());
   }
 
   void selectRepository(RepositoryDetails? repo) {
-    log("Selected repository: ${repo?.name}",
-        name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-        level: 300);
+    Logger.log(
+        "Selected repository: ${repo?.name}",
+        "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+        LogLevel.finest);
     _selectedRepository = repo;
     notifyListeners();
   }
