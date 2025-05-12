@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:gitdone/core/models/repository_details.dart';
 import 'package:gitdone/core/models/token_handler.dart';
 import 'package:github_flutter/github.dart';
 import 'package:provider/provider.dart';
@@ -14,21 +15,21 @@ class RepositorySelector extends StatefulWidget {
 }
 
 class _RepositorySelectorState extends State<RepositorySelector> {
-  DropdownMenuItem<Repository> convertToRepo(Repository repo) {
+  DropdownMenuItem<RepositoryDetails> convertToRepo(RepositoryDetails repo) {
     return DropdownMenuItem(
       value: repo,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Image.network(
-            repo.owner!.avatarUrl,
+            repo.avatarUrl,
             width: 24,
             height: 24,
           ),
           const SizedBox(width: 8),
           Text(repo.name),
           const SizedBox(width: 8),
-          Text("(${repo.owner?.login})", style: TextStyle(color: Colors.grey)),
+          Text("(${repo.owner})", style: TextStyle(color: Colors.grey)),
         ],
       ),
     );
@@ -45,7 +46,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
           }
           return Column(
             children: [
-              DropdownButton<Repository>(
+              DropdownButton<RepositoryDetails>(
                   hint: const Text("Select a repository"),
                   value: model.selectedRepository,
                   items: model.repositories.map(convertToRepo).toList(),
@@ -61,8 +62,8 @@ class _RepositorySelectorState extends State<RepositorySelector> {
 class RepositorySelectorViewModel extends ChangeNotifier {
   final RepositorySelectorModel _model = RepositorySelectorModel();
 
-  List<Repository> get repositories => _model.repositories;
-  Repository? get selectedRepository => _model.selectedRepository;
+  List<RepositoryDetails> get repositories => _model.repositories;
+  RepositoryDetails? get selectedRepository => _model.selectedRepository;
   bool get isReady => _model.isReady;
 
   RepositorySelectorViewModel() {
@@ -72,7 +73,7 @@ class RepositorySelectorViewModel extends ChangeNotifier {
     });
   }
 
-  void selectRepository(Repository? repo) {
+  void selectRepository(RepositoryDetails? repo) {
     _model.selectRepository(repo);
   }
 
@@ -85,12 +86,12 @@ class RepositorySelectorViewModel extends ChangeNotifier {
 
 class RepositorySelectorModel extends ChangeNotifier {
   GitHub? _github;
-  List<Repository>? _repositories = [];
+  List<RepositoryDetails>? _repositories = [];
 
-  Repository? _selectedRepository;
-  Repository? get selectedRepository => _selectedRepository;
+  RepositoryDetails? _selectedRepository;
+  RepositoryDetails? get selectedRepository => _selectedRepository;
   bool get isReady => _github != null;
-  List<Repository> get repositories => _repositories ?? [];
+  List<RepositoryDetails> get repositories => _repositories ?? [];
 
   Future<bool> init() async {
     log("Calling init method",
@@ -117,20 +118,23 @@ class RepositorySelectorModel extends ChangeNotifier {
     log("Fetching repositories",
         name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
         level: 300);
-    _repositories =
-        await _github!.repositories.listRepositories(type: "all").toList();
+    _repositories = await _github!.repositories
+        .listRepositories(type: "all")
+        .map(RepositoryDetails.fromRepository)
+        .toList();
     notifyListeners();
   }
 
-  void saveRepository(Repository repository) async {
+  void saveRepository(RepositoryDetails repository) async {
     log("Saving repository: ${repository.name} to shared preferences",
         name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
         level: 300);
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('selected_repository', repository.id);
+    await prefs.setString(
+        'selected_repository', repository.toJson().toString());
   }
 
-  void selectRepository(Repository? repo) {
+  void selectRepository(RepositoryDetails? repo) {
     log("Selected repository: ${repo?.name}",
         name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
         level: 300);
