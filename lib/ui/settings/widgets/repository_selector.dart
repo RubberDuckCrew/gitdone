@@ -51,8 +51,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
                   value: model.selectedRepository,
                   items: model.repositories.map(convertToRepo).toList(),
                   onChanged: model.selectRepository),
-              FilledButton(
-                  onPressed: model.saveSelectedRepository, child: Text("Save"))
+              // TODO: Add a button to persist the selected repository
             ],
           );
         }));
@@ -69,7 +68,7 @@ class RepositorySelectorViewModel extends ChangeNotifier {
   RepositorySelectorViewModel() {
     _model.addListener(notifyListeners);
     _model.init().then((value) {
-      _model.getRepositories();
+      _model.getAllUserRepositories();
     });
   }
 
@@ -108,9 +107,9 @@ class RepositorySelectorModel extends ChangeNotifier {
     return false;
   }
 
-  void getRepositories() async {
+  void getAllUserRepositories() async {
     if (_github == null) {
-      log("Called getRepositories() while GitHub is null. Initializing...",
+      log("Called getAllUserRepositories() while GitHub is null. Initializing...",
           name: "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
           level: 300);
       await init();
@@ -141,9 +140,7 @@ class RepositorySelectorModel extends ChangeNotifier {
     _selectedRepository = repo;
     notifyListeners();
   }
-
-  Future<int?> getSavedRepository() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('selected_repository');
-  }
 }
+// TODO: How to persist the selected repository across app restarts?
+// TODO: Add a method to get the selected repository from local storage
+// TODO: Add a method to save the selected repository to local storage
