@@ -6,6 +6,7 @@
   "major": {
     "automerge": false
   },
+  "reviewers": ["team:development"],
   "labels": [
     "📌 Dependencies"
   ],
@@ -28,7 +29,9 @@
     },
     {
       "matchPackageNames": [
-        "dev.flutter.flutter-plugin-loader"
+        "dev.flutter.flutter-plugin-loader",
+        "dev.flutter.flutter-plugin-loader.gradle.plugin",
+        "dev.flutter.flutter-plugin-loader:dev.flutter.flutter-plugin-loader.gradle.plugin"
       ],
       "enabled": false
     }
