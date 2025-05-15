@@ -1,0 +1,85 @@
+name: Request Build
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - synchronize
+      - opened
+    branches:
+      - main
+      
+env:
+  FLUTTER_VERSION: "3.29.2"
+  FLUTTER_CHANNEL: "stable"
+  PROPERTIES_PATH: "./app/android/key.properties"
+  
+jobs:
+  build:
+    if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
+    name: Build app (if requested)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout App Repository
+        uses: actions/checkout@v4
+        with:
+          path: app
+          ref: ${{ github.ref_name }}
+
+      - name: Clone Package Repository
+        uses: actions/checkout@v4
+        with:
+          repository: RubberDuckCrew/github_flutter
+          path: github_flutter
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install dependencies
+        working-directory: app
+        run: flutter pub get
+
+      - name: Set up keystore
+        run: |
+          echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
+          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
+          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
+          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
+
+      - name: Prepare version name
+        id: version_name
+        run: echo "version_name=$(echo "${{github.ref_name}}" | tr / _)" >> $GITHUB_OUTPUT
+        
+      - name: Build APK
+        working-directory: app
+        run: flutter build apk --release --flavor production
+
+      - name: Build App Bundle
+        working-directory: app
+        run: flutter build appbundle --release --flavor production
+
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: GitDone_${{ steps.version_name.outputs.version_name }}.apk
+          path: app/build/app/outputs/flutter-apk/GitDone_${{ steps.version_name.outputs.version_name }}.apk
+
+      - name: Upload App Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: GitDone_${{ steps.version_name.outputs.version_name }}.aab
+          path: app/build/app/outputs/bundle/productionRelease/GitDone_${{ steps.version_name.outputs.version_name }}.aab
+
+      - name: Remove "⚗️ Require Build" Label
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -X DELETE \
+          -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels/%E2%9A%97%EF%B8%8F%20Request%20Build

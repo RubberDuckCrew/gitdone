@@ -6,8 +6,10 @@
   "major": {
     "automerge": false
   },
+  "reviewers": ["team:development"],
   "labels": [
-    "📌 Dependencies"
+    "📌 Dependencies",
+    "⚗ Request Build"
   ],
   "commitMessagePrefix": "⬆️",
   "commitMessageAction": "Upgrade",
@@ -28,7 +30,9 @@
     },
     {
       "matchPackageNames": [
-        "dev.flutter.flutter-plugin-loader"
+        "dev.flutter.flutter-plugin-loader",
+        "dev.flutter.flutter-plugin-loader.gradle.plugin",
+        "dev.flutter.flutter-plugin-loader:dev.flutter.flutter-plugin-loader.gradle.plugin"
       ],
       "enabled": false
     }
