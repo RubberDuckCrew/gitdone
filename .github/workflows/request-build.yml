@@ -67,7 +67,12 @@ jobs:
       - name: Build App Bundle
         working-directory: app
         run: flutter build appbundle --release --flavor production
-
+        
+      - name: Rename APK & App Bundle
+        working-directory: app
+        run: |
+          mv build/app/outputs/flutter-apk/app-production-release.apk build/app/outputs/flutter-apk/GitDone_${{ steps.version_name.outputs.version_name }}.apk
+          mv build/app/outputs/bundle/productionRelease/app-production-release.aab build/app/outputs/bundle/productionRelease/GitDone_${{ steps.version_name.outputs.version_name }}.aab
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
