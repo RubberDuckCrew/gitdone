@@ -8,7 +8,12 @@ on:
       - opened
     branches:
       - main
-
+      
+env:
+  FLUTTER_VERSION: "3.29.2"
+  FLUTTER_CHANNEL: "stable"
+  PROPERTIES_PATH: "./app/android/key.properties"
+  
 jobs:
   build:
     if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
