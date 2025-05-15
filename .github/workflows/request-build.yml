@@ -9,6 +9,9 @@ on:
     branches:
       - main
       
+permissions:
+  pull-requests: write
+
 env:
   FLUTTER_VERSION: "3.29.2"
   FLUTTER_CHANNEL: "stable"
