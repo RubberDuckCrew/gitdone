@@ -1,4 +1,4 @@
-name: Required Build
+name: Request Build
 
 on:
   pull_request:
@@ -11,8 +11,8 @@ on:
 
 jobs:
   build:
-    if: contains(github.event.pull_request.labels.*.name, '⚗️ Require Build')
-    name: Build app (if required)
+    if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
+    name: Build app (if requested)
     runs-on: ubuntu-latest
 
     steps:
@@ -77,4 +77,4 @@ jobs:
           curl -X DELETE \
           -H "Authorization: token $GITHUB_TOKEN" \
           -H "Accept: application/vnd.github+json" \
-          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels/%E2%9A%97%EF%B8%8F%20Require%20Build
+          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels/%E2%9A%97%EF%B8%8F%20Request%20Build

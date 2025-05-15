@@ -1,4 +1,4 @@
-- name: ⚗️ Require Build
+- name: ⚗️ Request Build
   description: Requests a build
   color: "7f39fb"
 - name: 🐛 Bug
