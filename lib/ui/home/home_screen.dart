@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gitdone/ui/_widgets/app_bar.dart';
 import 'package:gitdone/ui/home/home_screen_view_model.dart';
 import 'package:gitdone/ui/home/home_view.dart';
 import 'package:gitdone/ui/settings/settings_view.dart';
@@ -19,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Consumer<HomeScreenViewModel>(
         builder: (context, viewModel, child) {
           return Scaffold(
+            appBar: NormalAppBar(),
             body: switch (viewModel.selectedIndex) {
               0 => Homeview(),
               1 => SettingsView(),
