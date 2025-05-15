@@ -1,3 +1,6 @@
+- name: ⚗️ Require Build
+  description: Requests a build
+  color: "7f39fb"
 - name: 🐛 Bug
   description: Something isn't working
   color: "d73a4a"
