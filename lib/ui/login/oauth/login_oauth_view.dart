@@ -29,9 +29,10 @@ class _LoginGithubViewState extends State<LoginGithubView>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    context
-        .read<LoginGithubViewModel>()
-        .handleAppLifecycleState(state, context);
+    context.read<LoginGithubViewModel>().handleAppLifecycleState(
+      state,
+      context,
+    );
   }
 
   @override
@@ -44,9 +45,7 @@ class _LoginGithubViewState extends State<LoginGithubView>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(padding: EdgeInsets.symmetric(vertical: 32.0)),
-            PageTitleWidget(
-              title: "GitHub OAuth Login",
-            ),
+            PageTitleWidget(title: "GitHub OAuth Login"),
             Align(
               alignment: Alignment.centerLeft,
               child: RichText(
@@ -60,15 +59,11 @@ class _LoginGithubViewState extends State<LoginGithubView>
                     TextSpan(
                       text: "1. Copy the code below to open the browser\n",
                     ),
-                    TextSpan(
-                      text: "2. Log in with your GitHub account\n",
-                    ),
+                    TextSpan(text: "2. Log in with your GitHub account\n"),
                     TextSpan(
                       text: "3. Paste the device code and authorize the app\n",
                     ),
-                    TextSpan(
-                      text: "4. Close the browser\n",
-                    ),
+                    TextSpan(text: "4. Close the browser\n"),
                   ],
                 ),
               ),
@@ -76,42 +71,47 @@ class _LoginGithubViewState extends State<LoginGithubView>
             Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             Center(
               child: ValueListenableBuilder<String>(
-                  valueListenable:
-                      context.watch<LoginGithubViewModel>().fetchedUserCode,
-                  builder: (context, fetchedUserCode, child) {
-                    if (fetchedUserCode == "") {
-                      return CircularProgressIndicator();
-                    }
-                    return Column(
-                      children: [
-                        Text("Please enter this code in the browser: "),
-                        SelectableText(
-                          fetchedUserCode,
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        FilledButton(
-                          onPressed: () => Provider.of<LoginGithubViewModel>(
+                valueListenable:
+                    context.watch<LoginGithubViewModel>().fetchedUserCode,
+                builder: (context, fetchedUserCode, child) {
+                  if (fetchedUserCode == "") {
+                    return CircularProgressIndicator();
+                  }
+                  return Column(
+                    children: [
+                      Text("Please enter this code in the browser: "),
+                      SelectableText(
+                        fetchedUserCode,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      FilledButton(
+                        onPressed:
+                            () =>
+                                Provider.of<LoginGithubViewModel>(
                                   context,
-                                  listen: false)
-                              .launchBrowser(),
-                          child: Text("Copy code and open browser"),
-                        )
-                      ],
-                    );
-                  }),
+                                  listen: false,
+                                ).launchBrowser(),
+                        child: Text("Copy code and open browser"),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
             ValueListenableBuilder(
-                valueListenable: context
-                    .watch<LoginGithubViewModel>()
-                    .showProgressIndicatorNotifier,
-                builder: (context, showProgressIndicatorNotifier, child) {
-                  if (showProgressIndicatorNotifier) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _showProgressIndicator();
-                    });
-                  }
-                  return SizedBox.shrink();
-                }),
+              valueListenable:
+                  context
+                      .watch<LoginGithubViewModel>()
+                      .showProgressIndicatorNotifier,
+              builder: (context, showProgressIndicatorNotifier, child) {
+                if (showProgressIndicatorNotifier) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _showProgressIndicator();
+                  });
+                }
+                return SizedBox.shrink();
+              },
+            ),
           ],
         ),
       ),
@@ -123,11 +123,12 @@ class _LoginGithubViewState extends State<LoginGithubView>
       context: context,
       barrierDismissible: false,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      pageBuilder: (BuildContext context, Animation<double> animation,
-          Animation<double> secondaryAnimation) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+      pageBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+      ) {
+        return Center(child: CircularProgressIndicator());
       },
       transitionDuration: Duration(milliseconds: 200),
     );

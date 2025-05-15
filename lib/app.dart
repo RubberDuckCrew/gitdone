@@ -10,23 +10,21 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(
-          colorScheme: AppColor.colorScheme,
-          useMaterial3: true,
-        ),
-        home: FutureBuilder(
-            future: checkIfAuthenticated(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Scaffold(
-                    body: Center(child: CircularProgressIndicator()));
-              }
-              if (snapshot.hasData && snapshot.data == true) {
-                return HomeScreen();
-              } else {
-                return WelcomeView();
-              }
-            }));
+      theme: ThemeData(colorScheme: AppColor.colorScheme, useMaterial3: true),
+      home: FutureBuilder(
+        future: checkIfAuthenticated(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
+          }
+          if (snapshot.hasData && snapshot.data == true) {
+            return HomeScreen();
+          } else {
+            return WelcomeView();
+          }
+        },
+      ),
+    );
   }
 
   Future<bool> checkIfAuthenticated() async {

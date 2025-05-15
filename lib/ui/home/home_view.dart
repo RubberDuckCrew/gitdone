@@ -22,7 +22,9 @@ class _HomeviewState extends State<Homeview> {
     await tokenHandler.deleteToken();
     if (!mounted) return;
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const WelcomeView()));
+      context,
+      MaterialPageRoute(builder: (context) => const WelcomeView()),
+    );
   }
 
   @override
@@ -34,10 +36,7 @@ class _HomeviewState extends State<Homeview> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             OctoCat(),
-            ElevatedButton(
-              onPressed: logout,
-              child: const Text("Logout"),
-            ),
+            ElevatedButton(onPressed: logout, child: const Text("Logout")),
           ],
         ),
       ),

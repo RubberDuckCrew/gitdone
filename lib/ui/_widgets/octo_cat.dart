@@ -15,30 +15,34 @@ class _OctoCatState extends State<OctoCat> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => OctoCatProvider(),
-        child: Consumer<OctoCatProvider>(builder: (context, provider, child) {
+      create: (_) => OctoCatProvider(),
+      child: Consumer<OctoCatProvider>(
+        builder: (context, provider, child) {
           return Column(
             children: [
               FutureBuilder(
-                  future: provider.futureResponse,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.hasData) {
-                      return FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            snapshot.data!.body.toString(),
-                            style: TextStyle(
-                                fontSize: 8,
-                                letterSpacing: 1,
-                                fontFamily: "Courier"),
-                            textAlign: TextAlign.left,
-                          ));
-                    }
-                    return const Center(child: Text("Could not fetch octocat"));
-                  }),
+                future: provider.futureResponse,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasData) {
+                    return FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        snapshot.data!.body.toString(),
+                        style: TextStyle(
+                          fontSize: 8,
+                          letterSpacing: 1,
+                          fontFamily: "Courier",
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    );
+                  }
+                  return const Center(child: Text("Could not fetch octocat"));
+                },
+              ),
               FilledButton(
                 onPressed: () {
                   provider.refreshData();
@@ -47,7 +51,9 @@ class _OctoCatState extends State<OctoCat> {
               ),
             ],
           );
-        }));
+        },
+      ),
+    );
   }
 }
 
