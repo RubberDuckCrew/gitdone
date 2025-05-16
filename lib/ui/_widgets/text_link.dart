@@ -13,12 +13,13 @@ class TextLinkWidget {
     return TextSpan(
       text: text,
       style: TextStyle(color: AppColor.colorScheme.secondary),
-      recognizer: TapGestureRecognizer()
-        ..onTap = () async {
-          if (!await launchUrl(Uri.parse(url))) {
-            throw 'Could not launch $url';
-          }
-        },
+      recognizer:
+          TapGestureRecognizer()
+            ..onTap = () async {
+              if (!await launchUrl(Uri.parse(url))) {
+                throw 'Could not launch $url';
+              }
+            },
     );
   }
 }

@@ -8,18 +8,22 @@ class AppTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Text(
-        "Git",
-        style: TextStyle(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Git",
+          style: TextStyle(
             fontSize: fontSize,
             color: AppColor.colorScheme.primary,
-            fontWeight: FontWeight.bold),
-      ),
-      Text(
-        "Done",
-        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
-      )
-    ]);
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          "Done",
+          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
   }
 }

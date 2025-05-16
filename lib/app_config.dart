@@ -5,6 +5,8 @@ class AppConfig {
 
   AppConfig._internal();
 
-  static final String flavor =
-      const String.fromEnvironment("FLAVOR", defaultValue: "development");
+  static final String flavor = const String.fromEnvironment(
+    "FLAVOR",
+    defaultValue: "development",
+  );
 }

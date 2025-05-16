@@ -27,9 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
             bottomNavigationBar: NavigationBar(
               destinations: [
                 const NavigationDestination(
-                    icon: Icon(Icons.inbox), label: "Home"),
+                  icon: Icon(Icons.inbox),
+                  label: "Home",
+                ),
                 const NavigationDestination(
-                    icon: Icon(Icons.settings), label: "Settings")
+                  icon: Icon(Icons.settings),
+                  label: "Settings",
+                ),
               ],
               onDestinationSelected: (index) => viewModel.updateIndex(index),
               selectedIndex: viewModel.selectedIndex,

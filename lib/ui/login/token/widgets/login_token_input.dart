@@ -18,14 +18,15 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
     return Column(
       children: [
         Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'GitHub Token',
-              ),
-            )),
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: TextField(
+            controller: _controller,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'GitHub Token',
+            ),
+          ),
+        ),
         Padding(padding: EdgeInsets.symmetric(vertical: 8)),
         FilledButton(
           onPressed: login,
@@ -42,27 +43,30 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
         tokenHandler.saveToken(_controller.text);
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-              (Route route) => false);
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+            (Route route) => false,
+          );
         }
       } else if (mounted) {
         showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text("Login Failed"),
-                content: Text(
-                    "Please verify that your access token is correct and that you have a stable internet connection, then try again."),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text("OK"),
-                  ),
-                ],
-              );
-            });
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              title: Text("Login Failed"),
+              content: Text(
+                "Please verify that your access token is correct and that you have a stable internet connection, then try again.",
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
       }
     }
   }

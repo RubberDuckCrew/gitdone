@@ -9,36 +9,40 @@ class GithubApiHandler {
   GithubApiHandler(this._token);
 
   Future<http.Response> get(String path) async {
-    return await http.get(Uri.parse('$_baseUrl$path'), headers: {
-      'Authorization': 'Bearer $_token',
-    });
+    return await http.get(
+      Uri.parse('$_baseUrl$path'),
+      headers: {'Authorization': 'Bearer $_token'},
+    );
   }
 
   Future<http.Response> post(String path, {required String body}) async {
-    return await http.post(Uri.parse('$_baseUrl$path'),
-        headers: {
-          'Authorization': 'Bearer $_token',
-        },
-        body: body);
+    return await http.post(
+      Uri.parse('$_baseUrl$path'),
+      headers: {'Authorization': 'Bearer $_token'},
+      body: body,
+    );
   }
 
   Future<http.Response> patch(String path, {required String body}) async {
-    return await http.patch(Uri.parse('$_baseUrl$path'),
-        headers: {
-          'Authorization': 'Bearer $_token',
-        },
-        body: body);
+    return await http.patch(
+      Uri.parse('$_baseUrl$path'),
+      headers: {'Authorization': 'Bearer $_token'},
+      body: body,
+    );
   }
 
   Future<http.Response> delete(String path) async {
-    return await http.delete(Uri.parse('$_baseUrl$path'), headers: {
-      'Authorization': 'Bearer $_token',
-    });
+    return await http.delete(
+      Uri.parse('$_baseUrl$path'),
+      headers: {'Authorization': 'Bearer $_token'},
+    );
   }
 
   Future<bool> isTokenValid() async {
-    developer.log('Checking token validity',
-        name: 'com.GitDone.gitdone.github_api_handler');
+    developer.log(
+      'Checking token validity',
+      name: 'com.GitDone.gitdone.github_api_handler',
+    );
     final response = await get('/user');
     return response.statusCode == 200;
   }
