@@ -5,10 +5,7 @@ class FilterChipItem {
   final String label;
   final String value;
 
-  FilterChipItem({
-    required this.label,
-    required this.value,
-  });
+  FilterChipItem({required this.label, required this.value});
 }
 
 /// A custom dropdown filter chip widget that allows users to select a filter
@@ -40,10 +37,12 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<_FilterChipDropdownViewModel>(
-        create: (_) => _FilterChipDropdownViewModel(
-            allowMultipleSelection: widget.allowMultipleSelection),
-        child: Consumer<_FilterChipDropdownViewModel>(
-            builder: (context, viewModel, child) {
+      create:
+          (_) => _FilterChipDropdownViewModel(
+            allowMultipleSelection: widget.allowMultipleSelection,
+          ),
+      child: Consumer<_FilterChipDropdownViewModel>(
+        builder: (context, viewModel, child) {
           viewModel.calculateMaxItemWidth(
             widget.items.map((item) => item.label).toList(),
             widget.labelPadding,
@@ -56,35 +55,46 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FilterChip.elevated(
-                    key: _chipKey,
-                    avatar: widget.leading,
-                    label: Text(viewModel.getLabel(widget.initialLabel)),
-                    iconTheme: IconThemeData(
-                      color: viewModel.isSelected
-                          ? Theme.of(context).colorScheme.onPrimary
-                          : Theme.of(context).colorScheme.onSurface,
-                    ),
-                    labelStyle: TextStyle(
-                      color: viewModel.isSelected
-                          ? Theme.of(context).colorScheme.onPrimary
-                          : Theme.of(context).colorScheme.onSurface,
-                    ),
-                    backgroundColor: viewModel.isSelected
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.surfaceContainer,
-                    deleteIcon: viewModel.isSelected
-                        ? Icon(Icons.close,
-                            color: Theme.of(context).colorScheme.onPrimary)
-                        : Icon(Icons.arrow_drop_down,
-                            color: Theme.of(context).colorScheme.onSurface),
-                    onDeleted: viewModel.isSelected
-                        ? viewModel.clearSelection
-                        : () => viewModel.toggleDropdown(false),
-                    onSelected: viewModel.toggleDropdown),
+                  key: _chipKey,
+                  avatar: widget.leading,
+                  label: Text(viewModel.getLabel(widget.initialLabel)),
+                  iconTheme: IconThemeData(
+                    color:
+                        viewModel.isSelected
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSurface,
+                  ),
+                  labelStyle: TextStyle(
+                    color:
+                        viewModel.isSelected
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSurface,
+                  ),
+                  backgroundColor:
+                      viewModel.isSelected
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.surfaceContainer,
+                  deleteIcon:
+                      viewModel.isSelected
+                          ? Icon(
+                            Icons.close,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          )
+                          : Icon(
+                            Icons.arrow_drop_down,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                  onDeleted:
+                      viewModel.isSelected
+                          ? viewModel.clearSelection
+                          : () => viewModel.toggleDropdown(false),
+                  onSelected: viewModel.toggleDropdown,
+                ),
                 if (viewModel.isDropdownOpen)
                   Material(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4)),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                     clipBehavior: Clip.antiAlias,
                     elevation: 4.0,
                     child: LayoutBuilder(
@@ -98,45 +108,60 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: widget.items.map((item) {
-                              return Material(
-                                color: viewModel.isItemSelected(item)
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Colors.transparent,
-                                child: InkWell(
-                                  onTap: () => viewModel.isItemSelected(item) &&
-                                          widget.allowMultipleSelection
-                                      ? viewModel.unselectItem(item)
-                                      : viewModel.selectItem(item),
-                                  child: SizedBox(
-                                    child: Container(
-                                        width: widget.allowMultipleSelection
-                                            ? viewModel.maxItemWidth +
-                                                viewModel.iconWidth
-                                            : viewModel.maxItemWidth,
-                                        padding: EdgeInsets.symmetric(
+                            children:
+                                widget.items.map((item) {
+                                  return Material(
+                                    color:
+                                        viewModel.isItemSelected(item)
+                                            ? Theme.of(
+                                              context,
+                                            ).colorScheme.primary
+                                            : Colors.transparent,
+                                    child: InkWell(
+                                      onTap:
+                                          () =>
+                                              viewModel.isItemSelected(item) &&
+                                                      widget
+                                                          .allowMultipleSelection
+                                                  ? viewModel.unselectItem(item)
+                                                  : viewModel.selectItem(item),
+                                      child: SizedBox(
+                                        child: Container(
+                                          width:
+                                              widget.allowMultipleSelection
+                                                  ? viewModel.maxItemWidth +
+                                                      viewModel.iconWidth
+                                                  : viewModel.maxItemWidth,
+                                          padding: EdgeInsets.symmetric(
                                             vertical: 8.0,
-                                            horizontal: widget.labelPadding),
-                                        child: widget.allowMultipleSelection
-                                            ? Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  viewModel.isItemSelected(item)
-                                                      ? Icon(Icons.check_box)
-                                                      : Icon(
-                                                          Icons
-                                                              .check_box_outline_blank,
-                                                        ),
-                                                  Text(item.label),
-                                                ],
-                                              )
-                                            : Text(item.label)),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+                                            horizontal: widget.labelPadding,
+                                          ),
+                                          child:
+                                              widget.allowMultipleSelection
+                                                  ? Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      viewModel.isItemSelected(
+                                                            item,
+                                                          )
+                                                          ? Icon(
+                                                            Icons.check_box,
+                                                          )
+                                                          : Icon(
+                                                            Icons
+                                                                .check_box_outline_blank,
+                                                          ),
+                                                      Text(item.label),
+                                                    ],
+                                                  )
+                                                  : Text(item.label),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
                           ),
                         );
                       },
@@ -145,7 +170,9 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
               ],
             ),
           );
-        }));
+        },
+      ),
+    );
   }
 }
 
@@ -209,7 +236,10 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
   }
 
   void calculateMaxItemWidth(
-      List<String> labels, double labelPadding, BuildContext context) {
+    List<String> labels,
+    double labelPadding,
+    BuildContext context,
+  ) {
     double maxWidth = 0.0;
     for (var label in labels) {
       final textPainter = TextPainter(
@@ -217,11 +247,12 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
         maxLines: 1,
         textDirection: TextDirection.ltr,
       )..layout(minWidth: 0, maxWidth: double.infinity);
-      maxWidth = maxWidth < textPainter.width
-          ? textPainter.width +
-              2 * labelPadding +
-              5 // TODO: Magic number because TextPainter is not accurate. See https://github.com/flutter/flutter/issues/142028
-          : maxWidth;
+      maxWidth =
+          maxWidth < textPainter.width
+              ? textPainter.width +
+                  2 * labelPadding +
+                  5 // TODO: Magic number because TextPainter is not accurate. See https://github.com/flutter/flutter/issues/142028
+              : maxWidth;
     }
 
     _maxItemWidth = maxWidth;

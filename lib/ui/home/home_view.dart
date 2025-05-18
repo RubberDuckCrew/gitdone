@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/token_handler.dart';
+import 'package:gitdone/ui/_widgets/app_bar.dart';
 import 'package:gitdone/ui/_widgets/octo_cat.dart';
 import 'package:gitdone/ui/welcome/welcome_view.dart';
 
@@ -21,21 +22,23 @@ class _HomeviewState extends State<Homeview> {
     await tokenHandler.deleteToken();
     if (!mounted) return;
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const WelcomeView()));
+      context,
+      MaterialPageRoute(builder: (context) => const WelcomeView()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          OctoCat(),
-          ElevatedButton(
-            onPressed: logout,
-            child: const Text("Logout"),
-          ),
-        ],
+    return Scaffold(
+      appBar: NormalAppBar(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            OctoCat(),
+            ElevatedButton(onPressed: logout, child: const Text("Logout")),
+          ],
+        ),
       ),
     );
   }
