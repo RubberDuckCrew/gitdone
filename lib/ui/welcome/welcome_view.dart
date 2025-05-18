@@ -43,15 +43,20 @@ class _WelcomeViewState extends State<WelcomeView> {
             const Text("or"),
             FilledButton(
               onPressed: goToLoginTokenView,
-              child: const Text("Enter Personal Access Token")),
+              child: const Text("Enter Personal Access Token"),
+            ),
             const Spacer(flex: 1),
-            const Text("GitDone is not affiliated with GitHub, Inc.",
-              style: TextStyle(fontSize: 12, color: Colors.grey)),
+            const Text(
+              "GitDone is not affiliated with GitHub, Inc.",
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
             Text(
               "Version: ${AppConfig.version} (${AppConfig.gitCommit}, ${AppConfig.flavor})",
-              style: TextStyle(fontSize: 12, color: Colors.grey)),
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
             const Padding(padding: EdgeInsets.all(10.0)),
-        ],
+          ],
+        ),
       ),
     );
   }

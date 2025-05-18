@@ -8,13 +8,16 @@ class AppConfig {
   AppConfig._internal();
 
   /// The flavor of the app. This is set by the build system.
-  static final String flavor =
-      const String.fromEnvironment("FLAVOR", defaultValue: "development");
+  static final String flavor = const String.fromEnvironment(
+    "FLAVOR",
+    defaultValue: "development",
+  );
 
   /// The commit hash on which the app was built. This is set by the build system.
-  static final String gitCommit = const bool.hasEnvironment("GIT_COMMIT")
-      ? const String.fromEnvironment("GIT_COMMIT").substring(0, 7)
-      : "uncommitted";
+  static final String gitCommit =
+      const bool.hasEnvironment("GIT_COMMIT")
+          ? const String.fromEnvironment("GIT_COMMIT").substring(0, 7)
+          : "uncommitted";
 
   /// App version and build number, populated in [init].
   static late final String version;
