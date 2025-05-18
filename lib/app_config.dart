@@ -7,4 +7,8 @@ class AppConfig {
 
   static final String flavor =
       const String.fromEnvironment("FLAVOR", defaultValue: "development");
+
+  static final String gitCommit =
+      const String.fromEnvironment("GIT_COMMIT", defaultValue: "uncommitted")
+          .substring(0, 7);
 }
