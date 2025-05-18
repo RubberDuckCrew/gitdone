@@ -8,7 +8,7 @@ on:
       - opened
     branches:
       - main
-      
+
 permissions:
   pull-requests: write
 
@@ -16,7 +16,7 @@ env:
   FLUTTER_VERSION: "3.29.2"
   FLUTTER_CHANNEL: "stable"
   PROPERTIES_PATH: "./app/android/key.properties"
-  
+
 jobs:
   build:
     if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
@@ -41,13 +41,13 @@ jobs:
           channel: ${{ env.FLUTTER_CHANNEL }}
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
-      
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
-          
+
       - name: Install dependencies
         working-directory: app
         run: flutter pub get
@@ -62,15 +62,18 @@ jobs:
       - name: Prepare version name
         id: version_name
         run: echo "version_name=$(echo "${{github.ref_name}}" | tr / _)" >> $GITHUB_OUTPUT
-        
+
+      - name: Set build args
+        run: echo "BUILD_ARGS=--release --flavor staging --dart-define=GIT_COMMIT=${{ github.sha }}" >> $GITHUB_ENV
+
       - name: Build APK
         working-directory: app
-        run: flutter build apk --release --flavor production
+        run: flutter build apk $BUILD_ARGS
 
       - name: Build App Bundle
         working-directory: app
-        run: flutter build appbundle --release --flavor production
-        
+        run: flutter build appbundle $BUILD_ARGS
+
       - name: Rename APK & App Bundle
         working-directory: app
         run: |
