@@ -20,10 +20,6 @@ class RepositoryDetails {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'owner': owner,
-      'avatarUrl': avatarUrl,
-    };
+    return {'name': name, 'owner': owner, 'avatarUrl': avatarUrl};
   }
 }

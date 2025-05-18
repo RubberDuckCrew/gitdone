@@ -20,11 +20,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.network(
-            repo.avatarUrl,
-            width: 24,
-            height: 24,
-          ),
+          Image.network(repo.avatarUrl, width: 24, height: 24),
           const SizedBox(width: 8),
           Text(repo.name),
           const SizedBox(width: 8),
@@ -37,23 +33,26 @@ class _RepositorySelectorState extends State<RepositorySelector> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => RepositorySelectorViewModel(),
-        child: Consumer<RepositorySelectorViewModel>(
-            builder: (context, model, child) {
+      create: (_) => RepositorySelectorViewModel(),
+      child: Consumer<RepositorySelectorViewModel>(
+        builder: (context, model, child) {
           if (!model.isReady) {
             return const Center(child: CircularProgressIndicator());
           }
           return Column(
             children: [
               DropdownButton<RepositoryDetails>(
-                  hint: const Text("Select a repository"),
-                  value: model.selectedRepository,
-                  items: model.repositories.map(convertToRepo).toList(),
-                  onChanged: model.selectRepository),
+                hint: const Text("Select a repository"),
+                value: model.selectedRepository,
+                items: model.repositories.map(convertToRepo).toList(),
+                onChanged: model.selectRepository,
+              ),
               // TODO: Add a button to persist the selected repository
             ],
           );
-        }));
+        },
+      ),
+    );
   }
 }
 
@@ -93,16 +92,18 @@ class RepositorySelectorModel extends ChangeNotifier {
 
   Future<bool> init() async {
     Logger.log(
-        "Calling init method",
-        "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-        LogLevel.finest);
+      "Calling init method",
+      "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+      LogLevel.finest,
+    );
     if (_github == null) {
       String? token = await TokenHandler().getToken();
       _github = GitHub(auth: Authentication.bearerToken(token!));
       Logger.log(
-          "Initialized GitHub",
-          "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-          LogLevel.finest);
+        "Initialized GitHub",
+        "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+        LogLevel.finest,
+      );
       return true;
     }
     return false;
@@ -111,41 +112,49 @@ class RepositorySelectorModel extends ChangeNotifier {
   void getAllUserRepositories() async {
     if (_github == null) {
       Logger.log(
-          "Called getAllUserRepositories() while GitHub is null. Initializing...",
-          "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-          LogLevel.finest);
+        "Called getAllUserRepositories() while GitHub is null. Initializing...",
+        "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+        LogLevel.finest,
+      );
       await init();
     }
     Logger.log(
-        "Fetching repositories",
-        "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-        LogLevel.finest);
-    _repositories = await _github!.repositories
-        .listRepositories(type: "all")
-        .map(RepositoryDetails.fromRepository)
-        .toList();
+      "Fetching repositories",
+      "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+      LogLevel.finest,
+    );
+    _repositories =
+        await _github!.repositories
+            .listRepositories(type: "all")
+            .map(RepositoryDetails.fromRepository)
+            .toList();
     notifyListeners();
   }
 
   void saveRepository(RepositoryDetails repository) async {
     Logger.log(
-        "Saving repository: ${repository.name} to shared preferences",
-        "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-        LogLevel.finest);
+      "Saving repository: ${repository.name} to shared preferences",
+      "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+      LogLevel.finest,
+    );
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(
-        'selected_repository', repository.toJson().toString());
+      'selected_repository',
+      repository.toJson().toString(),
+    );
   }
 
   void selectRepository(RepositoryDetails? repo) {
     Logger.log(
-        "Selected repository: ${repo?.name}",
-        "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
-        LogLevel.finest);
+      "Selected repository: ${repo?.name}",
+      "com.GitDone.gitdone.ui.settings.widgets.repository_selector",
+      LogLevel.finest,
+    );
     _selectedRepository = repo;
     notifyListeners();
   }
 }
+
 // TODO: How to persist the selected repository across app restarts?
 // TODO: Add a method to get the selected repository from local storage
 // TODO: Add a method to save the selected repository to local storage
