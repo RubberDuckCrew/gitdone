@@ -7,8 +7,9 @@ class LoginGithubViewModel extends ChangeNotifier {
   final GitHubAuth _githubAuth;
 
   /// Notifier to show/hide the progress indicator.
-  final ValueNotifier<bool> showProgressIndicatorNotifier =
-      ValueNotifier(false);
+  final ValueNotifier<bool> showProgressIndicatorNotifier = ValueNotifier(
+    false,
+  );
 
   /// Notifier to hold the fetched user code.
   final ValueNotifier<String> fetchedUserCode = ValueNotifier("");
@@ -18,7 +19,7 @@ class LoginGithubViewModel extends ChangeNotifier {
 
   /// Creates an instance of [LoginGithubViewModel].
   LoginGithubViewModel({required this.infoCallback})
-      : _githubAuth = GitHubAuth(callbackFunction: infoCallback);
+    : _githubAuth = GitHubAuth(callbackFunction: infoCallback);
 
   /// Starts the login process and returns the user code.
   ///
@@ -41,9 +42,10 @@ class LoginGithubViewModel extends ChangeNotifier {
 
   /// Continues the login process by polling for the token and executing the
   /// provided callbacks.
-  Future<void> continueLogin(
-      {required VoidCallback onSuccess,
-      required VoidCallback onFailure}) async {
+  Future<void> continueLogin({
+    required VoidCallback onSuccess,
+    required VoidCallback onFailure,
+  }) async {
     final authenticated = await _githubAuth.pollForToken();
 
     // Notify listeners that the progress indicator should be hidden

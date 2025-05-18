@@ -17,7 +17,7 @@ class GitHubAuth {
   String? _userCode;
 
   GitHubAuth({required this.callbackFunction})
-      : _deviceFlow = DeviceFlow(clientId, scopes: ["repo", "user"]);
+    : _deviceFlow = DeviceFlow(clientId, scopes: ["repo", "user"]);
 
   Future<String> startLoginProcess() async {
     Logger.log("Starting GitHub login process", classId, LogLevel.finest);
@@ -25,13 +25,19 @@ class GitHubAuth {
     try {
       _userCode = await _deviceFlow.fetchUserCode();
       inLoginProcess = true;
-      Logger.log("Could retrieve oauth information from GitHub", classId,
-          LogLevel.finest);
+      Logger.log(
+        "Could retrieve oauth information from GitHub",
+        classId,
+        LogLevel.finest,
+      );
       return _userCode ?? "";
     } catch (e) {
-      Logger.log("Could not retrieve oauth information from GitHub", classId,
-          LogLevel.warning,
-          error: e);
+      Logger.log(
+        "Could not retrieve oauth information from GitHub",
+        classId,
+        LogLevel.warning,
+        error: e,
+      );
       return "";
     }
   }
@@ -50,8 +56,11 @@ class GitHubAuth {
     int interval = 0;
 
     if (userCode.isEmpty) {
-      Logger.log("pollForToken called with result being null", classId,
-          LogLevel.warning);
+      Logger.log(
+        "pollForToken called with result being null",
+        classId,
+        LogLevel.warning,
+      );
       return false;
     }
 
@@ -64,7 +73,10 @@ class GitHubAuth {
           tokenHandler.saveToken(response.token!);
 
           Logger.log(
-              "Successfully retrieved access token", classId, LogLevel.finest);
+            "Successfully retrieved access token",
+            classId,
+            LogLevel.finest,
+          );
           inLoginProcess = false;
           _authenticated = true;
           return true;
@@ -73,14 +85,20 @@ class GitHubAuth {
         }
       } catch (e) {
         Logger.logError(
-            "Unexpected error occurred while polling for token", classId, e);
+          "Unexpected error occurred while polling for token",
+          classId,
+          e,
+        );
       }
       await Future.delayed(Duration(seconds: interval));
       attempts++;
     }
     if (attempts >= maxLoginAttempts) {
-      Logger.log("Exceeded maximum attempts to poll for token", classId,
-          LogLevel.warning);
+      Logger.log(
+        "Exceeded maximum attempts to poll for token",
+        classId,
+        LogLevel.warning,
+      );
     }
     return false;
   }
