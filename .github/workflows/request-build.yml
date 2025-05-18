@@ -64,7 +64,7 @@ jobs:
         run: echo "version_name=$(echo "${{github.ref_name}}" | tr / _)" >> $GITHUB_OUTPUT
 
       - name: Set build args
-        run: echo "BUILD_ARGS=--release --flavor staging --dart-define=GIT_COMMIT=${{ github.sha }}" >> $GITHUB_ENV
+        run: echo "BUILD_ARGS=--release --flavor staging --dart-define=GIT_COMMIT=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
 
       - name: Build APK
         working-directory: app
