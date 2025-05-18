@@ -78,7 +78,7 @@ jobs:
         working-directory: app
         run: |
           mv build/app/outputs/flutter-apk/app-staging-release.apk build/app/outputs/flutter-apk/GitDone_${{ steps.version_name.outputs.version_name }}.apk
-          mv build/app/outputs/bundle/productionRelease/app-staging-release.aab build/app/outputs/bundle/productionRelease/GitDone_${{ steps.version_name.outputs.version_name }}.aab
+          mv build/app/outputs/bundle/stagingRelease/app-staging-release.aab build/app/outputs/bundle/stagingRelease/GitDone_${{ steps.version_name.outputs.version_name }}.aab
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -90,7 +90,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: GitDone_${{ steps.version_name.outputs.version_name }}.aab
-          path: app/build/app/outputs/bundle/productionRelease/GitDone_${{ steps.version_name.outputs.version_name }}.aab
+          path: app/build/app/outputs/bundle/stagingRelease/GitDone_${{ steps.version_name.outputs.version_name }}.aab
 
       - name: Remove "⚗️ Require Build" Label
         env:
