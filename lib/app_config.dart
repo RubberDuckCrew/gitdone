@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppConfig {
@@ -8,10 +9,7 @@ class AppConfig {
   AppConfig._internal();
 
   /// The flavor of the app. This is set by the build system.
-  static final String flavor = const String.fromEnvironment(
-    "FLAVOR",
-    defaultValue: "development",
-  );
+  static final String flavor = appFlavor ?? "unknown flavor";
 
   /// The commit hash on which the app was built. This is set by the build system.
   static final String gitCommit =
