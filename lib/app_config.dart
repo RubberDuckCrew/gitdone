@@ -17,13 +17,23 @@ class AppConfig {
           ? const String.fromEnvironment("GIT_COMMIT").substring(0, 7)
           : "uncommitted";
 
-  /// App version and build number, populated in [init].
+  /// App version defined in pubspec.yaml
   static late final String version;
+
+  /// Build number defined in pubspec.yaml
   static late final String buildNumber;
+
+  /// App name defined in build.gradle
+  static late final String appName;
+
+  /// Package name defined in build.gradle
+  static late final String packageName;
 
   static Future<void> init() async {
     final info = await PackageInfo.fromPlatform();
     version = info.version;
     buildNumber = info.buildNumber;
+    appName = info.appName;
+    packageName = info.packageName;
   }
 }
