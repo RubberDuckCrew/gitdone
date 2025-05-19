@@ -1,0 +1,16 @@
+name: Update Issue Labels
+
+on:
+  issues:
+    types:
+      - closed
+
+jobs:
+  remove-wip-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove '🚧 Work in Progress' label
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: 🚧 Work in Progress
