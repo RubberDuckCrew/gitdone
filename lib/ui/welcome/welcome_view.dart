@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gitdone/app_config.dart';
 import 'package:gitdone/ui/_widgets/app_title.dart';
 import 'package:gitdone/ui/login/oauth/login_oauth_screen.dart';
 import 'package:gitdone/ui/login/token/login_token_view.dart';
@@ -45,6 +46,15 @@ class _WelcomeViewState extends State<WelcomeView> {
               child: const Text("Enter Personal Access Token"),
             ),
             const Spacer(flex: 1),
+            const Text(
+              "GitDone is not affiliated with GitHub, Inc.",
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            Text(
+              "Version: ${AppConfig.version} (${AppConfig.gitCommit}, ${AppConfig.flavor})",
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            const Padding(padding: EdgeInsets.all(10.0)),
           ],
         ),
       ),
