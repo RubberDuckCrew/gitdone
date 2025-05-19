@@ -24,7 +24,7 @@ class _AdvancedFilledButtonState extends State<AdvancedFilledButton> {
       style:
           !widget.enabled
               ? ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.grey),
+                backgroundColor: WidgetStateProperty.all(Colors.grey),
               )
               : null,
       child: widget.child,
