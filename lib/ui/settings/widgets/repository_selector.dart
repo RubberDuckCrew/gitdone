@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/repository_details.dart';
 import 'package:gitdone/core/models/token_handler.dart';
 import 'package:gitdone/core/utils/logger.dart';
+import 'package:gitdone/ui/_widgets/advanced_filled_button.dart';
 import 'package:github_flutter/github.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,7 +17,9 @@ class RepositorySelector extends StatefulWidget {
 }
 
 class _RepositorySelectorState extends State<RepositorySelector> {
-  DropdownMenuItem<RepositoryDetails> convertToRepo(RepositoryDetails repo) {
+  DropdownMenuItem<RepositoryDetails> convertRepoToItem(
+    RepositoryDetails repo,
+  ) {
     return DropdownMenuItem(
       value: repo,
       child: Row(
@@ -40,11 +43,20 @@ class _RepositorySelectorState extends State<RepositorySelector> {
         builder: (context, model, child) {
           return Column(
             children: [
-              DropdownButton<RepositoryDetails>(
-                hint: const Text("Select a repository"),
-                value: model.selectedRepository,
-                items: model.repositories.map(convertToRepo).toList(),
-                onChanged: model.selectRepository,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: DropdownButton<RepositoryDetails>(
+                  hint: const Text("Select a repository"),
+                  value: model.selectedRepository,
+                  items: model.repositories.map(convertRepoToItem).toList(),
+                  onChanged: model.selectRepository,
+                ),
+              ),
+              const SizedBox(height: 16),
+              AdvancedFilledButton(
+                onPressed: model.saveSelectedRepository,
+                enabled: model.selectedRepository != null,
+                child: Text("Save"),
               ),
               // TODO: Add a button to persist the selected repository
             ],
@@ -65,6 +77,7 @@ class RepositorySelectorViewModel extends ChangeNotifier {
   RepositorySelectorViewModel() {
     _model.addListener(notifyListeners);
     _model.init().then((value) {
+      _model.clearRepositories();
       _model.getAllUserRepositories();
     });
   }
@@ -86,8 +99,8 @@ class RepositorySelectorModel extends ChangeNotifier {
 
   GitHub? _github;
 
-  List<RepositoryDetails>? _repositories = [];
-  List<RepositoryDetails> get repositories => _repositories ?? [];
+  final List<RepositoryDetails> _repositories = [];
+  List<RepositoryDetails> get repositories => _repositories;
 
   RepositoryDetails? _selectedRepository;
   RepositoryDetails? get selectedRepository => _selectedRepository;
@@ -95,12 +108,16 @@ class RepositorySelectorModel extends ChangeNotifier {
   bool get locallySavedRepoExist => _selectedRepository != null ? true : false;
 
   Future<void> loadLocalRepository() async {
+    Logger.log("Loading local repository", classID, LogLevel.finest);
     final prefs = await SharedPreferences.getInstance();
     String repoJson = prefs.getString('selected_repository') ?? "";
     if (repoJson.isNotEmpty) {
-      _selectedRepository = RepositoryDetails.fromJson(
+      RepositoryDetails repo = RepositoryDetails.fromJson(
         Map<String, dynamic>.from(jsonDecode(repoJson)),
       );
+      Logger.log("Found local repository: $repoJson", classID, LogLevel.finest);
+      _repositories.add(repo);
+      _selectedRepository = repo;
       notifyListeners();
     }
   }
@@ -128,11 +145,20 @@ class RepositorySelectorModel extends ChangeNotifier {
       await init();
     }
     Logger.log("Fetching repositories", classID, LogLevel.finest);
-    _repositories =
-        await _github!.repositories
-            .listRepositories(type: "all")
-            .map(RepositoryDetails.fromRepository)
-            .toList();
+    _repositories.addAll(
+      await _github!.repositories
+          .listRepositories(type: "all")
+          .where((repo) => repo.name != _selectedRepository?.name)
+          .map(RepositoryDetails.fromRepository)
+          .toList(),
+    );
+
+    notifyListeners();
+  }
+
+  void clearRepositories() {
+    Logger.log("Clearing repositories", classID, LogLevel.finest);
+    _repositories.clear();
     notifyListeners();
   }
 
@@ -145,7 +171,7 @@ class RepositorySelectorModel extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(
       'selected_repository',
-      repository.toJson().toString(),
+      jsonEncode(repository.toJson()),
     );
   }
 
