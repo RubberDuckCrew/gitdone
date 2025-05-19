@@ -1,7 +1,10 @@
-name: Update Issue Labels
+name: Actions on issue and pull request close
 
 on:
   issues:
+    types:
+      - closed
+  pull_request:
     types:
       - closed
 
