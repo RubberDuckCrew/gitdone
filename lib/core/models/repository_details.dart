@@ -22,4 +22,12 @@ class RepositoryDetails {
   Map<String, dynamic> toJson() {
     return {'name': name, 'owner': owner, 'avatarUrl': avatarUrl};
   }
+
+  static RepositoryDetails fromJson(Map<String, dynamic> json) {
+    return RepositoryDetails(
+      name: json['name'] as String,
+      owner: json['owner'] as String,
+      avatarUrl: json['avatarUrl'] as String,
+    );
+  }
 }
