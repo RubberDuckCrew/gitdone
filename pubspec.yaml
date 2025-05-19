@@ -42,6 +42,7 @@ dependencies:
   github_flutter:
     path: ../github_flutter
   shared_preferences: ^2.5.3
+  package_info_plus: ^8.3.0
 
 dev_dependencies:
   flutter_test:

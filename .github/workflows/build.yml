@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch: 
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -57,15 +57,18 @@ jobs:
       - name: Prepare version name
         id: version_name
         run: echo "version_name=$(echo "${{github.ref_name}}" | tr / _)" >> $GITHUB_OUTPUT
-        
+
+      - name: Set build args
+        run: echo "BUILD_ARGS=--release --flavor production --dart-define=GIT_COMMIT=${{ github.sha }}" >> $GITHUB_ENV
+
       - name: Build APK
         working-directory: app
-        run: flutter build apk --release --flavor production
+        run: flutter build apk $BUILD_ARGS
 
       - name: Build App Bundle
         working-directory: app
-        run: flutter build appbundle --release --flavor production
-      
+        run: flutter build appbundle $BUILD_ARGS
+
       - name: Rename APK & App Bundle
         working-directory: app
         run: |
