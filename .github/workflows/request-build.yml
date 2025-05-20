@@ -13,7 +13,6 @@ permissions:
   pull-requests: write
 
 env:
-  FLUTTER_CHANNEL: "stable"
   PROPERTIES_PATH: "./app/android/key.properties"
 
 jobs:
@@ -37,7 +36,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          channel: ${{ env.FLUTTER_CHANNEL }}
+          channel: ${{ vars.FLUTTER_CHANNEL }}
           flutter-version: ${{ vars.FLUTTER_VERSION }}
           cache: true
 
