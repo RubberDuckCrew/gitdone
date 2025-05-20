@@ -12,9 +12,6 @@ on:
 permissions:
   pull-requests: write
 
-env:
-  PROPERTIES_PATH: "./app/android/key.properties"
-
 jobs:
   build:
     if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
@@ -52,9 +49,9 @@ jobs:
 
       - name: Set up keystore
         run: |
-          echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
-          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
-          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
+          echo keyPassword=\${{ secrets.KEY_STORE }} > ${{vars.PROPERTIES_PATH}}
+          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{vars.PROPERTIES_PATH}}
+          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{vars.PROPERTIES_PATH}}
           echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
 
       - name: Prepare version name
