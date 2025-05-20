@@ -35,6 +35,12 @@ class _RepositorySelectorState extends State<RepositorySelector> {
     );
   }
 
+  void showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -54,11 +60,13 @@ class _RepositorySelectorState extends State<RepositorySelector> {
               ),
               const SizedBox(height: 16),
               AdvancedFilledButton(
-                onPressed: model.saveSelectedRepository,
+                onPressed: () {
+                  model.saveSelectedRepository();
+                  showSnackBar("Repository saved successfully");
+                },
                 enabled: model.selectedRepository != null,
                 child: Text("Save"),
               ),
-              // TODO: Add a button to persist the selected repository
             ],
           );
         },
@@ -72,7 +80,6 @@ class RepositorySelectorViewModel extends ChangeNotifier {
 
   List<RepositoryDetails> get repositories => _model.repositories;
   RepositoryDetails? get selectedRepository => _model.selectedRepository;
-  // TODO: Is it necessary to have a ready state?
 
   RepositorySelectorViewModel() {
     _model.addListener(notifyListeners);
