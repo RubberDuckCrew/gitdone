@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Remove '🚧 Work in Progress' label
-        uses: actions-ecosystem/action-remove-labels@v1
+        uses: IamPekka058/removeLabels@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: 🚧 Work in Progress
