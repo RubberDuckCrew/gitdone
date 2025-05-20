@@ -6,6 +6,20 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: RepositorySelector());
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Spacer(),
+          Text(
+            "Select the repository, where you want to store your todos:",
+            style: Theme.of(context).textTheme.titleMedium,
+            textAlign: TextAlign.center,
+          ),
+          RepositorySelector(),
+          Spacer(),
+        ],
+      ),
+    );
   }
 }
