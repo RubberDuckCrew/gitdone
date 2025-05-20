@@ -9,7 +9,6 @@ on:
 permissions:
   contents: write
 env:
-  FLUTTER_VERSION: "3.29.2"
   FLUTTER_CHANNEL: "stable"
   PROPERTIES_PATH: "./app/android/key.properties"
 
@@ -34,7 +33,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-version: ${{ vars.FLUTTER_VERSION }}
           cache: true
 
       - name: Install dependencies
