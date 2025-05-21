@@ -8,7 +8,7 @@ import 'package:github_flutter/github.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RepositorySelectorModel extends ChangeNotifier {
-  String classID =
+  String classId =
       "com.GitDone.gitdone.ui.settings.widgets.repository_selector.repository_selector_model";
 
   GitHub? _github;
@@ -22,14 +22,14 @@ class RepositorySelectorModel extends ChangeNotifier {
   bool get locallySavedRepoExist => _selectedRepository != null ? true : false;
 
   Future<void> loadLocalRepository() async {
-    Logger.log("Loading local repository", classID, LogLevel.finest);
+    Logger.log("Loading local repository", classId, LogLevel.finest);
     final prefs = await SharedPreferences.getInstance();
     String repoJson = prefs.getString('selected_repository') ?? "";
     if (repoJson.isNotEmpty) {
       RepositoryDetails repo = RepositoryDetails.fromJson(
         Map<String, dynamic>.from(jsonDecode(repoJson)),
       );
-      Logger.log("Found local repository: $repoJson", classID, LogLevel.finest);
+      Logger.log("Found local repository: $repoJson", classId, LogLevel.finest);
       _repositories.add(repo);
       _selectedRepository = repo;
       notifyListeners();
@@ -37,12 +37,12 @@ class RepositorySelectorModel extends ChangeNotifier {
   }
 
   Future<bool> init() async {
-    Logger.log("Calling init method", classID, LogLevel.finest);
+    Logger.log("Calling init method", classId, LogLevel.finest);
 
     if (_github == null) {
       String? token = await TokenHandler().getToken();
       _github = GitHub(auth: Authentication.bearerToken(token!));
-      Logger.log("Initialized GitHub", classID, LogLevel.finest);
+      Logger.log("Initialized GitHub", classId, LogLevel.finest);
       return true;
     }
     return false;
@@ -53,12 +53,12 @@ class RepositorySelectorModel extends ChangeNotifier {
     if (_github == null) {
       Logger.log(
         "Called getAllUserRepositories() while GitHub is null. Initializing...",
-        classID,
+        classId,
         LogLevel.finest,
       );
       await init();
     }
-    Logger.log("Fetching repositories", classID, LogLevel.finest);
+    Logger.log("Fetching repositories", classId, LogLevel.finest);
     _repositories.addAll(
       await _github!.repositories
           .listRepositories(type: "all")
@@ -71,7 +71,7 @@ class RepositorySelectorModel extends ChangeNotifier {
   }
 
   void clearRepositories() {
-    Logger.log("Clearing repositories", classID, LogLevel.finest);
+    Logger.log("Clearing repositories", classId, LogLevel.finest);
     _repositories.clear();
     notifyListeners();
   }
@@ -79,7 +79,7 @@ class RepositorySelectorModel extends ChangeNotifier {
   void saveRepository(RepositoryDetails repository) async {
     Logger.log(
       "Saving repository: ${repository.name} to shared preferences",
-      classID,
+      classId,
       LogLevel.finest,
     );
     final prefs = await SharedPreferences.getInstance();
@@ -90,7 +90,7 @@ class RepositorySelectorModel extends ChangeNotifier {
   }
 
   void selectRepository(RepositoryDetails? repo) {
-    Logger.log("Selected repository: ${repo?.name}", classID, LogLevel.finest);
+    Logger.log("Selected repository: ${repo?.name}", classId, LogLevel.finest);
     _selectedRepository = repo;
     notifyListeners();
   }
