@@ -21,10 +21,14 @@ class _RepositorySelectorState extends State<RepositorySelector> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.network(repo.avatarUrl, width: 24, height: 24),
-          const Padding(padding: EdgeInsets.symmetric(horizontal: 8)),
-          Text(repo.name),
-          const Padding(padding: EdgeInsets.symmetric(horizontal: 8)),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: Image.network(repo.avatarUrl, width: 24, height: 24),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+            child: Text(repo.name),
+          ),
           Text("(${repo.owner})", style: TextStyle(color: Colors.grey)),
         ],
       ),
@@ -50,19 +54,21 @@ class _RepositorySelectorState extends State<RepositorySelector> {
                   onChanged: model.selectRepository,
                 ),
               ),
-              const SizedBox(height: 16),
-              DeactivatableFilledButton(
-                onPressed: () {
-                  model.saveSelectedRepository();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("Repository saved successfully"),
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
-                },
-                enabled: model.selectedRepository != null,
-                child: Text("Save Repository"),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 16),
+                child: DeactivatableFilledButton(
+                  onPressed: () {
+                    model.saveSelectedRepository();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Repository saved successfully"),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                  enabled: model.selectedRepository != null,
+                  child: Text("Save Repository"),
+                ),
               ),
             ],
           );
