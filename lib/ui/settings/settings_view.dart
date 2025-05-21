@@ -16,7 +16,10 @@ class SettingsView extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
-          RepositorySelector(),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: RepositorySelector(),
+          ),
           Spacer(),
         ],
       ),
