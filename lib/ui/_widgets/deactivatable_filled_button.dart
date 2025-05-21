@@ -1,34 +1,48 @@
 import 'package:flutter/material.dart';
 
-class DeactivatableFilledButton extends StatefulWidget {
-  const DeactivatableFilledButton({
+class DeactivatableButton extends StatelessWidget {
+  const DeactivatableButton({
     super.key,
     required this.child,
-    required this.onPressed,
-    required this.enabled,
+    required this.isDeactivated,
   });
 
-  final Widget child;
-  final VoidCallback onPressed;
-  final bool enabled;
+  final MaterialButton child;
+  final bool isDeactivated;
 
-  @override
-  State<DeactivatableFilledButton> createState() =>
-      _DeactivatableFilledButtonState();
-}
-
-class _DeactivatableFilledButtonState extends State<DeactivatableFilledButton> {
   @override
   Widget build(BuildContext context) {
-    return FilledButton(
-      onPressed: widget.enabled ? widget.onPressed : null,
-      style:
-          !widget.enabled
-              ? ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(Colors.grey),
-              )
-              : null,
-      child: widget.child,
+    return MaterialButton(
+      onPressed: isDeactivated ? null : child.onPressed,
+      onLongPress: isDeactivated ? null : child.onLongPress,
+      onHighlightChanged: child.onHighlightChanged,
+      textTheme: child.textTheme,
+      textColor: child.textColor,
+      disabledTextColor: child.disabledTextColor,
+      color: child.color,
+      disabledColor: child.disabledColor,
+      focusColor: child.focusColor,
+      hoverColor: child.hoverColor,
+      highlightColor: child.highlightColor,
+      splashColor: child.splashColor,
+      colorBrightness: child.colorBrightness,
+      elevation: child.elevation,
+      focusElevation: child.focusElevation,
+      hoverElevation: child.hoverElevation,
+      highlightElevation: child.highlightElevation,
+      disabledElevation: child.disabledElevation,
+      padding: child.padding,
+      visualDensity: child.visualDensity,
+      shape: child.shape,
+      clipBehavior: child.clipBehavior,
+      focusNode: child.focusNode,
+      autofocus: child.autofocus,
+      materialTapTargetSize: child.materialTapTargetSize,
+      animationDuration: child.animationDuration,
+      minWidth: child.minWidth,
+      height: child.height,
+      enableFeedback: child.enableFeedback,
+      child: child.child,
     );
   }
 }
