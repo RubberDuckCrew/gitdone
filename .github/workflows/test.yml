@@ -22,7 +22,8 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          channel: ${{vars.FLUTTER_CHANNEL}}
+          flutter-version: ${{ vars.FLUTTER_VERSION }}
           cache: true
 
       - name: Install dependencies
