@@ -1,4 +1,4 @@
-name: Actions on issue and pull request close
+name: Close Actions
 
 on:
   issues:
@@ -13,10 +13,11 @@ permissions:
   pull-requests: write
 
 jobs:
-  remove-wip-label:
+  close-actions:
+    name: Close actions
     runs-on: ubuntu-latest
     steps:
-      - name: Remove '🚧 Work in Progress' label
+      - name: Remove labels
         uses: IamPekka058/removeLabels@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
