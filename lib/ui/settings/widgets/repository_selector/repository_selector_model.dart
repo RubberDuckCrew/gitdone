@@ -4,105 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/repository_details.dart';
 import 'package:gitdone/core/models/token_handler.dart';
 import 'package:gitdone/core/utils/logger.dart';
-import 'package:gitdone/ui/_widgets/advanced_filled_button.dart';
 import 'package:github_flutter/github.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class RepositorySelector extends StatefulWidget {
-  const RepositorySelector({super.key});
-
-  @override
-  State<RepositorySelector> createState() => _RepositorySelectorState();
-}
-
-class _RepositorySelectorState extends State<RepositorySelector> {
-  DropdownMenuItem<RepositoryDetails> convertRepoToItem(
-    RepositoryDetails repo,
-  ) {
-    return DropdownMenuItem(
-      value: repo,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Image.network(repo.avatarUrl, width: 24, height: 24),
-          const SizedBox(width: 8),
-          Text(repo.name),
-          const SizedBox(width: 8),
-          Text("(${repo.owner})", style: TextStyle(color: Colors.grey)),
-        ],
-      ),
-    );
-  }
-
-  void showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => RepositorySelectorViewModel(),
-      child: Consumer<RepositorySelectorViewModel>(
-        builder: (context, model, child) {
-          return Column(
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: DropdownButton<RepositoryDetails>(
-                  hint: const Text("Select a repository"),
-                  value: model.selectedRepository,
-                  items: model.repositories.map(convertRepoToItem).toList(),
-                  onChanged: model.selectRepository,
-                ),
-              ),
-              const SizedBox(height: 16),
-              AdvancedFilledButton(
-                onPressed: () {
-                  model.saveSelectedRepository();
-                  showSnackBar("Repository saved successfully");
-                },
-                enabled: model.selectedRepository != null,
-                child: Text("Save"),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-}
-
-class RepositorySelectorViewModel extends ChangeNotifier {
-  final RepositorySelectorModel _model = RepositorySelectorModel();
-
-  List<RepositoryDetails> get repositories => _model.repositories;
-  RepositoryDetails? get selectedRepository => _model.selectedRepository;
-
-  RepositorySelectorViewModel() {
-    _model.addListener(notifyListeners);
-    _model.init().then((value) {
-      _model.clearRepositories();
-      _model.getAllUserRepositories();
-    });
-  }
-
-  void selectRepository(RepositoryDetails? repo) {
-    _model.selectRepository(repo);
-  }
-
-  void saveSelectedRepository() async {
-    if (selectedRepository != null) {
-      _model.saveRepository(selectedRepository!);
-    }
-  }
-}
 
 class RepositorySelectorModel extends ChangeNotifier {
   String classID =
-      "com.GitDone.gitdone.ui.settings.widgets.repository_selector";
+      "com.GitDone.gitdone.ui.settings.widgets.repository_selector.repository_selector_model";
 
   GitHub? _github;
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/ui/settings/widgets/repository_selector.dart';
+import 'package:gitdone/ui/settings/widgets/repository_selector/repository_selector_view.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
