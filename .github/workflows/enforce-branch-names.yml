@@ -1,0 +1,15 @@
+name: Enforce branch names
+
+on:
+  pull_request_target:
+    types: [ opened, synchronize ]
+
+jobs:
+  enforce-branch-names:
+    name: Enforce pull request branch names
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: IamPekka058/branchMatchRegex@v0
+        with:
+          path: ./.github/branches.yml
