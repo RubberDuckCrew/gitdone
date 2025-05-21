@@ -14,4 +14,4 @@ jobs:
     steps:
       - uses: IamPekka058/branchMatchRegex@v0
         with:
-          path: ./.github/branches.yml
+          path: .github/branches.yml
