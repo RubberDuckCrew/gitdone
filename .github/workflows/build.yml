@@ -8,10 +8,6 @@ on:
 
 permissions:
   contents: write
-env:
-  FLUTTER_VERSION: "3.29.2"
-  FLUTTER_CHANNEL: "stable"
-  PROPERTIES_PATH: "./app/android/key.properties"
 
 jobs:
   build:
@@ -33,8 +29,8 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: ${{ vars.FLUTTER_CHANNEL }}
+          flutter-version: ${{ vars.FLUTTER_VERSION }}
           cache: true
 
       - name: Install dependencies
@@ -49,9 +45,9 @@ jobs:
 
       - name: Set up keystore
         run: |
-          echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
-          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
-          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
+          echo keyPassword=\${{ secrets.KEY_STORE }} > ${{vars.PROPERTIES_PATH}}
+          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{vars.PROPERTIES_PATH}}
+          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{vars.PROPERTIES_PATH}}
           echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
 
       - name: Prepare version name
