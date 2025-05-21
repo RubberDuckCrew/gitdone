@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/repository_details.dart';
-import 'package:gitdone/ui/_widgets/advanced_filled_button.dart';
+import 'package:gitdone/ui/_widgets/deactivatable_filled_button.dart';
 import 'package:provider/provider.dart';
 
 import 'repository_selector_view_model.dart';
@@ -51,7 +51,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
                 ),
               ),
               const SizedBox(height: 16),
-              AdvancedFilledButton(
+              DeactivatableFilledButton(
                 onPressed: () {
                   model.saveSelectedRepository();
                   ScaffoldMessenger.of(context).showSnackBar(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AdvancedFilledButton extends StatefulWidget {
-  const AdvancedFilledButton({
+class DeactivatableFilledButton extends StatefulWidget {
+  const DeactivatableFilledButton({
     super.key,
     required this.child,
     required this.onPressed,
@@ -13,10 +13,11 @@ class AdvancedFilledButton extends StatefulWidget {
   final bool enabled;
 
   @override
-  State<AdvancedFilledButton> createState() => _AdvancedFilledButtonState();
+  State<DeactivatableFilledButton> createState() =>
+      _DeactivatableFilledButtonState();
 }
 
-class _AdvancedFilledButtonState extends State<AdvancedFilledButton> {
+class _DeactivatableFilledButtonState extends State<DeactivatableFilledButton> {
   @override
   Widget build(BuildContext context) {
     return FilledButton(
