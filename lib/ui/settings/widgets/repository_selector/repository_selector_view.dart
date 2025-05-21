@@ -62,7 +62,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
                   );
                 },
                 enabled: model.selectedRepository != null,
-                child: Text("Save"),
+                child: Text("Save Repository"),
               ),
             ],
           );
