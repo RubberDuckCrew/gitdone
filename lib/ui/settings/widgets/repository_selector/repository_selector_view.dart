@@ -19,11 +19,12 @@ class _RepositorySelectorState extends State<RepositorySelector> {
       value: repo,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.network(repo.avatarUrl, width: 24, height: 24),
-          Padding(padding: const EdgeInsets.all(8)),
+          Padding(padding: const EdgeInsets.fromLTRB(0, 0, 8, 0)),
           Text(repo.name),
-          Padding(padding: EdgeInsets.all(8)),
+          Padding(padding: const EdgeInsets.fromLTRB(0, 0, 8, 0)),
           Text("(${repo.owner})", style: TextStyle(color: Colors.grey)),
         ],
       ),
@@ -39,8 +40,8 @@ class _RepositorySelectorState extends State<RepositorySelector> {
           return Column(
             children: [
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
                 child: DropdownButton<RepositoryDetails>(
+                  isExpanded: true,
                   hint: const Text("Select a repository"),
                   value: model.selectedRepository,
                   items: model.repositories.map(convertRepoToItem).toList(),
