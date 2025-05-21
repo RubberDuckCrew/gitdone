@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/repository_details.dart';
-import 'package:gitdone/ui/_widgets/deactivatable_filled_button.dart';
 import 'package:provider/provider.dart';
 
 import 'repository_selector_view_model.dart';
@@ -35,8 +34,6 @@ class _RepositorySelectorState extends State<RepositorySelector> {
     );
   }
 
-  void showSnackBar(String message) {}
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -51,23 +48,14 @@ class _RepositorySelectorState extends State<RepositorySelector> {
                   hint: const Text("Select a repository"),
                   value: model.selectedRepository,
                   items: model.repositories.map(convertRepoToItem).toList(),
-                  onChanged: model.selectRepository,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 16),
-                child: DeactivatableFilledButton(
-                  onPressed: () {
-                    model.saveSelectedRepository();
+                  onChanged: (repo) {
+                    model.selectRepository(repo);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text("Repository saved successfully"),
-                        duration: const Duration(seconds: 2),
+                        content: Text("Selected repository: ${repo?.name}"),
                       ),
                     );
                   },
-                  enabled: model.selectedRepository != null,
-                  child: Text("Save Repository"),
                 ),
               ),
             ],
