@@ -20,14 +20,10 @@ class _RepositorySelectorState extends State<RepositorySelector> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-            child: Image.network(repo.avatarUrl, width: 24, height: 24),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-            child: Text(repo.name),
-          ),
+          Image.network(repo.avatarUrl, width: 24, height: 24),
+          Padding(padding: const EdgeInsets.all(8)),
+          Text(repo.name),
+          Padding(padding: EdgeInsets.all(8)),
           Text("(${repo.owner})", style: TextStyle(color: Colors.grey)),
         ],
       ),
@@ -50,6 +46,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
                   items: model.repositories.map(convertRepoToItem).toList(),
                   onChanged: (repo) {
                     model.selectRepository(repo);
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text("Selected repository: ${repo?.name}"),
