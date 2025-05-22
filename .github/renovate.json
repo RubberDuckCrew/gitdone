@@ -8,8 +8,7 @@
   },
   "reviewers": ["team:development"],
   "labels": [
-    "📌 Dependencies",
-    "⚗ Request Build"
+    "📌 Dependencies"
   ],
   "commitMessagePrefix": "⬆️",
   "commitMessageAction": "Upgrade",
