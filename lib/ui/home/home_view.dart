@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/token_handler.dart';
 import 'package:gitdone/ui/_widgets/todo.dart';
+import 'package:gitdone/ui/home/widgets/dropdown_filter_chip.dart';
 import 'package:gitdone/ui/welcome/welcome_view.dart';
 
 class Homeview extends StatefulWidget {
@@ -43,7 +44,34 @@ class _HomeviewState extends State<Homeview> {
                 ),
               ),
             ),
-            Text("Filled Buttons here"),
+            Padding(
+              padding: EdgeInsets.only(right: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FilterChipDropdown(
+                    items: [
+                      FilterChipItem(value: "All", label: "All"),
+                      FilterChipItem(value: "Completed", label: "Completed"),
+                      FilterChipItem(value: "Pending", label: "Pending"),
+                    ],
+                    initialLabel: "Filter by",
+                    allowMultipleSelection: false,
+                  ),
+                  const SizedBox(width: 8),
+                  FilterChipDropdown(
+                    items: [
+                      FilterChipItem(value: "All", label: "All"),
+                      FilterChipItem(value: "Today", label: "Today"),
+                      FilterChipItem(value: "This Week", label: "This Week"),
+                      FilterChipItem(value: "This Month", label: "This Month"),
+                    ],
+                    initialLabel: "Sort by",
+                    allowMultipleSelection: false,
+                  ),
+                ],
+              ),
+            ),
             Expanded(
               child: ListView(
                 shrinkWrap: true,
