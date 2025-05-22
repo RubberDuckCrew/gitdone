@@ -1,0 +1,24 @@
+name: Close Actions
+
+on:
+  issues:
+    types:
+      - closed
+  pull_request:
+    types:
+      - closed
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  close-actions:
+    name: Close actions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove labels
+        uses: IamPekka058/removeLabels@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: "🚧 Work in Progress"

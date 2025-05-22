@@ -1,0 +1,13 @@
+- feature/*
+- fix/*
+- hotfix/*
+- docs/*
+- test/*
+- refactor/*
+- style/*
+- ci/*
+- perf/*
+- i18n/*
+- security/*
+- release/*
+- chore/*
