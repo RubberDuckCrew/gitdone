@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/token_handler.dart';
+import 'package:gitdone/ui/_widgets/octo_cat.dart';
 import 'package:gitdone/ui/_widgets/todo.dart';
 import 'package:gitdone/ui/welcome/welcome_view.dart';
 
@@ -64,8 +65,8 @@ class _HomeviewState extends State<Homeview> {
             ],
           ),
         ),
-        //OctoCat(),
-        //ElevatedButton(onPressed: logout, child: const Text("Logout")),
+        OctoCat(),
+        ElevatedButton(onPressed: logout, child: const Text("Logout")),
       ],
     );
   }
