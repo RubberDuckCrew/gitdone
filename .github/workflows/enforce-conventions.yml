@@ -14,12 +14,12 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: mheap/github-action-required-labels@v5
-        name: Enforce pull request labels
+      - name: Enforce pull request labels
+        uses: mheap/github-action-required-labels@v5
         with:
           mode: minimum
           count: 1
-          labels: ".*"
+          labels: "^(?!🚧 Work in Progress$).+"
           use_regex: true
           add_comment: true
           message: "You need to assign at least one label before merging this pull request."
@@ -29,9 +29,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          sparseCheckout: .github/branches.yml
 
-      - uses: IamPekka058/branchMatchRegex@v0
-        name: Enforce pull request branch names
+      - name: Enforce pull request branch names
+        uses: IamPekka058/branchMatchRegex@v0
         with:
           path: .github/branches.yml
