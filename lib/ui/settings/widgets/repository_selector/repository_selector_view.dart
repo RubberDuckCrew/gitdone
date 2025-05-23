@@ -47,6 +47,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
                   items: model.repositories.map(convertRepoToItem).toList(),
                   onChanged: (repo) {
                     model.selectRepository(repo);
+                    model.saveSelectedRepository();
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
