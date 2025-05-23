@@ -84,7 +84,6 @@ jobs:
           java-version: '21'
 
       - name: Install pub dependencies
-        working-directory: app
         run: flutter pub get
 
       - name: Set up keystore
@@ -92,7 +91,7 @@ jobs:
           echo keyPassword=\${{ secrets.KEY_STORE }} > ${{vars.PROPERTIES_PATH}}
           echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{vars.PROPERTIES_PATH}}
           echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{vars.PROPERTIES_PATH}}
-          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
+          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > android/app/key.jks
 
       - name: Set build options
         id: build_options
@@ -109,11 +108,9 @@ jobs:
           echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$GITHUB_SHA" >> $GITHUB_OUTPUT
 
       - name: Build APK
-        working-directory: app
         run: flutter build apk ${{ steps.build_options.outputs.build_args }}
 
       - name: Build app bundle
-        working-directory: app
         run: flutter build appbundle ${{ steps.build_options.outputs.build_args }}
 
       - name: Upload APK
@@ -127,7 +124,6 @@ jobs:
         with:
           name: GitDone_${{ steps.build_options.outputs.version_name }}.aab
           path: app/build/app/outputs/bundle/${{ steps.build_options.outputs.flavor }}Release/app-${{ steps.build_options.outputs.flavor }}-release.aab
-
 
   post-build-requested:
     name: Post requested build
