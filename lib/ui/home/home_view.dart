@@ -34,6 +34,10 @@ class _HomeviewState extends State<Homeview> {
             builder: (context, model, child) {
               return Column(
                 children: [
+                  FilledButton(
+                    onPressed: model.getTodos,
+                    child: const Text("Get Todos"),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TextField(
