@@ -2,20 +2,19 @@ name: Close Actions
 
 on:
   issues:
-    types:
-      - closed
+    types: [ closed ]
   pull_request:
-    types:
-      - closed
-
-permissions:
-  issues: write
-  pull-requests: write
+    types: [ closed ]
 
 jobs:
   close-actions:
     name: Close actions
     runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+      pull-requests: write
+
     steps:
       - name: Remove labels
         uses: IamPekka058/removeLabels@v2
