@@ -46,11 +46,14 @@ class SettingsView extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.network(
-                              model.avatarUrl,
-                              width: 32,
-                              height: 32,
-                            ),
+                            model.avatarUrl.isNotEmpty
+                                ? CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    model.avatarUrl,
+                                  ),
+                                  radius: 20,
+                                )
+                                : const Icon(Icons.account_circle, size: 40),
                             const Padding(padding: EdgeInsets.all(2.0)),
                             Text(
                               model.username,
