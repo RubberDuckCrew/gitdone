@@ -12,4 +12,8 @@ class HomeViewViewModel extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  void getTodos() {
+    _homeViewModel.getTodos();
+  }
 }
