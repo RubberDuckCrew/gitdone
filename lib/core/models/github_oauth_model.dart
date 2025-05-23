@@ -4,7 +4,7 @@ import 'package:github_flutter/github.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GitHubAuth {
-  static const String clientId = "Iv23liytEkcJOjMjS9No";
+  static const String clientId = "Ov23li2QBbpgRa3P0GHJ";
   static const String classId =
       "com.GitDone.gitdone.core.models.github_oauth_handler";
   final tokenHandler = TokenHandler();
