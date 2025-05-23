@@ -98,16 +98,16 @@ jobs:
       - name: Set build options
         id: build_options
         run: |
-          SHORT_SHA=${GITHUB_SHA:0:7}
+          SHA=${{ github.event.pull_request.head.sha || github.sha }}
+          SHORT_SHA=${SHA:0:7}
           VERSION_NAME="$(echo "$GITHUB_REF_NAME" | tr / _)_$SHORT_SHA"
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             FLAVOR="production"
           else
             FLAVOR="staging"
-            VERSION_SUFFIX="_$FLAVOR"
           fi
           echo "flavor=$FLAVOR" >> $GITHUB_OUTPUT
-          echo "version_name=$VERSION_NAME$VERSION_SUFFIX" >> $GITHUB_OUTPUT
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
           echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA" >> $GITHUB_OUTPUT
 
       - name: Build APK
@@ -138,7 +138,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Remove "⚗️ Require Build" Label
+      - name: Remove build request label
         uses: IamPekka058/removeLabels@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
