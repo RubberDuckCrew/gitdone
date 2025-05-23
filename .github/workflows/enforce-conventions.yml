@@ -32,7 +32,7 @@ jobs:
       - name: Checkout branches.yml
         uses: actions/checkout@v4
         with:
-          sparseCheckout: .github/branches.yml
+          sparse-checkout: .github/branches.yml
           sparse-checkout-cone-mode: false
 
       - name: Enforce pull request branch names
