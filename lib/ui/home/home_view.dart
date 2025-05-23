@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gitdone/core/models/token_handler.dart';
 import 'package:gitdone/ui/_widgets/todo.dart';
 import 'package:gitdone/ui/home/widgets/dropdown_filter_chip.dart';
-import 'package:gitdone/ui/welcome/welcome_view.dart';
 
 class Homeview extends StatefulWidget {
   const Homeview({super.key});
@@ -15,16 +13,6 @@ class _HomeviewState extends State<Homeview> {
   @override
   void initState() {
     super.initState();
-  }
-
-  void logout() async {
-    TokenHandler tokenHandler = TokenHandler();
-    await tokenHandler.deleteToken();
-    if (!mounted) return;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const WelcomeView()),
-    );
   }
 
   @override
@@ -93,13 +81,6 @@ class _HomeviewState extends State<Homeview> {
                   Todo(title: "Todo 14", description: "Description of Todo 14"),
                   Todo(title: "Todo 15", description: "Description of Todo 15"),
                 ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: logout,
-                child: const Text("Logout"),
               ),
             ),
           ],
