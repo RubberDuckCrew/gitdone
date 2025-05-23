@@ -116,17 +116,23 @@ jobs:
       - name: Build app bundle
         run: flutter build appbundle ${{ steps.build_options.outputs.build_args }}
 
+      - name: Rename APK & App Bundle
+        run: |
+          mkdir -p ../build-artifacts
+          mv build/app/outputs/flutter-apk/app-${{ steps.build_options.outputs.flavor }}-release.apk ../build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.apk
+          mv build/app/outputs/bundle/${{ steps.build_options.outputs.flavor }}Release/app-${{ steps.build_options.outputs.flavor }}-release.aab ../build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: GitDone_${{ steps.build_options.outputs.version_name }}.apk
-          path: app/build/app/outputs/flutter-apk/app-${{ steps.build_options.outputs.flavor }}-release.apk
+          name: GitDone ${{ steps.build_options.outputs.version_name }} APK
+          path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.apk
 
       - name: Upload app bundle
         uses: actions/upload-artifact@v4
         with:
-          name: GitDone_${{ steps.build_options.outputs.version_name }}.aab
-          path: app/build/app/outputs/bundle/${{ steps.build_options.outputs.flavor }}Release/app-${{ steps.build_options.outputs.flavor }}-release.aab
+          name: GitDone ${{ steps.build_options.outputs.version_name }} AAB
+          path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
 
   post-build-requested:
     name: Post requested build
