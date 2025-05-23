@@ -2,6 +2,7 @@ name: Test, Build and Release
 
 on:
   push:
+    tags: [ 'v*' ]
   pull_request:
     types: [ opened, labeled, synchronize ]
 
@@ -87,11 +88,12 @@ jobs:
         run: flutter pub get
 
       - name: Set up keystore
+        working-directory: .
         run: |
           echo keyPassword=\${{ secrets.KEY_STORE }} > ${{vars.PROPERTIES_PATH}}
           echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{vars.PROPERTIES_PATH}}
           echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{vars.PROPERTIES_PATH}}
-          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > android/app/key.jks
+          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
 
       - name: Set build options
         id: build_options
