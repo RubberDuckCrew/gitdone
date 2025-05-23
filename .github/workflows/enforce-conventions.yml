@@ -1,0 +1,42 @@
+name: Enforce conventions
+
+on:
+  pull_request_target:
+    types: [ opened, labeled, unlabeled, synchronize ]
+
+jobs:
+  enforce-labels:
+    name: Enforce pull request labels
+    runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Enforce pull request labels
+        uses: mheap/github-action-required-labels@v5
+        with:
+          mode: minimum
+          count: 1
+          labels: "^(?!🚧 Work in Progress$).+"
+          use_regex: true
+          add_comment: true
+          message: "You need to assign at least one label before merging this pull request."
+
+  enforce-branch-names:
+    name: Enforce pull request branch names
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branches.yml
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/branches.yml
+          sparse-checkout-cone-mode: false
+
+      - name: Enforce pull request branch names
+        uses: IamPekka058/branchMatchRegex@v0
+        with:
+          path: .github/branches.yml
+          useWildcard: true
