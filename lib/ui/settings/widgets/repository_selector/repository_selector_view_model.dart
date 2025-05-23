@@ -7,14 +7,13 @@ class RepositorySelectorViewModel extends ChangeNotifier {
   final RepositorySelectorModel _model = RepositorySelectorModel();
 
   List<RepositoryDetails> get repositories => _model.repositories;
+
   RepositoryDetails? get selectedRepository => _model.selectedRepository;
 
   RepositorySelectorViewModel() {
     _model.addListener(notifyListeners);
-    _model.init().then((value) {
-      _model.clearRepositories();
-      _model.getAllUserRepositories();
-    });
+    _model.clearRepositories();
+    _model.getAllUserRepositories();
   }
 
   void selectRepository(RepositoryDetails? repo) {
