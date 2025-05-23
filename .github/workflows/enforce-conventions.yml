@@ -33,6 +33,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparseCheckout: .github/branches.yml
+          sparse-checkout-cone-mode: false
 
       - name: Enforce pull request branch names
         uses: IamPekka058/branchMatchRegex@v0
