@@ -39,3 +39,4 @@ jobs:
         uses: IamPekka058/branchMatchRegex@v0
         with:
           path: .github/branches.yml
+          useWildcard: true
