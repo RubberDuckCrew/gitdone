@@ -1,17 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gitdone/core/models/github_model.dart';
 import 'package:gitdone/core/models/repository_details.dart';
-import 'package:gitdone/core/models/token_handler.dart';
 import 'package:gitdone/core/utils/logger.dart';
-import 'package:github_flutter/github.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RepositorySelectorModel extends ChangeNotifier {
   String classId =
       "com.GitDone.gitdone.ui.settings.widgets.repository_selector.repository_selector_model";
-
-  GitHub? _github;
 
   final List<RepositoryDetails> _repositories = [];
   List<RepositoryDetails> get repositories => _repositories;
@@ -36,31 +33,11 @@ class RepositorySelectorModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> init() async {
-    Logger.log("Calling init method", classId, LogLevel.finest);
-
-    if (_github == null) {
-      String? token = await TokenHandler().getToken();
-      _github = GitHub(auth: Authentication.bearerToken(token!));
-      Logger.log("Initialized GitHub", classId, LogLevel.finest);
-      return true;
-    }
-    return false;
-  }
-
   void getAllUserRepositories() async {
     await loadLocalRepository();
-    if (_github == null) {
-      Logger.log(
-        "Called getAllUserRepositories() while GitHub is null. Initializing...",
-        classId,
-        LogLevel.finest,
-      );
-      await init();
-    }
     Logger.log("Fetching repositories", classId, LogLevel.finest);
     _repositories.addAll(
-      await _github!.repositories
+      await (await GithubModel.github).repositories
           .listRepositories(type: "all")
           .where((repo) => repo.name != _selectedRepository?.name)
           .map(RepositoryDetails.fromRepository)
