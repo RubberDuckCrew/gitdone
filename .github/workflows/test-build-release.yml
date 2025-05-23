@@ -144,6 +144,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: "⚗️ Request Build"
 
+      - name: Comment artifact links
+        uses: RubberDuckCrew/artifact2pr@v0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-if-no-artifacts: true
 
   post-build-tagged:
     name: Post tagged build
