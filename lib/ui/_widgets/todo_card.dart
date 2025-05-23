@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/theme/app_color.dart';
 
-class Todo extends StatefulWidget {
-  const Todo({super.key, required this.title, required this.description});
+class TodoCard extends StatefulWidget {
+  const TodoCard({super.key, required this.title, required this.description});
 
   final String title;
   final String description;
 
   @override
-  State<Todo> createState() => _TodoState();
+  State<TodoCard> createState() => _TodoCardState();
 }
 
-class _TodoState extends State<Todo> {
+class _TodoCardState extends State<TodoCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
