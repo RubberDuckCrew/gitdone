@@ -98,7 +98,8 @@ jobs:
       - name: Set build options
         id: build_options
         run: |
-          VERSION_NAME="$(echo "$GITHUB_REF_NAME" | tr / _)_${GITHUB_SHA:0:7}"
+          SHORT_SHA=${GITHUB_SHA:0:7}
+          VERSION_NAME="$(echo "$GITHUB_REF_NAME" | tr / _)_$SHORT_SHA"
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             FLAVOR="production"
           else
@@ -107,7 +108,7 @@ jobs:
           fi
           echo "flavor=$FLAVOR" >> $GITHUB_OUTPUT
           echo "version_name=$VERSION_NAME$VERSION_SUFFIX" >> $GITHUB_OUTPUT
-          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$GITHUB_SHA" >> $GITHUB_OUTPUT
+          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA" >> $GITHUB_OUTPUT
 
       - name: Build APK
         run: flutter build apk ${{ steps.build_options.outputs.build_args }}
