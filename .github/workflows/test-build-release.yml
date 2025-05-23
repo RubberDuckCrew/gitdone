@@ -134,6 +134,9 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
     runs-on: ubuntu-latest
 
+    permissions:
+      pull-requests: write
+
     steps:
       - name: Remove "⚗️ Require Build" Label
         uses: IamPekka058/removeLabels@v2
