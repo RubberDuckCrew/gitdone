@@ -5,7 +5,7 @@ on:
 
 jobs:
   test:
-    name: Check format, analyze and test
+    name: Format, analyze and test
     runs-on: ubuntu-latest
 
     defaults:
@@ -13,7 +13,7 @@ jobs:
         working-directory: app
 
     steps:
-      - name: Checkout App Repository
+      - name: Checkout app repository
         uses: actions/checkout@v4
         with:
           path: app
@@ -24,26 +24,27 @@ jobs:
           repository: RubberDuckCrew/github_flutter
           path: github_flutter
 
-      - uses: subosito/flutter-action@v2
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: ${{vars.FLUTTER_CHANNEL}}
           flutter-version: ${{ vars.FLUTTER_VERSION }}
           cache: true
 
-      - name: Install dependencies
+      - name: Install pub dependencies
         run: flutter pub get
 
-      - name: Format check
+      - name: Check dart format
         run: dart format --set-exit-if-changed .
 
-      - name: Analyze
+      - name: Analyze flutter
         run: flutter analyze
 
       - name: Run tests
         run: flutter test
 
   build:
-    name: Build app (if tag or request)
+    name: Build app
     needs: test
     if: startsWith(github.ref, 'refs/tags/') || contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
     runs-on: ubuntu-latest
