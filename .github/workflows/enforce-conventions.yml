@@ -1,0 +1,37 @@
+name: Enforce conventions
+
+on:
+  pull_request_target:
+    types: [ opened, labeled, unlabeled, synchronize ]
+
+jobs:
+  enforce-labels:
+    name: Enforce pull request labels
+    runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - uses: mheap/github-action-required-labels@v5
+        name: Enforce pull request labels
+        with:
+          mode: minimum
+          count: 1
+          labels: ".*"
+          use_regex: true
+          add_comment: true
+          message: "You need to assign at least one label before merging this pull request."
+
+  enforce-branch-names:
+    name: Enforce pull request branch names
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: IamPekka058/branchMatchRegex@v0
+        name: Enforce pull request branch names
+        with:
+          path: .github/branches.yml
