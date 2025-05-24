@@ -204,10 +204,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK
-          path: .flutter-devtools/apk-code-size-analysis_*.json
+          path: .flutter-devtools/apk-code-size-analysis_1.json
 
   post-request:
-    name: Post requested build
+    name: Post requested build and size analysis
     needs: [build, size-analysis]
     if: ${{ contains(github.event.pull_request.labels.*.name, '⚗️ Request Build') || contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis') }}
     runs-on: ubuntu-latest
