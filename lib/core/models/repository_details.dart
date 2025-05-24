@@ -23,6 +23,10 @@ class RepositoryDetails {
     return {'name': name, 'owner': owner, 'avatarUrl': avatarUrl};
   }
 
+  RepositorySlug toSlug() {
+    return RepositorySlug(owner, name);
+  }
+
   static RepositoryDetails fromJson(Map<String, dynamic> json) {
     return RepositoryDetails(
       name: json['name'] as String,
