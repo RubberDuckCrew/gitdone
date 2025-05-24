@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gitdone/ui/welcome/welcome_view.dart';
 
 class TokenHandler {
   FlutterSecureStorage storage = FlutterSecureStorage();
@@ -19,5 +21,14 @@ class TokenHandler {
   Future<bool> hasToken() async {
     String? token = await storage.read(key: 'auth_token');
     return token != null;
+  }
+
+  static void logout(context) async {
+    TokenHandler tokenHandler = TokenHandler();
+    await tokenHandler.deleteToken();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const WelcomeView()),
+    );
   }
 }

@@ -1,0 +1,183 @@
+name: Test, Build and Release
+
+on:
+  push:
+    tags: [ 'v*' ]
+  pull_request:
+    types: [ opened, labeled, synchronize ]
+
+jobs:
+  test:
+    name: Format, analyze and test
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - name: Checkout app repository
+        uses: actions/checkout@v4
+        with:
+          path: app
+
+      - name: Clone Package Repository
+        uses: actions/checkout@v4
+        with:
+          repository: RubberDuckCrew/github_flutter
+          path: github_flutter
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: ${{vars.FLUTTER_CHANNEL}}
+          flutter-version: ${{ vars.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Install pub dependencies
+        run: flutter pub get
+
+      - name: Check dart format
+        run: dart format --set-exit-if-changed .
+
+      - name: Analyze flutter
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
+
+  build:
+    name: Build app
+    needs: test
+    if: ${{ startsWith(github.ref, 'refs/tags/') || contains(github.event.pull_request.labels.*.name, '⚗️ Request Build') }}
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: app
+
+    outputs:
+      version_name: ${{ steps.build_options.outputs.version_name }}
+
+    steps:
+      - name: Checkout app repository
+        uses: actions/checkout@v4
+        with:
+          path: app
+
+      - name: Checkout github_flutter repository
+        uses: actions/checkout@v4
+        with:
+          repository: RubberDuckCrew/github_flutter
+          path: github_flutter
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ vars.FLUTTER_CHANNEL }}
+          flutter-version: ${{ vars.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Install pub dependencies
+        run: flutter pub get
+
+      - name: Set up keystore
+        working-directory: .
+        run: |
+          echo keyPassword=\${{ secrets.KEY_STORE }} > ${{vars.PROPERTIES_PATH}}
+          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{vars.PROPERTIES_PATH}}
+          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{vars.PROPERTIES_PATH}}
+          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
+
+      - name: Set build options
+        id: build_options
+        run: |
+          SHA=${{ github.event.pull_request.head.sha || github.sha }}
+          SHORT_SHA=${SHA:0:7}
+          VERSION_NAME="$(echo "$GITHUB_REF_NAME" | tr / _)_$SHORT_SHA"
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            FLAVOR="production"
+          else
+            FLAVOR="staging"
+          fi
+          echo "flavor=$FLAVOR" >> $GITHUB_OUTPUT
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA" >> $GITHUB_OUTPUT
+
+      - name: Build APK
+        run: flutter build apk ${{ steps.build_options.outputs.build_args }}
+
+      - name: Build app bundle
+        run: flutter build appbundle ${{ steps.build_options.outputs.build_args }}
+
+      - name: Rename APK & App Bundle
+        run: |
+          mkdir -p ../build-artifacts
+          mv build/app/outputs/flutter-apk/app-${{ steps.build_options.outputs.flavor }}-release.apk ../build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.apk
+          mv build/app/outputs/bundle/${{ steps.build_options.outputs.flavor }}Release/app-${{ steps.build_options.outputs.flavor }}-release.aab ../build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: GitDone ${{ steps.build_options.outputs.version_name }} APK
+          path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.apk
+
+      - name: Upload app bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: GitDone ${{ steps.build_options.outputs.version_name }} AAB
+          path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
+
+  post-build-requested:
+    name: Post requested build
+    needs: build
+    if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Remove build request label
+        uses: IamPekka058/removeLabels@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: "⚗️ Request Build"
+
+      - name: Comment artifact links
+        uses: RubberDuckCrew/artifact2pr@v0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-if-no-artifacts: true
+
+  post-build-tagged:
+    name: Post tagged build
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: GitDone_${{ needs.build.outputs.version_name }}.apk
+
+      - name: Download app bundle artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: GitDone_${{ needs.build.outputs.version_name }}.aab
+
+      - name: Release artifacts
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            GitDone_${{ needs.build.outputs.version_name }}.apk
+            GitDone_${{ needs.build.outputs.version_name }}.aab
