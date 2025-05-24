@@ -15,12 +15,10 @@ class _TodoCardState extends State<TodoCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColor.colorScheme.surfaceContainer,
-          borderRadius: BorderRadius.circular(12),
-        ),
+      padding: const EdgeInsets.all(4.0),
+      child: Card(
+        color: AppColor.colorScheme.surfaceContainer,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Row(
           children: [
             Padding(
