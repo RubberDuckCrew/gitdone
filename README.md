@@ -24,7 +24,9 @@ improvements.
 
 ## 🛠️ Development
 
-At the moment Gitdone is provided for Android Devices only. We encourage anyone who wants to contribute to the project and to implement an iOS version! 
+At the moment Gitdone is provided for Android Devices only. 
+We encourage anyone who has access to MAC/iOS devices and wants to contribute to the project to implement an iOS version! 
+The only requirements are Xcode and an Apple Developer Account.
 
 > ⚠️ Check out the Wiki for more details on the architecture and design decisions.
 
