@@ -236,7 +236,9 @@ jobs:
         uses: IamPekka058/removeLabels@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: ["⚗️ Request Build", "🧐 Size Analysis"]
+          labels: |
+            - ⚗️ Request Build
+            - 🧐 Size Analysis
 
       - name: Comment artifact links
         uses: RubberDuckCrew/artifact2pr@v0
