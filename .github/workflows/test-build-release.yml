@@ -118,13 +118,14 @@ jobs:
 
       - name: Build APK
         if: contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis')
-        run: flutter build apk ${{ steps.build_options.outputs.build_args }}
+        run: flutter build apk ${{ steps.build_options.outputs.build_args }} --analyze-size --target-platform android-arm64
 
       - name: Rename APK & App Bundle
         run: |
           mkdir -p ../build-artifacts
           mv build/app/outputs/flutter-apk/app-${{ steps.build_options.outputs.flavor }}-release.apk ../build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.apk
           mv build/app/outputs/bundle/${{ steps.build_options.outputs.flavor }}Release/app-${{ steps.build_options.outputs.flavor }}-release.aab ../build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
@@ -142,7 +143,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK
-          path: /home/runner/.flutter-devtools/apk-code-size-analysis_**.json
+          path: /home/runner/.flutter-devtools/apk-code-size-analysis_01.json
 
   size-analysis:
     needs: test
@@ -214,12 +215,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK
-          path: /home/runner/.flutter-devtools/apk-code-size-analysis_*.json
+          path: /home/runner/.flutter-devtools/apk-code-size-analysis_**.json
       - name: Upload size analysis apk
         uses: actions/upload-artifact@v4
         with:
           name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK 2
-          path: .flutter-devtools/apk-code-size-analysis_*.json
+          path: .flutter-devtools/apk-code-size-analysis_**.json
 
   post-request:
     name: Post requested build and size analysis
