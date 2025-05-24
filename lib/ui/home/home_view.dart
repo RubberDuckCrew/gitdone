@@ -35,7 +35,7 @@ class _HomeviewState extends State<Homeview> {
               return Column(
                 children: [
                   FilledButton(
-                    onPressed: model.getTodos,
+                    onPressed: model.loadTodos,
                     child: const Text("Get Todos"),
                   ),
                   Padding(
