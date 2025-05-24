@@ -51,6 +51,7 @@ class HomeViewModel extends ChangeNotifier {
       _todos.addAll(
         await _github!.issues
             .listByRepo(repo.toSlug())
+            .where((issue) => issue.pullRequest == null)
             .map(Todo.fromIssue)
             .toList(),
       );
