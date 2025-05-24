@@ -216,11 +216,24 @@ jobs:
         with:
           name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK
           path: ~/runner/.flutter-devtools/apk-code-size-analysis_01.json
+
       - name: Upload size analysis apk
         uses: actions/upload-artifact@v4
         with:
           name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK 2
           path: .flutter-devtools/apk-code-size-analysis_01.json
+
+      - name: Upload size analysis artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: size-analysis
+          path: build/app/outputs/flutter-apk/apk-code-size-analysis_01.json
+
+      - name: Upload size analysis apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK 3
+          path: /home/runner/.flutter-devtools/apk-code-size-analysis_01.json
 
   post-request:
     name: Post requested build and size analysis
