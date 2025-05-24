@@ -108,7 +108,7 @@ jobs:
           fi
           echo "flavor=$FLAVOR" >> $GITHUB_OUTPUT
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA" >> $GITHUB_OUTPUT
+          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA --analyze-size" >> $GITHUB_OUTPUT
 
       - name: Build APK
         run: flutter build apk ${{ steps.build_options.outputs.build_args }}
@@ -133,6 +133,19 @@ jobs:
         with:
           name: GitDone ${{ steps.build_options.outputs.version_name }} AAB
           path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
+
+      - name: Upload size analysis app bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Size Analysis ${{ steps.build_options.outputs.version_name }} AAB
+          path: build/app/outputs/bundle/${{ steps.build_options.outputs.flavor }}Release/app-${{ steps.build_options.outputs.flavor }}-release.aab.json
+
+      - name: Upload size analysis apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK
+          path: build/app/outputs/flutter-apk/app-${{ steps.build_options.outputs.flavor }}-release.apk.json
+
 
   post-build-requested:
     name: Post requested build
