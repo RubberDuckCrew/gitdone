@@ -195,7 +195,7 @@ jobs:
           fi
           echo "flavor=$FLAVOR" >> $GITHUB_OUTPUT
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA --analyze-size" >> $GITHUB_OUTPUT
+          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA --analyze-size --target-platform android-arm64" >> $GITHUB_OUTPUT
 
       - name: Build APK
         run: flutter build apk ${{ steps.build_options.outputs.build_args }}
@@ -208,7 +208,7 @@ jobs:
 
   post-request:
     name: Post requested build
-    needs: build, size-analysis
+    needs: [build, size-analysis]
     if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build') || contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis')
     runs-on: ubuntu-latest
 
