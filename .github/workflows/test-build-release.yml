@@ -108,7 +108,7 @@ jobs:
           fi
           echo "flavor=$FLAVOR" >> $GITHUB_OUTPUT
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA --analyze-size" >> $GITHUB_OUTPUT
+          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA " >> $GITHUB_OUTPUT
 
       - name: Build APK
         run: flutter build apk ${{ steps.build_options.outputs.build_args }}
@@ -204,12 +204,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK
-          path: build/app/outputs/flutter-apk/app-${{ steps.build_options.outputs.flavor }}-release.apk.json
+          path: .flutter-devtools/apk-code-size-analysis_*.json
 
   post-request:
     name: Post requested build
     needs: [build, size-analysis]
-    if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build') || contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis')
+    if: ${{ contains(github.event.pull_request.labels.*.name, '⚗️ Request Build') || contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis') }}
     runs-on: ubuntu-latest
 
     permissions:
