@@ -116,12 +116,15 @@ jobs:
       - name: Build app bundle
         run: flutter build appbundle ${{ steps.build_options.outputs.build_args }}
 
+      - name: Build APK
+        if: contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis')
+        run: flutter build apk ${{ steps.build_options.outputs.build_args }}
+
       - name: Rename APK & App Bundle
         run: |
           mkdir -p ../build-artifacts
           mv build/app/outputs/flutter-apk/app-${{ steps.build_options.outputs.flavor }}-release.apk ../build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.apk
           mv build/app/outputs/bundle/${{ steps.build_options.outputs.flavor }}Release/app-${{ steps.build_options.outputs.flavor }}-release.aab ../build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
-
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
@@ -133,6 +136,13 @@ jobs:
         with:
           name: GitDone ${{ steps.build_options.outputs.version_name }} AAB
           path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
+
+      - name: Upload size analysis apk
+        if: contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis')
+        uses: actions/upload-artifact@v4
+        with:
+          name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK
+          path: /home/runner/.flutter-devtools/apk-code-size-analysis_**.json
 
   size-analysis:
     needs: test
@@ -213,8 +223,8 @@ jobs:
 
   post-request:
     name: Post requested build and size analysis
-    needs: [build, size-analysis]
-    if: ${{ contains(github.event.pull_request.labels.*.name, '⚗️ Request Build') || contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis') }}
+    needs: build
+    if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
     runs-on: ubuntu-latest
 
     permissions:
