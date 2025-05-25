@@ -138,101 +138,12 @@ jobs:
           name: GitDone ${{ steps.build_options.outputs.version_name }} AAB
           path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
 
+
       - name: Upload size analysis apk
         if: contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis')
         uses: actions/upload-artifact@v4
         with:
-          name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK
-          path: ~/runner/.flutter-devtools/apk-code-size-analysis_01.json
-
-  size-analysis:
-    needs: test
-    if: ${{ startsWith(github.ref, 'refs/tags/') || contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis') }}
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: app
-
-    outputs:
-      version_name: ${{ steps.build_options.outputs.version_name }}
-
-    steps:
-      - name: Checkout app repository
-        uses: actions/checkout@v4
-        with:
-          path: app
-
-      - name: Checkout github_flutter repository
-        uses: actions/checkout@v4
-        with:
-          repository: RubberDuckCrew/github_flutter
-          path: github_flutter
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: ${{ vars.FLUTTER_CHANNEL }}
-          flutter-version: ${{ vars.FLUTTER_VERSION }}
-          cache: true
-
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Install pub dependencies
-        run: flutter pub get
-
-      - name: Set up keystore
-        working-directory: .
-        run: |
-          echo keyPassword=\${{ secrets.KEY_STORE }} > ${{vars.PROPERTIES_PATH}}
-          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{vars.PROPERTIES_PATH}}
-          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{vars.PROPERTIES_PATH}}
-          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
-
-      - name: Set build options
-        id: build_options
-        run: |
-          SHA=${{ github.event.pull_request.head.sha || github.sha }}
-          SHORT_SHA=${SHA:0:7}
-          VERSION_NAME="$(echo "$GITHUB_REF_NAME" | tr / _)_$SHORT_SHA"
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            FLAVOR="production"
-          else
-            FLAVOR="staging"
-          fi
-          echo "flavor=$FLAVOR" >> $GITHUB_OUTPUT
-          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA --analyze-size --target-platform android-arm64" >> $GITHUB_OUTPUT
-
-      - name: Build APK
-        run: flutter build apk ${{ steps.build_options.outputs.build_args }}
-
-      - name: Upload size analysis apk
-        uses: actions/upload-artifact@v4
-        with:
-          name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK
-          path: ~/runner/.flutter-devtools/apk-code-size-analysis_01.json
-
-      - name: Upload size analysis apk
-        uses: actions/upload-artifact@v4
-        with:
-          name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK 2
-          path: .flutter-devtools/apk-code-size-analysis_01.json
-
-      - name: Upload size analysis artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: size-analysis
-          path: build/app/outputs/flutter-apk/apk-code-size-analysis_01.json
-
-      - name: Upload size analysis apk
-        uses: actions/upload-artifact@v4
-        with:
-          name: Size Analysis ${{ steps.build_options.outputs.version_name }} APK 3
+          name: Size Analysis APK ARM64
           path: /home/runner/.flutter-devtools/apk-code-size-analysis_01.json
 
   post-request:
