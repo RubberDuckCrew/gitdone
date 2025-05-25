@@ -34,10 +34,6 @@ class _HomeviewState extends State<Homeview> {
             builder: (context, model, child) {
               return Column(
                 children: [
-                  FilledButton(
-                    onPressed: model.loadTodos,
-                    child: const Text("Get Todos"),
-                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TextField(
@@ -86,10 +82,15 @@ class _HomeviewState extends State<Homeview> {
                     ),
                   ),
                   Expanded(
-                    child: ListView(
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      children: model.todos.map(convertTodoToCard).toList(),
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        model.loadTodos();
+                      },
+                      child: ListView(
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: model.todos.map(convertTodoToCard).toList(),
+                      ),
                     ),
                   ),
                 ],
@@ -98,7 +99,6 @@ class _HomeviewState extends State<Homeview> {
           ),
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Icon(Icons.add),
