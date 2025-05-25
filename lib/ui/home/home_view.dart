@@ -3,6 +3,7 @@ import 'package:gitdone/ui/_widgets/todo_card.dart';
 import 'package:gitdone/ui/home/widgets/dropdown_filter_chip.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/utils/logger.dart';
 import 'home_viev_view_model.dart';
 
 class Homeview extends StatefulWidget {
@@ -78,6 +79,28 @@ class _HomeviewState extends State<Homeview> {
                           allowMultipleSelection: false,
                           onUpdate: (value) {
                             model.updateSort(value.value);
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        FilterChipDropdown(
+                          items:
+                              model.allLabels
+                                  .map(
+                                    (label) => FilterChipItem(
+                                      value: label.name,
+                                      label: label.name,
+                                    ),
+                                  )
+                                  .toList(),
+                          initialLabel: "Labels",
+                          allowMultipleSelection: true,
+                          onUpdate: (item) {
+                            // Temporary Debug printing the selected label
+                            Logger.logInfo(
+                              "Selected label: ${item.value}",
+                              "HomeView",
+                            );
+                            model.updateLabels(item.value);
                           },
                         ),
                       ],
