@@ -116,6 +116,10 @@ jobs:
       - name: Build app bundle
         run: flutter build appbundle ${{ steps.build_options.outputs.build_args }}
 
+      - name: Build APK
+        if: contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis')
+        run: flutter build apk ${{ steps.build_options.outputs.build_args }} --analyze-size --target-platform android-arm64
+
       - name: Rename APK & App Bundle
         run: |
           mkdir -p ../build-artifacts
@@ -134,8 +138,15 @@ jobs:
           name: GitDone ${{ steps.build_options.outputs.version_name }} AAB
           path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
 
-  post-build-requested:
-    name: Post requested build
+      - name: Upload size analysis apk
+        if: contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis')
+        uses: actions/upload-artifact@v4
+        with:
+          name: Size Analysis APK ARM64
+          path: /home/runner/.flutter-devtools/apk-code-size-analysis_01.json
+
+  post-request:
+    name: Post requested build and size analysis
     needs: build
     if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
     runs-on: ubuntu-latest
@@ -148,7 +159,9 @@ jobs:
         uses: IamPekka058/removeLabels@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: "⚗️ Request Build"
+          labels: |
+            - ⚗️ Request Build
+            - 🧐 Size Analysis
 
       - name: Comment artifact links
         uses: RubberDuckCrew/artifact2pr@v0

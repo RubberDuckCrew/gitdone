@@ -1,6 +1,9 @@
 - name: ⚗️ Request Build
   description: Requests a build
   color: "7f39fb"
+- name: 🧐 Size Analysis
+  description: Request for size analysis of the APK (only alongside a build request)
+  color: "006b75"
 - name: 🐛 Bug
   description: Something isn't working
   color: "d73a4a"
