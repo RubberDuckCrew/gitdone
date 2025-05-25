@@ -28,25 +28,13 @@ class _TodoCardState extends State<TodoCard> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: AppColor.colorScheme.onSurface,
-                      ),
-                    ),
-                    Text(
-                      widget.description,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: AppColor.colorScheme.onSurface,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  widget.title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: AppColor.colorScheme.onSurface,
+                  ),
                 ),
               ),
             ),
