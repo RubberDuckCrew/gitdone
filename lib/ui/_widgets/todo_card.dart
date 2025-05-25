@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/theme/app_color.dart';
 
-class TodoCard extends StatefulWidget {
-  const TodoCard({super.key, required this.title, required this.description});
+import '../../core/models/todo.dart';
 
-  final String title;
-  final String description;
+class TodoCard extends StatefulWidget {
+  const TodoCard({super.key, required this.todo});
+
+  final Todo todo;
 
   @override
   State<TodoCard> createState() => _TodoCardState();
@@ -29,7 +30,7 @@ class _TodoCardState extends State<TodoCard> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
-                  widget.title,
+                  widget.todo.title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
