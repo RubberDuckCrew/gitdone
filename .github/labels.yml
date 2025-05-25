@@ -1,6 +1,9 @@
 - name: ⚗️ Request Build
   description: Requests a build
   color: "7f39fb"
+- name: 🧐 Size Analysis
+  description: Requests a size analysis (only usable with Request Build)
+  color: "006b75"
 - name: 🐛 Bug
   description: Something isn't working
   color: "d73a4a"

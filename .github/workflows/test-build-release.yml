@@ -138,7 +138,6 @@ jobs:
           name: GitDone ${{ steps.build_options.outputs.version_name }} AAB
           path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
 
-
       - name: Upload size analysis apk
         if: contains(github.event.pull_request.labels.*.name, '🧐 Size Analysis')
         uses: actions/upload-artifact@v4
