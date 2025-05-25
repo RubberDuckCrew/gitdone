@@ -93,7 +93,7 @@ jobs:
           echo keyPassword=\${{ secrets.KEY_STORE }} > ${{vars.PROPERTIES_PATH}}
           echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{vars.PROPERTIES_PATH}}
           echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{vars.PROPERTIES_PATH}}
-          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
+          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > ${{vars.PROPERTIES_PATH}}
 
       - name: Set build options
         id: build_options
@@ -108,7 +108,7 @@ jobs:
           fi
           echo "flavor=$FLAVOR" >> $GITHUB_OUTPUT
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA " >> $GITHUB_OUTPUT
+          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA" >> $GITHUB_OUTPUT
 
       - name: Build APK
         run: flutter build apk ${{ steps.build_options.outputs.build_args }}
