@@ -3,7 +3,6 @@ import 'package:gitdone/ui/_widgets/todo_card.dart';
 import 'package:gitdone/ui/home/widgets/dropdown_filter_chip.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/models/todo.dart';
 import 'home_viev_view_model.dart';
 
 class Homeview extends StatefulWidget {
@@ -17,10 +16,6 @@ class _HomeviewState extends State<Homeview> {
   @override
   void initState() {
     super.initState();
-  }
-
-  TodoCard convertTodoToCard(Todo todo) {
-    return TodoCard(title: todo.title, description: todo.description);
   }
 
   @override
@@ -42,6 +37,9 @@ class _HomeviewState extends State<Homeview> {
                         labelText: 'Search',
                         prefixIcon: Icon(Icons.search),
                       ),
+                      onChanged: (value) {
+                        model.updateSearchQuery(value);
+                      },
                     ),
                   ),
                   Padding(
@@ -87,7 +85,10 @@ class _HomeviewState extends State<Homeview> {
                       child: ListView(
                         shrinkWrap: true,
                         physics: const AlwaysScrollableScrollPhysics(),
-                        children: model.todos.map(convertTodoToCard).toList(),
+                        children:
+                            model.todos
+                                .map((todo) => TodoCard(todo: todo))
+                                .toList(),
                       ),
                     ),
                   ),
