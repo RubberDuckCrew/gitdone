@@ -12,12 +12,14 @@ class HomeViewModel extends ChangeNotifier {
   final List<Todo> _todos = [];
   List<Todo> get todos => List.unmodifiable(_todos);
 
+  static String classId = "com.GitDone.gitdone.ui.home.home_view_model";
+
   HomeViewModel() {
     loadTodos();
   }
 
   Future<void> loadTodos() async {
-    Logger.logInfo("Loading todos", "HomeViewModel");
+    Logger.logInfo("Loading todos", classId);
     await _loadTodos();
   }
 
@@ -41,7 +43,7 @@ class HomeViewModel extends ChangeNotifier {
         _todos.addAll(issues);
       }
     } catch (e) {
-      Logger.logError("Failed to load todos", "HomeViewModel", e);
+      Logger.logError("Failed to load todos", classId, e);
     } finally {
       notifyListeners();
     }
