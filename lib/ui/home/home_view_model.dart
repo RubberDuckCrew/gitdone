@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/models/github_model.dart';
+import 'package:github_flutter/github.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/models/repository_details.dart';
@@ -10,7 +11,9 @@ import '../../core/utils/logger.dart';
 
 class HomeViewModel extends ChangeNotifier {
   final List<Todo> _todos = [];
+  final List<IssueLabel> _allLabels = [];
   List<Todo> get todos => List.unmodifiable(_todos);
+  List<IssueLabel> get allLabels => List.unmodifiable(_allLabels);
 
   static String classId = "com.GitDone.gitdone.ui.home.home_view_model";
 
@@ -41,6 +44,8 @@ class HomeViewModel extends ChangeNotifier {
       if (repo != null) {
         final issues = await _fetchIssuesForRepository(repo);
         _todos.addAll(issues);
+        final labels = await _fetchAllLabels(repo);
+        _allLabels.addAll(labels);
       }
     } catch (e) {
       Logger.logError("Failed to load todos", classId, e);
@@ -66,5 +71,9 @@ class HomeViewModel extends ChangeNotifier {
         .where((issue) => issue.pullRequest == null)
         .map(Todo.fromIssue)
         .toList();
+  }
+
+  Future<List<IssueLabel>> _fetchAllLabels(RepositoryDetails repo) async {
+    return (await GithubModel.github).issues.listLabels(repo.toSlug()).toList();
   }
 }
