@@ -17,6 +17,7 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   Future<void> loadTodos() async {
+    Logger.logInfo("Loading todos", "HomeViewModel");
     await _loadTodos();
   }
 
