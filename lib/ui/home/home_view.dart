@@ -57,6 +57,9 @@ class _HomeviewState extends State<Homeview> {
                           ],
                           initialLabel: "Filter",
                           allowMultipleSelection: false,
+                          onUpdate: (value) {
+                            model.updateFilter(value.value);
+                          },
                         ),
                         const SizedBox(width: 8),
                         FilterChipDropdown(
@@ -73,6 +76,9 @@ class _HomeviewState extends State<Homeview> {
                           ],
                           initialLabel: "Sort",
                           allowMultipleSelection: false,
+                          onUpdate: (value) {
+                            model.updateSort(value.value);
+                          },
                         ),
                       ],
                     ),
