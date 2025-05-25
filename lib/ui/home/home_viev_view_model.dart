@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:github_flutter/github.dart';
 
 import '../../core/models/todo.dart';
 import 'home_view_model.dart';
 
 class HomeViewViewModel extends ChangeNotifier {
   final HomeViewModel _homeViewModel = HomeViewModel();
+  final List<IssueLabel> _filterLabels = [];
   List<Todo> _filteredTodos = [];
   String _searchQuery = '';
   String _filter = '';
   String _sort = '';
 
   List<Todo> get todos => _filteredTodos;
+  List<IssueLabel> get allLabels => _homeViewModel.allLabels;
 
   HomeViewViewModel() {
     _homeViewModel.addListener(() {
@@ -18,6 +21,19 @@ class HomeViewViewModel extends ChangeNotifier {
       notifyListeners();
     });
     _filteredTodos = _homeViewModel.todos;
+    _filterLabels.addAll(_homeViewModel.allLabels);
+  }
+
+  void updateLabels(String label) {
+    _filterLabels.clear();
+    if (label.isEmpty) {
+      _filterLabels.addAll(_homeViewModel.allLabels);
+    } else {
+      _filterLabels.addAll(
+        _homeViewModel.allLabels.where((l) => l.name == label),
+      );
+    }
+    notifyListeners();
   }
 
   void loadTodos() {
@@ -75,6 +91,13 @@ class HomeViewViewModel extends ChangeNotifier {
       );
     } else if (_sort == 'Created') {
       _filteredTodos.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    }
+    // Labels
+    if (_filterLabels.isNotEmpty) {
+      _filteredTodos =
+          _filteredTodos.where((todo) {
+            return todo.labels.any((label) => _filterLabels.contains(label));
+          }).toList();
     }
     notifyListeners();
   }
