@@ -51,31 +51,29 @@ class _HomeviewState extends State<Homeview> {
                       children: [
                         FilterChipDropdown(
                           items: [
-                            FilterChipItem(value: "All", label: "All"),
                             FilterChipItem(
                               value: "Completed",
                               label: "Completed",
                             ),
                             FilterChipItem(value: "Pending", label: "Pending"),
                           ],
-                          initialLabel: "Filter by",
+                          initialLabel: "Filter",
                           allowMultipleSelection: false,
                         ),
                         const SizedBox(width: 8),
                         FilterChipDropdown(
                           items: [
-                            FilterChipItem(value: "All", label: "All"),
-                            FilterChipItem(value: "Today", label: "Today"),
                             FilterChipItem(
-                              value: "This Week",
-                              label: "This Week",
+                              value: "Alphabetical",
+                              label: "Alphabetical",
                             ),
                             FilterChipItem(
-                              value: "This Month",
-                              label: "This Month",
+                              value: "Last updated",
+                              label: "Last updated",
                             ),
+                            FilterChipItem(value: "Created", label: "Created"),
                           ],
-                          initialLabel: "Sort by",
+                          initialLabel: "Sort",
                           allowMultipleSelection: false,
                         ),
                       ],
