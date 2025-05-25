@@ -17,7 +17,7 @@ class FilterChipDropdown extends StatefulWidget {
   final String initialLabel;
   final double labelPadding;
   final bool allowMultipleSelection;
-  final void Function(FilterChipItem) onItemSelected;
+  final void Function(FilterChipItem) onUpdate;
 
   const FilterChipDropdown({
     super.key,
@@ -25,7 +25,7 @@ class FilterChipDropdown extends StatefulWidget {
     this.leading,
     required this.initialLabel,
     required this.allowMultipleSelection,
-    required this.onItemSelected,
+    required this.onUpdate,
     this.labelPadding = 16,
   });
 
@@ -121,7 +121,7 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                                             : Colors.transparent,
                                     child: InkWell(
                                       onTap: () {
-                                        widget.onItemSelected(item);
+                                        widget.onUpdate(item);
 
                                         if (viewModel.isItemSelected(item) &&
                                             widget.allowMultipleSelection) {
