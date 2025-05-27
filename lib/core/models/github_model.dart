@@ -2,13 +2,14 @@ import 'package:gitdone/core/models/token_handler.dart';
 import 'package:gitdone/core/utils/logger.dart';
 import 'package:github_flutter/github.dart';
 
+/// This model handles the GitHub API interactions.
 class GithubModel {
-  static final GithubModel _instance = GithubModel._internal();
+  /// Factory constructor to ensure a singleton instance.
+  factory GithubModel() => _instance;
 
   GithubModel._internal();
 
-  factory GithubModel() => _instance;
-
+  /// The class identifier for logging purposes.
   static String classId = "com.GitDone.gitdone.core.models.github_model";
 
   static GitHub? _github;
