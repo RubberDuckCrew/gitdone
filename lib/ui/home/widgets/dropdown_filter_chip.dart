@@ -39,10 +39,9 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<_FilterChipDropdownViewModel>(
-      create:
-          (_) => _FilterChipDropdownViewModel(
-            allowMultipleSelection: widget.allowMultipleSelection,
-          ),
+      create: (_) => _FilterChipDropdownViewModel(
+        allowMultipleSelection: widget.allowMultipleSelection,
+      ),
       child: Consumer<_FilterChipDropdownViewModel>(
         builder: (context, viewModel, child) {
           viewModel.calculateMaxItemWidth(
@@ -61,35 +60,30 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                   avatar: widget.leading,
                   label: Text(viewModel.getLabel(widget.initialLabel)),
                   iconTheme: IconThemeData(
-                    color:
-                        viewModel.isSelected
-                            ? Theme.of(context).colorScheme.onPrimary
-                            : Theme.of(context).colorScheme.onSurface,
+                    color: viewModel.isSelected
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onSurface,
                   ),
                   labelStyle: TextStyle(
-                    color:
-                        viewModel.isSelected
-                            ? Theme.of(context).colorScheme.onPrimary
-                            : Theme.of(context).colorScheme.onSurface,
+                    color: viewModel.isSelected
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onSurface,
                   ),
-                  backgroundColor:
-                      viewModel.isSelected
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.surfaceContainer,
-                  deleteIcon:
-                      viewModel.isSelected
-                          ? Icon(
-                            Icons.close,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          )
-                          : Icon(
-                            Icons.arrow_drop_down,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                  onDeleted:
-                      viewModel.isSelected
-                          ? viewModel.clearSelection
-                          : () => viewModel.toggleDropdown(false),
+                  backgroundColor: viewModel.isSelected
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.surfaceContainer,
+                  deleteIcon: viewModel.isSelected
+                      ? Icon(
+                          Icons.close,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        )
+                      : Icon(
+                          Icons.arrow_drop_down,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                  onDeleted: viewModel.isSelected
+                      ? viewModel.clearSelection
+                      : () => viewModel.toggleDropdown(false),
                   onSelected: viewModel.toggleDropdown,
                 ),
                 if (viewModel.isDropdownOpen)
@@ -110,63 +104,53 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children:
-                                widget.items.map((item) {
-                                  return Material(
-                                    color:
-                                        viewModel.isItemSelected(item)
-                                            ? Theme.of(
-                                              context,
-                                            ).colorScheme.primary
-                                            : Colors.transparent,
-                                    child: InkWell(
-                                      onTap: () {
-                                        widget.onUpdate(item);
+                            children: widget.items.map((item) {
+                              return Material(
+                                color: viewModel.isItemSelected(item)
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {
+                                    widget.onUpdate(item);
 
-                                        if (viewModel.isItemSelected(item) &&
-                                            widget.allowMultipleSelection) {
-                                          viewModel.unselectItem(item);
-                                        } else {
-                                          viewModel.selectItem(item);
-                                        }
-                                      },
-                                      child: SizedBox(
-                                        child: Container(
-                                          width:
-                                              widget.allowMultipleSelection
-                                                  ? viewModel.maxItemWidth +
-                                                      viewModel.iconWidth
-                                                  : viewModel.maxItemWidth,
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 8.0,
-                                            horizontal: widget.labelPadding,
-                                          ),
-                                          child:
-                                              widget.allowMultipleSelection
-                                                  ? Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      viewModel.isItemSelected(
-                                                            item,
-                                                          )
-                                                          ? Icon(
-                                                            Icons.check_box,
-                                                          )
-                                                          : Icon(
-                                                            Icons
-                                                                .check_box_outline_blank,
-                                                          ),
-                                                      Text(item.label),
-                                                    ],
-                                                  )
-                                                  : Text(item.label),
-                                        ),
+                                    if (viewModel.isItemSelected(item) &&
+                                        widget.allowMultipleSelection) {
+                                      viewModel.unselectItem(item);
+                                    } else {
+                                      viewModel.selectItem(item);
+                                    }
+                                  },
+                                  child: SizedBox(
+                                    child: Container(
+                                      width: widget.allowMultipleSelection
+                                          ? viewModel.maxItemWidth +
+                                                viewModel.iconWidth
+                                          : viewModel.maxItemWidth,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 8.0,
+                                        horizontal: widget.labelPadding,
                                       ),
+                                      child: widget.allowMultipleSelection
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                viewModel.isItemSelected(item)
+                                                    ? Icon(Icons.check_box)
+                                                    : Icon(
+                                                        Icons
+                                                            .check_box_outline_blank,
+                                                      ),
+                                                Text(item.label),
+                                              ],
+                                            )
+                                          : Text(item.label),
                                     ),
-                                  );
-                                }).toList(),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
                           ),
                         );
                       },
@@ -252,12 +236,11 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
         maxLines: 1,
         textDirection: TextDirection.ltr,
       )..layout(minWidth: 0, maxWidth: double.infinity);
-      maxWidth =
-          maxWidth < textPainter.width
-              ? textPainter.width +
-                  2 * labelPadding +
-                  5 // TODO: Magic number because TextPainter is not accurate. See https://github.com/flutter/flutter/issues/142028
-              : maxWidth;
+      maxWidth = maxWidth < textPainter.width
+          ? textPainter.width +
+                2 * labelPadding +
+                5 // TODO: Magic number because TextPainter is not accurate. See https://github.com/flutter/flutter/issues/142028
+          : maxWidth;
     }
 
     _maxItemWidth = maxWidth;
