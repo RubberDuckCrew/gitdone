@@ -10,7 +10,6 @@ import "package:package_info_plus/package_info_plus.dart";
 class AppConfig {
   /// Singleton-Instance of the AppConfig class.
   AppConfig._internal();
-  static final AppConfig _instance = AppConfig._internal();
 
   /// The flavor of the app. This is set by the build system.
   static const String flavor = appFlavor ?? "unknown flavor";
