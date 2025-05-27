@@ -2,42 +2,48 @@ import 'dart:developer' as developer;
 
 import 'package:http/http.dart' as http;
 
+/// A handler for making requests to the GitHub API.
 class GithubApiHandler {
-  final String _baseUrl = 'https://api.github.com';
-  final String _token;
-
+  /// Creates a new instance of [GithubApiHandler] with the provided [token].
   GithubApiHandler(this._token);
 
-  Future<http.Response> get(String path) async {
-    return await http.get(
-      Uri.parse('$_baseUrl$path'),
-      headers: {'Authorization': 'Bearer $_token'},
-    );
-  }
+  final _baseUrl = "https://api.github.com";
+  final String _token;
 
-  Future<http.Response> post(String path, {required String body}) async {
-    return await http.post(
-      Uri.parse('$_baseUrl$path'),
-      headers: {'Authorization': 'Bearer $_token'},
-      body: body,
-    );
-  }
+  /// Makes a GET request to the GitHub API at the specified [path].
+  Future<http.Response> get(final String path) => http.get(
+    Uri.parse("$_baseUrl$path"),
+    headers: {"Authorization": "Bearer $_token"},
+  );
 
-  Future<http.Response> patch(String path, {required String body}) async {
-    return await http.patch(
-      Uri.parse('$_baseUrl$path'),
-      headers: {'Authorization': 'Bearer $_token'},
-      body: body,
-    );
-  }
+  /// Makes a POST request to the GitHub API at the specified [path] with
+  /// the provided [body].
+  Future<http.Response> post(final String path, {required final String body}) =>
+      http.post(
+        Uri.parse("$_baseUrl$path"),
+        headers: {"Authorization": "Bearer $_token"},
+        body: body,
+      );
 
-  Future<http.Response> delete(String path) async {
-    return await http.delete(
-      Uri.parse('$_baseUrl$path'),
-      headers: {'Authorization': 'Bearer $_token'},
-    );
-  }
+  /// Makes a PATCH request to the GitHub API at the specified [path] with the
+  /// provided [body].
+  Future<http.Response> patch(
+    final String path, {
+    required final String body,
+  }) => http.patch(
+    Uri.parse("$_baseUrl$path"),
+    headers: {"Authorization": "Bearer $_token"},
+    body: body,
+  );
 
+  /// Makes a DELETE request to the GitHub API at the specified [path].
+  Future<http.Response> delete(final String path) => http.delete(
+    Uri.parse("$_baseUrl$path"),
+    headers: {"Authorization": "Bearer $_token"},
+  );
+
+  /// Checks if the provided token is valid by making a request to the
+  /// `/user` endpoint.
   Future<bool> isTokenValid() async {
     developer.log(
       'Checking token validity',
