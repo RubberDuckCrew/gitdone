@@ -9,6 +9,9 @@ class GithubModel {
 
   GithubModel._internal();
 
+  /// Factory constructor to ensure a singleton instance.
+  static final GithubModel _instance = GithubModel._internal();
+
   /// The class identifier for logging purposes.
   static String classId = "com.GitDone.gitdone.core.models.github_model";
 
@@ -16,7 +19,7 @@ class GithubModel {
 
   static Future<void> _init() async {
     Logger.log("Initializing GitHub", classId, LogLevel.finest);
-    String? token = await TokenHandler().getToken();
+    final String? token = await TokenHandler().getToken();
     _github = GitHub(auth: Authentication.bearerToken(token!));
   }
 
