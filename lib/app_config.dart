@@ -8,13 +8,12 @@ import "package:package_info_plus/package_info_plus.dart";
 
 /// Configuration class for the GitDone application.
 class AppConfig {
-  /// The flavor of the app, set by the build system.
-  factory AppConfig() => _instance;
-
+  /// Singleton-Instance of the AppConfig class.
   AppConfig._internal();
+  static final AppConfig _instance = AppConfig._internal();
 
   /// The flavor of the app. This is set by the build system.
-  static final String flavor = appFlavor ?? "unknown flavor";
+  static const String flavor = appFlavor ?? "unknown flavor";
 
   /// The commit hash on which the app was built. This is set by the
   /// build system.
@@ -36,7 +35,7 @@ class AppConfig {
 
   /// Initializes the app configuration by fetching package information.
   static Future<void> init() async {
-    final info = await PackageInfo.fromPlatform();
+    final PackageInfo info = await PackageInfo.fromPlatform();
     version = info.version;
     buildNumber = info.buildNumber;
     appName = info.appName;
