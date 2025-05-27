@@ -9,6 +9,9 @@ class CurrentUserModel {
 
   CurrentUserModel._internal();
 
+  /// Factory constructor to ensure a singleton instance.
+  static final CurrentUserModel _instance = CurrentUserModel._internal();
+
   /// The class identifier for logging purposes.
   static String classId = "com.GitDone.gitdone.core.models.current_user_model";
 
