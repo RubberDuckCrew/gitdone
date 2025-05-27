@@ -4,7 +4,9 @@ import 'package:gitdone/core/theme/app_color.dart';
 import 'package:gitdone/ui/home/home_screen.dart';
 import 'package:gitdone/ui/welcome/welcome_view.dart';
 
+/// The main entry point of the GitDone application.
 class App extends StatelessWidget {
+  /// Creates an instance of the [App] widget.
   const App({super.key});
 
   @override
@@ -27,6 +29,7 @@ class App extends StatelessWidget {
     );
   }
 
+  /// Checks if the user is authenticated by verifying the presence of a token.
   Future<bool> checkIfAuthenticated() async {
     TokenHandler tokenHandler = TokenHandler();
     return await tokenHandler.getToken() != null;
