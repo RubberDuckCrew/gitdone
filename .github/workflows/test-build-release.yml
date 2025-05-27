@@ -6,6 +6,10 @@ on:
   pull_request:
     types: [ opened, labeled, synchronize ]
 
+env:
+  FLUTTER_CHANNEL: stable
+  FLUTTER_VERSION: 3.32.0
+
 jobs:
   test:
     name: Format, analyze and test
@@ -30,8 +34,8 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{vars.FLUTTER_CHANNEL}}
-          flutter-version: ${{ vars.FLUTTER_VERSION }}
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
       - name: Install pub dependencies
@@ -74,8 +78,8 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{ vars.FLUTTER_CHANNEL }}
-          flutter-version: ${{ vars.FLUTTER_VERSION }}
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
       - name: Set up JDK
@@ -90,9 +94,10 @@ jobs:
       - name: Set up keystore
         working-directory: .
         run: |
-          echo keyPassword=\${{ secrets.KEY_STORE }} > ${{vars.PROPERTIES_PATH}}
-          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{vars.PROPERTIES_PATH}}
-          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{vars.PROPERTIES_PATH}}
+          PROPERTIES_PATH="./app/android/key.properties"
+          echo keyPassword=\${{ secrets.KEY_STORE }} > $PROPERTIES_PATH
+          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> $PROPERTIES_PATH
+          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> $PROPERTIES_PATH
           echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
 
       - name: Set build options
