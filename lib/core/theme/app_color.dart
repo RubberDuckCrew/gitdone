@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// A class that defines the color scheme for the application.
 class AppColor {
-  static final ColorScheme colorScheme = ColorScheme(
+  /// Private constructor to prevent instantiation.
+  static final colorScheme = ColorScheme(
     brightness: Brightness.dark,
     primary: Color(0xFFFF6A00),
     onPrimary: Colors.white,
