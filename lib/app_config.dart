@@ -1,9 +1,14 @@
-import 'package:flutter/services.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+// This is necessary to ensure that the app can be built with different
+// configurations based on the environment, such as development, staging,
+// or production.
+// ignore_for_file: do_not_use_environment
 
+import "package:flutter/services.dart";
+import "package:package_info_plus/package_info_plus.dart";
+
+/// Configuration class for the GitDone application.
 class AppConfig {
-  static final AppConfig _instance = AppConfig._internal();
-
+  /// The flavor of the app, set by the build system.
   factory AppConfig() => _instance;
 
   AppConfig._internal();
@@ -11,7 +16,8 @@ class AppConfig {
   /// The flavor of the app. This is set by the build system.
   static final String flavor = appFlavor ?? "unknown flavor";
 
-  /// The commit hash on which the app was built. This is set by the build system.
+  /// The commit hash on which the app was built. This is set by the
+  /// build system.
   static final String gitCommit = const bool.hasEnvironment("GIT_COMMIT")
       ? const String.fromEnvironment("GIT_COMMIT").substring(0, 7)
       : "uncommitted";
@@ -28,6 +34,7 @@ class AppConfig {
   /// Package name defined in build.gradle
   static late final String packageName;
 
+  /// Initializes the app configuration by fetching package information.
   static Future<void> init() async {
     final info = await PackageInfo.fromPlatform();
     version = info.version;
