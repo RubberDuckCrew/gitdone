@@ -10,8 +10,6 @@ class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// Whether the back button should be visible.
   final dynamic backVisible;
 
-  const NormalAppBar({super.key, this.backVisible = true});
-
   @override
   Widget build(BuildContext context) {
     return AppBar(
