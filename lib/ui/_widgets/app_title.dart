@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gitdone/core/theme/app_color.dart';
 
+/// A widget that displays the application title with a specific font size.
 class AppTitleWidget extends StatelessWidget {
+  /// Creates an instance of [AppTitleWidget] with the specified font size.
+  const AppTitleWidget({required this.fontSize, super.key});
   final double fontSize;
 
   const AppTitleWidget({super.key, required this.fontSize});
