@@ -4,10 +4,9 @@ import 'package:gitdone/core/models/github_oauth_model.dart';
 import 'package:gitdone/ui/home/home_screen.dart';
 
 class LoginGithubViewModel extends ChangeNotifier {
-
   /// Creates an instance of [LoginGithubViewModel].
   LoginGithubViewModel({required this.infoCallback})
-    : _githubAuth = GitHubAuth(callbackFunction: infoCallback);
+    : _githubAuth = GitHubAuth(infoCallback);
   final GitHubAuth _githubAuth;
 
   /// Notifier to show/hide the progress indicator.
