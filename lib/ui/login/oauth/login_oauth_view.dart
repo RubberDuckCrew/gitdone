@@ -71,8 +71,9 @@ class _LoginGithubViewState extends State<LoginGithubView>
             Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             Center(
               child: ValueListenableBuilder<String>(
-                valueListenable:
-                    context.watch<LoginGithubViewModel>().fetchedUserCode,
+                valueListenable: context
+                    .watch<LoginGithubViewModel>()
+                    .fetchedUserCode,
                 builder: (context, fetchedUserCode, child) {
                   if (fetchedUserCode == "") {
                     return CircularProgressIndicator();
@@ -85,12 +86,10 @@ class _LoginGithubViewState extends State<LoginGithubView>
                         style: TextStyle(fontSize: 20),
                       ),
                       FilledButton(
-                        onPressed:
-                            () =>
-                                Provider.of<LoginGithubViewModel>(
-                                  context,
-                                  listen: false,
-                                ).launchBrowser(),
+                        onPressed: () => Provider.of<LoginGithubViewModel>(
+                          context,
+                          listen: false,
+                        ).launchBrowser(),
                         child: Text("Copy code and open browser"),
                       ),
                     ],
@@ -99,10 +98,9 @@ class _LoginGithubViewState extends State<LoginGithubView>
               ),
             ),
             ValueListenableBuilder(
-              valueListenable:
-                  context
-                      .watch<LoginGithubViewModel>()
-                      .showProgressIndicatorNotifier,
+              valueListenable: context
+                  .watch<LoginGithubViewModel>()
+                  .showProgressIndicatorNotifier,
               builder: (context, showProgressIndicatorNotifier, child) {
                 if (showProgressIndicatorNotifier) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -123,13 +121,14 @@ class _LoginGithubViewState extends State<LoginGithubView>
       context: context,
       barrierDismissible: false,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      pageBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-      ) {
-        return Center(child: CircularProgressIndicator());
-      },
+      pageBuilder:
+          (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return Center(child: CircularProgressIndicator());
+          },
       transitionDuration: Duration(milliseconds: 200),
     );
   }

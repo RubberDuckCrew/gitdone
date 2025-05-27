@@ -48,11 +48,11 @@ class SettingsView extends StatelessWidget {
                           children: [
                             model.avatarUrl.isNotEmpty
                                 ? CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    model.avatarUrl,
-                                  ),
-                                  radius: 20,
-                                )
+                                    backgroundImage: NetworkImage(
+                                      model.avatarUrl,
+                                    ),
+                                    radius: 20,
+                                  )
                                 : const Icon(Icons.account_circle, size: 40),
                             const Padding(padding: EdgeInsets.all(2.0)),
                             Text(
@@ -69,9 +69,8 @@ class SettingsView extends StatelessWidget {
                               style: OutlinedButton.styleFrom(
                                 side: const BorderSide(color: Colors.grey),
                               ),
-                              onPressed:
-                                  () async =>
-                                      await launchUrl(Uri.parse(model.htmlUrl)),
+                              onPressed: () async =>
+                                  await launchUrl(Uri.parse(model.htmlUrl)),
                               icon: const Icon(
                                 Icons.account_circle_outlined,
                                 size: 18,

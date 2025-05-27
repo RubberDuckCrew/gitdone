@@ -12,10 +12,9 @@ class AppConfig {
   static final String flavor = appFlavor ?? "unknown flavor";
 
   /// The commit hash on which the app was built. This is set by the build system.
-  static final String gitCommit =
-      const bool.hasEnvironment("GIT_COMMIT")
-          ? const String.fromEnvironment("GIT_COMMIT").substring(0, 7)
-          : "uncommitted";
+  static final String gitCommit = const bool.hasEnvironment("GIT_COMMIT")
+      ? const String.fromEnvironment("GIT_COMMIT").substring(0, 7)
+      : "uncommitted";
 
   /// App version defined in pubspec.yaml
   static late final String version;
