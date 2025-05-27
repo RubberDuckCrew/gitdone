@@ -16,22 +16,22 @@ class _LoginTokenViewState extends State<LoginTokenView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: NormalAppBar(),
+      appBar: const NormalAppBar(),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PageTitleWidget(title: "Personal Access Token Login"),
+            const PageTitleWidget(title: "Personal Access Token Login"),
             RichText(
               text: TextSpan(
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
                 children: <TextSpan>[
-                  TextSpan(
+                  const TextSpan(
                     text:
                         "You need to generate a personal access token from GitHub and enter it here. You can either use an fine-grained personal access token (recommended) or a classic personal access token.\n\n",
                   ),
-                  TextSpan(
+                  const TextSpan(
                     text: "GitHub Documentation:\n",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
@@ -52,13 +52,13 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                 ],
               ),
             ),
-            Text(
+            const Text(
               "Please enter your GitHub token:",
               textAlign: TextAlign.left,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-            LoginTokenInput(),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            const LoginTokenInput(),
           ],
         ),
       ),

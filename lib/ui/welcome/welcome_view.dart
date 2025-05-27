@@ -52,7 +52,7 @@ class _WelcomeViewState extends State<WelcomeView> {
             ),
             Text(
               "Version: ${AppConfig.version} (${AppConfig.gitCommit}, ${AppConfig.flavor})",
-              style: TextStyle(fontSize: 12, color: Colors.grey),
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
             const Padding(padding: EdgeInsets.all(10.0)),
           ],

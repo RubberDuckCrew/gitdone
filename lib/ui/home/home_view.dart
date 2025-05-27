@@ -32,7 +32,7 @@ class _HomeviewState extends State<Homeview> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          OctoCat(),
+          const OctoCat(),
           ElevatedButton(onPressed: logout, child: const Text("Logout")),
         ],
       ),

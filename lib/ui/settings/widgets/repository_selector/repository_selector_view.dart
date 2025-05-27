@@ -22,10 +22,10 @@ class _RepositorySelectorState extends State<RepositorySelector> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.network(repo.avatarUrl, width: 24, height: 24),
-          Padding(padding: const EdgeInsets.fromLTRB(0, 0, 8, 0)),
+          const Padding(padding: EdgeInsets.fromLTRB(0, 0, 8, 0)),
           Text(repo.name),
-          Padding(padding: const EdgeInsets.fromLTRB(0, 0, 8, 0)),
-          Text("(${repo.owner})", style: TextStyle(color: Colors.grey)),
+          const Padding(padding: EdgeInsets.fromLTRB(0, 0, 8, 0)),
+          Text("(${repo.owner})", style: const TextStyle(color: Colors.grey)),
         ],
       ),
     );

@@ -31,7 +31,7 @@ class _OctoCatState extends State<OctoCat> {
                       fit: BoxFit.fitWidth,
                       child: Text(
                         snapshot.data!.body.toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 8,
                           letterSpacing: 1,
                           fontFamily: "Courier",
@@ -47,7 +47,7 @@ class _OctoCatState extends State<OctoCat> {
                 onPressed: () {
                   provider.refreshData();
                 },
-                child: Text("Fetch new octocat"),
+                child: const Text("Fetch new octocat"),
               ),
             ],
           );

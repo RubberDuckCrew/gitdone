@@ -14,7 +14,7 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        PageTitleWidget(title: "Settings"),
+        const PageTitleWidget(title: "Settings"),
         SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
@@ -24,12 +24,12 @@ class SettingsView extends StatelessWidget {
                 "Todo Storage",
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              Text(
+              const Text(
                 "Select the repository, where you want to store your todos:",
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                child: RepositorySelector(),
+                child: const RepositorySelector(),
               ),
               const Padding(padding: EdgeInsets.all(8.0)),
               Text(
@@ -57,7 +57,9 @@ class SettingsView extends StatelessWidget {
                             const Padding(padding: EdgeInsets.all(2.0)),
                             Text(
                               model.username,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),
@@ -95,7 +97,7 @@ class SettingsView extends StatelessWidget {
             ],
           ),
         ),
-        Spacer(),
+        const Spacer(),
         Column(
           children: [
             const Text(
@@ -104,7 +106,7 @@ class SettingsView extends StatelessWidget {
             ),
             Text(
               "Version: ${AppConfig.version} (${AppConfig.gitCommit}, ${AppConfig.flavor})",
-              style: TextStyle(fontSize: 12, color: Colors.grey),
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
             const Padding(padding: EdgeInsets.all(8.0)),
           ],
@@ -115,7 +117,7 @@ class SettingsView extends StatelessWidget {
 }
 
 class SettingsViewModel extends ChangeNotifier {
-  static final String classId =
+  static const String classId =
       "com.GitDone.gitdone.ui.settings.settings_view_model";
 
   SettingsViewModel() {

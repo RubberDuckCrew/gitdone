@@ -10,7 +10,7 @@ class PageTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(padding: EdgeInsets.only(top: 16)),
+        const Padding(padding: EdgeInsets.only(top: 16)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -29,7 +29,7 @@ class PageTitleWidget extends StatelessWidget {
             ),
           ],
         ),
-        Padding(padding: EdgeInsets.only(bottom: 16)),
+        const Padding(padding: EdgeInsets.only(bottom: 16)),
       ],
     );
   }

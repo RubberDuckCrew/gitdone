@@ -23,8 +23,8 @@ class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Navigator.pop(context);
               },
             )
-          : SizedBox(width: 48),
-      actions: [const SizedBox(width: 48)],
+          : const SizedBox(width: 48),
+      actions: const [SizedBox(width: 48)],
     );
   }
 

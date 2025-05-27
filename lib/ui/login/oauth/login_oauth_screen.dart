@@ -12,7 +12,7 @@ class LoginGithubScreen extends StatelessWidget {
       create: (_) => LoginGithubViewModel(
         infoCallback: (text) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(text), duration: Duration(seconds: 2)),
+            SnackBar(content: Text(text), duration: const Duration(seconds: 2)),
           );
         },
       ),

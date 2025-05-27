@@ -17,12 +17,14 @@ class App extends StatelessWidget {
         future: checkIfAuthenticated(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
           }
           if (snapshot.hasData && snapshot.data == true) {
-            return HomeScreen();
+            return const HomeScreen();
           } else {
-            return WelcomeView();
+            return const WelcomeView();
           }
         },
       ),

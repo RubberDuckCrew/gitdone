@@ -38,18 +38,18 @@ class _LoginGithubViewState extends State<LoginGithubView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: NormalAppBar(),
+      appBar: const NormalAppBar(),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(padding: EdgeInsets.symmetric(vertical: 32.0)),
-            PageTitleWidget(title: "GitHub OAuth Login"),
+            const PageTitleWidget(title: "GitHub OAuth Login"),
             Align(
               alignment: Alignment.centerLeft,
               child: RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   style: TextStyle(fontSize: 18, height: 1.3),
                   children: [
                     TextSpan(
@@ -59,7 +59,9 @@ class _LoginGithubViewState extends State<LoginGithubView>
                     TextSpan(
                       text: "1. Copy the code below to open the browser\n",
                     ),
-                    TextSpan(text: "2. Log in with your GitHub account\n"),
+                    TextSpan(
+                      text: "2. Log in with your GitHub account\n",
+                    ),
                     TextSpan(
                       text: "3. Paste the device code and authorize the app\n",
                     ),
@@ -68,7 +70,7 @@ class _LoginGithubViewState extends State<LoginGithubView>
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
             Center(
               child: ValueListenableBuilder<String>(
                 valueListenable: context
@@ -76,21 +78,21 @@ class _LoginGithubViewState extends State<LoginGithubView>
                     .fetchedUserCode,
                 builder: (context, fetchedUserCode, child) {
                   if (fetchedUserCode == "") {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
                   return Column(
                     children: [
-                      Text("Please enter this code in the browser: "),
+                      const Text("Please enter this code in the browser: "),
                       SelectableText(
                         fetchedUserCode,
-                        style: TextStyle(fontSize: 20),
+                        style: const TextStyle(fontSize: 20),
                       ),
                       FilledButton(
                         onPressed: () => Provider.of<LoginGithubViewModel>(
                           context,
                           listen: false,
                         ).launchBrowser(),
-                        child: Text("Copy code and open browser"),
+                        child: const Text("Copy code and open browser"),
                       ),
                     ],
                   );
@@ -107,7 +109,7 @@ class _LoginGithubViewState extends State<LoginGithubView>
                     _showProgressIndicator();
                   });
                 }
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               },
             ),
           ],
@@ -127,9 +129,9 @@ class _LoginGithubViewState extends State<LoginGithubView>
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           },
-      transitionDuration: Duration(milliseconds: 200),
+      transitionDuration: const Duration(milliseconds: 200),
     );
   }
 }

@@ -18,19 +18,19 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
             controller: _controller,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'GitHub Token',
             ),
           ),
         ),
-        Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
         FilledButton(
           onPressed: login,
-          child: Text("Login with Personal Access Token"),
+          child: const Text("Login with Personal Access Token"),
         ),
       ],
     );
@@ -43,7 +43,7 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
         tokenHandler.saveToken(_controller.text);
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => HomeScreen()),
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
             (Route route) => false,
           );
         }
@@ -52,8 +52,8 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
           context: context,
           builder: (_) {
             return AlertDialog(
-              title: Text("Login Failed"),
-              content: Text(
+              title: const Text("Login Failed"),
+              content: const Text(
                 "Please verify that your access token is correct and that you have a stable internet connection, then try again.",
               ),
               actions: [
@@ -61,7 +61,7 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("OK"),
+                  child: const Text("OK"),
                 ),
               ],
             );

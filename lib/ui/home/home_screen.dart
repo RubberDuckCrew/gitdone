@@ -20,19 +20,19 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Consumer<HomeScreenViewModel>(
         builder: (context, viewModel, child) {
           return Scaffold(
-            appBar: NormalAppBar(),
+            appBar: const NormalAppBar(),
             body: switch (viewModel.selectedIndex) {
-              0 => Homeview(),
-              1 => SettingsView(),
-              _ => Homeview(),
+              0 => const Homeview(),
+              1 => const SettingsView(),
+              _ => const Homeview(),
             },
             bottomNavigationBar: NavigationBar(
-              destinations: [
-                const NavigationDestination(
+              destinations: const [
+                NavigationDestination(
                   icon: Icon(Icons.inbox),
                   label: "Home",
                 ),
-                const NavigationDestination(
+                NavigationDestination(
                   icon: Icon(Icons.settings),
                   label: "Settings",
                 ),

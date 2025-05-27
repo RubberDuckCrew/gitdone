@@ -137,8 +137,10 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                                                       .spaceBetween,
                                               children: [
                                                 viewModel.isItemSelected(item)
-                                                    ? Icon(Icons.check_box)
-                                                    : Icon(
+                                                    ? const Icon(
+                                                        Icons.check_box,
+                                                      )
+                                                    : const Icon(
                                                         Icons
                                                             .check_box_outline_blank,
                                                       ),
