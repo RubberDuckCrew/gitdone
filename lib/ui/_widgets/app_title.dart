@@ -7,8 +7,6 @@ class AppTitleWidget extends StatelessWidget {
   const AppTitleWidget({required this.fontSize, super.key});
   final double fontSize;
 
-  const AppTitleWidget({super.key, required this.fontSize});
-
   @override
   Widget build(BuildContext context) {
     return Row(
