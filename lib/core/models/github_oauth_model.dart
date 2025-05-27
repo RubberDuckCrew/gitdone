@@ -3,11 +3,18 @@ import 'package:gitdone/core/utils/logger.dart';
 import 'package:github_flutter/github.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+/// This class handles the GitHub OAuth authentication process .
 class GitHubAuth {
-  static const String clientId = "Ov23li2QBbpgRa3P0GHJ";
-  static const String classId =
-      "com.GitDone.gitdone.core.models.github_oauth_handler";
-  final tokenHandler = TokenHandler();
+  /// Creates an instance of GitHubAuth with a callback function.
+  GitHubAuth() : _deviceFlow = DeviceFlow(clientId, scopes: ["repo", "user"]);
+
+  /// The client ID for the GitHub OAuth application.
+  static const clientId = "Ov23li2QBbpgRa3P0GHJ";
+
+  /// The class identifier for logging purposes.
+  static const classId = "com.GitDone.gitdone.core.models.github_oauth_handler";
+
+  final _tokenHandler = TokenHandler();
   bool inLoginProcess = false;
   bool _authenticated = false;
   final int maxLoginAttempts = 2;
@@ -16,9 +23,7 @@ class GitHubAuth {
   final DeviceFlow _deviceFlow;
   String? _userCode;
 
-  GitHubAuth({required this.callbackFunction})
-    : _deviceFlow = DeviceFlow(clientId, scopes: ["repo", "user"]);
-
+  /// Starts the GitHub OAuth login process.
   Future<String> startLoginProcess() async {
     Logger.log("Starting GitHub login process", classId, LogLevel.finest);
 
@@ -42,6 +47,7 @@ class GitHubAuth {
     }
   }
 
+  /// Launches the browser to the GitHub OAuth authorization URL.
   Future<void> launchBrowser() async {
     String url = _deviceFlow.createAuthorizeUrl();
     if (await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
