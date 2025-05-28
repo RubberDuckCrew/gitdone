@@ -1,22 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/app_config.dart';
-import 'package:gitdone/core/models/current_user_model.dart';
-import 'package:gitdone/core/models/token_handler.dart';
-import 'package:gitdone/ui/_widgets/page_title.dart';
-import 'package:gitdone/ui/settings/widgets/repository_selector/repository_selector_view.dart';
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/app_config.dart";
+import "package:gitdone/core/models/current_user_model.dart";
+import "package:gitdone/core/models/token_handler.dart";
+import "package:gitdone/ui/_widgets/page_title.dart";
+import "package:gitdone/ui/settings/widgets/repository_selector/repository_selector_view.dart";
+import "package:github_flutter/src/models/users.dart";
+import "package:provider/provider.dart";
+import "package:url_launcher/url_launcher.dart";
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(final BuildContext context) => Column(
       children: [
         const PageTitleWidget(title: "Settings"),
         SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -31,7 +31,7 @@ class SettingsView extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 child: const RepositorySelector(),
               ),
-              const Padding(padding: EdgeInsets.all(8.0)),
+              const Padding(padding: EdgeInsets.all(8)),
               Text(
                 "Account Management",
                 style: Theme.of(context).textTheme.titleLarge,
@@ -40,21 +40,18 @@ class SettingsView extends StatelessWidget {
               ChangeNotifierProvider(
                 create: (_) => SettingsViewModel(),
                 child: Consumer<SettingsViewModel>(
-                  builder: (context, model, child) {
-                    return Column(
+                  builder: (final context, final model, final child) => Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            model.avatarUrl.isNotEmpty
-                                ? CircleAvatar(
+                            if (model.avatarUrl.isNotEmpty) CircleAvatar(
                                     backgroundImage: NetworkImage(
                                       model.avatarUrl,
                                     ),
                                     radius: 20,
-                                  )
-                                : const Icon(Icons.account_circle, size: 40),
-                            const Padding(padding: EdgeInsets.all(2.0)),
+                                  ) else const Icon(Icons.account_circle, size: 40),
+                            const Padding(padding: EdgeInsets.all(2)),
                             Text(
                               model.username,
                               style: const TextStyle(
@@ -63,7 +60,7 @@ class SettingsView extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const Padding(padding: EdgeInsets.all(4.0)),
+                        const Padding(padding: EdgeInsets.all(4)),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -72,7 +69,7 @@ class SettingsView extends StatelessWidget {
                                 side: const BorderSide(color: Colors.grey),
                               ),
                               onPressed: () async =>
-                                  await launchUrl(Uri.parse(model.htmlUrl)),
+                                  launchUrl(Uri.parse(model.htmlUrl)),
                               icon: const Icon(
                                 Icons.account_circle_outlined,
                                 size: 18,
@@ -90,8 +87,7 @@ class SettingsView extends StatelessWidget {
                           ],
                         ),
                       ],
-                    );
-                  },
+                    ),
                 ),
               ),
             ],
@@ -108,24 +104,23 @@ class SettingsView extends StatelessWidget {
               "Version: ${AppConfig.version} (${AppConfig.gitCommit}, ${AppConfig.flavor})",
               style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
-            const Padding(padding: EdgeInsets.all(8.0)),
+            const Padding(padding: EdgeInsets.all(8)),
           ],
         ),
       ],
     );
-  }
 }
 
 class SettingsViewModel extends ChangeNotifier {
-  static const String classId =
-      "com.GitDone.gitdone.ui.settings.settings_view_model";
 
   SettingsViewModel() {
     init();
   }
+  static const String classId =
+      "com.GitDone.gitdone.ui.settings.settings_view_model";
 
   Future<void> init() async {
-    final user = await CurrentUserModel.currentUser;
+    final User user = await CurrentUserModel.currentUser;
     username = user.login ?? "Unknown User";
     avatarUrl = user.avatarUrl ?? "";
     htmlUrl = user.htmlUrl ?? "";

@@ -1,6 +1,6 @@
-import 'package:gitdone/core/models/token_handler.dart';
-import 'package:gitdone/core/utils/logger.dart';
-import 'package:github_flutter/github.dart';
+import "package:gitdone/core/models/token_handler.dart";
+import "package:gitdone/core/utils/logger.dart";
+import "package:github_flutter/github.dart";
 
 /// This model handles the GitHub API interactions.
 class GithubModel {

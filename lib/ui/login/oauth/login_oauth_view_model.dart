@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:gitdone/core/models/github_oauth_model.dart';
-import 'package:gitdone/ui/home/home_screen.dart';
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:gitdone/core/models/github_oauth_model.dart";
+import "package:gitdone/ui/home/home_screen.dart";
 
 class LoginGithubViewModel extends ChangeNotifier {
   /// Creates an instance of [LoginGithubViewModel].
@@ -24,7 +24,7 @@ class LoginGithubViewModel extends ChangeNotifier {
   ///
   /// Returns the `userCode` to be displayed to the user.
   Future<String?> startLogin() async {
-    String? userCode = await _githubAuth.startLoginProcess();
+    final String userCode = await _githubAuth.startLoginProcess();
 
     if (userCode.isNotEmpty) {
       fetchedUserCode.value = userCode;
@@ -33,7 +33,7 @@ class LoginGithubViewModel extends ChangeNotifier {
   }
 
   /// Launches the browser and copies the user code to the clipboard.
-  void launchBrowser() async {
+  Future<void> launchBrowser() async {
     showProgressIndicatorNotifier.value = true;
     Clipboard.setData(ClipboardData(text: _githubAuth.userCode));
     _githubAuth.launchBrowser();
@@ -42,10 +42,10 @@ class LoginGithubViewModel extends ChangeNotifier {
   /// Continues the login process by polling for the token and executing the
   /// provided callbacks.
   Future<void> continueLogin({
-    required VoidCallback onSuccess,
-    required VoidCallback onFailure,
+    required final VoidCallback onSuccess,
+    required final VoidCallback onFailure,
   }) async {
-    final authenticated = await _githubAuth.pollForToken();
+    final bool authenticated = await _githubAuth.pollForToken();
 
     // Notify listeners that the progress indicator should be hidden
     showProgressIndicatorNotifier.value = false;
@@ -58,13 +58,13 @@ class LoginGithubViewModel extends ChangeNotifier {
   }
 
   /// Handles Lifecycle events from the UI
-  void handleAppLifecycleState(AppLifecycleState state, BuildContext context) {
+  void handleAppLifecycleState(final AppLifecycleState state, final BuildContext context) {
     if (state == AppLifecycleState.resumed && _githubAuth.inLoginProcess) {
       continueLogin(
         onSuccess: () {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-            (Route route) => false,
+            MaterialPageRoute(builder: (final context) => const HomeScreen()),
+            (final route) => false,
           );
         },
         onFailure: () {

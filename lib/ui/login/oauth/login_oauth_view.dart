@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/ui/_widgets/app_bar.dart';
-import 'package:gitdone/ui/_widgets/page_title.dart';
-import 'package:gitdone/ui/login/oauth/login_oauth_view_model.dart';
-import 'package:provider/provider.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/ui/_widgets/app_bar.dart";
+import "package:gitdone/ui/_widgets/page_title.dart";
+import "package:gitdone/ui/login/oauth/login_oauth_view_model.dart";
+import "package:provider/provider.dart";
 
 class LoginGithubView extends StatefulWidget {
   const LoginGithubView({super.key});
@@ -27,7 +27,7 @@ class _LoginGithubViewState extends State<LoginGithubView>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(final AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     context.read<LoginGithubViewModel>().handleAppLifecycleState(
       state,
@@ -36,15 +36,14 @@ class _LoginGithubViewState extends State<LoginGithubView>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(final BuildContext context) => Scaffold(
       appBar: const NormalAppBar(),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(padding: EdgeInsets.symmetric(vertical: 32.0)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 32)),
             const PageTitleWidget(title: "GitHub OAuth Login"),
             Align(
               alignment: Alignment.centerLeft,
@@ -76,7 +75,7 @@ class _LoginGithubViewState extends State<LoginGithubView>
                 valueListenable: context
                     .watch<LoginGithubViewModel>()
                     .fetchedUserCode,
-                builder: (context, fetchedUserCode, child) {
+                builder: (final context, final fetchedUserCode, final child) {
                   if (fetchedUserCode == "") {
                     return const CircularProgressIndicator();
                   }
@@ -103,7 +102,7 @@ class _LoginGithubViewState extends State<LoginGithubView>
               valueListenable: context
                   .watch<LoginGithubViewModel>()
                   .showProgressIndicatorNotifier,
-              builder: (context, showProgressIndicatorNotifier, child) {
+              builder: (final context, final showProgressIndicatorNotifier, final child) {
                 if (showProgressIndicatorNotifier) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     _showProgressIndicator();
@@ -116,7 +115,6 @@ class _LoginGithubViewState extends State<LoginGithubView>
         ),
       ),
     );
-  }
 
   void _showProgressIndicator() {
     showGeneralDialog(
@@ -125,12 +123,10 @@ class _LoginGithubViewState extends State<LoginGithubView>
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       pageBuilder:
           (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return const Center(child: CircularProgressIndicator());
-          },
+            final context,
+            final animation,
+            final secondaryAnimation,
+          ) => const Center(child: CircularProgressIndicator()),
       transitionDuration: const Duration(milliseconds: 200),
     );
   }

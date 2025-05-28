@@ -1,6 +1,6 @@
-import 'package:gitdone/core/models/github_model.dart';
-import 'package:gitdone/core/utils/logger.dart';
-import 'package:github_flutter/github.dart';
+import "package:gitdone/core/models/github_model.dart";
+import "package:gitdone/core/utils/logger.dart";
+import "package:github_flutter/github.dart";
 
 /// This model handles the current user information from GitHub.
 class CurrentUserModel {

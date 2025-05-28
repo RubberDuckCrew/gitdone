@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/ui/_widgets/app_bar.dart';
-import 'package:gitdone/ui/home/home_screen_view_model.dart';
-import 'package:gitdone/ui/home/home_view.dart';
-import 'package:gitdone/ui/settings/settings_view.dart';
-import 'package:provider/provider.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/ui/_widgets/app_bar.dart";
+import "package:gitdone/ui/home/home_screen_view_model.dart";
+import "package:gitdone/ui/home/home_view.dart";
+import "package:gitdone/ui/settings/settings_view.dart";
+import "package:provider/provider.dart";
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,12 +14,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+  Widget build(final BuildContext context) => ChangeNotifierProvider(
       create: (_) => HomeScreenViewModel(),
       child: Consumer<HomeScreenViewModel>(
-        builder: (context, viewModel, child) {
-          return Scaffold(
+        builder: (final context, final viewModel, final child) => Scaffold(
             appBar: const NormalAppBar(),
             body: switch (viewModel.selectedIndex) {
               0 => const Homeview(),
@@ -37,12 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   label: "Settings",
                 ),
               ],
-              onDestinationSelected: (index) => viewModel.updateIndex(index),
+              onDestinationSelected: viewModel.updateIndex,
               selectedIndex: viewModel.selectedIndex,
             ),
-          );
-        },
+          ),
       ),
     );
-  }
 }

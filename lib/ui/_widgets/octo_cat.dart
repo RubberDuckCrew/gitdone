@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/core/github_api_handler.dart';
-import 'package:gitdone/core/models/token_handler.dart';
-import 'package:http/http.dart';
-import 'package:provider/provider.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/core/github_api_handler.dart";
+import "package:gitdone/core/models/token_handler.dart";
+import "package:http/http.dart";
+import "package:provider/provider.dart";
 
 class OctoCat extends StatefulWidget {
   const OctoCat({super.key});
@@ -13,16 +13,14 @@ class OctoCat extends StatefulWidget {
 
 class _OctoCatState extends State<OctoCat> {
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+  Widget build(final BuildContext context) => ChangeNotifierProvider(
       create: (_) => OctoCatProvider(),
       child: Consumer<OctoCatProvider>(
-        builder: (context, provider, child) {
-          return Column(
+        builder: (final context, final provider, final child) => Column(
             children: [
               FutureBuilder(
                 future: provider.futureResponse,
-                builder: (context, snapshot) {
+                builder: (final context, final snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
@@ -30,7 +28,7 @@ class _OctoCatState extends State<OctoCat> {
                     return FittedBox(
                       fit: BoxFit.fitWidth,
                       child: Text(
-                        snapshot.data!.body.toString(),
+                        snapshot.data!.body,
                         style: const TextStyle(
                           fontSize: 8,
                           letterSpacing: 1,
@@ -44,17 +42,13 @@ class _OctoCatState extends State<OctoCat> {
                 },
               ),
               FilledButton(
-                onPressed: () {
-                  provider.refreshData();
-                },
+                onPressed: provider.refreshData,
                 child: const Text("Fetch new octocat"),
               ),
             ],
-          );
-        },
+          ),
       ),
     );
-  }
 }
 
 class OctoCatProvider extends ChangeNotifier {
@@ -68,14 +62,14 @@ class OctoCatProvider extends ChangeNotifier {
 
   Future<Response> fetchData() async {
     if (_futureResponse == null) {
-      TokenHandler tokenHandler = TokenHandler();
-      String? token = await tokenHandler.getToken();
+      final TokenHandler tokenHandler = TokenHandler();
+      final String? token = await tokenHandler.getToken();
       if (token != null) {
-        GithubApiHandler apiHandler = GithubApiHandler(token);
-        _futureResponse = apiHandler.get('/octocat');
+        final GithubApiHandler apiHandler = GithubApiHandler(token);
+        _futureResponse = apiHandler.get("/octocat");
         notifyListeners();
       } else {
-        _futureResponse = Future.value(Response('No token', 401));
+        _futureResponse = Future.value(Response("No token", 401));
       }
     }
     return _futureResponse!;

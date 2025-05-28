@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/core/models/repository_details.dart';
-import 'package:provider/provider.dart';
-
-import 'repository_selector_view_model.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/core/models/repository_details.dart";
+import "package:gitdone/ui/settings/widgets/repository_selector/repository_selector_view_model.dart";
+import "package:provider/provider.dart";
 
 class RepositorySelector extends StatefulWidget {
   const RepositorySelector({super.key});
@@ -13,9 +12,8 @@ class RepositorySelector extends StatefulWidget {
 
 class _RepositorySelectorState extends State<RepositorySelector> {
   DropdownMenuItem<RepositoryDetails> convertRepoToItem(
-    RepositoryDetails repo,
-  ) {
-    return DropdownMenuItem(
+    final RepositoryDetails repo,
+  ) => DropdownMenuItem(
       value: repo,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -29,15 +27,12 @@ class _RepositorySelectorState extends State<RepositorySelector> {
         ],
       ),
     );
-  }
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+  Widget build(final BuildContext context) => ChangeNotifierProvider(
       create: (_) => RepositorySelectorViewModel(),
       child: Consumer<RepositorySelectorViewModel>(
-        builder: (context, model, child) {
-          return Column(
+        builder: (final context, final model, final child) => Column(
             children: [
               SizedBox(
                 child: DropdownButton<RepositoryDetails>(
@@ -45,7 +40,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
                   hint: const Text("Select a repository"),
                   value: model.selectedRepository,
                   items: model.repositories.map(convertRepoToItem).toList(),
-                  onChanged: (repo) {
+                  onChanged: (final repo) {
                     model.selectRepository(repo);
                     model.saveSelectedRepository();
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -58,9 +53,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
                 ),
               ),
             ],
-          );
-        },
+          ),
       ),
     );
-  }
 }

@@ -1,6 +1,6 @@
-import 'dart:developer' as developer;
+import "dart:developer" as developer;
 
-import 'package:http/http.dart' as http;
+import "package:http/http.dart" as http;
 
 /// A handler for making requests to the GitHub API.
 class GithubApiHandler {
@@ -46,10 +46,10 @@ class GithubApiHandler {
   /// `/user` endpoint.
   Future<bool> isTokenValid() async {
     developer.log(
-      'Checking token validity',
-      name: 'com.GitDone.gitdone.github_api_handler',
+      "Checking token validity",
+      name: "com.GitDone.gitdone.github_api_handler",
     );
-    final response = await get('/user');
+    final http.Response response = await get("/user");
     return response.statusCode == 200;
   }
 }

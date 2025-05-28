@@ -1,4 +1,4 @@
-import 'package:github_flutter/github.dart';
+import "package:github_flutter/github.dart";
 
 /// This class represents the details of a GitHub repository.
 class RepositoryDetails {

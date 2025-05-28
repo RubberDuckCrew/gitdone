@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/core/github_api_handler.dart';
-import 'package:gitdone/core/models/token_handler.dart';
-import 'package:gitdone/ui/home/home_screen.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/core/github_api_handler.dart";
+import "package:gitdone/core/models/token_handler.dart";
+import "package:gitdone/ui/home/home_screen.dart";
 
 class LoginTokenInput extends StatefulWidget {
   const LoginTokenInput({super.key});
@@ -14,8 +14,7 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
   final TextEditingController _controller = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(final BuildContext context) => Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -23,7 +22,7 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
             controller: _controller,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'GitHub Token',
+              labelText: "GitHub Token",
             ),
           ),
         ),
@@ -34,24 +33,22 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
         ),
       ],
     );
-  }
 
   Future<void> login() async {
     if (_controller.text.isNotEmpty) {
       if (await GithubApiHandler(_controller.text).isTokenValid()) {
-        TokenHandler tokenHandler = TokenHandler();
+        final TokenHandler tokenHandler = TokenHandler();
         tokenHandler.saveToken(_controller.text);
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-            (Route route) => false,
+            MaterialPageRoute(builder: (final context) => const HomeScreen()),
+            (final route) => false,
           );
         }
       } else if (mounted) {
         showDialog(
           context: context,
-          builder: (_) {
-            return AlertDialog(
+          builder: (_) => AlertDialog(
               title: const Text("Login Failed"),
               content: const Text(
                 "Please verify that your access token is correct and that you have a stable internet connection, then try again.",
@@ -64,8 +61,7 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
                   child: const Text("OK"),
                 ),
               ],
-            );
-          },
+            ),
         );
       }
     }

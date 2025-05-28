@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/core/models/token_handler.dart';
-import 'package:gitdone/ui/_widgets/octo_cat.dart';
-import 'package:gitdone/ui/welcome/welcome_view.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/core/models/token_handler.dart";
+import "package:gitdone/ui/_widgets/octo_cat.dart";
+import "package:gitdone/ui/welcome/welcome_view.dart";
 
 class Homeview extends StatefulWidget {
   const Homeview({super.key});
@@ -16,19 +16,18 @@ class _HomeviewState extends State<Homeview> {
     super.initState();
   }
 
-  void logout() async {
-    TokenHandler tokenHandler = TokenHandler();
+  Future<void> logout() async {
+    final TokenHandler tokenHandler = TokenHandler();
     await tokenHandler.deleteToken();
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const WelcomeView()),
+      MaterialPageRoute(builder: (final context) => const WelcomeView()),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
+  Widget build(final BuildContext context) => Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -37,5 +36,4 @@ class _HomeviewState extends State<Homeview> {
         ],
       ),
     );
-  }
 }

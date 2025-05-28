@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/ui/_widgets/app_bar.dart';
-import 'package:gitdone/ui/_widgets/page_title.dart';
-import 'package:gitdone/ui/_widgets/text_link.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/ui/_widgets/app_bar.dart";
+import "package:gitdone/ui/_widgets/page_title.dart";
+import "package:gitdone/ui/_widgets/text_link.dart";
 
-import 'widgets/login_token_input.dart';
+import "package:gitdone/ui/login/token/widgets/login_token_input.dart";
 
 class LoginTokenView extends StatefulWidget {
   const LoginTokenView({super.key});
@@ -14,11 +14,10 @@ class LoginTokenView extends StatefulWidget {
 
 class _LoginTokenViewState extends State<LoginTokenView> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(final BuildContext context) => Scaffold(
       appBar: const NormalAppBar(),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -63,5 +62,4 @@ class _LoginTokenViewState extends State<LoginTokenView> {
         ),
       ),
     );
-  }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 /// A class that defines the color scheme for the application.
 class AppColor {
@@ -13,7 +13,7 @@ class AppColor {
     onError: Colors.white,
     surface: Colors.grey[900]!,
     onSurface: Colors.white,
-    surfaceContainer: Colors.grey[800]!,
+    surfaceContainer: Colors.grey[800],
     secondaryContainer: const Color(0xFFFF6A00),
   );
 }

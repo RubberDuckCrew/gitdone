@@ -1,7 +1,7 @@
-import 'package:gitdone/core/models/token_handler.dart';
-import 'package:gitdone/core/utils/logger.dart';
-import 'package:github_flutter/github.dart';
-import 'package:url_launcher/url_launcher.dart';
+import "package:gitdone/core/models/token_handler.dart";
+import "package:gitdone/core/utils/logger.dart";
+import "package:github_flutter/github.dart";
+import "package:url_launcher/url_launcher.dart";
 
 /// This class handles the GitHub OAuth authentication process .
 class GitHubAuth {

@@ -1,17 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import "package:flutter/foundation.dart";
+import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
 class FilterChipItem {
+  FilterChipItem({required this.label, required this.value});
   final String label;
   final String value;
-
-  FilterChipItem({required this.label, required this.value});
 }
 
 /// A custom dropdown filter chip widget that allows users to select a filter
 ///
 /// See https://github.com/flutter/flutter/issues/108683 for more details.
 class FilterChipDropdown extends StatefulWidget {
+  const FilterChipDropdown({
+    required this.items,
+    required this.initialLabel,
+    required this.allowMultipleSelection,
+    required this.onUpdate,
+    super.key,
+    this.leading,
+    this.labelPadding = 16,
+  });
   final List<FilterChipItem> items;
   final Widget? leading;
   final String initialLabel;
@@ -19,93 +28,104 @@ class FilterChipDropdown extends StatefulWidget {
   final bool allowMultipleSelection;
   final void Function(FilterChipItem) onUpdate;
 
-  const FilterChipDropdown({
-    super.key,
-    required this.items,
-    this.leading,
-    required this.initialLabel,
-    required this.allowMultipleSelection,
-    required this.onUpdate,
-    this.labelPadding = 16,
-  });
-
   @override
   State<FilterChipDropdown> createState() => _FilterChipDropdownState();
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(IterableProperty<FilterChipItem>("items", items))
+      ..add(StringProperty("initialLabel", initialLabel))
+      ..add(DoubleProperty("labelPadding", labelPadding))
+      ..add(
+        DiagnosticsProperty<bool>(
+          "allowMultipleSelection",
+          allowMultipleSelection,
+        ),
+      )
+      ..add(
+        ObjectFlagProperty<void Function(FilterChipItem p1)>.has(
+          "onUpdate",
+          onUpdate,
+        ),
+      );
+  }
 }
 
 class _FilterChipDropdownState extends State<FilterChipDropdown> {
   final GlobalKey _chipKey = GlobalKey();
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<_FilterChipDropdownViewModel>(
-      create: (_) => _FilterChipDropdownViewModel(
-        allowMultipleSelection: widget.allowMultipleSelection,
-      ),
-      child: Consumer<_FilterChipDropdownViewModel>(
-        builder: (context, viewModel, child) {
-          viewModel.calculateMaxItemWidth(
-            widget.items.map((item) => item.label).toList(),
-            widget.labelPadding,
-            context,
-          );
-          viewModel.calculateIconWidth(context);
-          return TapRegion(
-            onTapOutside: viewModel.handleOutsideTap,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FilterChip.elevated(
-                  key: _chipKey,
-                  avatar: widget.leading,
-                  label: Text(viewModel.getLabel(widget.initialLabel)),
-                  iconTheme: IconThemeData(
-                    color: viewModel.isSelected
-                        ? Theme.of(context).colorScheme.onPrimary
-                        : Theme.of(context).colorScheme.onSurface,
-                  ),
-                  labelStyle: TextStyle(
-                    color: viewModel.isSelected
-                        ? Theme.of(context).colorScheme.onPrimary
-                        : Theme.of(context).colorScheme.onSurface,
-                  ),
-                  backgroundColor: viewModel.isSelected
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.surfaceContainer,
-                  deleteIcon: viewModel.isSelected
-                      ? Icon(
-                          Icons.close,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        )
-                      : Icon(
-                          Icons.arrow_drop_down,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                  onDeleted: viewModel.isSelected
-                      ? viewModel.clearSelection
-                      : () => viewModel.toggleDropdown(false),
-                  onSelected: viewModel.toggleDropdown,
+  Widget build(
+    final BuildContext context,
+  ) => ChangeNotifierProvider<_FilterChipDropdownViewModel>(
+    create: (_) => _FilterChipDropdownViewModel(
+      allowMultipleSelection: widget.allowMultipleSelection,
+    ),
+    child: Consumer<_FilterChipDropdownViewModel>(
+      builder: (final context, final viewModel, final child) {
+        viewModel.calculateMaxItemWidth(
+          widget.items.map((final item) => item.label).toList(),
+          widget.labelPadding,
+          context,
+        );
+        viewModel.calculateIconWidth(context);
+        return TapRegion(
+          onTapOutside: viewModel.handleOutsideTap,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FilterChip.elevated(
+                key: _chipKey,
+                avatar: widget.leading,
+                label: Text(viewModel.getLabel(widget.initialLabel)),
+                iconTheme: IconThemeData(
+                  color: viewModel.isSelected
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onSurface,
                 ),
-                if (viewModel.isDropdownOpen)
-                  Material(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    elevation: 4.0,
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minWidth:
-                                viewModel.maxItemWidth + viewModel.iconWidth,
-                            maxWidth: MediaQuery.of(context).size.width * 0.9,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: widget.items.map((item) {
-                              return Material(
+                labelStyle: TextStyle(
+                  color: viewModel.isSelected
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onSurface,
+                ),
+                backgroundColor: viewModel.isSelected
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.surfaceContainer,
+                deleteIcon: viewModel.isSelected
+                    ? Icon(
+                        Icons.close,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      )
+                    : Icon(
+                        Icons.arrow_drop_down,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                onDeleted: viewModel.isSelected
+                    ? viewModel.clearSelection
+                    : () => viewModel.toggleDropdown(false),
+                onSelected: viewModel.toggleDropdown,
+              ),
+              if (viewModel.isDropdownOpen)
+                Material(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  elevation: 4,
+                  child: LayoutBuilder(
+                    builder: (final context, final constraints) => ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minWidth: viewModel.maxItemWidth + viewModel.iconWidth,
+                        maxWidth: MediaQuery.of(context).size.width * 0.9,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: widget.items
+                            .map(
+                              (final item) => Material(
                                 color: viewModel.isItemSelected(item)
                                     ? Theme.of(context).colorScheme.primary
                                     : Colors.transparent,
@@ -127,7 +147,7 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                                                 viewModel.iconWidth
                                           : viewModel.maxItemWidth,
                                       padding: EdgeInsets.symmetric(
-                                        vertical: 8.0,
+                                        vertical: 8,
                                         horizontal: widget.labelPadding,
                                       ),
                                       child: widget.allowMultipleSelection
@@ -136,14 +156,15 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                viewModel.isItemSelected(item)
-                                                    ? const Icon(
-                                                        Icons.check_box,
-                                                      )
-                                                    : const Icon(
-                                                        Icons
-                                                            .check_box_outline_blank,
-                                                      ),
+                                                if (viewModel.isItemSelected(
+                                                  item,
+                                                ))
+                                                  const Icon(Icons.check_box)
+                                                else
+                                                  const Icon(
+                                                    Icons
+                                                        .check_box_outline_blank,
+                                                  ),
                                                 Text(item.label),
                                               ],
                                             )
@@ -151,30 +172,28 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                                     ),
                                   ),
                                 ),
-                              );
-                            }).toList(),
-                          ),
-                        );
-                      },
+                              ),
+                            )
+                            .toList(),
+                      ),
                     ),
                   ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
+                ),
+            ],
+          ),
+        );
+      },
+    ),
+  );
 }
 
 class _FilterChipDropdownViewModel extends ChangeNotifier {
+  _FilterChipDropdownViewModel({required this.allowMultipleSelection});
   Set<String> _selectedLabels = {};
   bool _isDropdownOpen = false;
   double _maxItemWidth = 0;
   double _iconWidth = 0;
   final bool allowMultipleSelection;
-
-  _FilterChipDropdownViewModel({required this.allowMultipleSelection});
 
   Set<String> get selectedLabels => _selectedLabels;
   bool get isDropdownOpen => _isDropdownOpen;
@@ -184,16 +203,16 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
   int get amountOfSelectedItems => _selectedLabels.length;
 
   /// Needs to have parameter `bool?` to be compatible with the FilterChip widget
-  void toggleDropdown(bool? value) {
+  void toggleDropdown(final bool? value) {
     _isDropdownOpen = !_isDropdownOpen;
     notifyListeners();
   }
 
-  void toggleItemSelected(bool? value) {
+  void toggleItemSelected(final bool? value) {
     notifyListeners();
   }
 
-  void selectItem(FilterChipItem item) {
+  void selectItem(final FilterChipItem item) {
     if (allowMultipleSelection) {
       _selectedLabels.add(item.label);
     } else {
@@ -203,7 +222,7 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void unselectItem(FilterChipItem item) {
+  void unselectItem(final FilterChipItem item) {
     _selectedLabels.remove(item.label);
     notifyListeners();
   }
@@ -215,24 +234,23 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
   }
 
   /// Needs to have parameter `PointerDownEvent` to be compatible with the TapRegion widget
-  void handleOutsideTap(PointerDownEvent evt) {
+  void handleOutsideTap(final PointerDownEvent evt) {
     if (_isDropdownOpen) {
       _isDropdownOpen = false;
       notifyListeners();
     }
   }
 
-  bool isItemSelected(FilterChipItem item) {
-    return _selectedLabels.contains(item.label);
-  }
+  bool isItemSelected(final FilterChipItem item) =>
+      _selectedLabels.contains(item.label);
 
   void calculateMaxItemWidth(
-    List<String> labels,
-    double labelPadding,
-    BuildContext context,
+    final List<String> labels,
+    final double labelPadding,
+    final BuildContext context,
   ) {
-    double maxWidth = 0.0;
-    for (var label in labels) {
+    double maxWidth = 0;
+    for (final String label in labels) {
       final textPainter = TextPainter(
         text: TextSpan(text: label, style: DefaultTextStyle.of(context).style),
         maxLines: 1,
@@ -248,7 +266,7 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
     _maxItemWidth = maxWidth;
   }
 
-  void calculateIconWidth(BuildContext context) {
+  void calculateIconWidth(final BuildContext context) {
     final double iconWidth = IconTheme.of(context).size ?? 24.0;
     _iconWidth = iconWidth;
   }
@@ -257,7 +275,7 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
   ///
   /// returns ```${_selectedLabels.length} initialLabel``` if multiple items are selected and allowMultipleSelection is true,
   /// or ```_selectedLabels.first``` if allowMultipleSelection is false.
-  String getLabel(String initialLabel) {
+  String getLabel(final String initialLabel) {
     if (allowMultipleSelection && _selectedLabels.isNotEmpty) {
       return "${_selectedLabels.length} $initialLabel";
     }

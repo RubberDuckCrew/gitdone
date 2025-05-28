@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:gitdone/app_config.dart';
-import 'package:gitdone/ui/_widgets/app_title.dart';
-import 'package:gitdone/ui/login/oauth/login_oauth_screen.dart';
-import 'package:gitdone/ui/login/token/login_token_view.dart';
+import "package:flutter/material.dart";
+import "package:flutter_svg/svg.dart";
+import "package:gitdone/app_config.dart";
+import "package:gitdone/ui/_widgets/app_title.dart";
+import "package:gitdone/ui/login/oauth/login_oauth_screen.dart";
+import "package:gitdone/ui/login/token/login_token_view.dart";
 
 class WelcomeView extends StatefulWidget {
   const WelcomeView({super.key});
@@ -14,8 +14,7 @@ class WelcomeView extends StatefulWidget {
 
 class _WelcomeViewState extends State<WelcomeView> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(final BuildContext context) => Scaffold(
       body: Center(
         child: Column(
           children: [
@@ -35,7 +34,7 @@ class _WelcomeViewState extends State<WelcomeView> {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            const Padding(padding: EdgeInsets.all(8.0)),
+            const Padding(padding: EdgeInsets.all(8)),
             FilledButton(
               onPressed: goToLoginGithubView,
               child: const Text("Login with GitHub"),
@@ -54,24 +53,23 @@ class _WelcomeViewState extends State<WelcomeView> {
               "Version: ${AppConfig.version} (${AppConfig.gitCommit}, ${AppConfig.flavor})",
               style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
-            const Padding(padding: EdgeInsets.all(10.0)),
+            const Padding(padding: EdgeInsets.all(10)),
           ],
         ),
       ),
     );
-  }
 
   void goToLoginGithubView() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const LoginGithubScreen()),
+      MaterialPageRoute(builder: (final context) => const LoginGithubScreen()),
     );
   }
 
   void goToLoginTokenView() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const LoginTokenView()),
+      MaterialPageRoute(builder: (final context) => const LoginTokenView()),
     );
   }
 }

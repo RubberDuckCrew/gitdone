@@ -1,10 +1,10 @@
-import 'dart:convert';
+import "dart:convert";
 
-import 'package:flutter/material.dart';
-import 'package:gitdone/core/models/github_model.dart';
-import 'package:gitdone/core/models/repository_details.dart';
-import 'package:gitdone/core/utils/logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/core/models/github_model.dart";
+import "package:gitdone/core/models/repository_details.dart";
+import "package:gitdone/core/utils/logger.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 class RepositorySelectorModel extends ChangeNotifier {
   String classId =
@@ -20,10 +20,10 @@ class RepositorySelectorModel extends ChangeNotifier {
 
   Future<void> loadLocalRepository() async {
     Logger.log("Loading local repository", classId, LogLevel.finest);
-    final prefs = await SharedPreferences.getInstance();
-    String repoJson = prefs.getString('selected_repository') ?? "";
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String repoJson = prefs.getString("selected_repository") ?? "";
     if (repoJson.isNotEmpty) {
-      RepositoryDetails repo = RepositoryDetails.fromJson(
+      final RepositoryDetails repo = RepositoryDetails.fromJson(
         Map<String, dynamic>.from(jsonDecode(repoJson)),
       );
       Logger.log("Found local repository: $repoJson", classId, LogLevel.finest);
@@ -33,13 +33,13 @@ class RepositorySelectorModel extends ChangeNotifier {
     }
   }
 
-  void getAllUserRepositories() async {
+  Future<void> getAllUserRepositories() async {
     await loadLocalRepository();
     Logger.log("Fetching repositories", classId, LogLevel.finest);
     _repositories.addAll(
       await (await GithubModel.github).repositories
           .listRepositories(type: "all")
-          .where((repo) => repo.name != _selectedRepository?.name)
+          .where((final repo) => repo.name != _selectedRepository?.name)
           .map(RepositoryDetails.fromRepository)
           .toList(),
     );
@@ -53,20 +53,20 @@ class RepositorySelectorModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void saveRepository(RepositoryDetails repository) async {
+  Future<void> saveRepository(final RepositoryDetails repository) async {
     Logger.log(
       "Saving repository: ${repository.name} to shared preferences",
       classId,
       LogLevel.finest,
     );
-    final prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(
-      'selected_repository',
+      "selected_repository",
       jsonEncode(repository.toJson()),
     );
   }
 
-  void selectRepository(RepositoryDetails? repo) {
+  void selectRepository(final RepositoryDetails? repo) {
     Logger.log("Selected repository: ${repo?.name}", classId, LogLevel.finest);
     _selectedRepository = repo;
     notifyListeners();
