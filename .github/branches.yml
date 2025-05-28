@@ -1,14 +1,11 @@
 - feature/*
 - fix/*
-- hotfix/*
 - docs/*
 - test/*
 - refactor/*
-- style/*
+- ui/*
 - ci/*
-- perf/*
-- i18n/*
+- config/*
 - security/*
-- release/*
 - chore/*
 - renovate/*
