@@ -4,7 +4,9 @@ import "package:gitdone/ui/_widgets/page_title.dart";
 import "package:gitdone/ui/login/oauth/login_oauth_view_model.dart";
 import "package:provider/provider.dart";
 
+/// A view for logging in with GitHub OAuth.
 class LoginGithubView extends StatefulWidget {
+  /// Creates a view for logging in with GitHub OAuth.
   const LoginGithubView({super.key});
 
   @override
