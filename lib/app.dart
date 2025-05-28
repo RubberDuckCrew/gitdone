@@ -20,7 +20,7 @@ class App extends StatelessWidget {
             body: Center(child: CircularProgressIndicator()),
           );
         }
-        if (snapshot.hasData && snapshot.data == true) {
+        if (snapshot.hasData && snapshot.data != null && snapshot.data!) {
           return const HomeScreen();
         } else {
           return const WelcomeView();
