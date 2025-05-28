@@ -2,9 +2,13 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:gitdone/core/theme/app_color.dart";
 
+/// A widget that displays a page title with a specific style.
 class PageTitleWidget extends StatelessWidget {
-  const PageTitleWidget({required this.title, super.key});
-  final String title;
+  /// Creates an instance of [PageTitleWidget] with the given [title].
+  const PageTitleWidget({required final String title, super.key})
+    : _title = title;
+
+  final String _title;
 
   @override
   Widget build(final BuildContext context) => Column(
@@ -15,7 +19,7 @@ class PageTitleWidget extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              title,
+              _title,
               style: TextStyle(
                 fontSize: 30,
                 color: AppColor.colorScheme.primary,
@@ -35,6 +39,6 @@ class PageTitleWidget extends StatelessWidget {
   @override
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(StringProperty("title", title));
+    properties.add(StringProperty("title", _title));
   }
 }
