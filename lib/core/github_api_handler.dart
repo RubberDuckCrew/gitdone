@@ -4,7 +4,7 @@ import "package:http/http.dart" as http;
 
 /// A handler for making requests to the GitHub API.
 class GithubApiHandler {
-  /// Creates a new instance of [GithubApiHandler] with the provided [token].
+  /// Creates a new instance of [GithubApiHandler] with the provided [_token].
   GithubApiHandler(this._token);
 
   final _baseUrl = "https://api.github.com";
