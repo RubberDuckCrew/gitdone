@@ -5,7 +5,9 @@ import "package:gitdone/ui/home/home_view.dart";
 import "package:gitdone/ui/settings/settings_view.dart";
 import "package:provider/provider.dart";
 
+/// The main screen of the app, which contains the home view and settings view.
 class HomeScreen extends StatefulWidget {
+  /// Creates a new instance of [HomeScreen].
   const HomeScreen({super.key});
 
   @override
@@ -20,9 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (final context, final viewModel, final child) => Scaffold(
         appBar: const NormalAppBar(),
         body: switch (viewModel.selectedIndex) {
-          0 => const Homeview(),
+          0 => const HomeView(),
           1 => const SettingsView(),
-          _ => const Homeview(),
+          _ => const HomeView(),
         },
         bottomNavigationBar: NavigationBar(
           destinations: const [
