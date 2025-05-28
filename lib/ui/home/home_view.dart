@@ -3,14 +3,16 @@ import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/ui/_widgets/octo_cat.dart";
 import "package:gitdone/ui/welcome/welcome_view.dart";
 
-class Homeview extends StatefulWidget {
-  const Homeview({super.key});
+/// The home view of the app, which is displayed after login.
+class HomeView extends StatefulWidget {
+  /// Creates a new instance of [HomeView].
+  const HomeView({super.key});
 
   @override
-  State<Homeview> createState() => _HomeviewState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeviewState extends State<Homeview> {
+class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
