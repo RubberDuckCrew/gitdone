@@ -6,7 +6,8 @@ import "package:gitdone/ui/welcome/welcome_view.dart";
 class TokenHandler {
   /// Singleton instance of [TokenHandler].
   TokenHandler();
-  // TODO(everyone): @VisibleForTesting
+
+  /// The secure storage instance used for storing tokens.
   FlutterSecureStorage storage = const FlutterSecureStorage();
 
   /// Saves the provided token to secure storage.
@@ -32,7 +33,7 @@ class TokenHandler {
   static Future<void> logout(final BuildContext context) async {
     final tokenHandler = TokenHandler();
     await tokenHandler.deleteToken();
-    // TODO(IamPekka058): Guard Check
+    if (!context.mounted) return;
     await Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (final context) => const WelcomeView()),
