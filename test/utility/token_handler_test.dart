@@ -11,8 +11,7 @@ void main() {
 
   setUp(() {
     mockStorage = MockFlutterSecureStorage();
-    tokenHandler = TokenHandler();
-    tokenHandler.storage = mockStorage;
+    tokenHandler = TokenHandler()..storage = mockStorage;
   });
 
   group("TokenHandler Tests", () {

@@ -3,6 +3,7 @@ import "package:flutter/services.dart";
 import "package:gitdone/core/models/github_oauth_model.dart";
 import "package:gitdone/ui/home/home_screen.dart";
 
+/// ViewModel for managing the login process using GitHub OAuth.
 class LoginGithubViewModel extends ChangeNotifier {
   /// Creates an instance of [LoginGithubViewModel].
   LoginGithubViewModel({required this.infoCallback})
@@ -80,5 +81,6 @@ class LoginGithubViewModel extends ChangeNotifier {
     }
   }
 
+  /// Returns the user code from the GitHub OAuth model.
   String get userCode => _githubAuth.userCode;
 }

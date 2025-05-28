@@ -3,7 +3,9 @@ import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/ui/settings/widgets/repository_selector/repository_selector_view_model.dart";
 import "package:provider/provider.dart";
 
+/// A widget that allows users to select a repository from a dropdown list.
 class RepositorySelector extends StatefulWidget {
+  /// Creates a widget for selecting a repository.
   const RepositorySelector({super.key});
 
   @override
@@ -41,8 +43,9 @@ class _RepositorySelectorState extends State<RepositorySelector> {
               value: model.selectedRepository,
               items: model.repositories.map(convertRepoToItem).toList(),
               onChanged: (final repo) {
-                model.selectRepository(repo);
-                model.saveSelectedRepository();
+                model
+                  ..selectRepository(repo)
+                  ..saveSelectedRepository();
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("Selected repository: ${repo?.name}")),

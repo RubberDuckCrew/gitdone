@@ -3,7 +3,9 @@ import "package:gitdone/core/github_api_handler.dart";
 import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/ui/home/home_screen.dart";
 
+/// A widget that provides an input field for the user to enter their GitHub
 class LoginTokenInput extends StatefulWidget {
+  /// Creates an instance of [LoginTokenInput].
   const LoginTokenInput({super.key});
 
   @override
@@ -37,8 +39,7 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
   Future<void> login() async {
     if (_controller.text.isNotEmpty) {
       if (await GithubApiHandler(_controller.text).isTokenValid()) {
-        final TokenHandler tokenHandler = TokenHandler();
-        tokenHandler.saveToken(_controller.text);
+        TokenHandler().saveToken(_controller.text);
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (final context) => const HomeScreen()),
