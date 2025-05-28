@@ -15,12 +15,16 @@ class GitHubAuth {
   /// The class identifier for logging purposes.
   static const classId = "com.GitDone.gitdone.core.models.github_oauth_handler";
 
-  final _tokenHandler = TokenHandler();
+  /// Indicates whether the login process is currently active.
   bool inLoginProcess = false;
+
+  /// A callback function to be executed after the login process.
+  Function(String) callbackFunction;
+
+  final _tokenHandler = TokenHandler();
   bool _authenticated = false;
   final int _maxLoginAttempts = 2;
   int _attempts = 1;
-  Function(String) callbackFunction;
   final DeviceFlow _deviceFlow;
   String? _userCode;
 
@@ -37,7 +41,7 @@ class GitHubAuth {
         LogLevel.finest,
       );
       return _userCode ?? "";
-    } catch (e) {
+    } on Exception catch (e) {
       Logger.log(
         "Could not retrieve oauth information from GitHub",
         classId,
@@ -91,7 +95,7 @@ class GitHubAuth {
         } else {
           interval = response.interval;
         }
-      } catch (e) {
+      } on Exception catch (e) {
         Logger.logError(
           "Unexpected error occurred while polling for token",
           classId,
@@ -111,6 +115,7 @@ class GitHubAuth {
     return false;
   }
 
+  /// Resets the login process state.
   Future<void> resetHandler() async {
     inLoginProcess = false;
     Logger.log("GitHubAuthHandler reset", classId, LogLevel.finest);
