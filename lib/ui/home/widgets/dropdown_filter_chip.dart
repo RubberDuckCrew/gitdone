@@ -2,9 +2,15 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
+/// A model class representing a filter chip item with a label and value.
 class FilterChipItem {
+  /// Creates a new instance of [FilterChipItem].
   FilterChipItem({required this.label, required this.value});
+
+  /// The label of the filter chip item.
   final String label;
+
+  /// The value of the filter chip item.
   final String value;
 }
 
@@ -12,6 +18,7 @@ class FilterChipItem {
 ///
 /// See https://github.com/flutter/flutter/issues/108683 for more details.
 class FilterChipDropdown extends StatefulWidget {
+  /// Creates a new instance of [FilterChipDropdown].
   const FilterChipDropdown({
     required this.items,
     required this.initialLabel,
@@ -21,11 +28,23 @@ class FilterChipDropdown extends StatefulWidget {
     this.leading,
     this.labelPadding = 16,
   });
+
+  /// The list of filter chip items to display in the dropdown.
   final List<FilterChipItem> items;
+
+  /// The leading widget to display in the filter chip.
   final Widget? leading;
+
+  /// The initial label to display in the filter chip when no items are selected.
   final String initialLabel;
+
+  /// The padding around the label in the filter chip.
   final double labelPadding;
+
+  /// Whether multiple items can be selected in the dropdown.
   final bool allowMultipleSelection;
+
+  /// Callback function to be called when an item is updated.
   final void Function(FilterChipItem) onUpdate;
 
   @override
@@ -65,12 +84,13 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
     ),
     child: Consumer<_FilterChipDropdownViewModel>(
       builder: (final context, final viewModel, final child) {
-        viewModel.calculateMaxItemWidth(
-          widget.items.map((final item) => item.label).toList(),
-          widget.labelPadding,
-          context,
-        );
-        viewModel.calculateIconWidth(context);
+        viewModel
+          ..calculateMaxItemWidth(
+            widget.items.map((final item) => item.label).toList(),
+            widget.labelPadding,
+            context,
+          )
+          ..calculateIconWidth(context);
         return TapRegion(
           onTapOutside: viewModel.handleOutsideTap,
           child: Column(
@@ -104,8 +124,8 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                       ),
                 onDeleted: viewModel.isSelected
                     ? viewModel.clearSelection
-                    : () => viewModel.toggleDropdown(false),
-                onSelected: viewModel.toggleDropdown,
+                    : viewModel.toggleDropdown,
+                onSelected: (_) => viewModel.toggleDropdown(),
               ),
               if (viewModel.isDropdownOpen)
                 Material(
@@ -189,6 +209,7 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
 
 class _FilterChipDropdownViewModel extends ChangeNotifier {
   _FilterChipDropdownViewModel({required this.allowMultipleSelection});
+
   Set<String> _selectedLabels = {};
   bool _isDropdownOpen = false;
   double _maxItemWidth = 0;
@@ -196,19 +217,24 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
   final bool allowMultipleSelection;
 
   Set<String> get selectedLabels => _selectedLabels;
+
   bool get isDropdownOpen => _isDropdownOpen;
+
   bool get isSelected => _selectedLabels.isNotEmpty;
+
   double get maxItemWidth => _maxItemWidth;
+
   double get iconWidth => _iconWidth;
+
   int get amountOfSelectedItems => _selectedLabels.length;
 
   /// Needs to have parameter `bool?` to be compatible with the FilterChip widget
-  void toggleDropdown(final bool? value) {
+  void toggleDropdown() {
     _isDropdownOpen = !_isDropdownOpen;
     notifyListeners();
   }
 
-  void toggleItemSelected(final bool? value) {
+  void toggleItemSelected() {
     notifyListeners();
   }
 
@@ -259,7 +285,7 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
       maxWidth = maxWidth < textPainter.width
           ? textPainter.width +
                 2 * labelPadding +
-                5 // TODO: Magic number because TextPainter is not accurate. See https://github.com/flutter/flutter/issues/142028
+                5 // TODO(everyone): Magic number because TextPainter is not accurate. See https://github.com/flutter/flutter/issues/142028
           : maxWidth;
     }
 
