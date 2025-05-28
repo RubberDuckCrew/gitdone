@@ -22,5 +22,4 @@ jobs:
       - name: Sync labels
         uses: srealmoreno/label-sync-action@v2.0.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           clean-labels: true
