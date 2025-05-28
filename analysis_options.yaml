@@ -7,6 +7,10 @@
 
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
+
 include: package:flutter_lints/flutter.yaml
 
 linter:
@@ -31,13 +35,11 @@ linter:
     - avoid_futureor_void
     - avoid_implementing_value_types
     - avoid_init_to_null
-    - avoid_js_rounded_ints
     - avoid_multiple_declarations_per_line
     - avoid_null_checks_in_equality_operators
     - avoid_positional_boolean_parameters
     - avoid_print
     - avoid_private_typedef_functions
-    - avoid_redundant_argument_values
     - avoid_relative_lib_imports
     - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
@@ -86,8 +88,6 @@ linter:
     - hash_and_equals
     - implementation_imports
     - implicit_call_tearoffs
-    - implicit_reopen
-    - invalid_case_patterns
     - invalid_runtime_check_with_js_interop_types
     - join_return_with_assignment
     - leading_newlines_in_multiline_strings
@@ -95,13 +95,11 @@ linter:
     - library_names
     - library_prefixes
     - library_private_types_in_public_api
-    - lines_longer_than_80_chars
     - literal_only_boolean_expressions
     - matching_super_parameters
     - missing_code_block_language_in_doc_comment
     - missing_whitespace_between_adjacent_strings
     - no_adjacent_strings_in_list
-    - no_default_cases
     - no_duplicate_case_values
     - no_leading_underscores_for_library_prefixes
     - no_leading_underscores_for_local_identifiers
@@ -123,7 +121,6 @@ linter:
     - prefer_adjacent_string_concatenation
     - prefer_asserts_in_initializer_lists
     - prefer_asserts_with_message
-    - prefer_collection_literals
     - prefer_conditional_assignment
     - prefer_const_constructors
     - prefer_const_constructors_in_immutables
@@ -207,7 +204,6 @@ linter:
     - unnecessary_underscores
     - unreachable_from_main
     - unrelated_type_equality_checks
-    - unsafe_variance
     - use_build_context_synchronously
     - use_colored_box
     - use_decorated_box
@@ -231,5 +227,3 @@ linter:
     - use_truncating_division
     - valid_regexps
     - void_checks
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
