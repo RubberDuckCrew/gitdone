@@ -5,7 +5,9 @@ import "package:gitdone/ui/_widgets/app_title.dart";
 import "package:gitdone/ui/login/oauth/login_oauth_screen.dart";
 import "package:gitdone/ui/login/token/login_token_view.dart";
 
+/// A view that displays the welcome screen of the application.
 class WelcomeView extends StatefulWidget {
+  /// Creates a welcome view that prompts the user to log in with GitHub.
   const WelcomeView({super.key});
 
   @override

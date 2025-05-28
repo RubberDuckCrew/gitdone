@@ -1,3 +1,6 @@
+// This ignore is necessary to avoid issues with the implementation
+// ignore_for_file: implementation_imports
+
 import "package:flutter/material.dart";
 import "package:gitdone/app_config.dart";
 import "package:gitdone/core/models/current_user_model.dart";
@@ -8,7 +11,9 @@ import "package:github_flutter/src/models/users.dart";
 import "package:provider/provider.dart";
 import "package:url_launcher/url_launcher.dart";
 
+/// A view that displays settings and allows users to manage their account and repository preferences.
 class SettingsView extends StatelessWidget {
+  /// Creates an instance of [SettingsView].
   const SettingsView({super.key});
 
   @override
@@ -64,8 +69,7 @@ class SettingsView extends StatelessWidget {
                           style: OutlinedButton.styleFrom(
                             side: const BorderSide(color: Colors.grey),
                           ),
-                          onPressed: () async =>
-                              launchUrl(Uri.parse(model.htmlUrl)),
+                          onPressed: () => launchUrl(Uri.parse(model.htmlUrl)),
                           icon: const Icon(
                             Icons.account_circle_outlined,
                             size: 18,
@@ -107,14 +111,18 @@ class SettingsView extends StatelessWidget {
   );
 }
 
+/// A ViewModel for managing settings-related data and actions.
 class SettingsViewModel extends ChangeNotifier {
+  /// Creates an instance of [SettingsViewModel] and initializes it.
   SettingsViewModel() {
-    init();
+    _init();
   }
+
+  /// The unique identifier for this class, used for logging.
   static const String classId =
       "com.GitDone.gitdone.ui.settings.settings_view_model";
 
-  Future<void> init() async {
+  Future<void> _init() async {
     final User user = await CurrentUserModel.currentUser;
     username = user.login ?? "Unknown User";
     avatarUrl = user.avatarUrl ?? "";
@@ -122,7 +130,12 @@ class SettingsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// The username of the currently logged-in user.
   String username = "Loading...";
+
+  /// The URL to the user's avatar image.
   String avatarUrl = "";
+
+  /// The URL to the user's GitHub profile.
   String htmlUrl = "";
 }
