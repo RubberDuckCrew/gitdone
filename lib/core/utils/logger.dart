@@ -54,12 +54,15 @@ enum LogLevel {
   /// Use this for unrecoverable failures such as data loss or system shutdowns.
   shout(1200);
 
-  final int _value;
   const LogLevel(this._value);
 
+  final int _value;
+
+  /// Returns the integer value associated with the log level.
   int get logLevel => _value;
 }
 
+/// A utility class for logging messages with different levels of severity.
 class Logger {
   /// Logs a message with the specified level, time, sequence number, name,
   /// zone, error, and stack trace.
