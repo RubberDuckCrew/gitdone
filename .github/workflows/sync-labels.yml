@@ -10,6 +10,9 @@ jobs:
     name: Sync labels
     runs-on: ubuntu-latest
 
+    permissions:
+      issues: write
+
     steps:
       - name: Checkout labels.yml
         uses: actions/checkout@v4
@@ -19,3 +22,5 @@ jobs:
 
       - name: Sync labels
         uses: srealmoreno/label-sync-action@v2.0.0
+        with:
+          clean-labels: true
