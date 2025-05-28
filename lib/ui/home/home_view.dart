@@ -28,12 +28,12 @@ class _HomeviewState extends State<Homeview> {
 
   @override
   Widget build(final BuildContext context) => Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const OctoCat(),
-          ElevatedButton(onPressed: logout, child: const Text("Logout")),
-        ],
-      ),
-    );
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const OctoCat(),
+        ElevatedButton(onPressed: logout, child: const Text("Logout")),
+      ],
+    ),
+  );
 }

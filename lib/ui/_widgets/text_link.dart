@@ -4,19 +4,18 @@ import "package:gitdone/core/theme/app_color.dart";
 import "package:url_launcher/url_launcher.dart";
 
 class TextLinkWidget {
-
   TextLinkWidget({required this.text, required this.url});
   final String text;
   final String url;
 
   TextSpan toTextSpan() => TextSpan(
-      text: text,
-      style: TextStyle(color: AppColor.colorScheme.secondary),
-      recognizer: TapGestureRecognizer()
-        ..onTap = () async {
-          if (!await launchUrl(Uri.parse(url))) {
-            throw "Could not launch $url";
-          }
-        },
-    );
+    text: text,
+    style: TextStyle(color: AppColor.colorScheme.secondary),
+    recognizer: TapGestureRecognizer()
+      ..onTap = () async {
+        if (!await launchUrl(Uri.parse(url))) {
+          throw "Could not launch $url";
+        }
+      },
+  );
 }

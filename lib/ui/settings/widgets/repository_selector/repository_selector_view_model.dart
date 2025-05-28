@@ -4,7 +4,6 @@ import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/ui/settings/widgets/repository_selector/repository_selector_model.dart";
 
 class RepositorySelectorViewModel extends ChangeNotifier {
-
   RepositorySelectorViewModel() {
     _model.addListener(notifyListeners);
     _model.clearRepositories();

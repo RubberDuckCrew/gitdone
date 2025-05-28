@@ -58,7 +58,10 @@ class LoginGithubViewModel extends ChangeNotifier {
   }
 
   /// Handles Lifecycle events from the UI
-  void handleAppLifecycleState(final AppLifecycleState state, final BuildContext context) {
+  void handleAppLifecycleState(
+    final AppLifecycleState state,
+    final BuildContext context,
+  ) {
     if (state == AppLifecycleState.resumed && _githubAuth.inLoginProcess) {
       continueLogin(
         onSuccess: () {

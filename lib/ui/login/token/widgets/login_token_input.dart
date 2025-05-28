@@ -15,24 +15,24 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
 
   @override
   Widget build(final BuildContext context) => Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: TextField(
-            controller: _controller,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: "GitHub Token",
-            ),
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: TextField(
+          controller: _controller,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: "GitHub Token",
           ),
         ),
-        const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-        FilledButton(
-          onPressed: login,
-          child: const Text("Login with Personal Access Token"),
-        ),
-      ],
-    );
+      ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+      FilledButton(
+        onPressed: login,
+        child: const Text("Login with Personal Access Token"),
+      ),
+    ],
+  );
 
   Future<void> login() async {
     if (_controller.text.isNotEmpty) {
@@ -49,19 +49,19 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
         showDialog(
           context: context,
           builder: (_) => AlertDialog(
-              title: const Text("Login Failed"),
-              content: const Text(
-                "Please verify that your access token is correct and that you have a stable internet connection, then try again.",
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("OK"),
-                ),
-              ],
+            title: const Text("Login Failed"),
+            content: const Text(
+              "Please verify that your access token is correct and that you have a stable internet connection, then try again.",
             ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          ),
         );
       }
     }

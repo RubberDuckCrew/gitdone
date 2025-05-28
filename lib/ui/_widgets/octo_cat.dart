@@ -14,41 +14,41 @@ class OctoCat extends StatefulWidget {
 class _OctoCatState extends State<OctoCat> {
   @override
   Widget build(final BuildContext context) => ChangeNotifierProvider(
-      create: (_) => OctoCatProvider(),
-      child: Consumer<OctoCatProvider>(
-        builder: (final context, final provider, final child) => Column(
-            children: [
-              FutureBuilder(
-                future: provider.futureResponse,
-                builder: (final context, final snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasData) {
-                    return FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text(
-                        snapshot.data!.body,
-                        style: const TextStyle(
-                          fontSize: 8,
-                          letterSpacing: 1,
-                          fontFamily: "Courier",
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    );
-                  }
-                  return const Center(child: Text("Could not fetch octocat"));
-                },
-              ),
-              FilledButton(
-                onPressed: provider.refreshData,
-                child: const Text("Fetch new octocat"),
-              ),
-            ],
+    create: (_) => OctoCatProvider(),
+    child: Consumer<OctoCatProvider>(
+      builder: (final context, final provider, final child) => Column(
+        children: [
+          FutureBuilder(
+            future: provider.futureResponse,
+            builder: (final context, final snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasData) {
+                return FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    snapshot.data!.body,
+                    style: const TextStyle(
+                      fontSize: 8,
+                      letterSpacing: 1,
+                      fontFamily: "Courier",
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                );
+              }
+              return const Center(child: Text("Could not fetch octocat"));
+            },
           ),
+          FilledButton(
+            onPressed: provider.refreshData,
+            child: const Text("Fetch new octocat"),
+          ),
+        ],
       ),
-    );
+    ),
+  );
 }
 
 class OctoCatProvider extends ChangeNotifier {

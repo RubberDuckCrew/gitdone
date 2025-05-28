@@ -15,49 +15,49 @@ class WelcomeView extends StatefulWidget {
 class _WelcomeViewState extends State<WelcomeView> {
   @override
   Widget build(final BuildContext context) => Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            const Spacer(flex: 1),
-            Expanded(
-              flex: 2,
-              child: SvgPicture.asset("assets/icons/app/gitdone.svg"),
-            ),
-            const AppTitleWidget(fontSize: 45),
-            const Text(
-              "Store your todos in GitHub issues",
-              style: TextStyle(fontSize: 20),
-            ),
-            const Spacer(flex: 1),
-            const Text(
-              "To use GitDone, please login with your GitHub account",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const Padding(padding: EdgeInsets.all(8)),
-            FilledButton(
-              onPressed: goToLoginGithubView,
-              child: const Text("Login with GitHub"),
-            ),
-            const Text("or"),
-            FilledButton(
-              onPressed: goToLoginTokenView,
-              child: const Text("Enter Personal Access Token"),
-            ),
-            const Spacer(flex: 1),
-            const Text(
-              "GitDone is not affiliated with GitHub, Inc.",
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-            Text(
-              "Version: ${AppConfig.version} (${AppConfig.gitCommit}, ${AppConfig.flavor})",
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-            const Padding(padding: EdgeInsets.all(10)),
-          ],
-        ),
+    body: Center(
+      child: Column(
+        children: [
+          const Spacer(flex: 1),
+          Expanded(
+            flex: 2,
+            child: SvgPicture.asset("assets/icons/app/gitdone.svg"),
+          ),
+          const AppTitleWidget(fontSize: 45),
+          const Text(
+            "Store your todos in GitHub issues",
+            style: TextStyle(fontSize: 20),
+          ),
+          const Spacer(flex: 1),
+          const Text(
+            "To use GitDone, please login with your GitHub account",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const Padding(padding: EdgeInsets.all(8)),
+          FilledButton(
+            onPressed: goToLoginGithubView,
+            child: const Text("Login with GitHub"),
+          ),
+          const Text("or"),
+          FilledButton(
+            onPressed: goToLoginTokenView,
+            child: const Text("Enter Personal Access Token"),
+          ),
+          const Spacer(flex: 1),
+          const Text(
+            "GitDone is not affiliated with GitHub, Inc.",
+            style: TextStyle(fontSize: 12, color: Colors.grey),
+          ),
+          Text(
+            "Version: ${AppConfig.version} (${AppConfig.gitCommit}, ${AppConfig.flavor})",
+            style: const TextStyle(fontSize: 12, color: Colors.grey),
+          ),
+          const Padding(padding: EdgeInsets.all(10)),
+        ],
       ),
-    );
+    ),
+  );
 
   void goToLoginGithubView() {
     Navigator.push(

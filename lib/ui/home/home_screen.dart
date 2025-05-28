@@ -15,30 +15,27 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(final BuildContext context) => ChangeNotifierProvider(
-      create: (_) => HomeScreenViewModel(),
-      child: Consumer<HomeScreenViewModel>(
-        builder: (final context, final viewModel, final child) => Scaffold(
-            appBar: const NormalAppBar(),
-            body: switch (viewModel.selectedIndex) {
-              0 => const Homeview(),
-              1 => const SettingsView(),
-              _ => const Homeview(),
-            },
-            bottomNavigationBar: NavigationBar(
-              destinations: const [
-                NavigationDestination(
-                  icon: Icon(Icons.inbox),
-                  label: "Home",
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.settings),
-                  label: "Settings",
-                ),
-              ],
-              onDestinationSelected: viewModel.updateIndex,
-              selectedIndex: viewModel.selectedIndex,
+    create: (_) => HomeScreenViewModel(),
+    child: Consumer<HomeScreenViewModel>(
+      builder: (final context, final viewModel, final child) => Scaffold(
+        appBar: const NormalAppBar(),
+        body: switch (viewModel.selectedIndex) {
+          0 => const Homeview(),
+          1 => const SettingsView(),
+          _ => const Homeview(),
+        },
+        bottomNavigationBar: NavigationBar(
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.inbox), label: "Home"),
+            NavigationDestination(
+              icon: Icon(Icons.settings),
+              label: "Settings",
             ),
-          ),
+          ],
+          onDestinationSelected: viewModel.updateIndex,
+          selectedIndex: viewModel.selectedIndex,
+        ),
       ),
-    );
+    ),
+  );
 }

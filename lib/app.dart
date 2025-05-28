@@ -11,23 +11,23 @@ class App extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => MaterialApp(
-      theme: ThemeData(colorScheme: AppColor.colorScheme, useMaterial3: true),
-      home: FutureBuilder(
-        future: checkIfAuthenticated(),
-        builder: (final context, final snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
-          if (snapshot.hasData && snapshot.data == true) {
-            return const HomeScreen();
-          } else {
-            return const WelcomeView();
-          }
-        },
-      ),
-    );
+    theme: ThemeData(colorScheme: AppColor.colorScheme, useMaterial3: true),
+    home: FutureBuilder(
+      future: checkIfAuthenticated(),
+      builder: (final context, final snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (snapshot.hasData && snapshot.data == true) {
+          return const HomeScreen();
+        } else {
+          return const WelcomeView();
+        }
+      },
+    ),
+  );
 
   /// Checks if the user is authenticated by verifying the presence of a token.
   Future<bool> checkIfAuthenticated() async {
