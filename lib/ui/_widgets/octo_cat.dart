@@ -4,7 +4,9 @@ import "package:gitdone/core/models/token_handler.dart";
 import "package:http/http.dart";
 import "package:provider/provider.dart";
 
+/// A widget that fetches and displays the octocat from the GitHub API.
 class OctoCat extends StatefulWidget {
+  /// Creates an instance of [OctoCat].
   const OctoCat({super.key});
 
   @override
@@ -51,15 +53,19 @@ class _OctoCatState extends State<OctoCat> {
   );
 }
 
+/// A provider that fetches and holds the octocat data.
 class OctoCatProvider extends ChangeNotifier {
+  /// Creates an instance of [OctoCatProvider] and fetches the octocat data.
   OctoCatProvider() {
     fetchData();
   }
 
   Future<Response>? _futureResponse;
 
+  /// The future response that holds the octocat data.
   Future<Response>? get futureResponse => _futureResponse;
 
+  /// Fetches the octocat data from the GitHub API.
   Future<Response> fetchData() async {
     if (_futureResponse == null) {
       final TokenHandler tokenHandler = TokenHandler();
@@ -75,9 +81,9 @@ class OctoCatProvider extends ChangeNotifier {
     return _futureResponse!;
   }
 
+  /// Refreshes the octocat data by fetching it again.
   void refreshData() {
     _futureResponse = null;
-    //TODO: Does this need to be called?
     notifyListeners();
     fetchData();
   }
