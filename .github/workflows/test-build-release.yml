@@ -53,7 +53,7 @@ jobs:
   build:
     name: Build app
     needs: test
-    if: ${{ startsWith(github.ref, 'refs/tags/') || contains(github.event.pull_request.labels.*.name, '⚗️ Request Build') }}
+    if: ${{ ( startsWith(github.ref, 'refs/tags/') || contains(github.event.pull_request.labels.*.name, '⚗️ Request Build') ) && !github.event.pull_request.head.repo.fork}}
     runs-on: ubuntu-latest
 
     defaults:
