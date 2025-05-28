@@ -6,6 +6,8 @@ import "package:gitdone/core/theme/app_color.dart";
 class AppTitleWidget extends StatelessWidget {
   /// Creates an instance of [AppTitleWidget] with the specified font size.
   const AppTitleWidget({required this.fontSize, super.key});
+
+  /// The font size for the title text.
   final double fontSize;
 
   @override
