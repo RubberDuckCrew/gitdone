@@ -1,14 +1,18 @@
-import 'package:gitdone/core/models/github_model.dart';
-import 'package:gitdone/core/utils/logger.dart';
-import 'package:github_flutter/github.dart';
+import "package:gitdone/core/models/github_model.dart";
+import "package:gitdone/core/utils/logger.dart";
+import "package:github_flutter/github.dart";
 
+/// This model handles the current user information from GitHub.
 class CurrentUserModel {
-  static final CurrentUserModel _instance = CurrentUserModel._internal();
+  /// Factory constructor to ensure a singleton instance.
+  factory CurrentUserModel() => _instance;
 
   CurrentUserModel._internal();
 
-  factory CurrentUserModel() => _instance;
+  /// Factory constructor to ensure a singleton instance.
+  static final CurrentUserModel _instance = CurrentUserModel._internal();
 
+  /// The class identifier for logging purposes.
   static String classId = "com.GitDone.gitdone.core.models.current_user_model";
 
   static CurrentUser? _currentUser;

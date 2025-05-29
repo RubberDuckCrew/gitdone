@@ -1,46 +1,43 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/ui/_widgets/todo_card.dart';
-import 'package:gitdone/ui/home/widgets/dropdown_filter_chip.dart';
-import 'package:provider/provider.dart';
+import "package:flutter/material.dart";
+import 'package:gitdone/core/utils/logger.dart';
+import "package:gitdone/ui/_widgets/todo_card.dart";
+import 'package:gitdone/ui/home/home_viev_view_model.dart';
+import "package:gitdone/ui/home/widgets/dropdown_filter_chip.dart";
+import "package:provider/provider.dart";
 
-import '../../core/utils/logger.dart';
-import 'home_viev_view_model.dart';
-
-class Homeview extends StatefulWidget {
-  const Homeview({super.key});
+/// The home view of the app, which is displayed after login.
+class HomeView extends StatefulWidget {
+  /// Creates a new instance of [HomeView].
+  const HomeView({super.key});
 
   @override
-  State<Homeview> createState() => _HomeviewState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeviewState extends State<Homeview> {
+class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(final BuildContext context) => Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 16),
         child: ChangeNotifierProvider(
           create: (_) => HomeViewViewModel(),
           child: Consumer<HomeViewViewModel>(
-            builder: (context, model, child) {
-              return Column(
+            builder: (final context, final model, final child) => Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: TextField(
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Search',
+                        labelText: "Search",
                         prefixIcon: Icon(Icons.search),
                       ),
-                      onChanged: (value) {
-                        model.updateSearchQuery(value);
-                      },
+                      onChanged: model.updateSearchQuery,
                     ),
                   ),
                   Padding(
@@ -77,7 +74,7 @@ class _HomeviewState extends State<Homeview> {
                           ],
                           initialLabel: "Sort",
                           allowMultipleSelection: false,
-                          onUpdate: (value) {
+                          onUpdate: (final value) {
                             model.updateSort(value.value);
                           },
                         ),
@@ -85,7 +82,7 @@ class _HomeviewState extends State<Homeview> {
                         FilterChipDropdown(
                           items: model.allLabels
                               .map(
-                                (label) => FilterChipItem(
+                                (final label) => FilterChipItem(
                                   value: label.name,
                                   label: label.name,
                                 ),
@@ -93,7 +90,7 @@ class _HomeviewState extends State<Homeview> {
                               .toList(),
                           initialLabel: "Labels",
                           allowMultipleSelection: true,
-                          onUpdate: (item) {
+                          onUpdate: (final item) {
                             // Temporary Debug printing the selected label
                             Logger.logInfo(
                               "Selected label: ${item.value}",
@@ -114,14 +111,13 @@ class _HomeviewState extends State<Homeview> {
                         shrinkWrap: true,
                         physics: const AlwaysScrollableScrollPhysics(),
                         children: model.todos
-                            .map((todo) => TodoCard(todo: todo))
+                            .map((final todo) => TodoCard(todo: todo))
                             .toList(),
                       ),
                     ),
                   ),
                 ],
-              );
-            },
+              ),
           ),
         ),
       ),
@@ -131,5 +127,4 @@ class _HomeviewState extends State<Homeview> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
-  }
 }
