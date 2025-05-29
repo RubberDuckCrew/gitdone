@@ -41,7 +41,5 @@ class RepositoryDetails {
     "avatarUrl": avatarUrl,
   };
 
-  RepositorySlug toSlug() {
-    return RepositorySlug(owner, name);
-  }
+  RepositorySlug toSlug() => RepositorySlug(owner, name);
 }

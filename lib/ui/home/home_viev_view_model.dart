@@ -1,20 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:github_flutter/github.dart';
-
-import '../../core/models/todo.dart';
-import 'home_view_model.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/core/models/todo.dart";
+import "package:gitdone/ui/home/home_view_model.dart";
+import "package:github_flutter/github.dart";
 
 class HomeViewViewModel extends ChangeNotifier {
-  final HomeViewModel _homeViewModel = HomeViewModel();
-  final List<IssueLabel> _filterLabels = [];
-  List<Todo> _filteredTodos = [];
-  String _searchQuery = '';
-  String _filter = '';
-  String _sort = '';
-
-  List<Todo> get todos => _filteredTodos;
-  List<IssueLabel> get allLabels => _homeViewModel.allLabels;
-
   HomeViewViewModel() {
     _homeViewModel.addListener(() {
       _applyFilters();
@@ -23,14 +12,23 @@ class HomeViewViewModel extends ChangeNotifier {
     _filteredTodos = _homeViewModel.todos;
     _filterLabels.addAll(_homeViewModel.allLabels);
   }
+  final HomeViewModel _homeViewModel = HomeViewModel();
+  final List<IssueLabel> _filterLabels = [];
+  List<Todo> _filteredTodos = [];
+  String _searchQuery = "";
+  String _filter = "";
+  String _sort = "";
 
-  void updateLabels(String label) {
+  List<Todo> get todos => _filteredTodos;
+  List<IssueLabel> get allLabels => _homeViewModel.allLabels;
+
+  void updateLabels(final String label) {
     _filterLabels.clear();
     if (label.isEmpty) {
       _filterLabels.addAll(_homeViewModel.allLabels);
     } else {
       _filterLabels.addAll(
-        _homeViewModel.allLabels.where((l) => l.name == label),
+        _homeViewModel.allLabels.where((final l) => l.name == label),
       );
     }
     notifyListeners();
@@ -40,17 +38,17 @@ class HomeViewViewModel extends ChangeNotifier {
     _homeViewModel.loadTodos();
   }
 
-  void updateSearchQuery(String query) {
+  void updateSearchQuery(final String query) {
     _searchQuery = query;
     _applyFilters();
   }
 
-  void updateFilter(String filter) {
+  void updateFilter(final String filter) {
     _filter = filter;
     _applyFilters();
   }
 
-  void updateSort(String sort) {
+  void updateSort(final String sort) {
     _sort = sort;
     _applyFilters();
   }
@@ -61,7 +59,7 @@ class HomeViewViewModel extends ChangeNotifier {
     if (_searchQuery.isNotEmpty) {
       _filteredTodos = _filteredTodos
           .where(
-            (todo) =>
+            (final todo) =>
                 todo.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
                 todo.description.toLowerCase().contains(
                   _searchQuery.toLowerCase(),
@@ -70,32 +68,34 @@ class HomeViewViewModel extends ChangeNotifier {
           .toList();
     }
     // Filter
-    if (_filter == 'Completed') {
+    if (_filter == "Completed") {
       _filteredTodos = _filteredTodos
-          .where((todo) => todo.closedAt != null)
+          .where((final todo) => todo.closedAt != null)
           .toList();
-    } else if (_filter == 'Pending') {
+    } else if (_filter == "Pending") {
       _filteredTodos = _filteredTodos
-          .where((todo) => todo.closedAt == null)
+          .where((final todo) => todo.closedAt == null)
           .toList();
     }
     // Sort
-    if (_sort == 'Alphabetical') {
-      _filteredTodos.sort((a, b) => a.title.compareTo(b.title));
-    } else if (_sort == 'Last updated') {
+    if (_sort == "Alphabetical") {
+      _filteredTodos.sort((final a, final b) => a.title.compareTo(b.title));
+    } else if (_sort == "Last updated") {
       // Sort by updatedAt, if null then use createdAt
       _filteredTodos.sort(
-        (a, b) =>
+        (final a, final b) =>
             (b.updatedAt ?? b.createdAt).compareTo(a.updatedAt ?? a.createdAt),
       );
-    } else if (_sort == 'Created') {
-      _filteredTodos.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    } else if (_sort == "Created") {
+      _filteredTodos.sort(
+        (final a, final b) => b.createdAt.compareTo(a.createdAt),
+      );
     }
     // Labels
     if (_filterLabels.isNotEmpty) {
-      _filteredTodos = _filteredTodos.where((todo) {
-        return todo.labels.any((label) => _filterLabels.contains(label));
-      }).toList();
+      _filteredTodos = _filteredTodos
+          .where((final todo) => todo.labels.any(_filterLabels.contains))
+          .toList();
     }
     notifyListeners();
   }
