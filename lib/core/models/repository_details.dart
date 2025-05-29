@@ -41,5 +41,6 @@ class RepositoryDetails {
     "avatarUrl": avatarUrl,
   };
 
+  /// Converts the [RepositoryDetails] instance to a [RepositorySlug].
   RepositorySlug toSlug() => RepositorySlug(owner, name);
 }
