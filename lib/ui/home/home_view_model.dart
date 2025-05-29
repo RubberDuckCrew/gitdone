@@ -75,12 +75,11 @@ class HomeViewModel extends ChangeNotifier {
 
   Future<List<Todo>> _fetchIssuesForRepository(
     final RepositoryDetails repo,
-  ) async =>
-      (await GithubModel.github).issues
-          .listByRepo(repo.toSlug())
-          .where((final issue) => issue.pullRequest == null)
-          .map(Todo.fromIssue)
-          .toList();
+  ) async => (await GithubModel.github).issues
+      .listByRepo(repo.toSlug())
+      .where((final issue) => issue.pullRequest == null)
+      .map(Todo.fromIssue)
+      .toList();
 
   Future<List<IssueLabel>> _fetchAllLabels(
     final RepositoryDetails repo,

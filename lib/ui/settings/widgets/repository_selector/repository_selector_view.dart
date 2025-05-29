@@ -34,30 +34,27 @@ class _RepositorySelectorState extends State<RepositorySelector> {
   Widget build(final BuildContext context) => ChangeNotifierProvider(
     create: (_) => RepositorySelectorViewModel(),
     child: Consumer<RepositorySelectorViewModel>(
-      builder:
-          (final context, final model, final child) => Column(
-            children: [
-              SizedBox(
-                child: DropdownButton<RepositoryDetails>(
-                  isExpanded: true,
-                  hint: const Text("Select a repository"),
-                  value: model.selectedRepository,
-                  items: model.repositories.map(convertRepoToItem).toList(),
-                  onChanged: (final repo) {
-                    model
-                      ..selectRepository(repo)
-                      ..saveSelectedRepository();
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Selected repository: ${repo?.name}"),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
+      builder: (final context, final model, final child) => Column(
+        children: [
+          SizedBox(
+            child: DropdownButton<RepositoryDetails>(
+              isExpanded: true,
+              hint: const Text("Select a repository"),
+              value: model.selectedRepository,
+              items: model.repositories.map(convertRepoToItem).toList(),
+              onChanged: (final repo) {
+                model
+                  ..selectRepository(repo)
+                  ..saveSelectedRepository();
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Selected repository: ${repo?.name}")),
+                );
+              },
+            ),
           ),
+        ],
+      ),
     ),
   );
 }

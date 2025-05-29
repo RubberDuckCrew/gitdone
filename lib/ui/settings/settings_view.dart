@@ -42,56 +42,52 @@ class SettingsView extends StatelessWidget {
             ChangeNotifierProvider(
               create: (_) => SettingsViewModel(),
               child: Consumer<SettingsViewModel>(
-                builder:
-                    (final context, final model, final child) => Column(
+                builder: (final context, final model, final child) => Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (model.avatarUrl.isNotEmpty)
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(model.avatarUrl),
-                                radius: 20,
-                              )
-                            else
-                              const Icon(Icons.account_circle, size: 40),
-                            const Padding(padding: EdgeInsets.all(2)),
-                            Text(
-                              model.username,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Padding(padding: EdgeInsets.all(4)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            OutlinedButton.icon(
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: Colors.grey),
-                              ),
-                              onPressed:
-                                  () => launchUrl(Uri.parse(model.htmlUrl)),
-                              icon: const Icon(
-                                Icons.account_circle_outlined,
-                                size: 18,
-                              ),
-                              label: const Text("Profile"),
-                            ),
-                            OutlinedButton.icon(
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: Colors.grey),
-                              ),
-                              onPressed: () => TokenHandler.logout(context),
-                              icon: const Icon(Icons.logout, size: 18),
-                              label: const Text("Logout"),
-                            ),
-                          ],
+                        if (model.avatarUrl.isNotEmpty)
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(model.avatarUrl),
+                            radius: 20,
+                          )
+                        else
+                          const Icon(Icons.account_circle, size: 40),
+                        const Padding(padding: EdgeInsets.all(2)),
+                        Text(
+                          model.username,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
+                    const Padding(padding: EdgeInsets.all(4)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.grey),
+                          ),
+                          onPressed: () => launchUrl(Uri.parse(model.htmlUrl)),
+                          icon: const Icon(
+                            Icons.account_circle_outlined,
+                            size: 18,
+                          ),
+                          label: const Text("Profile"),
+                        ),
+                        OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.grey),
+                          ),
+                          onPressed: () => TokenHandler.logout(context),
+                          icon: const Icon(Icons.logout, size: 18),
+                          label: const Text("Logout"),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

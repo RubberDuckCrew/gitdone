@@ -67,26 +67,25 @@ class HomeViewViewModel extends ChangeNotifier {
     _filteredTodos = _homeViewModel.todos;
     // Search
     if (_searchQuery.isNotEmpty) {
-      _filteredTodos =
-          _filteredTodos
-              .where(
-                (final todo) =>
-                    todo.title.toLowerCase().contains(
-                      _searchQuery.toLowerCase(),
-                    ) ||
-                    todo.description.toLowerCase().contains(
-                      _searchQuery.toLowerCase(),
-                    ),
-              )
-              .toList();
+      _filteredTodos = _filteredTodos
+          .where(
+            (final todo) =>
+                todo.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                todo.description.toLowerCase().contains(
+                  _searchQuery.toLowerCase(),
+                ),
+          )
+          .toList();
     }
     // Filter
     if (_filter == "Completed") {
-      _filteredTodos =
-          _filteredTodos.where((final todo) => todo.closedAt != null).toList();
+      _filteredTodos = _filteredTodos
+          .where((final todo) => todo.closedAt != null)
+          .toList();
     } else if (_filter == "Pending") {
-      _filteredTodos =
-          _filteredTodos.where((final todo) => todo.closedAt == null).toList();
+      _filteredTodos = _filteredTodos
+          .where((final todo) => todo.closedAt == null)
+          .toList();
     }
     // Sort
     if (_sort == "Alphabetical") {
@@ -104,10 +103,9 @@ class HomeViewViewModel extends ChangeNotifier {
     }
     // Labels
     if (_filterLabels.isNotEmpty) {
-      _filteredTodos =
-          _filteredTodos
-              .where((final todo) => todo.labels.any(_filterLabels.contains))
-              .toList();
+      _filteredTodos = _filteredTodos
+          .where((final todo) => todo.labels.any(_filterLabels.contains))
+          .toList();
     }
     notifyListeners();
   }

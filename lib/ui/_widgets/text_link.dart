@@ -16,12 +16,11 @@ class TextLinkWidget {
   TextSpan toTextSpan() => TextSpan(
     text: _text,
     style: TextStyle(color: AppColor.colorScheme.secondary),
-    recognizer:
-        TapGestureRecognizer()
-          ..onTap = () async {
-            if (!await launchUrl(Uri.parse(_url))) {
-              throw Exception("Could not launch $_url");
-            }
-          },
+    recognizer: TapGestureRecognizer()
+      ..onTap = () async {
+        if (!await launchUrl(Uri.parse(_url))) {
+          throw Exception("Could not launch $_url");
+        }
+      },
   );
 }

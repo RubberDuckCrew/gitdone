@@ -72,8 +72,9 @@ class _LoginGithubViewState extends State<LoginGithubView>
           const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
           Center(
             child: ValueListenableBuilder<String>(
-              valueListenable:
-                  context.watch<LoginGithubViewModel>().fetchedUserCode,
+              valueListenable: context
+                  .watch<LoginGithubViewModel>()
+                  .fetchedUserCode,
               builder: (final context, final fetchedUserCode, final child) {
                 if (fetchedUserCode == "") {
                   return const CircularProgressIndicator();
@@ -86,12 +87,10 @@ class _LoginGithubViewState extends State<LoginGithubView>
                       style: const TextStyle(fontSize: 20),
                     ),
                     FilledButton(
-                      onPressed:
-                          () =>
-                              Provider.of<LoginGithubViewModel>(
-                                context,
-                                listen: false,
-                              ).launchBrowser(),
+                      onPressed: () => Provider.of<LoginGithubViewModel>(
+                        context,
+                        listen: false,
+                      ).launchBrowser(),
                       child: const Text("Copy code and open browser"),
                     ),
                   ],
@@ -100,22 +99,22 @@ class _LoginGithubViewState extends State<LoginGithubView>
             ),
           ),
           ValueListenableBuilder(
-            valueListenable:
-                context
-                    .watch<LoginGithubViewModel>()
-                    .showProgressIndicatorNotifier,
-            builder: (
-              final context,
-              final showProgressIndicatorNotifier,
-              final child,
-            ) {
-              if (showProgressIndicatorNotifier) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  _showProgressIndicator();
-                });
-              }
-              return const SizedBox.shrink();
-            },
+            valueListenable: context
+                .watch<LoginGithubViewModel>()
+                .showProgressIndicatorNotifier,
+            builder:
+                (
+                  final context,
+                  final showProgressIndicatorNotifier,
+                  final child,
+                ) {
+                  if (showProgressIndicatorNotifier) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      _showProgressIndicator();
+                    });
+                  }
+                  return const SizedBox.shrink();
+                },
           ),
         ],
       ),
@@ -127,9 +126,8 @@ class _LoginGithubViewState extends State<LoginGithubView>
       context: context,
       barrierDismissible: false,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      pageBuilder:
-          (final context, final animation, final secondaryAnimation) =>
-              const Center(child: CircularProgressIndicator()),
+      pageBuilder: (final context, final animation, final secondaryAnimation) =>
+          const Center(child: CircularProgressIndicator()),
       transitionDuration: const Duration(milliseconds: 200),
     );
   }

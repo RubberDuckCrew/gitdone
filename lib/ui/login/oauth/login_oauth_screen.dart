@@ -10,17 +10,13 @@ class LoginGithubScreen extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => ChangeNotifierProvider(
-    create:
-        (_) => LoginGithubViewModel(
-          infoCallback: (final text) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(text),
-                duration: const Duration(seconds: 2),
-              ),
-            );
-          },
-        ),
+    create: (_) => LoginGithubViewModel(
+      infoCallback: (final text) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(text), duration: const Duration(seconds: 2)),
+        );
+      },
+    ),
     child: const LoginGithubView(),
   );
 }
