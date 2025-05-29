@@ -1,66 +1,60 @@
-- name: ⚗️ Request Build
-  description: Requests a build
-  color: "7f39fb"
-- name: 🐛 Bug
-  description: Something isn't working
-  color: "d73a4a"
-- name: 📌 Dependencies
-  description: External library or package updates
-  color: "1d76db"
-- name: 💬 Discussion
-  description: Open discussion or brainstorming
-  color: "6f42c1"
-- name: 📝 Documentation
-  description: Improvements or additions to documentation
-  color: "0075ca"
-- name: 🔄 Duplicate
-  description: This issue or pull request already exists
-  color: "cfd3d7"
-- name: ✨ Enhancement
-  description: New feature or request
-  color: "a2eeef"
-- name: 🏷️ Good First Issue
-  description: Good for newcomers
-  color: "7057ff"
-- name: 🙌 Help wanted
-  description: Extra attention is needed
-  color: "008672"
-- name: 🚑️ Hotfix
-  description: Critical or emergency fix
-  color: "ff003c"
-- name: 🌍 Internationalization
-  description: Translation or localization improvements
-  color: "2e8b57"
-- name: 🚫 Invalid
-  description: This doesn't seem right
-  color: "e4e669"
-- name: 🛠️ Maintenance
-  description: General maintenance and updates
-  color: "6a737d"
-- name: ⚡️ Performance
-  description: Improve performance or efficiency
-  color: "ff9f1c"
-- name: ❓ Question
-  description: Further information is requested
-  color: "d876e3"
-- name: ♻️ Refactor
-  description: Code improvements without changing functionality
-  color: "8bdc8b"
-- name: 📦 Release
-  description: Preparation or updates for a release
-  color: "0e8a16"
-- name: 🔒️ Security
-  description: Address security vulnerabilities
+- name: "✨ Enhancement"
+  description: "New feature or request"
+  color: "eeff00"
+- name: "🐛 Bug"
+  description: "Something isn't working as intended"
+  color: "ff4545"
+- name: "⚠️ Mistake"
+  description: "Mistake that doesn't influence usability"
+  color: "ff4545"
+- name: "🚑️ Hotfix"
+  description: "Critical or emergency fix"
   color: "b60205"
-- name: 🧪 Testing
-  description: Add or improve tests
-  color: "c5def5"
-- name: 🎨 UI/UX
-  description: Changes related to design or user experience
-  color: "ff69b4"
-- name: ❌ Wontfix
-  description: This will not be worked on
+- name: "🔒️ Security"
+  description: "Address security vulnerabilities"
+  color: "b60205"
+- name: "📌 Dependencies"
+  description: "External library or package updates"
+  color: "4da0ff"
+- name: "📝 Documentation"
+  description: "Improvements or additions to documentation"
+  color: "005999"
+- name: "♻️ Refactor"
+  description: "Code improvements without changing function"
+  color: "009600"
+- name: "🧪 Testing"
+  description: "Add or improve tests"
+  color: "00ff15"
+- name: "💄 UI/UX"
+  description: "Changes related to the user interface and experience"
+  color: "ff2590"
+- name: "👷 CI/CD"
+  description: "Changes related to continuous integration/deployment"
+  color: "00fff0"
+- name: "🔧 Configuration"
+  description: "Changes to configuration files or settings"
+  color: "868686"
+- name: "🛠️ Maintenance"
+  description: "General maintenance and updates"
+  color: "545454"
+- name: "⚗️ Request Build"
+  description: "Requests a build"
+  color: "00ff9d"
+- name: "🧐 Size Analysis"
+  description: "Request for size analysis of the APK (only alongside a build request)"
+  color: "00a164"
+- name: "💬 Discussion"
+  description: "Open discussion or brainstorming"
+  color: "6f22ff"
+- name: "❓ Question"
+  description: "Further information is requested"
+  color: "a16eff"
+- name: "❌ Wontfix"
+  description: "This will not be worked on"
   color: "ffffff"
-- name: 🚧 Work in Progress
-  description: This is not yet complete
+- name: "🔄 Duplicate"
+  description: "This issue or pull request already exists"
+  color: "bbbbbb"
+- name: "🚧 Work in Progress"
+  description: "This is not yet complete"
   color: "ffa500"

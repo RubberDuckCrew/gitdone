@@ -1,5 +1,5 @@
-import 'dart:async';
-import 'dart:developer' as dev;
+import "dart:async";
+import "dart:developer" as dev;
 
 /// Enum representing different logging levels specified in the gitdone Wiki.
 ///
@@ -54,28 +54,31 @@ enum LogLevel {
   /// Use this for unrecoverable failures such as data loss or system shutdowns.
   shout(1200);
 
-  final int _value;
   const LogLevel(this._value);
 
+  final int _value;
+
+  /// Returns the integer value associated with the log level.
   int get logLevel => _value;
 }
 
+/// A utility class for logging messages with different levels of severity.
 class Logger {
   /// Logs a message with the specified level, time, sequence number, name,
   /// zone, error, and stack trace.
   /// @param message The message to log.
   /// @param name The name of the file logging the message. Example: "com.GitDone.gitdone.core.models.github_oauth_model"
   static void log(
-    String message,
-    String name,
-    LogLevel level, {
-    DateTime? time,
-    int? sequenceNumber,
-    Zone? zone,
-    Object? error,
-    StackTrace? stackTrace,
+    final String message,
+    final String name,
+    final LogLevel level, {
+    final DateTime? time,
+    final int? sequenceNumber,
+    final Zone? zone,
+    final Object? error,
+    final StackTrace? stackTrace,
   }) {
-    int logLevel = level.logLevel;
+    final int logLevel = level.logLevel;
     dev.log(
       message,
       time: time,
@@ -91,13 +94,13 @@ class Logger {
   /// Logs a error with time, sequence number, name,
   /// zone, error, and stack trace.
   static void logError(
-    String message,
-    String name,
-    Object? error, {
-    DateTime? time,
-    int? sequenceNumber,
-    Zone? zone,
-    StackTrace? stackTrace,
+    final String message,
+    final String name,
+    final Object? error, {
+    final DateTime? time,
+    final int? sequenceNumber,
+    final Zone? zone,
+    final StackTrace? stackTrace,
   }) {
     log(
       message,
@@ -114,13 +117,13 @@ class Logger {
   /// Logs a warning with time, sequence number, name,
   /// zone, error, and stack trace.
   static void logWarning(
-    String message,
-    String name, {
-    DateTime? time,
-    int? sequenceNumber,
-    Zone? zone,
-    Object? error,
-    StackTrace? stackTrace,
+    final String message,
+    final String name, {
+    final DateTime? time,
+    final int? sequenceNumber,
+    final Zone? zone,
+    final Object? error,
+    final StackTrace? stackTrace,
   }) {
     log(
       message,
@@ -137,13 +140,13 @@ class Logger {
   /// Logs a info message with time, sequence number, name,
   /// zone, error, and stack trace.
   static void logInfo(
-    String message,
-    String name, {
-    DateTime? time,
-    int? sequenceNumber,
-    Zone? zone,
-    Object? error,
-    StackTrace? stackTrace,
+    final String message,
+    final String name, {
+    final DateTime? time,
+    final int? sequenceNumber,
+    final Zone? zone,
+    final Object? error,
+    final StackTrace? stackTrace,
   }) {
     log(
       message,
