@@ -1,24 +1,34 @@
-import 'package:gitdone/core/models/token_handler.dart';
-import 'package:gitdone/core/utils/logger.dart';
-import 'package:github_flutter/github.dart';
-import 'package:url_launcher/url_launcher.dart';
+import "package:gitdone/core/models/token_handler.dart";
+import "package:gitdone/core/utils/logger.dart";
+import "package:github_flutter/github.dart";
+import "package:url_launcher/url_launcher.dart";
 
+/// This class handles the GitHub OAuth authentication process .
 class GitHubAuth {
-  static const String clientId = "Ov23li2QBbpgRa3P0GHJ";
-  static const String classId =
-      "com.GitDone.gitdone.core.models.github_oauth_handler";
-  final tokenHandler = TokenHandler();
+  /// Creates an instance of GitHubAuth with a callback function.
+  GitHubAuth(this.callbackFunction)
+    : _deviceFlow = DeviceFlow(clientId, scopes: ["repo", "user"]);
+
+  /// The client ID for the GitHub OAuth application.
+  static const clientId = "Ov23li2QBbpgRa3P0GHJ";
+
+  /// The class identifier for logging purposes.
+  static const classId = "com.GitDone.gitdone.core.models.github_oauth_handler";
+
+  /// Indicates whether the login process is currently active.
   bool inLoginProcess = false;
-  bool _authenticated = false;
-  final int maxLoginAttempts = 2;
-  int attempts = 1;
+
+  /// A callback function to be executed after the login process.
   Function(String) callbackFunction;
+
+  final _tokenHandler = TokenHandler();
+  bool _authenticated = false;
+  final int _maxLoginAttempts = 2;
+  int _attempts = 1;
   final DeviceFlow _deviceFlow;
   String? _userCode;
 
-  GitHubAuth({required this.callbackFunction})
-    : _deviceFlow = DeviceFlow(clientId, scopes: ["repo", "user"]);
-
+  /// Starts the GitHub OAuth login process.
   Future<String> startLoginProcess() async {
     Logger.log("Starting GitHub login process", classId, LogLevel.finest);
 
@@ -31,7 +41,7 @@ class GitHubAuth {
         LogLevel.finest,
       );
       return _userCode ?? "";
-    } catch (e) {
+    } on Exception catch (e) {
       Logger.log(
         "Could not retrieve oauth information from GitHub",
         classId,
@@ -42,8 +52,9 @@ class GitHubAuth {
     }
   }
 
+  /// Launches the browser to the GitHub OAuth authorization URL.
   Future<void> launchBrowser() async {
-    String url = _deviceFlow.createAuthorizeUrl();
+    final String url = _deviceFlow.createAuthorizeUrl();
     if (await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
       Logger.log("Launching URL: $url", classId, LogLevel.finest);
     } else {
@@ -51,8 +62,9 @@ class GitHubAuth {
     }
   }
 
+  /// Polls for the access token using the user code.
   Future<bool> pollForToken() async {
-    attempts = 1;
+    _attempts = 1;
     int interval = 0;
 
     if (userCode.isEmpty) {
@@ -64,13 +76,13 @@ class GitHubAuth {
       return false;
     }
 
-    while (attempts <= maxLoginAttempts) {
+    while (_attempts <= _maxLoginAttempts) {
       DeviceFlowExchangeResponse response;
       try {
         response = await _deviceFlow.exchange();
 
         if (response.token != null) {
-          tokenHandler.saveToken(response.token!);
+          _tokenHandler.saveToken(response.token!);
 
           Logger.log(
             "Successfully retrieved access token",
@@ -83,7 +95,7 @@ class GitHubAuth {
         } else {
           interval = response.interval;
         }
-      } catch (e) {
+      } on Exception catch (e) {
         Logger.logError(
           "Unexpected error occurred while polling for token",
           classId,
@@ -91,9 +103,9 @@ class GitHubAuth {
         );
       }
       await Future.delayed(Duration(seconds: interval));
-      attempts++;
+      _attempts++;
     }
-    if (attempts >= maxLoginAttempts) {
+    if (_attempts >= _maxLoginAttempts) {
       Logger.log(
         "Exceeded maximum attempts to poll for token",
         classId,
@@ -103,12 +115,15 @@ class GitHubAuth {
     return false;
   }
 
+  /// Resets the login process state.
   Future<void> resetHandler() async {
     inLoginProcess = false;
     Logger.log("GitHubAuthHandler reset", classId, LogLevel.finest);
   }
 
+  /// Returns the user code for the OAuth process.
   String get userCode => _userCode ?? "";
 
+  /// Returns whether the user is authenticated.
   bool get isAuthenticated => _authenticated;
 }

@@ -1,21 +1,25 @@
-import 'package:gitdone/core/models/token_handler.dart';
-import 'package:gitdone/core/utils/logger.dart';
-import 'package:github_flutter/github.dart';
+import "package:gitdone/core/models/token_handler.dart";
+import "package:gitdone/core/utils/logger.dart";
+import "package:github_flutter/github.dart";
 
+/// This model handles the GitHub API interactions.
 class GithubModel {
-  static final GithubModel _instance = GithubModel._internal();
+  /// Factory constructor to ensure a singleton instance.
+  factory GithubModel() => _instance;
 
   GithubModel._internal();
 
-  factory GithubModel() => _instance;
+  /// Factory constructor to ensure a singleton instance.
+  static final GithubModel _instance = GithubModel._internal();
 
+  /// The class identifier for logging purposes.
   static String classId = "com.GitDone.gitdone.core.models.github_model";
 
   static GitHub? _github;
 
   static Future<void> _init() async {
     Logger.log("Initializing GitHub", classId, LogLevel.finest);
-    String? token = await TokenHandler().getToken();
+    final String? token = await TokenHandler().getToken();
     _github = GitHub(auth: Authentication.bearerToken(token!));
   }
 

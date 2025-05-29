@@ -1,41 +1,41 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/core/models/token_handler.dart';
-import 'package:gitdone/ui/_widgets/octo_cat.dart';
-import 'package:gitdone/ui/welcome/welcome_view.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/core/models/token_handler.dart";
+import "package:gitdone/ui/_widgets/octo_cat.dart";
+import "package:gitdone/ui/welcome/welcome_view.dart";
 
-class Homeview extends StatefulWidget {
-  const Homeview({super.key});
+/// The home view of the app, which is displayed after login.
+class HomeView extends StatefulWidget {
+  /// Creates a new instance of [HomeView].
+  const HomeView({super.key});
 
   @override
-  State<Homeview> createState() => _HomeviewState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeviewState extends State<Homeview> {
+class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
   }
 
-  void logout() async {
-    TokenHandler tokenHandler = TokenHandler();
+  Future<void> logout() async {
+    final TokenHandler tokenHandler = TokenHandler();
     await tokenHandler.deleteToken();
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const WelcomeView()),
+      MaterialPageRoute(builder: (final context) => const WelcomeView()),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          OctoCat(),
-          ElevatedButton(onPressed: logout, child: const Text("Logout")),
-        ],
-      ),
-    );
-  }
+  Widget build(final BuildContext context) => Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const OctoCat(),
+        ElevatedButton(onPressed: logout, child: const Text("Logout")),
+      ],
+    ),
+  );
 }

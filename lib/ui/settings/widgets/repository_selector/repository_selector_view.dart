@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/core/models/repository_details.dart';
-import 'package:provider/provider.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/core/models/repository_details.dart";
+import "package:gitdone/ui/settings/widgets/repository_selector/repository_selector_view_model.dart";
+import "package:provider/provider.dart";
 
-import 'repository_selector_view_model.dart';
-
+/// A widget that allows users to select a repository from a dropdown list.
 class RepositorySelector extends StatefulWidget {
+  /// Creates a widget for selecting a repository.
   const RepositorySelector({super.key});
 
   @override
@@ -13,54 +14,47 @@ class RepositorySelector extends StatefulWidget {
 
 class _RepositorySelectorState extends State<RepositorySelector> {
   DropdownMenuItem<RepositoryDetails> convertRepoToItem(
-    RepositoryDetails repo,
-  ) {
-    return DropdownMenuItem(
-      value: repo,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.network(repo.avatarUrl, width: 24, height: 24),
-          Padding(padding: const EdgeInsets.fromLTRB(0, 0, 8, 0)),
-          Text(repo.name),
-          Padding(padding: const EdgeInsets.fromLTRB(0, 0, 8, 0)),
-          Text("(${repo.owner})", style: TextStyle(color: Colors.grey)),
-        ],
-      ),
-    );
-  }
+    final RepositoryDetails repo,
+  ) => DropdownMenuItem(
+    value: repo,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.network(repo.avatarUrl, width: 24, height: 24),
+        const Padding(padding: EdgeInsets.fromLTRB(0, 0, 8, 0)),
+        Text(repo.name),
+        const Padding(padding: EdgeInsets.fromLTRB(0, 0, 8, 0)),
+        Text("(${repo.owner})", style: const TextStyle(color: Colors.grey)),
+      ],
+    ),
+  );
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => RepositorySelectorViewModel(),
-      child: Consumer<RepositorySelectorViewModel>(
-        builder: (context, model, child) {
-          return Column(
-            children: [
-              SizedBox(
-                child: DropdownButton<RepositoryDetails>(
-                  isExpanded: true,
-                  hint: const Text("Select a repository"),
-                  value: model.selectedRepository,
-                  items: model.repositories.map(convertRepoToItem).toList(),
-                  onChanged: (repo) {
-                    model.selectRepository(repo);
-                    model.saveSelectedRepository();
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Selected repository: ${repo?.name}"),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
+  Widget build(final BuildContext context) => ChangeNotifierProvider(
+    create: (_) => RepositorySelectorViewModel(),
+    child: Consumer<RepositorySelectorViewModel>(
+      builder: (final context, final model, final child) => Column(
+        children: [
+          SizedBox(
+            child: DropdownButton<RepositoryDetails>(
+              isExpanded: true,
+              hint: const Text("Select a repository"),
+              value: model.selectedRepository,
+              items: model.repositories.map(convertRepoToItem).toList(),
+              onChanged: (final repo) {
+                model
+                  ..selectRepository(repo)
+                  ..saveSelectedRepository();
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Selected repository: ${repo?.name}")),
+                );
+              },
+            ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }
