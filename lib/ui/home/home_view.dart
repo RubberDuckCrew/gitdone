@@ -83,15 +83,14 @@ class _HomeviewState extends State<Homeview> {
                         ),
                         const SizedBox(width: 8),
                         FilterChipDropdown(
-                          items:
-                              model.allLabels
-                                  .map(
-                                    (label) => FilterChipItem(
-                                      value: label.name,
-                                      label: label.name,
-                                    ),
-                                  )
-                                  .toList(),
+                          items: model.allLabels
+                              .map(
+                                (label) => FilterChipItem(
+                                  value: label.name,
+                                  label: label.name,
+                                ),
+                              )
+                              .toList(),
                           initialLabel: "Labels",
                           allowMultipleSelection: true,
                           onUpdate: (item) {
@@ -114,10 +113,9 @@ class _HomeviewState extends State<Homeview> {
                       child: ListView(
                         shrinkWrap: true,
                         physics: const AlwaysScrollableScrollPhysics(),
-                        children:
-                            model.todos
-                                .map((todo) => TodoCard(todo: todo))
-                                .toList(),
+                        children: model.todos
+                            .map((todo) => TodoCard(todo: todo))
+                            .toList(),
                       ),
                     ),
                   ),

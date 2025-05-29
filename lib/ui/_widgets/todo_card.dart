@@ -46,25 +46,24 @@ class _TodoCardState extends State<TodoCard> {
                     child: Wrap(
                       spacing: 4.0,
                       runSpacing: 4.0,
-                      children:
-                          widget.todo.labels
-                              .map(
-                                (label) => Chip(
-                                  label: Text(label.name),
-                                  backgroundColor:
-                                      AppColor.colorScheme.surfaceContainer,
-                                  labelStyle: TextStyle(
-                                    color: AppColor.colorScheme.onSurface,
-                                    fontSize: 12,
-                                  ),
-                                  visualDensity: VisualDensity.compact,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 0,
-                                    vertical: 0,
-                                  ),
-                                ),
-                              )
-                              .toList(),
+                      children: widget.todo.labels
+                          .map(
+                            (label) => Chip(
+                              label: Text(label.name),
+                              backgroundColor:
+                                  AppColor.colorScheme.surfaceContainer,
+                              labelStyle: TextStyle(
+                                color: AppColor.colorScheme.onSurface,
+                                fontSize: 12,
+                              ),
+                              visualDensity: VisualDensity.compact,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 0,
+                                vertical: 0,
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
                   ),
                 ],
