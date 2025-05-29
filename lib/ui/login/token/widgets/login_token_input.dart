@@ -49,20 +49,21 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
       } else if (mounted) {
         showDialog(
           context: context,
-          builder: (_) => AlertDialog(
-            title: const Text("Login Failed"),
-            content: const Text(
-              "Please verify that your access token is correct and that you have a stable internet connection, then try again.",
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("OK"),
+          builder:
+              (_) => AlertDialog(
+                title: const Text("Login Failed"),
+                content: const Text(
+                  "Please verify that your access token is correct and that you have a stable internet connection, then try again.",
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("OK"),
+                  ),
+                ],
               ),
-            ],
-          ),
         );
       }
     }
