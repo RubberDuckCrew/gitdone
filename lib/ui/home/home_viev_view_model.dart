@@ -5,7 +5,7 @@ import "package:github_flutter/github.dart";
 
 /// ViewModel for the Home View.
 class HomeViewViewModel extends ChangeNotifier {
-  /// Class identifier for logging purposes.
+  /// Creates a new instance of [HomeViewViewModel] and initializes the filters.
   HomeViewViewModel() {
     _homeViewModel.addListener(() {
       _applyFilters();
@@ -23,48 +23,47 @@ class HomeViewViewModel extends ChangeNotifier {
   String _sort = "";
   bool _isEmpty = false;
 
-  /// The list of filtered todos based on search, filter, and sort criteria.
+  /// The list of filtered todos based on the current search query, filter, and sort.
   List<Todo> get todos => _filteredTodos;
 
-  /// All labels available in the repository.
+  /// The list of labels currently being filtered.
   List<IssueLabel> get allLabels => _homeViewModel.allLabels;
 
-  /// Whether the repo contains no todos.
+  /// The list of labels used for filtering todos.
   bool get isEmpty => _isEmpty;
 
-  /// Updates the labels used for filtering todos.
+  /// The list of labels currently being used for filtering.
   void updateLabels(final String label) {
-    _filterLabels.clear();
-    if (label.isEmpty) {
-      _filterLabels.addAll(_homeViewModel.allLabels);
-    } else {
-      _filterLabels.addAll(
-        _homeViewModel.allLabels.where((final l) => l.name == label),
+    _filterLabels
+      ..clear()
+      ..addAll(
+        label.isEmpty
+            ? _homeViewModel.allLabels
+            : _homeViewModel.allLabels.where((final l) => l.name == label),
       );
-    }
     notifyListeners();
   }
 
-  /// Loads the todos from the repository.
+  /// The current search query used to filter todos.
   Future<void> loadTodos() async {
     await _homeViewModel.loadTodos();
     _isEmpty = _homeViewModel.todos.isEmpty;
     notifyListeners();
   }
 
-  /// Updates the search query and applies filters.
+  /// The current search query used to filter todos.
   void updateSearchQuery(final String query) {
     _searchQuery = query;
     _applyFilters();
   }
 
-  /// Updates the filter criteria and applies filters.
+  /// The current filter applied to the todos.
   void updateFilter(final String filter) {
     _filter = filter;
     _applyFilters();
   }
 
-  /// Updates the sort criteria and applies filters.
+  /// The current sort order applied to the todos.
   void updateSort(final String sort) {
     _sort = sort;
     _applyFilters();
@@ -72,19 +71,15 @@ class HomeViewViewModel extends ChangeNotifier {
 
   void _applyFilters() {
     _filteredTodos = _homeViewModel.todos;
-    // Search
+
     if (_searchQuery.isNotEmpty) {
-      _filteredTodos = _filteredTodos
-          .where(
-            (final todo) =>
-                todo.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-                todo.description.toLowerCase().contains(
-                  _searchQuery.toLowerCase(),
-                ),
-          )
-          .toList();
+      _filteredTodos = _filteredTodos.where((final todo) {
+        final String query = _searchQuery.toLowerCase();
+        return todo.title.toLowerCase().contains(query) ||
+            todo.description.toLowerCase().contains(query);
+      }).toList();
     }
-    // Filter
+
     if (_filter == "Completed") {
       _filteredTodos = _filteredTodos
           .where((final todo) => todo.closedAt != null)
@@ -94,11 +89,10 @@ class HomeViewViewModel extends ChangeNotifier {
           .where((final todo) => todo.closedAt == null)
           .toList();
     }
-    // Sort
+
     if (_sort == "Alphabetical") {
       _filteredTodos.sort((final a, final b) => a.title.compareTo(b.title));
     } else if (_sort == "Last updated") {
-      // Sort by updatedAt, if null then use createdAt
       _filteredTodos.sort(
         (final a, final b) =>
             (b.updatedAt ?? b.createdAt).compareTo(a.updatedAt ?? a.createdAt),
@@ -108,12 +102,13 @@ class HomeViewViewModel extends ChangeNotifier {
         (final a, final b) => b.createdAt.compareTo(a.createdAt),
       );
     }
-    // Labels
+
     if (_filterLabels.isNotEmpty) {
       _filteredTodos = _filteredTodos
           .where((final todo) => todo.labels.any(_filterLabels.contains))
           .toList();
     }
+
     notifyListeners();
   }
 }
