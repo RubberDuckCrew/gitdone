@@ -14,18 +14,23 @@ class HomeViewViewModel extends ChangeNotifier {
     _filteredTodos = _homeViewModel.todos;
     _filterLabels.addAll(_homeViewModel.allLabels);
   }
+
   final HomeViewModel _homeViewModel = HomeViewModel();
   final List<IssueLabel> _filterLabels = [];
   List<Todo> _filteredTodos = [];
   String _searchQuery = "";
   String _filter = "";
   String _sort = "";
+  bool _isLoading = false;
 
   /// The list of filtered todos based on search, filter, and sort criteria.
   List<Todo> get todos => _filteredTodos;
 
   /// All labels available in the repository.
   List<IssueLabel> get allLabels => _homeViewModel.allLabels;
+
+  /// Whether the todos are currently being loaded.
+  bool get isLoading => _isLoading;
 
   /// Updates the labels used for filtering todos.
   void updateLabels(final String label) {
@@ -41,8 +46,12 @@ class HomeViewViewModel extends ChangeNotifier {
   }
 
   /// Loads the todos from the repository.
-  void loadTodos() {
-    _homeViewModel.loadTodos();
+  Future<void> loadTodos() async {
+    _isLoading = true;
+    notifyListeners();
+    await _homeViewModel.loadTodos();
+    _isLoading = false;
+    notifyListeners();
   }
 
   /// Updates the search query and applies filters.
