@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:gitdone/app.dart';
-import 'package:gitdone/app_config.dart';
+import "package:flutter/material.dart";
+import "package:gitdone/app.dart";
+import "package:gitdone/app_config.dart";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
