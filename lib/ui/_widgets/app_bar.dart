@@ -13,6 +13,9 @@ class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(final BuildContext context) => AppBar(
+    /// This fixes the issue of the app bar having a different color when
+    /// the app is scrolled.
+    scrolledUnderElevation: 0,
     centerTitle: true,
     title: const AppTitleWidget(fontSize: 30),
     backgroundColor: AppColor.colorScheme.surfaceContainer,
