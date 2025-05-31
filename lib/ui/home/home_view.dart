@@ -101,6 +101,13 @@ class _HomeViewState extends State<HomeView> {
               Expanded(
                 child: model.isLoading
                     ? const Center(child: CircularProgressIndicator())
+                    : model.todos.isEmpty
+                    ? const Center(
+                        child: Text(
+                          "No Issued found in this repository.",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      )
                     : RefreshIndicator(
                         onRefresh: () async {
                           model.loadTodos();
