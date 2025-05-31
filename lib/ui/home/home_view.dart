@@ -93,10 +93,12 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _buildTodoList(final HomeViewViewModel model) {
     if (model.isEmpty) {
-      return const Center(child: Text("No Issues found in this repository"));
+      return const Expanded(
+        child: Center(child: Text("No Issues found in this repository")),
+      );
     }
     if (model.todos.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return const Expanded(child: Center(child: CircularProgressIndicator()));
     }
     return Expanded(
       child: RefreshIndicator(
