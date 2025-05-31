@@ -88,7 +88,6 @@ class _HomeViewState extends State<HomeView> {
                       initialLabel: "Labels",
                       allowMultipleSelection: true,
                       onUpdate: (final item) {
-                        // Temporary Debug printing the selected label
                         Logger.logInfo(
                           "Selected label: ${item.value}",
                           "HomeView",
@@ -100,18 +99,20 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
               Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    model.loadTodos();
-                  },
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    children: model.todos
-                        .map((final todo) => TodoCard(todo: todo))
-                        .toList(),
-                  ),
-                ),
+                child: model.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          model.loadTodos();
+                        },
+                        child: ListView(
+                          shrinkWrap: true,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          children: model.todos
+                              .map((final todo) => TodoCard(todo: todo))
+                              .toList(),
+                        ),
+                      ),
               ),
             ],
           ),
