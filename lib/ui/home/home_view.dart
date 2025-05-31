@@ -25,7 +25,10 @@ class _HomeViewState extends State<HomeView> {
     body: Padding(
       padding: const EdgeInsets.only(top: 16),
       child: ChangeNotifierProvider(
-        create: (_) => HomeViewViewModel(),
+        create: (_) {
+          final model = HomeViewViewModel()..loadTodos();
+          return model;
+        },
         child: Consumer<HomeViewViewModel>(
           builder: (final context, final model, final child) => Column(
             children: [
@@ -99,15 +102,12 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
               Expanded(
-                child: model.isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : model.todos.isEmpty
+                child: model.isEmpty
                     ? const Center(
-                        child: Text(
-                          "No Issued found in this repository.",
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        child: Text("No Issues found in this repository"),
                       )
+                    : model.todos.isEmpty
+                    ? const Center(child: CircularProgressIndicator())
                     : RefreshIndicator(
                         onRefresh: () async {
                           model.loadTodos();
