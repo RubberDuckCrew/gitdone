@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/home/home_screen_view_model.dart";
-import "package:gitdone/ui/home/home_view.dart";
 import "package:gitdone/ui/settings/settings_view.dart";
+import "package:gitdone/ui/todo_list/todo_list_view.dart";
 import "package:provider/provider.dart";
 
 /// The main screen of the app, which contains the home view and settings view.
@@ -22,9 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (final context, final viewModel, final child) => Scaffold(
         appBar: const NormalAppBar(),
         body: switch (viewModel.selectedIndex) {
-          0 => const HomeView(),
+          0 => const TodoListView(),
           1 => const SettingsView(),
-          _ => const HomeView(),
+          _ => const TodoListView(),
         },
         bottomNavigationBar: NavigationBar(
           destinations: const [

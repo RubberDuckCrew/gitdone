@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/todo.dart";
-import "package:gitdone/ui/home/home_view_model.dart";
+import "package:gitdone/ui/todo_list/todo_list_model.dart";
 import "package:github_flutter/github.dart";
 
 /// ViewModel for the Home View.
-class HomeViewViewModel extends ChangeNotifier {
-  /// Creates a new instance of [HomeViewViewModel] and initializes the filters.
-  HomeViewViewModel() {
+class TodoListViewModel extends ChangeNotifier {
+  /// Creates a new instance of [TodoListViewModel] and initializes the filters.
+  TodoListViewModel() {
     _homeViewModel.addListener(() {
       _applyFilters();
       notifyListeners();
@@ -15,7 +15,7 @@ class HomeViewViewModel extends ChangeNotifier {
     _filterLabels.addAll(_homeViewModel.allLabels);
   }
 
-  final HomeViewModel _homeViewModel = HomeViewModel();
+  final TodoListModel _homeViewModel = TodoListModel();
   final List<IssueLabel> _filterLabels = [];
   List<Todo> _filteredTodos = [];
   String _searchQuery = "";
