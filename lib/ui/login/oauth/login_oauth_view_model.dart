@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:gitdone/core/models/github_oauth_model.dart";
-import "package:gitdone/ui/home/home_screen.dart";
+import "package:gitdone/ui/main_screen.dart";
 
 /// ViewModel for managing the login process using GitHub OAuth.
 class LoginGithubViewModel extends ChangeNotifier {

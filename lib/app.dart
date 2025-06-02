@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/core/theme/app_color.dart";
-import "package:gitdone/ui/home/home_screen.dart";
+import "package:gitdone/ui/main_screen.dart";
 import "package:gitdone/ui/welcome/welcome_view.dart";
 
 /// The main entry point of the GitDone application.

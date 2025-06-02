@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:gitdone/core/github_api_handler.dart";
 import "package:gitdone/core/models/token_handler.dart";
-import "package:gitdone/ui/home/home_screen.dart";
+import "package:gitdone/ui/main_screen.dart";
 
 /// A widget that provides an input field for the user to enter their GitHub
 class LoginTokenInput extends StatefulWidget {
