@@ -19,7 +19,7 @@ class _HomeViewState extends State<HomeView> {
     body: Padding(
       padding: const EdgeInsets.only(top: 16),
       child: ChangeNotifierProvider(
-        create: (_) => HomeViewViewModel()..loadTodos(),
+        create: (_) => HomeViewViewModel(),
         child: Consumer<HomeViewViewModel>(
           builder: (final context, final model, _) => Column(
             children: [
