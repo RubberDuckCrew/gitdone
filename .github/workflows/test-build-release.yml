@@ -109,7 +109,7 @@ jobs:
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             FLAVOR="production"
           else
-            FLAVOR="staging"
+            FLAVOR="testing"
           fi
           echo "flavor=$FLAVOR" >> $GITHUB_OUTPUT
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT

@@ -52,9 +52,9 @@ android {
             applicationIdSuffix = ".dev"
             resValue "string", "app_name", "GitDone Dev"
         }
-        create("staging") {
+        create("testing") {
             dimension = "default"
-            applicationIdSuffix = ".stg"
+            applicationIdSuffix = ".test"
             resValue "string", "app_name", "GitDone Test"
         }
         create("production") {
