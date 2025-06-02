@@ -9,11 +9,12 @@ import "package:github_flutter/github.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 /// ViewModel for the Home View.
-class HomeViewModel extends ChangeNotifier {
-  /// Creates a new instance of [HomeViewModel] and loads the todos.
-  HomeViewModel() {
+class TodoListModel extends ChangeNotifier {
+  /// Creates a new instance of [TodoListModel] and loads the todos.
+  TodoListModel() {
     loadTodos();
   }
+
   final List<Todo> _todos = [];
   final List<IssueLabel> _allLabels = [];
 
@@ -24,7 +25,7 @@ class HomeViewModel extends ChangeNotifier {
   List<IssueLabel> get allLabels => List.unmodifiable(_allLabels);
 
   /// The class identifier for logging purposes.
-  static String classId = "com.GitDone.gitdone.ui.home.home_view_model";
+  static String classId = "com.GitDone.gitdone.ui.todo_list.todo_list_model";
 
   /// Loads the todos from the repository.
   Future<void> loadTodos() async {
