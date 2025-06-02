@@ -52,9 +52,13 @@ class TodoListModel extends ChangeNotifier {
       final RepositoryDetails? repo = await _getSelectedRepository();
       if (repo != null) {
         final List<Todo> issues = await _fetchIssuesForRepository(repo);
-        _todos.addAll(issues);
+        _todos
+          ..clear()
+          ..addAll(issues);
         final List<IssueLabel> labels = await _fetchAllLabels(repo);
-        _allLabels.addAll(labels);
+        _allLabels
+          ..clear()
+          ..addAll(labels);
       }
     } on Exception catch (e) {
       Logger.logError("Failed to load todos", classId, e);
