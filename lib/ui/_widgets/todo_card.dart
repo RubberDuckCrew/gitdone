@@ -52,24 +52,40 @@ class _TodoCardState extends State<TodoCard> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Wrap(
-                    spacing: 4,
-                    runSpacing: 4,
-                    children: widget.todo.labels
-                        .map(
-                          (final label) => Chip(
-                            label: Text(label.name),
-                            backgroundColor:
-                                AppColor.colorScheme.surfaceContainer,
-                            labelStyle: TextStyle(
-                              color: AppColor.colorScheme.onSurface,
-                              fontSize: 12,
-                            ),
-                            visualDensity: VisualDensity.compact,
-                            padding: EdgeInsets.zero,
-                          ),
-                        )
-                        .toList(),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: widget.todo.labels.isNotEmpty
+                          ? widget.todo.labels
+                                .map(
+                                  (final label) => Padding(
+                                    padding: const EdgeInsets.only(right: 4),
+                                    child: Chip(
+                                      label: Text(label.name),
+                                      backgroundColor:
+                                          AppColor.colorScheme.surfaceContainer,
+                                      labelStyle: TextStyle(
+                                        color: AppColor.colorScheme.onSurface,
+                                        fontSize: 12,
+                                      ),
+                                      visualDensity: VisualDensity.compact,
+                                      padding: EdgeInsets.zero,
+                                    ),
+                                  ),
+                                )
+                                .toList()
+                          : [
+                              const Opacity(
+                                opacity: 0,
+                                child: Chip(
+                                  label: Text(""),
+                                  backgroundColor: Colors.transparent,
+                                  visualDensity: VisualDensity.compact,
+                                  padding: EdgeInsets.zero,
+                                ),
+                              ),
+                            ],
+                    ),
                   ),
                 ),
               ],
