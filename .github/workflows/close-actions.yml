@@ -24,8 +24,8 @@ jobs:
           labels: "🚧 Work in Progress"
 
       - name: Delete branch caches
-        if: startsWith(github.ref, "refs/pull/")
+        if: github.event_name == 'pull_request'
         uses: Friedinger/DeleteBranchCaches@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.ref }}
+          ref: "refs/pull/${{ github.event.pull_request.number }}/merge"
