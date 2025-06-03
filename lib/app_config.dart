@@ -23,9 +23,6 @@ class AppConfig {
   /// App version defined in pubspec.yaml
   static late final String version;
 
-  /// Build number defined in pubspec.yaml
-  static late final String buildNumber;
-
   /// App name defined in build.gradle
   static late final String appName;
 
@@ -36,7 +33,6 @@ class AppConfig {
   static Future<void> init() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
     version = info.version;
-    buildNumber = info.buildNumber;
     appName = info.appName;
     packageName = info.packageName;
   }
