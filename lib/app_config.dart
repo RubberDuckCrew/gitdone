@@ -33,7 +33,6 @@ class AppConfig {
   static Future<void> init() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
     version = info.version;
-    buildNumber = info.buildNumber;
     appName = info.appName;
     packageName = info.packageName;
   }
