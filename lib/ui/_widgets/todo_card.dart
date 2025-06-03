@@ -60,7 +60,7 @@ Widget _buildTitle(final String title) => Text(
     fontWeight: FontWeight.bold,
   ),
   overflow: TextOverflow.ellipsis,
-  maxLines: 1,
+  maxLines: 2,
 );
 
 Widget _buildLabelChips(final List<IssueLabel> labels) => SingleChildScrollView(
