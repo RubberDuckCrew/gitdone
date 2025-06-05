@@ -25,7 +25,7 @@ jobs:
 
       - name: Delete branch caches
         if: github.event_name == 'pull_request'
-        uses: Friedinger/DeleteBranchCaches@v1
+        uses: Friedinger/DeleteBranchCaches@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           ref: "refs/pull/${{ github.event.pull_request.number }}/merge"
