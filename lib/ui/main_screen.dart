@@ -5,15 +5,15 @@ import "package:gitdone/ui/todo_list/todo_list_view.dart";
 import "package:provider/provider.dart";
 
 /// The main screen of the app, which contains the home view and settings view.
-class HomeScreen extends StatefulWidget {
-  /// Creates a new instance of [HomeScreen].
-  const HomeScreen({super.key});
+class MainScreen extends StatefulWidget {
+  /// Creates a new instance of [MainScreen].
+  const MainScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(final BuildContext context) => ChangeNotifierProvider(
     create: (_) => MainScreenViewModel(),

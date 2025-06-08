@@ -42,7 +42,7 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
         TokenHandler().saveToken(_controller.text);
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (final context) => const HomeScreen()),
+            MaterialPageRoute(builder: (final context) => const MainScreen()),
             (final route) => false,
           );
         }

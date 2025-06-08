@@ -21,7 +21,7 @@ class App extends StatelessWidget {
           );
         }
         if (snapshot.hasData && snapshot.data != null && snapshot.data!) {
-          return const HomeScreen();
+          return const MainScreen();
         } else {
           return const WelcomeView();
         }

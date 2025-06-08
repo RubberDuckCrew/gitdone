@@ -67,7 +67,7 @@ class LoginGithubViewModel extends ChangeNotifier {
       continueLogin(
         onSuccess: () {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (final context) => const HomeScreen()),
+            MaterialPageRoute(builder: (final context) => const MainScreen()),
             (final route) => false,
           );
         },
