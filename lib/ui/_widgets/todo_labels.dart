@@ -3,9 +3,9 @@ import "package:gitdone/core/models/todo.dart";
 import "package:gitdone/core/theme/app_color.dart";
 import "package:github_flutter/github.dart";
 
-/// A widget that displays the labels of a [Todo] item.
+/// A widget that displays the labels of a to do item.
 class TodoLabels extends StatelessWidget {
-  /// Creates a widget that displays the labels of a [Todo] item.
+  /// Creates a widget that displays the labels of a to do item.
   const TodoLabels(this._todo, {super.key});
 
   final Todo _todo;
