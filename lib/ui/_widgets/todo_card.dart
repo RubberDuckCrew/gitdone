@@ -2,8 +2,8 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/todo.dart";
 import "package:gitdone/core/theme/app_color.dart";
+import "package:gitdone/ui/_widgets/todo_labels.dart";
 import "package:gitdone/ui/todo_edit/todo_edit_view.dart";
-import "package:github_flutter/github.dart";
 
 /// A widget that displays a card for a task item.
 class TodoCard extends StatefulWidget {
@@ -44,7 +44,7 @@ class _TodoCardState extends State<TodoCard> {
                   spacing: 4,
                   children: [
                     _buildTitle(widget.todo.title),
-                    _buildLabelChips(widget.todo.labels),
+                    TodoLabels(widget.todo),
                   ],
                 ),
               ),
@@ -54,58 +54,22 @@ class _TodoCardState extends State<TodoCard> {
       ),
     ),
   );
-}
 
-void _openTodoEditView(final BuildContext context, final Todo todo) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (final context) => TodoEditView(todo: todo)),
-  );
-}
-
-Widget _buildTitle(final String title) => Text(
-  title,
-  style: TextStyle(
-    color: AppColor.colorScheme.onSurface,
-    fontSize: 16,
-    fontWeight: FontWeight.bold,
-  ),
-  overflow: TextOverflow.ellipsis,
-  maxLines: 2,
-);
-
-Widget _buildLabelChips(final List<IssueLabel> labels) => SingleChildScrollView(
-  scrollDirection: Axis.horizontal,
-  child: Row(spacing: 4, children: _buildLabelList(labels)),
-);
-
-List<Widget> _buildLabelList(final List<IssueLabel> labels) {
-  if (labels.isNotEmpty) {
-    return labels
-        .map(
-          (final label) => Chip(
-            label: Text(label.name),
-            backgroundColor: AppColor.colorScheme.surfaceContainer,
-            labelStyle: TextStyle(
-              color: AppColor.colorScheme.onSurface,
-              fontSize: 12,
-            ),
-            visualDensity: VisualDensity.compact,
-            padding: EdgeInsets.zero,
-          ),
-        )
-        .toList();
-  } else {
-    return [
-      const Opacity(
-        opacity: 0,
-        child: Chip(
-          label: Text(""),
-          backgroundColor: Colors.transparent,
-          visualDensity: VisualDensity.compact,
-          padding: EdgeInsets.zero,
-        ),
-      ),
-    ];
+  void _openTodoEditView(final BuildContext context, final Todo todo) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (final context) => TodoEditView(todo: todo)),
+    );
   }
+
+  Widget _buildTitle(final String title) => Text(
+    title,
+    style: TextStyle(
+      color: AppColor.colorScheme.onSurface,
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+    ),
+    overflow: TextOverflow.ellipsis,
+    maxLines: 2,
+  );
 }
