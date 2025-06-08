@@ -2,6 +2,7 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/todo.dart";
 import "package:gitdone/core/theme/app_color.dart";
+import "package:gitdone/ui/todo_edit/todo_edit_view.dart";
 import "package:github_flutter/github.dart";
 
 /// A widget that displays a card for a task item.
@@ -26,29 +27,39 @@ class _TodoCardState extends State<TodoCard> {
   @override
   Widget build(final BuildContext context) => Padding(
     padding: const EdgeInsets.all(4),
-    child: Card(
-      color: AppColor.colorScheme.surfaceContainer,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-        child: Row(
-          spacing: 16,
-          children: [
-            const Placeholder(fallbackHeight: 50, fallbackWidth: 50),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 4,
-                children: [
-                  _buildTitle(widget.todo.title),
-                  _buildLabelChips(widget.todo.labels),
-                ],
+    child: GestureDetector(
+      onTap: () => _openTodoEditView(context, widget.todo),
+      child: Card(
+        color: AppColor.colorScheme.surfaceContainer,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: Row(
+            spacing: 16,
+            children: [
+              const Placeholder(fallbackHeight: 50, fallbackWidth: 50),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 4,
+                  children: [
+                    _buildTitle(widget.todo.title),
+                    _buildLabelChips(widget.todo.labels),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     ),
+  );
+}
+
+void _openTodoEditView(final BuildContext context, final Todo todo) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (final context) => TodoEditView(todo: todo)),
   );
 }
 
