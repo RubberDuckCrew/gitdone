@@ -4,6 +4,7 @@ import "package:gitdone/core/models/todo.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
 import "package:gitdone/ui/_widgets/todo_labels.dart";
+import "package:markdown_widget/markdown_widget.dart";
 
 /// A widget that displays a card for a task item.
 class TodoEditView extends StatefulWidget {
@@ -35,15 +36,48 @@ class _TodoEditViewState extends State<TodoEditView> {
           PageTitleWidget(title: widget.todo.title),
           TodoLabels(widget.todo),
           const Padding(padding: EdgeInsets.all(8)),
-          Text(widget.todo.description),
+          _buildDescription(),
           const Padding(padding: EdgeInsets.all(8)),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Created at: ${_formatDateTime(widget.todo.createdAt)}"),
-              if (widget.todo.updatedAt != null)
-                Text("Updated at: ${_formatDateTime(widget.todo.updatedAt!)}"),
-            ],
+          RichText(
+            text: TextSpan(
+              style: const TextStyle(
+                fontSize: 14,
+                height: 1.3,
+                color: Colors.grey,
+              ),
+              children: [
+                const TextSpan(
+                  text: "Created at: ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: _formatDateTime(widget.todo.createdAt)),
+                if (widget.todo.updatedAt != null) ...[
+                  const TextSpan(text: "\n"),
+                  const TextSpan(
+                    text: "Updated at: ",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: _formatDateTime(widget.todo.updatedAt!)),
+                ],
+              ],
+            ),
+          ),
+          const Padding(padding: EdgeInsets.all(8)),
+        ],
+      ),
+    ),
+  );
+
+  Widget _buildDescription() => SingleChildScrollView(
+    child: MarkdownBlock(
+      data: widget.todo.description,
+      selectable: false,
+      config: MarkdownConfig.darkConfig.copy(
+        configs: [
+          CodeConfig(
+            style: CodeConfig.darkConfig.style.copyWith(
+              fontFamily: "monospace",
+            ),
           ),
         ],
       ),
