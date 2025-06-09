@@ -2,6 +2,7 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/todo.dart";
 import "package:gitdone/core/theme/app_color.dart";
+import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/todo_labels.dart";
 import "package:gitdone/ui/todo_details/todo_details_view.dart";
 
@@ -28,7 +29,7 @@ class _TodoCardState extends State<TodoCard> {
   Widget build(final BuildContext context) => Padding(
     padding: const EdgeInsets.all(4),
     child: GestureDetector(
-      onTap: () => _openTodoDetailsView(context, widget.todo),
+      onTap: () => Navigation.navigate(TodoDetailsView(widget.todo)),
       child: Card(
         color: AppColor.colorScheme.surfaceContainer,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -54,13 +55,6 @@ class _TodoCardState extends State<TodoCard> {
       ),
     ),
   );
-
-  void _openTodoDetailsView(final BuildContext context, final Todo todo) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (final context) => TodoDetailsView(todo)),
-    );
-  }
 
   Widget _buildTitle(final String title) => Text(
     title,

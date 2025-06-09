@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_secure_storage/flutter_secure_storage.dart";
+import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/welcome/welcome_view.dart";
 
 /// A class to handle token storage and retrieval using Flutter Secure Storage.
@@ -34,9 +35,6 @@ class TokenHandler {
     final tokenHandler = TokenHandler();
     await tokenHandler.deleteToken();
     if (!context.mounted) return;
-    await Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (final context) => const WelcomeView()),
-    );
+    await Navigation.navigateClean(const WelcomeView());
   }
 }

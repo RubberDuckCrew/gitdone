@@ -1,6 +1,7 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:gitdone/core/theme/app_color.dart";
+import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/app_title.dart";
 
 /// A normal app bar that is used in most of the views.
@@ -19,12 +20,10 @@ class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {
     centerTitle: true,
     title: const AppTitleWidget(fontSize: 30),
     backgroundColor: AppColor.colorScheme.surfaceContainer,
-    leading: (Navigator.canPop(context) && backVisible)
-        ? IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+    leading: (Navigation.hasBack() && backVisible)
+        ? const IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: Navigation.navigateBack,
           )
         : const SizedBox(width: 48),
     actions: const [SizedBox(width: 48)],

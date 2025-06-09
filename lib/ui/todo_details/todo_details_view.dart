@@ -99,7 +99,7 @@ class _TodoDetailsViewState extends State<TodoDetailsView> {
 
   void _editTodo() {
     Logger.log("Edit todo: ${widget.todo.title}", _classId, LogLevel.detailed);
-    Navigation.go(TodoEditView(widget.todo));
+    Navigation.navigate(TodoEditView(widget.todo));
   }
 
   String _formatDateTime(final DateTime dateTime) =>

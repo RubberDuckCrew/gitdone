@@ -18,7 +18,7 @@ class TodoEditViewModel {
   /// Cancels the editing of the to do item.
   void cancel() {
     Logger.log("Cancel editing todo", _classId, LogLevel.detailed);
-    Navigation.goBack();
+    Navigation.navigateBack();
   }
 
   /// Saves the changes made to the to do item.
@@ -26,7 +26,7 @@ class TodoEditViewModel {
     Logger.log("Saving todo: $newTodo", _classId, LogLevel.detailed);
     newTodo.updateRemote();
     _originalTodo.replace(newTodo);
-    Navigation.goBack();
+    Navigation.navigateBack();
   }
 
   /// Update the title of the to do item.

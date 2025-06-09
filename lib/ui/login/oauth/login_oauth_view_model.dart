@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:gitdone/core/models/github_oauth_model.dart";
+import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/main_screen.dart";
 
 /// ViewModel for managing the login process using GitHub OAuth.
@@ -65,16 +66,9 @@ class LoginGithubViewModel extends ChangeNotifier {
   ) {
     if (state == AppLifecycleState.resumed && _githubAuth.inLoginProcess) {
       continueLogin(
-        onSuccess: () {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (final context) => const MainScreen()),
-            (final route) => false,
-          );
-        },
+        onSuccess: () => Navigation.navigateClean(const MainScreen()),
         onFailure: () {
-          if (Navigator.canPop(context)) {
-            Navigator.of(context).pop();
-          }
+          Navigation.navigateBack();
           infoCallback("Login failed. Please try again.");
         },
       );
