@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import "package:gitdone/core/models/todo.dart";
 import "package:gitdone/core/theme/app_color.dart";
 import "package:gitdone/ui/_widgets/todo_labels.dart";
-import "package:gitdone/ui/todo_edit/todo_edit_view.dart";
+import "package:gitdone/ui/todo_details/todo_details_view.dart";
 
 /// A widget that displays a card for a task item.
 class TodoCard extends StatefulWidget {
@@ -28,7 +28,7 @@ class _TodoCardState extends State<TodoCard> {
   Widget build(final BuildContext context) => Padding(
     padding: const EdgeInsets.all(4),
     child: GestureDetector(
-      onTap: () => _openTodoEditView(context, widget.todo),
+      onTap: () => _openTodoDetailsView(context, widget.todo),
       child: Card(
         color: AppColor.colorScheme.surfaceContainer,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -55,10 +55,10 @@ class _TodoCardState extends State<TodoCard> {
     ),
   );
 
-  void _openTodoEditView(final BuildContext context, final Todo todo) {
+  void _openTodoDetailsView(final BuildContext context, final Todo todo) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (final context) => TodoEditView(todo: todo)),
+      MaterialPageRoute(builder: (final context) => TodoDetailsView(todo)),
     );
   }
 
