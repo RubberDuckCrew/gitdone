@@ -57,11 +57,11 @@ class _TodoEditViewState extends State<TodoEditView> {
           _renderLabels(),
           const Padding(padding: EdgeInsets.all(8)),
           _editDescription(_viewModel),
-          const Padding(padding: EdgeInsets.all(8)),
+          const Padding(padding: EdgeInsets.all(10)),
         ],
       ),
     ),
-    floatingActionButton: Row(
+    floatingActionButton: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         FloatingActionButton.small(

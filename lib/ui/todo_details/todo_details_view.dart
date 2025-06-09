@@ -97,9 +97,22 @@ class _TodoDetailsViewState extends State<TodoDetailsView> {
     ),
   );
 
-  void _editTodo() {
+  Future<void> _editTodo() async {
     Logger.log("Edit todo: ${widget.todo.title}", _classId, LogLevel.detailed);
-    Navigation.navigate(TodoEditView(widget.todo));
+    final Todo? updated =
+        await Navigation.navigate(TodoEditView(widget.todo)) as Todo?;
+    if (updated == null) {
+      Logger.log("Todo edit cancelled or failed", _classId, LogLevel.detailed);
+      return;
+    }
+    setState(() {
+      widget.todo.replace(updated);
+    });
+    Logger.log(
+      "Todo updated: ${widget.todo.title}",
+      _classId,
+      LogLevel.detailed,
+    );
   }
 
   String _formatDateTime(final DateTime dateTime) =>

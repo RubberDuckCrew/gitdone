@@ -26,7 +26,7 @@ class TodoEditViewModel {
     Logger.log("Saving todo: $newTodo", _classId, LogLevel.detailed);
     newTodo.updateRemote();
     _originalTodo.replace(newTodo);
-    Navigation.navigateBack();
+    Navigation.navigateBack(newTodo);
   }
 
   /// Update the title of the to do item.
