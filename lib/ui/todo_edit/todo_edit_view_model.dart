@@ -24,7 +24,9 @@ class TodoEditViewModel {
   /// Saves the changes made to the to do item.
   void save() {
     Logger.log("Saving todo: $newTodo", _classId, LogLevel.detailed);
-    newTodo.updateRemote();
+    newTodo
+      ..updateRemote()
+      ..updatedAt = DateTime.now();
     _originalTodo.replace(newTodo);
     Navigation.navigateBack(newTodo);
   }
