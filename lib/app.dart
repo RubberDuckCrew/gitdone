@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/core/theme/app_color.dart";
+import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/main_screen.dart";
 import "package:gitdone/ui/welcome/welcome_view.dart";
 
@@ -12,6 +13,7 @@ class App extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => MaterialApp(
     theme: ThemeData(colorScheme: AppColor.colorScheme, useMaterial3: true),
+    navigatorKey: Navigation.navigatorKey,
     home: FutureBuilder(
       future: checkIfAuthenticated(),
       builder: (final context, final snapshot) {
@@ -21,7 +23,7 @@ class App extends StatelessWidget {
           );
         }
         if (snapshot.hasData && snapshot.data != null && snapshot.data!) {
-          return const HomeScreen();
+          return const MainScreen();
         } else {
           return const WelcomeView();
         }

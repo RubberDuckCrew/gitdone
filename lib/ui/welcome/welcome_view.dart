@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:gitdone/app_config.dart";
+import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/app_title.dart";
 import "package:gitdone/ui/login/oauth/login_oauth_screen.dart";
 import "package:gitdone/ui/login/token/login_token_view.dart";
@@ -61,17 +62,7 @@ class _WelcomeViewState extends State<WelcomeView> {
     ),
   );
 
-  void goToLoginGithubView() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (final context) => const LoginGithubScreen()),
-    );
-  }
+  void goToLoginGithubView() => Navigation.navigate(const LoginGithubScreen());
 
-  void goToLoginTokenView() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (final context) => const LoginTokenView()),
-    );
-  }
+  void goToLoginTokenView() => Navigation.navigate(const LoginTokenView());
 }

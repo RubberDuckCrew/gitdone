@@ -4,7 +4,7 @@ import "package:gitdone/ui/_widgets/todo_card.dart";
 import "package:gitdone/ui/todo_list/todo_list_view_model.dart";
 import "package:provider/provider.dart";
 
-/// The home view of the app, displayed after login.
+/// A widget that displays a list of todo items with search and filter options.
 class TodoListView extends StatefulWidget {
   /// Creates a new instance of [TodoListView].
   const TodoListView({super.key});

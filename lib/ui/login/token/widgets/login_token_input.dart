@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:gitdone/core/github_api_handler.dart";
 import "package:gitdone/core/models/token_handler.dart";
+import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/main_screen.dart";
 
 /// A widget that provides an input field for the user to enter their GitHub
@@ -41,26 +42,18 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
       if (await GithubApiHandler(_controller.text).isTokenValid()) {
         TokenHandler().saveToken(_controller.text);
         if (mounted) {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (final context) => const HomeScreen()),
-            (final route) => false,
-          );
+          Navigation.navigateClean(const MainScreen());
         }
       } else if (mounted) {
         showDialog(
           context: context,
-          builder: (_) => AlertDialog(
-            title: const Text("Login Failed"),
-            content: const Text(
+          builder: (_) => const AlertDialog(
+            title: Text("Login Failed"),
+            content: Text(
               "Please verify that your access token is correct and that you have a stable internet connection, then try again.",
             ),
             actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("OK"),
-              ),
+              TextButton(onPressed: Navigation.navigateBack, child: Text("OK")),
             ],
           ),
         );

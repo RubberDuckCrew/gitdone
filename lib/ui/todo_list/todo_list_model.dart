@@ -83,7 +83,7 @@ class TodoListModel extends ChangeNotifier {
   ) async => (await GithubModel.github).issues
       .listByRepo(repo.toSlug())
       .where((final issue) => issue.pullRequest == null)
-      .map(Todo.fromIssue)
+      .map((final issue) => Todo.fromIssue(issue, repo.toSlug()))
       .toList();
 
   Future<List<IssueLabel>> _fetchAllLabels(
