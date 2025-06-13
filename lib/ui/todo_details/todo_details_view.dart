@@ -7,6 +7,7 @@ import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
 import "package:gitdone/ui/_widgets/todo_labels.dart";
 import "package:gitdone/ui/todo_edit/todo_edit_view.dart";
+import "package:intl/intl.dart";
 import "package:markdown_widget/markdown_widget.dart";
 
 /// A widget that displays a card for a task item.
@@ -116,5 +117,5 @@ class _TodoDetailsViewState extends State<TodoDetailsView> {
   }
 
   String _formatDateTime(final DateTime dateTime) =>
-      "${dateTime.day}.${dateTime.month}.${dateTime.year} ${dateTime.hour}:${dateTime.minute}";
+      DateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime.toLocal());
 }
