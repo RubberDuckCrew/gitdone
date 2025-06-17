@@ -1,6 +1,10 @@
-<p align="center">
+<div align="center">
   <img src="assets/icons/app/gitdone.svg" alt="gitdone logo" width="150"/>
-</p>
+  <br><br>
+  <a href="https://github.com/RubberDuckCrew/gitdone/releases" target="_blank"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/RubberDuckCrew/gitdone"></a>
+  <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/RubberDuckCrew/gitdone/total">
+  <a href="https://github.com/RubberDuckCrew/gitdone/actions/workflows/test-build-release.yml" target="_blank"><img alt="GitHub Pipeline" src="https://github.com/RubberDuckCrew/gitdone/actions/workflows/test-build-release.yml/badge.svg"></a>
+</div>
 
 # GitDone
 
