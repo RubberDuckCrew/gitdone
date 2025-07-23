@@ -90,6 +90,8 @@ class TodoListViewModel extends ChangeNotifier {
           .toList();
     }
 
+    _filteredTodos = List.of(_filteredTodos);
+
     if (_sort == "Alphabetical") {
       _filteredTodos.sort((final a, final b) => a.title.compareTo(b.title));
     } else if (_sort == "Last updated") {
