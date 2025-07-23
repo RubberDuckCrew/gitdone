@@ -74,6 +74,8 @@ class FilterChipDropdown extends StatefulWidget {
 
 class _FilterChipDropdownState extends State<FilterChipDropdown> {
   final GlobalKey _chipKey = GlobalKey();
+  final OverlayPortalController _portalController = OverlayPortalController();
+  final LayerLink _layerLink = LayerLink();
 
   @override
   Widget build(
@@ -91,12 +93,132 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
             context,
           )
           ..calculateIconWidth(context);
-        return TapRegion(
-          onTapOutside: viewModel.handleOutsideTap,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FilterChip.elevated(
+
+        // Overlay steuern
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (viewModel.isDropdownOpen && !_portalController.isShowing) {
+            _portalController.show();
+          } else if (!viewModel.isDropdownOpen && _portalController.isShowing) {
+            _portalController.hide();
+          }
+        });
+
+        return CompositedTransformTarget(
+          link: _layerLink,
+          child: OverlayPortal(
+            controller: _portalController,
+            overlayChildBuilder: (final context) {
+              final RenderObject? renderBox = _chipKey.currentContext
+                  ?.findRenderObject();
+              if (renderBox is! RenderBox || !renderBox.hasSize) {
+                return const SizedBox.shrink();
+              }
+              final Size chipBox = renderBox.size;
+              return Stack(
+                children: [
+                  // Barrier, damit Klicks außerhalb das Dropdown schließen
+                  Positioned.fill(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        // Schließe nur, wenn das Dropdown offen ist
+                        if (viewModel.isDropdownOpen) {
+                          viewModel.toggleDropdown();
+                        }
+                      },
+                      child: Container(color: Colors.transparent),
+                    ),
+                  ),
+                  CompositedTransformFollower(
+                    link: _layerLink,
+                    showWhenUnlinked: false,
+                    offset: Offset(0, chipBox.height + 4),
+                    child: Material(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      elevation: 4,
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minWidth:
+                              viewModel.maxItemWidth + viewModel.iconWidth,
+                          maxWidth: MediaQuery.of(context).size.width * 0.9,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: widget.items
+                              .map(
+                                (final item) => Material(
+                                  color: viewModel.isItemSelected(item)
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {
+                                      widget.onUpdate(item);
+
+                                      if (viewModel.isItemSelected(item) &&
+                                          widget.allowMultipleSelection) {
+                                        viewModel.unselectItem(item);
+                                      } else {
+                                        viewModel.selectItem(item);
+                                      }
+                                    },
+                                    child: SizedBox(
+                                      width: widget.allowMultipleSelection
+                                          ? viewModel.maxItemWidth +
+                                                viewModel.iconWidth
+                                          : viewModel.maxItemWidth,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 8,
+                                          horizontal: widget.labelPadding,
+                                        ),
+                                        child: widget.allowMultipleSelection
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  if (viewModel.isItemSelected(
+                                                    item,
+                                                  ))
+                                                    const Icon(Icons.check_box)
+                                                  else
+                                                    const Icon(
+                                                      Icons
+                                                          .check_box_outline_blank,
+                                                    ),
+                                                  Flexible(
+                                                    child: Text(
+                                                      item.label,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : Text(
+                                                item.label,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+            child: TapRegion(
+              // TapRegion hier nicht mehr für das Schließen verwenden!
+              child: FilterChip.elevated(
                 key: _chipKey,
                 avatar: widget.leading,
                 label: Text(viewModel.getLabel(widget.initialLabel)),
@@ -127,79 +249,7 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                     : viewModel.toggleDropdown,
                 onSelected: (_) => viewModel.toggleDropdown(),
               ),
-              if (viewModel.isDropdownOpen)
-                Material(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  elevation: 4,
-                  child: LayoutBuilder(
-                    builder: (final context, final constraints) => ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: viewModel.maxItemWidth + viewModel.iconWidth,
-                        maxWidth: MediaQuery.of(context).size.width * 0.9,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: widget.items
-                            .map(
-                              (final item) => Material(
-                                color: viewModel.isItemSelected(item)
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Colors.transparent,
-                                child: InkWell(
-                                  onTap: () {
-                                    widget.onUpdate(item);
-
-                                    if (viewModel.isItemSelected(item) &&
-                                        widget.allowMultipleSelection) {
-                                      viewModel.unselectItem(item);
-                                    } else {
-                                      viewModel.selectItem(item);
-                                    }
-                                  },
-                                  child: SizedBox(
-                                    child: Container(
-                                      width: widget.allowMultipleSelection
-                                          ? viewModel.maxItemWidth +
-                                                viewModel.iconWidth
-                                          : viewModel.maxItemWidth,
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 8,
-                                        horizontal: widget.labelPadding,
-                                      ),
-                                      child: widget.allowMultipleSelection
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                if (viewModel.isItemSelected(
-                                                  item,
-                                                ))
-                                                  const Icon(Icons.check_box)
-                                                else
-                                                  const Icon(
-                                                    Icons
-                                                        .check_box_outline_blank,
-                                                  ),
-                                                Text(item.label),
-                                              ],
-                                            )
-                                          : Text(item.label),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
+            ),
           ),
         );
       },
