@@ -1,6 +1,6 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:gitdone/core/models/todo.dart";
+import "package:gitdone/core/models/todo/todo.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/_widgets/todo_labels.dart";
 import "package:gitdone/ui/todo_edit/todo_edit_view_model.dart";

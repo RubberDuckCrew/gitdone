@@ -1,6 +1,7 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:gitdone/core/models/todo.dart";
+import "package:gitdone/core/models/todo/todo.dart";
+import "package:gitdone/core/models/todo/todo_remote.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
@@ -77,26 +78,30 @@ class _TodoDetailsViewState extends State<TodoDetailsView> {
     ),
   );
 
-  Widget _renderStatus() => RichText(
-    text: TextSpan(
-      style: const TextStyle(fontSize: 14, height: 1.3, color: Colors.grey),
-      children: [
-        const TextSpan(
-          text: "Created at: ",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        TextSpan(text: _formatDateTime(widget.todo.createdAt)),
-        if (widget.todo.updatedAt != null) ...[
+  Widget _renderStatus() {
+    if (widget.todo is! TodoRemote) {
+      return const SizedBox.shrink();
+    }
+    final TodoRemote todo = widget.todo as TodoRemote;
+    return RichText(
+      text: TextSpan(
+        style: const TextStyle(fontSize: 14, height: 1.3, color: Colors.grey),
+        children: [
+          const TextSpan(
+            text: "Created at: ",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          TextSpan(text: _formatDateTime(todo.createdAt)),
           const TextSpan(text: "\n"),
           const TextSpan(
             text: "Updated at: ",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          TextSpan(text: _formatDateTime(widget.todo.updatedAt!)),
+          TextSpan(text: _formatDateTime(todo.updatedAt)),
         ],
-      ],
-    ),
-  );
+      ),
+    );
+  }
 
   Future<void> _editTodo() async {
     Logger.log("Edit todo: ${widget.todo.title}", _classId, LogLevel.detailed);
