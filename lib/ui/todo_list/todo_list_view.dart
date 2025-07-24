@@ -32,7 +32,7 @@ class _TodoListViewState extends State<TodoListView> {
       ),
     ),
     floatingActionButton: FloatingActionButton(
-      onPressed: () {},
+      onPressed: () => TodoListViewModel()..createTodo(),
       child: const Icon(Icons.add),
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

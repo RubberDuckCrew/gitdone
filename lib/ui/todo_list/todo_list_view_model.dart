@@ -1,5 +1,10 @@
 import "package:flutter/material.dart";
-import "package:gitdone/core/models/todo.dart";
+import "package:gitdone/core/models/repository_details.dart";
+import "package:gitdone/core/models/todo/todo.dart";
+import "package:gitdone/core/utils/logger.dart";
+import "package:gitdone/core/utils/navigation.dart";
+import "package:gitdone/ui/todo_details/todo_details_view.dart";
+import "package:gitdone/ui/todo_edit/todo_edit_view.dart";
 import "package:gitdone/ui/todo_list/todo_list_model.dart";
 import "package:github_flutter/github.dart";
 
@@ -14,6 +19,9 @@ class TodoListViewModel extends ChangeNotifier {
     _filteredTodos = _homeViewModel.todos;
     _filterLabels.addAll(_homeViewModel.allLabels);
   }
+
+  static const _classId =
+      "com.GitDone.gitdone.ui.todo_list.todo_list_view_model";
 
   final TodoListModel _homeViewModel = TodoListModel();
   final List<IssueLabel> _filterLabels = [];
@@ -94,8 +102,7 @@ class TodoListViewModel extends ChangeNotifier {
       _filteredTodos.sort((final a, final b) => a.title.compareTo(b.title));
     } else if (_sort == "Last updated") {
       _filteredTodos.sort(
-        (final a, final b) =>
-            (b.updatedAt ?? b.createdAt).compareTo(a.updatedAt ?? a.createdAt),
+        (final a, final b) => b.updatedAt.compareTo(a.updatedAt),
       );
     } else if (_sort == "Created") {
       _filteredTodos.sort(
@@ -110,5 +117,29 @@ class TodoListViewModel extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  /// Creates a new to do and navigates to the TodoDetailsView.
+  Future<void> createTodo() async {
+    Logger.log("Creating todo", _classId, LogLevel.detailed);
+    final RepositoryDetails? repo = await _homeViewModel
+        .getSelectedRepository();
+    if (repo == null) {
+      Logger.log("No repository selected", _classId, LogLevel.info);
+      return;
+    }
+    final Todo? newTodo = await Navigation.navigate(
+      TodoEditView(Todo.createEmpty(slug: repo.toSlug())),
+    );
+    if (newTodo == null) {
+      Logger.log(
+        "Todo creation cancelled or failed",
+        _classId,
+        LogLevel.detailed,
+      );
+      return;
+    }
+    Logger.log("Todo created: $newTodo", _classId, LogLevel.detailed);
+    Navigation.navigate(TodoDetailsView(newTodo));
   }
 }

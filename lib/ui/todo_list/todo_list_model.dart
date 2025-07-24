@@ -3,7 +3,8 @@ import "dart:convert";
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/github_model.dart";
 import "package:gitdone/core/models/repository_details.dart";
-import "package:gitdone/core/models/todo.dart";
+import "package:gitdone/core/models/todo/todo.dart";
+import "package:gitdone/core/models/todo/todo_remote.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
 import "package:shared_preferences/shared_preferences.dart";
@@ -24,12 +25,12 @@ class TodoListModel extends ChangeNotifier {
   /// The list of all labels available in the repository.
   List<IssueLabel> get allLabels => List.unmodifiable(_allLabels);
 
-  /// The class identifier for logging purposes.
-  static String classId = "com.GitDone.gitdone.ui.todo_list.todo_list_model";
+  static const String _classId =
+      "com.GitDone.gitdone.ui.todo_list.todo_list_model";
 
   /// Loads the todos from the repository.
   Future<void> loadTodos() async {
-    Logger.logInfo("Loading todos", classId);
+    Logger.logInfo("Loading todos", _classId);
     await _loadTodos();
   }
 
@@ -49,7 +50,7 @@ class TodoListModel extends ChangeNotifier {
   Future<void> _loadTodos() async {
     try {
       _todos.clear();
-      final RepositoryDetails? repo = await _getSelectedRepository();
+      final RepositoryDetails? repo = await getSelectedRepository();
       if (repo != null) {
         final List<Todo> issues = await _fetchIssuesForRepository(repo);
         _todos
@@ -61,13 +62,14 @@ class TodoListModel extends ChangeNotifier {
           ..addAll(labels);
       }
     } on Exception catch (e) {
-      Logger.logError("Failed to load todos", classId, e);
+      Logger.logError("Failed to load todos", _classId, e);
     } finally {
       notifyListeners();
     }
   }
 
-  Future<RepositoryDetails?> _getSelectedRepository() async {
+  /// Gets the selected repository from shared preferences.
+  Future<RepositoryDetails?> getSelectedRepository() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String repoJson = prefs.getString("selected_repository") ?? "";
     if (repoJson.isNotEmpty) {
@@ -83,7 +85,7 @@ class TodoListModel extends ChangeNotifier {
   ) async => (await GithubModel.github).issues
       .listByRepo(repo.toSlug())
       .where((final issue) => issue.pullRequest == null)
-      .map((final issue) => Todo.fromIssue(issue, repo.toSlug()))
+      .map((final issue) => TodoRemote.fromIssue(issue, repo.toSlug()))
       .toList();
 
   Future<List<IssueLabel>> _fetchAllLabels(
