@@ -385,11 +385,8 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
         maxLines: 1,
         textDirection: TextDirection.ltr,
       )..layout(minWidth: 0, maxWidth: double.infinity);
-      maxWidth = maxWidth < textPainter.width
-          ? textPainter.width +
-                2 * labelPadding +
-                5 // TODO(everyone): Magic number because TextPainter is not accurate. See https://github.com/flutter/flutter/issues/142028
-          : maxWidth;
+      final double localMaxWidth = textPainter.width + 2 * labelPadding + 5;
+      maxWidth = maxWidth < localMaxWidth ? localMaxWidth : maxWidth;
     }
 
     _maxItemWidth = maxWidth;
