@@ -1,4 +1,4 @@
-import "package:gitdone/core/models/todo.dart";
+import "package:gitdone/core/models/todo/todo.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
 
@@ -22,12 +22,9 @@ class TodoEditViewModel {
   }
 
   /// Saves the changes made to the to do item.
-  void save() {
+  Future<void> save() async {
     Logger.log("Saving todo: $newTodo", _classId, LogLevel.detailed);
-    newTodo
-      ..updateRemote()
-      ..updatedAt = DateTime.now();
-    _originalTodo.replace(newTodo);
+    _originalTodo.replace(await newTodo.saveRemote());
     Navigation.navigateBack(newTodo);
   }
 
