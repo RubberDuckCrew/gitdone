@@ -202,10 +202,11 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                         constraints: BoxConstraints(
                           minWidth: _actualDropdownWidth,
                           maxWidth: _actualDropdownWidth,
+                          maxHeight: MediaQuery.of(context).size.height * 0.5,
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: ListView(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
                           children: widget.items
                               .map(
                                 (final item) => Material(
