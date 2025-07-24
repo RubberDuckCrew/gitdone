@@ -116,7 +116,6 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
   @override
   void dispose() {
     _viewModel.removeListener(_handleDropdownToggle);
-    _portalController.hide();
     super.dispose();
   }
 
