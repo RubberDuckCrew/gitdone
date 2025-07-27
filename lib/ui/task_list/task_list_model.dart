@@ -3,56 +3,56 @@ import "dart:convert";
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/github_model.dart";
 import "package:gitdone/core/models/repository_details.dart";
-import "package:gitdone/core/models/todo.dart";
+import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 /// ViewModel for the Home View.
-class TodoListModel extends ChangeNotifier {
-  /// Creates a new instance of [TodoListModel] and loads the todos.
-  TodoListModel() {
-    loadTodos();
+class TaskListModel extends ChangeNotifier {
+  /// Creates a new instance of [TaskListModel] and loads the tasks.
+  TaskListModel() {
+    loadTasks();
   }
 
-  final List<Todo> _todos = [];
+  final List<Task> _task = [];
   final List<IssueLabel> _allLabels = [];
 
-  /// The list of todos loaded from the repository.
-  List<Todo> get todos => List.unmodifiable(_todos);
+  /// The list of tasks loaded from the repository.
+  List<Task> get tasks => List.unmodifiable(_task);
 
   /// The list of all labels available in the repository.
   List<IssueLabel> get allLabels => List.unmodifiable(_allLabels);
 
   /// The class identifier for logging purposes.
-  static String classId = "com.GitDone.gitdone.ui.todo_list.todo_list_model";
+  static String classId = "com.GitDone.gitdone.ui.task_list.task_list_model";
 
-  /// Loads the todos from the repository.
-  Future<void> loadTodos() async {
-    Logger.logInfo("Loading todos", classId);
-    await _loadTodos();
+  /// Loads the tasks from the repository.
+  Future<void> loadTasks() async {
+    Logger.logInfo("Loading tasks", classId);
+    await _loadTasks();
   }
 
   /// Adds a new task to the list.
-  Future<void> addTodo(final Todo todo) async {
-    _todos.add(todo);
+  Future<void> addTask(final Task task) async {
+    _task.add(task);
     notifyListeners();
   }
 
   /// Removes a task from the list.
-  Future<void> removeTodo(final Todo todo) async {
-    if (_todos.remove(todo)) {
+  Future<void> removeTask(final Task task) async {
+    if (_task.remove(task)) {
       notifyListeners();
     }
   }
 
-  Future<void> _loadTodos() async {
+  Future<void> _loadTasks() async {
     try {
-      _todos.clear();
+      _task.clear();
       final RepositoryDetails? repo = await _getSelectedRepository();
       if (repo != null) {
-        final List<Todo> issues = await _fetchIssuesForRepository(repo);
-        _todos
+        final List<Task> issues = await _fetchIssuesForRepository(repo);
+        _task
           ..clear()
           ..addAll(issues);
         final List<IssueLabel> labels = await _fetchAllLabels(repo);
@@ -61,7 +61,7 @@ class TodoListModel extends ChangeNotifier {
           ..addAll(labels);
       }
     } on Exception catch (e) {
-      Logger.logError("Failed to load todos", classId, e);
+      Logger.logError("Failed to load tasks", classId, e);
     } finally {
       notifyListeners();
     }
@@ -78,12 +78,12 @@ class TodoListModel extends ChangeNotifier {
     return null;
   }
 
-  Future<List<Todo>> _fetchIssuesForRepository(
+  Future<List<Task>> _fetchIssuesForRepository(
     final RepositoryDetails repo,
   ) async => (await GithubModel.github).issues
       .listByRepo(repo.toSlug())
       .where((final issue) => issue.pullRequest == null)
-      .map((final issue) => Todo.fromIssue(issue, repo.toSlug()))
+      .map((final issue) => Task.fromIssue(issue, repo.toSlug()))
       .toList();
 
   Future<List<IssueLabel>> _fetchAllLabels(
