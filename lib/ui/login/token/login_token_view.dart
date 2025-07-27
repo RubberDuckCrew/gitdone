@@ -22,6 +22,7 @@ class _LoginTokenViewState extends State<LoginTokenView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Padding(padding: EdgeInsets.symmetric(vertical: 32)),
           const PageTitleWidget(title: "Personal Access Token Login"),
           RichText(
             text: TextSpan(

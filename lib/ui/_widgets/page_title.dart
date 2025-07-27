@@ -24,6 +24,7 @@ class PageTitleWidget extends StatelessWidget {
                 fontSize: 30,
                 color: AppColor.colorScheme.primary,
                 fontWeight: FontWeight.bold,
+                height: 1,
               ),
               softWrap: true,
               overflow: TextOverflow.visible,
