@@ -98,6 +98,9 @@ class TodoListViewModel extends ChangeNotifier {
           .toList();
     }
 
+    /// FIXME: This is a workaround to ensure that the list is not immutable
+    _filteredTodos = List.of(_filteredTodos);
+
     if (_sort == "Alphabetical") {
       _filteredTodos.sort((final a, final b) => a.title.compareTo(b.title));
     } else if (_sort == "Last updated") {

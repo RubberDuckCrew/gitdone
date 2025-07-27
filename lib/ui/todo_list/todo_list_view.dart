@@ -51,9 +51,9 @@ class _TodoListViewState extends State<TodoListView> {
   );
 
   Widget _buildFilterRow(final TodoListViewModel model) => Padding(
-    padding: const EdgeInsets.only(right: 16),
+    padding: const EdgeInsets.only(right: 16, left: 16),
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildFilterChipDropdown(
           items: ["Completed", "Pending"],

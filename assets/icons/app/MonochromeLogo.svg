@@ -1,0 +1,14 @@
+<svg width="108" height="108" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M54 22C71.6731 22 86 36.3269 86 54C86 71.6731 71.6731 86 54 86C36.3269 86 22 71.6731 22 54C22 36.3269 36.3269 22 54 22Z" stroke="black" stroke-width="2"/>
+<circle cx="54" cy="78" r="4" fill="black" stroke="black" stroke-width="2"/>
+<circle cx="71" cy="71" r="4" fill="black" stroke="black" stroke-width="2"/>
+<path d="M78 51C80.3109 51 82 52.6635 82 54.5C82 56.3365 80.3109 58 78 58C75.6891 58 74 56.3365 74 54.5C74 52.6635 75.6891 51 78 51Z" fill="black" stroke="black" stroke-width="2"/>
+<circle cx="54" cy="30" r="4" fill="black" stroke="black" stroke-width="2"/>
+<circle cx="37" cy="37" r="4" fill="black" stroke="black" stroke-width="2"/>
+<path d="M30 51C32.3109 51 34 52.6635 34 54.5C34 56.3365 32.3109 58 30 58C27.6891 58 26 56.3365 26 54.5C26 52.6635 27.6891 51 30 51Z" fill="black" stroke="black" stroke-width="2"/>
+<circle cx="37" cy="71" r="4" fill="black" stroke="black" stroke-width="2"/>
+<path d="M34 54L73 54" stroke="black" stroke-width="2"/>
+<path d="M39.2782 67.7936L68 40M39 40L68 68" stroke="black" stroke-width="2"/>
+<path d="M54 34.1172L53.8667 74.2971" stroke="black" stroke-width="2"/>
+<path d="M53.6032 65.3972C49.8028 61.3332 40.113 50.8555 40.0031 49.56C39.8664 47.948 44.2412 42.9802 45.9501 43.119C47.2973 43.2285 51.5906 49.1191 53.3477 51.6079C53.7323 52.1527 54.5208 52.1977 54.9454 51.6836C59.0678 46.6922 77.091 25 78.9663 25C81.0853 25 85.3126 29.3735 84.9816 31.1785C84.6947 32.7431 62.459 58.511 56.5415 65.3465C55.7679 66.2402 54.4106 66.2606 53.6032 65.3972Z" fill="black" stroke="black" stroke-width="2"/>
+</svg>
