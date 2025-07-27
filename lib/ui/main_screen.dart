@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/settings/settings_view.dart";
-import "package:gitdone/ui/todo_list/todo_list_view.dart";
+import "package:gitdone/ui/task_list/task_list_view.dart";
 import "package:provider/provider.dart";
 
 /// The main screen of the app, which contains the home view and settings view.
@@ -21,9 +21,9 @@ class _MainScreenState extends State<MainScreen> {
       builder: (final context, final viewModel, final child) => Scaffold(
         appBar: const NormalAppBar(),
         body: switch (viewModel.selectedIndex) {
-          0 => const TodoListView(),
+          0 => const TaskListView(),
           1 => const SettingsView(),
-          _ => const TodoListView(),
+          _ => const TaskListView(),
         },
         bottomNavigationBar: NavigationBar(
           destinations: const [

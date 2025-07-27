@@ -1,31 +1,31 @@
 import "package:flutter/material.dart";
 import "package:gitdone/ui/_widgets/dropdown_filter_chip.dart";
-import "package:gitdone/ui/_widgets/todo_card.dart";
-import "package:gitdone/ui/todo_list/todo_list_view_model.dart";
+import "package:gitdone/ui/_widgets/task_card.dart";
+import "package:gitdone/ui/task_list/task_list_view_model.dart";
 import "package:provider/provider.dart";
 
-/// A widget that displays a list of todo items with search and filter options.
-class TodoListView extends StatefulWidget {
-  /// Creates a new instance of [TodoListView].
-  const TodoListView({super.key});
+/// A widget that displays a list of task items with search and filter options.
+class TaskListView extends StatefulWidget {
+  /// Creates a new instance of [TaskListView].
+  const TaskListView({super.key});
 
   @override
-  State<TodoListView> createState() => _TodoListViewState();
+  State<TaskListView> createState() => _TaskListViewState();
 }
 
-class _TodoListViewState extends State<TodoListView> {
+class _TaskListViewState extends State<TaskListView> {
   @override
   Widget build(final BuildContext context) => Scaffold(
     body: Padding(
       padding: const EdgeInsets.only(top: 16),
       child: ChangeNotifierProvider(
-        create: (_) => TodoListViewModel()..loadTodos(),
-        child: Consumer<TodoListViewModel>(
+        create: (_) => TaskListViewModel()..loadTasks(),
+        child: Consumer<TaskListViewModel>(
           builder: (final context, final model, _) => Column(
             children: [
               _buildSearchField(model),
               _buildFilterRow(model),
-              _buildTodoList(model),
+              _buildTaskList(model),
             ],
           ),
         ),
@@ -38,7 +38,7 @@ class _TodoListViewState extends State<TodoListView> {
     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
   );
 
-  Widget _buildSearchField(final TodoListViewModel model) => Padding(
+  Widget _buildSearchField(final TaskListViewModel model) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16),
     child: TextField(
       decoration: const InputDecoration(
@@ -50,7 +50,7 @@ class _TodoListViewState extends State<TodoListView> {
     ),
   );
 
-  Widget _buildFilterRow(final TodoListViewModel model) => Padding(
+  Widget _buildFilterRow(final TaskListViewModel model) => Padding(
     padding: const EdgeInsets.only(right: 16, left: 16),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -91,23 +91,23 @@ class _TodoListViewState extends State<TodoListView> {
     onUpdate: (final item) => onUpdate(item.value),
   );
 
-  Widget _buildTodoList(final TodoListViewModel model) {
+  Widget _buildTaskList(final TaskListViewModel model) {
     if (model.isEmpty) {
       return const Expanded(
         child: Center(child: Text("No Issues found in this repository")),
       );
     }
-    if (model.todos.isEmpty) {
+    if (model.tasks.isEmpty) {
       return const Expanded(child: Center(child: CircularProgressIndicator()));
     }
     return Expanded(
       child: RefreshIndicator(
-        onRefresh: model.loadTodos,
+        onRefresh: model.loadTasks,
         child: ListView(
           shrinkWrap: true,
           physics: const AlwaysScrollableScrollPhysics(),
-          children: model.todos
-              .map((final todo) => TodoCard(todo: todo))
+          children: model.tasks
+              .map((final task) => TaskCard(task: task))
               .toList(),
         ),
       ),

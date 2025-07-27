@@ -3,9 +3,9 @@ import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
 
 /// This class represents a Task item in the application.
-class Todo {
+class Task {
   /// Creates a instance with the given parameters.
-  Todo({
+  Task({
     required this.title,
     required this.description,
     required this.createdAt,
@@ -18,7 +18,7 @@ class Todo {
        _issueNumber = issueNumber;
 
   /// Creates a to do instance from a GitHub [Issue].
-  Todo.fromIssue(final Issue issue, this._slug)
+  Task.fromIssue(final Issue issue, this._slug)
     : title = issue.title,
       description = issue.body,
       createdAt = issue.createdAt!,
@@ -27,7 +27,7 @@ class Todo {
       labels = issue.labels,
       _issueNumber = issue.number;
 
-  static const _classId = "com.GitDone.gitdone.core.models.todo";
+  static const _classId = "com.GitDone.gitdone.core.models.task";
 
   /// The title of the task.
   String title;
@@ -71,7 +71,7 @@ class Todo {
   }
 
   /// Creates a copy of the current instance.
-  Todo copy() => Todo(
+  Task copy() => Task(
     title: title,
     description: description,
     createdAt: createdAt,
@@ -83,7 +83,7 @@ class Todo {
   );
 
   /// Replaces the current instance with the values from another to do instance.
-  void replace(final Todo update) {
+  void replace(final Task update) {
     title = update.title;
     description = update.description;
     createdAt = update.createdAt;
@@ -94,5 +94,5 @@ class Todo {
 
   @override
   String toString() =>
-      "Todo(title: $title, description: ${description.replaceAll("\n", r"\n")}, createdAt: $createdAt, updatedAt: $updatedAt, closedAt: $closedAt, labels: $labels)";
+      "Task(title: $title, description: ${description.replaceAll("\n", r"\n")}, createdAt: $createdAt, updatedAt: $updatedAt, closedAt: $closedAt, labels: $labels)";
 }

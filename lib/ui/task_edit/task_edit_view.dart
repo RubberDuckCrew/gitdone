@@ -1,40 +1,40 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:gitdone/core/models/todo.dart";
+import "package:gitdone/core/models/task.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
-import "package:gitdone/ui/_widgets/todo_labels.dart";
-import "package:gitdone/ui/todo_edit/todo_edit_view_model.dart";
+import "package:gitdone/ui/_widgets/task_labels.dart";
+import "package:gitdone/ui/task_edit/task_edit_view_model.dart";
 
 /// A widget that displays a card for a task item.
-class TodoEditView extends StatefulWidget {
-  /// Creates a [TodoEditView] widget with the given task.
-  const TodoEditView(this.todo, {super.key});
+class TaskEditView extends StatefulWidget {
+  /// Creates a [TaskEditView] widget with the given task.
+  const TaskEditView(this.task, {super.key});
 
   /// The task item to be edited in the view.
-  final Todo todo;
+  final Task task;
 
   @override
-  State<TodoEditView> createState() => _TodoEditViewState();
+  State<TaskEditView> createState() => _TaskEditViewState();
 
   @override
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Todo>("todo", todo));
+    properties.add(DiagnosticsProperty<Task>("task", task));
   }
 }
 
-class _TodoEditViewState extends State<TodoEditView> {
-  late final TodoEditViewModel _viewModel;
+class _TaskEditViewState extends State<TaskEditView> {
+  late final TaskEditViewModel _viewModel;
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = TodoEditViewModel(widget.todo);
-    _titleController = TextEditingController(text: widget.todo.title);
+    _viewModel = TaskEditViewModel(widget.task);
+    _titleController = TextEditingController(text: widget.task.title);
     _descriptionController = TextEditingController(
-      text: widget.todo.description,
+      text: widget.task.description,
     );
   }
 
@@ -79,7 +79,7 @@ class _TodoEditViewState extends State<TodoEditView> {
     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
   );
 
-  Widget _editTitle(final TodoEditViewModel viewModel) => Padding(
+  Widget _editTitle(final TaskEditViewModel viewModel) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 16),
     child: TextField(
       controller: _titleController,
@@ -91,9 +91,9 @@ class _TodoEditViewState extends State<TodoEditView> {
     ),
   );
 
-  Widget _renderLabels() => TodoLabels(widget.todo);
+  Widget _renderLabels() => TaskLabels(widget.task);
 
-  Widget _editDescription(final TodoEditViewModel viewModel) => TextField(
+  Widget _editDescription(final TaskEditViewModel viewModel) => TextField(
     controller: _descriptionController,
     decoration: const InputDecoration(
       labelText: "Description",
