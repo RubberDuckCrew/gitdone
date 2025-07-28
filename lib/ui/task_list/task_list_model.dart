@@ -24,12 +24,11 @@ class TaskListModel extends ChangeNotifier {
   /// The list of all labels available in the repository.
   List<IssueLabel> get allLabels => List.unmodifiable(_allLabels);
 
-  /// The class identifier for logging purposes.
-  static String classId = "com.GitDone.gitdone.ui.task_list.task_list_model";
+  static const _classId = "com.GitDone.gitdone.ui.task_list.task_list_model";
 
   /// Loads the tasks from the repository.
   Future<void> loadTasks() async {
-    Logger.logInfo("Loading tasks", classId);
+    Logger.logInfo("Loading tasks", _classId);
     await _loadTasks();
   }
 
@@ -61,7 +60,7 @@ class TaskListModel extends ChangeNotifier {
           ..addAll(labels);
       }
     } on Exception catch (e) {
-      Logger.logError("Failed to load tasks", classId, e);
+      Logger.logError("Failed to load tasks", _classId, e);
     } finally {
       notifyListeners();
     }

@@ -9,7 +9,7 @@ import "package:shared_preferences/shared_preferences.dart";
 /// Model for managing repository selection in the settings.
 class RepositorySelectorModel extends ChangeNotifier {
   /// Class identifier for logging purposes.
-  String classId =
+  static const _classId =
       "com.GitDone.gitdone.ui.settings.widgets.repository_selector.repository_selector_model";
 
   final List<RepositoryDetails> _repositories = [];
@@ -27,14 +27,18 @@ class RepositorySelectorModel extends ChangeNotifier {
 
   /// Loads local repository if available.
   Future<void> loadLocalRepository() async {
-    Logger.log("Loading local repository", classId, LogLevel.finest);
+    Logger.log("Loading local repository", _classId, LogLevel.finest);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String repoJson = prefs.getString("selected_repository") ?? "";
     if (repoJson.isNotEmpty) {
       final RepositoryDetails repo = RepositoryDetails.fromJson(
         Map<String, dynamic>.from(jsonDecode(repoJson)),
       );
-      Logger.log("Found local repository: $repoJson", classId, LogLevel.finest);
+      Logger.log(
+        "Found local repository: $repoJson",
+        _classId,
+        LogLevel.finest,
+      );
       _repositories.add(repo);
       _selectedRepository = repo;
       notifyListeners();
@@ -44,7 +48,7 @@ class RepositorySelectorModel extends ChangeNotifier {
   /// Fetches all user repositories from GitHub and adds them to the list,
   Future<void> getAllUserRepositories() async {
     await loadLocalRepository();
-    Logger.log("Fetching repositories", classId, LogLevel.finest);
+    Logger.log("Fetching repositories", _classId, LogLevel.finest);
     _repositories.addAll(
       await (await GithubModel.github).repositories
           .listRepositories(type: "all")
@@ -58,7 +62,7 @@ class RepositorySelectorModel extends ChangeNotifier {
 
   /// Clears the list of repositories and resets the selected repository.
   void clearRepositories() {
-    Logger.log("Clearing repositories", classId, LogLevel.finest);
+    Logger.log("Clearing repositories", _classId, LogLevel.finest);
     _repositories.clear();
     notifyListeners();
   }
@@ -67,7 +71,7 @@ class RepositorySelectorModel extends ChangeNotifier {
   Future<void> saveRepository(final RepositoryDetails repository) async {
     Logger.log(
       "Saving repository: ${repository.name} to shared preferences",
-      classId,
+      _classId,
       LogLevel.finest,
     );
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -79,7 +83,7 @@ class RepositorySelectorModel extends ChangeNotifier {
 
   /// Selects a repository from the list and updates the selected repository.
   void selectRepository(final RepositoryDetails? repo) {
-    Logger.log("Selected repository: ${repo?.name}", classId, LogLevel.finest);
+    Logger.log("Selected repository: ${repo?.name}", _classId, LogLevel.finest);
     _selectedRepository = repo;
     notifyListeners();
   }
