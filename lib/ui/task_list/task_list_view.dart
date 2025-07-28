@@ -88,7 +88,8 @@ class _TaskListViewState extends State<TaskListView> {
         .toList(),
     initialLabel: initialLabel,
     allowMultipleSelection: allowMultipleSelection,
-    onUpdate: (final item, {final selected}) => onUpdate(item.value, selected: selected!),
+    onUpdate: (final item, {final selected}) =>
+        onUpdate(item.value, selected: selected!),
   );
 
   Widget _buildTaskList(final TaskListViewModel model) {
