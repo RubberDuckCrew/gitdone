@@ -23,11 +23,11 @@ class SettingsView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Todo Storage",
+                  "Task Storage",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const Text(
-                  "Select the repository, where you want to store your todos:",
+                  "Select the repository, where you want to store your tasks:",
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
@@ -66,3 +66,4 @@ class SettingsView extends StatelessWidget {
     ],
   );
 }
+
