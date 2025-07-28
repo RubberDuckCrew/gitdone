@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/task.dart";
+import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/ui/task_list/task_list_model.dart";
 import "package:github_flutter/github.dart";
-import "package:gitdone/core/utils/logger.dart";
 
 /// ViewModel for the Home View.
 class TaskListViewModel extends ChangeNotifier {
@@ -17,7 +17,7 @@ class TaskListViewModel extends ChangeNotifier {
   }
 
   static const String _classId =
-      "com.GitDone.gitdone.ui/todo_list.todo_list_view_model";
+      "com.GitDone.gitdone.ui/task_list/task_list_view_model";
 
   final TaskListModel _homeViewModel = TaskListModel();
   final List<IssueLabel> _filterLabels = [];
@@ -37,7 +37,7 @@ class TaskListViewModel extends ChangeNotifier {
   bool get isEmpty => _isEmpty;
 
   /// The list of labels currently being used for filtering.
-  void updateLabels(final String label, final bool selected) {
+  void updateLabels(final String label, {final bool selected = false}) {
     if (label.isEmpty) _filterLabels.clear();
 
     if (selected) {
@@ -68,13 +68,13 @@ class TaskListViewModel extends ChangeNotifier {
   }
 
   /// The current filter applied to the task.
-  void updateFilter(final String filter, final bool _) {
+  void updateFilter(final String filter, {final bool selected = false}) {
     _filter = filter;
     _applyFilters();
   }
 
   /// The current sort order applied to the task.
-  void updateSort(final String sort, final bool _) {
+  void updateSort(final String sort, {final bool selected = false}) {
     _sort = sort;
     _applyFilters();
   }
