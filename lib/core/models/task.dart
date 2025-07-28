@@ -1,12 +1,11 @@
 import "package:gitdone/core/models/github_model.dart";
-import "package:gitdone/core/models/todo/todo_remote.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
 
 /// This class represents a Task item in the application.
-class Todo {
+class Task {
   /// Creates a instance with the given parameters.
-  Todo({
+  Task({
     required this.title,
     required this.description,
     required this.labels,
@@ -14,17 +13,32 @@ class Todo {
     required this.createdAt,
     required this.updatedAt,
     this.closedAt,
-  }) : _slug = slug;
+    final issueNumber,
+  }) : _slug = slug,
+       _issueNumber = issueNumber;
 
-  /// Creates an empty to do instance with the given slug and issue number.
-  Todo.createEmpty({required final RepositorySlug slug})
+  /// Creates a to do instance from a GitHub [Issue].
+  Task.fromIssue(final Issue issue, this._slug)
+    : title = issue.title,
+      description = issue.body,
+      createdAt = issue.createdAt!,
+      updatedAt = issue.updatedAt!,
+      closedAt = issue.closedAt,
+      labels = issue.labels,
+      _issueNumber = issue.number;
+
+  /// Creates an empty task with the given [slug].
+  Task.createEmpty(final RepositorySlug slug)
     : title = "",
       description = "",
-      _slug = slug,
+      labels = <IssueLabel>[],
       createdAt = DateTime.now(),
-      updatedAt = DateTime.now();
+      updatedAt = DateTime.now(),
+      closedAt = null,
+      _slug = slug,
+      _issueNumber = null;
 
-  static const _classId = "com.GitDone.gitdone.core.models.todo.todo";
+  static const _classId = "com.GitDone.gitdone.core.models.task";
 
   /// The title of the task.
   String title;
@@ -48,8 +62,12 @@ class Todo {
   RepositorySlug get slug => _slug;
   final RepositorySlug _slug;
 
+  /// The unique identifier for the issue in the repository, if applicable.
+  int? get issueNumber => _issueNumber;
+  final int? _issueNumber;
+
   /// Saves the current task to the remote repository.
-  Future<TodoRemote> saveRemote() async {
+  Future<Task> save() async {
     Logger.logInfo("Creating issue in $slug", _classId);
     return (await GithubModel.github).issues
         .create(
@@ -62,12 +80,12 @@ class Todo {
         )
         .then((final issue) {
           Logger.logInfo("Created issue ${issue.number}", _classId);
-          return TodoRemote.fromIssue(issue, slug);
+          return Task.fromIssue(issue, slug);
         });
   }
 
   /// Creates a copy of the current instance.
-  Todo copy() => Todo(
+  Task copy() => Task(
     title: title,
     description: description,
     labels: List<IssueLabel>.from(labels),
@@ -75,10 +93,11 @@ class Todo {
     updatedAt: updatedAt,
     closedAt: closedAt,
     slug: _slug,
+    issueNumber: _issueNumber,
   );
 
   /// Replaces the current instance with the values from another to do instance.
-  void replace(final Todo update) {
+  void replace(final Task update) {
     title = update.title;
     description = update.description;
     labels = List<IssueLabel>.from(update.labels);
@@ -88,5 +107,5 @@ class Todo {
 
   @override
   String toString() =>
-      "Todo(title: $title, description: ${description.replaceAll("\n", r"\n")}, labels: $labels, slug: $_slug, createdAt: $createdAt, updatedAt: $updatedAt, closedAt: $closedAt)";
+      "Todo(title: $title, description: ${description.replaceAll("\n", r"\n")}, labels: $labels, createdAt: $createdAt, updatedAt: $updatedAt, closedAt: $closedAt, slug: $_slug, issueNumber: $_issueNumber)";
 }

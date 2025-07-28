@@ -1,35 +1,35 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:gitdone/core/models/todo/todo.dart";
+import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/theme/app_color.dart";
 import "package:gitdone/core/utils/navigation.dart";
-import "package:gitdone/ui/_widgets/todo_labels.dart";
-import "package:gitdone/ui/todo_details/todo_details_view.dart";
+import "package:gitdone/ui/_widgets/task_labels.dart";
+import "package:gitdone/ui/task_details/task_details_view.dart";
 
 /// A widget that displays a card for a task item.
-class TodoCard extends StatefulWidget {
-  /// Creates a [TodoCard] widget with the given task.
-  const TodoCard({required this.todo, super.key});
+class TaskCard extends StatefulWidget {
+  /// Creates a [TaskCard] widget with the given task.
+  const TaskCard({required this.task, super.key});
 
   /// The task item to be displayed in the card.
-  final Todo todo;
+  final Task task;
 
   @override
-  State<TodoCard> createState() => _TodoCardState();
+  State<TaskCard> createState() => _TaskCardState();
 
   @override
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Todo>("todo", todo));
+    properties.add(DiagnosticsProperty<Task>("task", task));
   }
 }
 
-class _TodoCardState extends State<TodoCard> {
+class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(final BuildContext context) => Padding(
     padding: const EdgeInsets.all(4),
     child: GestureDetector(
-      onTap: () => Navigation.navigate(TodoDetailsView(widget.todo)),
+      onTap: () => Navigation.navigate(TaskDetailsView(widget.task)),
       child: Card(
         color: AppColor.colorScheme.surfaceContainer,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -44,8 +44,8 @@ class _TodoCardState extends State<TodoCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 4,
                   children: [
-                    _buildTitle(widget.todo.title),
-                    TodoLabels(widget.todo),
+                    _buildTitle(widget.task.title),
+                    TaskLabels(widget.task),
                   ],
                 ),
               ),

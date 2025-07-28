@@ -1,37 +1,36 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:gitdone/core/models/todo/todo.dart";
-import "package:gitdone/core/models/todo/todo_remote.dart";
+import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
-import "package:gitdone/ui/_widgets/todo_labels.dart";
-import "package:gitdone/ui/todo_edit/todo_edit_view.dart";
+import "package:gitdone/ui/_widgets/task_labels.dart";
+import "package:gitdone/ui/task_edit/task_edit_view.dart";
 import "package:intl/intl.dart";
 import "package:markdown_widget/markdown_widget.dart";
 
 /// A widget that displays a card for a task item.
-class TodoDetailsView extends StatefulWidget {
-  /// Creates a [TodoDetailsView] widget with the given task.
-  const TodoDetailsView(this.todo, {super.key});
+class TaskDetailsView extends StatefulWidget {
+  /// Creates a [TaskDetailsView] widget with the given task.
+  const TaskDetailsView(this.task, {super.key});
 
   /// The task item to be edited in the view.
-  final Todo todo;
+  final Task task;
 
   @override
-  State<TodoDetailsView> createState() => _TodoDetailsViewState();
+  State<TaskDetailsView> createState() => _TaskDetailsViewState();
 
   @override
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<Todo>("todo", todo));
+    properties.add(DiagnosticsProperty<Task>("task", task));
   }
 }
 
-class _TodoDetailsViewState extends State<TodoDetailsView> {
+class _TaskDetailsViewState extends State<TaskDetailsView> {
   static const _classId =
-      "com.GitDone.gitdone.ui.todo_details.todo_details_view_model";
+      "com.GitDone.gitdone.ui.task_details.task_details_view_model";
 
   @override
   Widget build(final BuildContext context) => Scaffold(
@@ -52,19 +51,19 @@ class _TodoDetailsViewState extends State<TodoDetailsView> {
       ),
     ),
     floatingActionButton: FloatingActionButton(
-      onPressed: _editTodo,
+      onPressed: _editTask,
       child: const Icon(Icons.edit),
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
   );
 
-  Widget _renderTitle() => PageTitleWidget(title: widget.todo.title);
+  Widget _renderTitle() => PageTitleWidget(title: widget.task.title);
 
-  Widget _renderLabels() => TodoLabels(widget.todo);
+  Widget _renderLabels() => TaskLabels(widget.task);
 
   Widget _renderDescription() => SingleChildScrollView(
     child: MarkdownBlock(
-      data: widget.todo.description,
+      data: widget.task.description,
       selectable: false,
       config: MarkdownConfig.darkConfig.copy(
         configs: [
@@ -78,44 +77,40 @@ class _TodoDetailsViewState extends State<TodoDetailsView> {
     ),
   );
 
-  Widget _renderStatus() {
-    if (widget.todo is! TodoRemote) {
-      return const SizedBox.shrink();
-    }
-    final TodoRemote todo = widget.todo as TodoRemote;
-    return RichText(
-      text: TextSpan(
-        style: const TextStyle(fontSize: 14, height: 1.3, color: Colors.grey),
-        children: [
-          const TextSpan(
-            text: "Created at: ",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          TextSpan(text: _formatDateTime(todo.createdAt)),
+  Widget _renderStatus() => RichText(
+    text: TextSpan(
+      style: const TextStyle(fontSize: 14, height: 1.3, color: Colors.grey),
+      children: [
+        const TextSpan(
+          text: "Created at: ",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        TextSpan(text: _formatDateTime(widget.task.createdAt)),
+        if (widget.task.updatedAt != null) ...[
           const TextSpan(text: "\n"),
           const TextSpan(
             text: "Updated at: ",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          TextSpan(text: _formatDateTime(todo.updatedAt)),
+          TextSpan(text: _formatDateTime(widget.task.updatedAt!)),
         ],
-      ),
-    );
-  }
+      ],
+    ),
+  );
 
-  Future<void> _editTodo() async {
-    Logger.log("Edit todo: ${widget.todo.title}", _classId, LogLevel.detailed);
-    final Todo? updated =
-        await Navigation.navigate(TodoEditView(widget.todo)) as Todo?;
+  Future<void> _editTask() async {
+    Logger.log("Edit task: ${widget.task.title}", _classId, LogLevel.detailed);
+    final Task? updated =
+        await Navigation.navigate(TaskEditView(widget.task)) as Task?;
     if (updated == null) {
-      Logger.log("Todo edit cancelled or failed", _classId, LogLevel.detailed);
+      Logger.log("Task edit cancelled or failed", _classId, LogLevel.detailed);
       return;
     }
     setState(() {
-      widget.todo.replace(updated);
+      widget.task.replace(updated);
     });
     Logger.log(
-      "Todo updated: ${widget.todo.title}",
+      "Task updated: ${widget.task.title}",
       _classId,
       LogLevel.detailed,
     );
