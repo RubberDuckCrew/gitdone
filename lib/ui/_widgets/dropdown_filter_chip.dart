@@ -300,7 +300,12 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                 onDeleted: viewModel.isSelected
-                    ? viewModel.clearSelection
+                    ? () {
+                        viewModel.clearSelection();
+                        widget.onUpdate(
+                          FilterChipItem(label: widget.initialLabel, value: ""),
+                        );
+                      }
                     : viewModel.toggleDropdown,
                 onSelected: (_) => viewModel.toggleDropdown(),
               ),

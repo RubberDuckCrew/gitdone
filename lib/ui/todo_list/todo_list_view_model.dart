@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:gitdone/core/models/todo.dart";
 import "package:gitdone/ui/todo_list/todo_list_model.dart";
 import "package:github_flutter/github.dart";
+import "package:gitdone/core/utils/logger.dart";
 
 /// ViewModel for the Home View.
 class TodoListViewModel extends ChangeNotifier {
@@ -14,6 +15,8 @@ class TodoListViewModel extends ChangeNotifier {
     _filteredTodos = _homeViewModel.todos;
     _filterLabels.addAll(_homeViewModel.allLabels);
   }
+
+  static const String _classId = "com.GitDone.gitdone.ui/todo_list.todo_list_view_model";
 
   final TodoListModel _homeViewModel = TodoListModel();
   final List<IssueLabel> _filterLabels = [];
@@ -59,6 +62,7 @@ class TodoListViewModel extends ChangeNotifier {
 
   /// The current filter applied to the todos.
   void updateFilter(final String filter) {
+    Logger.log("Updating filter to: $filter", _classId, LogLevel.finest);
     _filter = filter;
     _applyFilters();
   }
@@ -79,6 +83,9 @@ class TodoListViewModel extends ChangeNotifier {
             todo.description.toLowerCase().contains(query);
       }).toList();
     }
+
+    final int listLength = _filteredTodos.length;
+    Logger.log("Filtering $listLength todos: $_filteredTodos", _classId, LogLevel.finest);
 
     if (_filter == "Completed") {
       _filteredTodos = _filteredTodos
