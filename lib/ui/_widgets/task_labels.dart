@@ -1,19 +1,19 @@
 import "package:flutter/material.dart";
-import "package:gitdone/core/models/todo.dart";
+import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/theme/app_color.dart";
 import "package:github_flutter/github.dart";
 
 /// A widget that displays the labels of a to do item.
-class TodoLabels extends StatelessWidget {
+class TaskLabels extends StatelessWidget {
   /// Creates a widget that displays the labels of a to do item.
-  const TodoLabels(this._todo, {super.key});
+  const TaskLabels(this._task, {super.key});
 
-  final Todo _todo;
+  final Task _task;
 
   @override
   Widget build(final BuildContext context) => SingleChildScrollView(
     scrollDirection: Axis.horizontal,
-    child: Row(spacing: 4, children: _buildLabelList(_todo.labels)),
+    child: Row(spacing: 4, children: _buildLabelList(_task.labels)),
   );
 
   List<Widget> _buildLabelList(final List<IssueLabel> labels) {
