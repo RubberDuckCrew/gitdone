@@ -67,22 +67,44 @@ class Task {
   final int? _issueNumber;
 
   /// Saves the current task to the remote repository.
-  Future<Task> save() async {
-    Logger.logInfo("Creating issue in $slug", _classId);
-    return (await GithubModel.github).issues
-        .create(
-          slug,
-          IssueRequest(
-            title: title,
-            body: description,
-            labels: labels.map((final label) => label.name).toList(),
-          ),
-        )
-        .then((final issue) {
-          Logger.logInfo("Created issue ${issue.number}", _classId);
-          return Task.fromIssue(issue, slug);
-        });
+  Future<Task> saveRemote() {
+    if (_issueNumber == null) {
+      Logger.logInfo("Creating issue in $slug", _classId);
+      return _createRemote();
+    } else {
+      Logger.logInfo("Updating issue $issueNumber", _classId);
+      return _updateRemote();
+    }
   }
+
+  Future<Task> _createRemote() async => (await GithubModel.github).issues
+      .create(
+        slug,
+        IssueRequest(
+          title: title,
+          body: description,
+          labels: labels.map((final label) => label.name).toList(),
+        ),
+      )
+      .then((final issue) {
+        Logger.logInfo("Created issue ${issue.number}", _classId);
+        return Task.fromIssue(issue, slug);
+      });
+
+  Future<Task> _updateRemote() async => (await GithubModel.github).issues
+      .edit(
+        slug,
+        _issueNumber!,
+        IssueRequest(
+          title: title,
+          body: description,
+          labels: labels.map((final label) => label.name).toList(),
+        ),
+      )
+      .then((final issue) {
+        Logger.logInfo("Updated issue ${issue.number}", _classId);
+        return Task.fromIssue(issue, slug);
+      });
 
   /// Creates a copy of the current instance.
   Task copy() => Task(

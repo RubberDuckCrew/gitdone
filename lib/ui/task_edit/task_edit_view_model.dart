@@ -25,7 +25,7 @@ class TaskEditViewModel {
   void save() {
     Logger.log("Saving task: $newTask", _classId, LogLevel.detailed);
     newTask
-      ..save()
+      ..saveRemote()
       ..updatedAt = DateTime.now();
     _originalTask.replace(newTask);
     Navigation.navigateBack(newTask);
