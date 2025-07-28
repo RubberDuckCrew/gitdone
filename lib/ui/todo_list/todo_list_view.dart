@@ -80,7 +80,7 @@ class _TodoListViewState extends State<TodoListView> {
   Widget _buildFilterChipDropdown({
     required final List<String> items,
     required final String initialLabel,
-    required final Function(String) onUpdate,
+    required final Function(String, bool) onUpdate,
     final bool allowMultipleSelection = false,
   }) => FilterChipDropdown(
     items: items
@@ -88,7 +88,7 @@ class _TodoListViewState extends State<TodoListView> {
         .toList(),
     initialLabel: initialLabel,
     allowMultipleSelection: allowMultipleSelection,
-    onUpdate: (final item) => onUpdate(item.value),
+    onUpdate: (final item, {final selected}) => onUpdate(item.value, selected!),
   );
 
   Widget _buildTodoList(final TodoListViewModel model) {

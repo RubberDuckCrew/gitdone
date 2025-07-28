@@ -16,7 +16,8 @@ class TodoListViewModel extends ChangeNotifier {
     _filterLabels.addAll(_homeViewModel.allLabels);
   }
 
-  static const String _classId = "com.GitDone.gitdone.ui/todo_list.todo_list_view_model";
+  static const String _classId =
+      "com.GitDone.gitdone.ui/todo_list.todo_list_view_model";
 
   final TodoListModel _homeViewModel = TodoListModel();
   final List<IssueLabel> _filterLabels = [];
@@ -36,15 +37,21 @@ class TodoListViewModel extends ChangeNotifier {
   bool get isEmpty => _isEmpty;
 
   /// The list of labels currently being used for filtering.
-  void updateLabels(final String label) {
-    _filterLabels
-      ..clear()
-      ..addAll(
-        label.isEmpty
-            ? _homeViewModel.allLabels
-            : _homeViewModel.allLabels.where((final l) => l.name == label),
+  void updateLabels(final String label, final bool selected) {
+    if (label.isEmpty) _filterLabels.clear();
+
+    if (selected) {
+      _filterLabels.addAll(
+        _homeViewModel.allLabels.where((final l) => l.name == label),
       );
+    } else {
+      _filterLabels.removeWhere((final l) => l.name == label);
+    }
+
+    Logger.log("Selected labels: $_filterLabels", _classId, LogLevel.finest);
+
     notifyListeners();
+    _applyFilters();
   }
 
   /// The current search query used to filter todos.
@@ -61,14 +68,14 @@ class TodoListViewModel extends ChangeNotifier {
   }
 
   /// The current filter applied to the todos.
-  void updateFilter(final String filter) {
+  void updateFilter(final String filter, final bool _) {
     Logger.log("Updating filter to: $filter", _classId, LogLevel.finest);
     _filter = filter;
     _applyFilters();
   }
 
   /// The current sort order applied to the todos.
-  void updateSort(final String sort) {
+  void updateSort(final String sort, final bool _) {
     _sort = sort;
     _applyFilters();
   }
@@ -85,7 +92,11 @@ class TodoListViewModel extends ChangeNotifier {
     }
 
     final int listLength = _filteredTodos.length;
-    Logger.log("Filtering $listLength todos: $_filteredTodos", _classId, LogLevel.finest);
+    Logger.log(
+      "Filtering $listLength todos: $_filteredTodos",
+      _classId,
+      LogLevel.finest,
+    );
 
     if (_filter == "Completed") {
       _filteredTodos = _filteredTodos
@@ -115,7 +126,15 @@ class TodoListViewModel extends ChangeNotifier {
 
     if (_filterLabels.isNotEmpty) {
       _filteredTodos = _filteredTodos
-          .where((final todo) => todo.labels.any(_filterLabels.contains))
+          .where(
+            (final todo) => todo.labels
+                .map((final label) => label.name)
+                .any(
+                  (final labelName) => _filterLabels
+                      .map((final filterLabel) => filterLabel.name)
+                      .contains(labelName),
+                ),
+          )
           .toList();
     }
 

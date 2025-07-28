@@ -45,7 +45,7 @@ class FilterChipDropdown extends StatefulWidget {
   final bool allowMultipleSelection;
 
   /// Callback function to be called when an item is updated.
-  final void Function(FilterChipItem) onUpdate;
+  final void Function(FilterChipItem, {bool? selected}) onUpdate;
 
   @override
   State<FilterChipDropdown> createState() => _FilterChipDropdownState();
@@ -215,7 +215,12 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                                       : Colors.transparent,
                                   child: InkWell(
                                     onTap: () {
-                                      widget.onUpdate(item);
+                                      widget.onUpdate(
+                                        item,
+                                        selected: !viewModel.isItemSelected(
+                                          item,
+                                        ),
+                                      );
 
                                       if (viewModel.isItemSelected(item) &&
                                           widget.allowMultipleSelection) {
@@ -304,6 +309,7 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                         viewModel.clearSelection();
                         widget.onUpdate(
                           FilterChipItem(label: widget.initialLabel, value: ""),
+                          selected: false,
                         );
                       }
                     : viewModel.toggleDropdown,
