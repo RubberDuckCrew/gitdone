@@ -86,14 +86,12 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         TextSpan(text: _formatDateTime(widget.task.createdAt)),
-        if (widget.task.updatedAt != null) ...[
-          const TextSpan(text: "\n"),
-          const TextSpan(
-            text: "Updated at: ",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          TextSpan(text: _formatDateTime(widget.task.updatedAt!)),
-        ],
+        const TextSpan(text: "\n"),
+        const TextSpan(
+          text: "Updated at: ",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        TextSpan(text: _formatDateTime(widget.task.updatedAt)),
       ],
     ),
   );

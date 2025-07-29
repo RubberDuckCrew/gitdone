@@ -1,8 +1,15 @@
+import "dart:convert";
+
 import "package:flutter/material.dart";
+import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/utils/logger.dart";
+import "package:gitdone/core/utils/navigation.dart";
+import "package:gitdone/ui/task_details/task_details_view.dart";
+import "package:gitdone/ui/task_edit/task_edit_view.dart";
 import "package:gitdone/ui/task_list/task_list_model.dart";
 import "package:github_flutter/github.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 /// ViewModel for the Home View.
 class TaskListViewModel extends ChangeNotifier {
@@ -16,9 +23,6 @@ class TaskListViewModel extends ChangeNotifier {
     _filterLabels.addAll(_homeViewModel.allLabels);
   }
 
-  static const String _classId =
-      "com.GitDone.gitdone.ui/task_list/task_list_view_model";
-
   final TaskListModel _homeViewModel = TaskListModel();
   final List<IssueLabel> _filterLabels = [];
   List<Task> _filteredTasks = [];
@@ -26,6 +30,9 @@ class TaskListViewModel extends ChangeNotifier {
   String _filter = "";
   String _sort = "";
   bool _isEmpty = false;
+
+  static const _classId =
+      "com.GitDone.gitdone.ui.task_edit.task_list_view_model";
 
   /// The list of filtered tasks based on the current search query, filter, and sort.
   List<Task> get tasks => _filteredTasks;
@@ -107,8 +114,7 @@ class TaskListViewModel extends ChangeNotifier {
       _filteredTasks.sort((final a, final b) => a.title.compareTo(b.title));
     } else if (_sort == "Last updated") {
       _filteredTasks.sort(
-        (final a, final b) =>
-            (b.updatedAt ?? b.createdAt).compareTo(a.updatedAt ?? a.createdAt),
+        (final a, final b) => b.updatedAt.compareTo(a.updatedAt),
       );
     } else if (_sort == "Created") {
       _filteredTasks.sort(
@@ -131,5 +137,39 @@ class TaskListViewModel extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  /// Creates a new to do and navigates to the TaskDetailsView.
+  Future<void> createTask() async {
+    Logger.log("Creating task", _classId, LogLevel.detailed);
+    final RepositoryDetails? repo = await _getSelectedRepository();
+    if (repo == null) {
+      Logger.log("No repository selected", _classId, LogLevel.info);
+      return;
+    }
+    final Task? newTask = await Navigation.navigate(
+      TaskEditView(Task.createEmpty(repo.toSlug())),
+    );
+    if (newTask == null) {
+      Logger.log(
+        "Task creation cancelled or failed",
+        _classId,
+        LogLevel.detailed,
+      );
+      return;
+    }
+    Logger.log("Task created: $newTask", _classId, LogLevel.detailed);
+    Navigation.navigate(TaskDetailsView(newTask));
+  }
+
+  Future<RepositoryDetails?> _getSelectedRepository() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String repoJson = prefs.getString("selected_repository") ?? "";
+    if (repoJson.isNotEmpty) {
+      return RepositoryDetails.fromJson(
+        Map<String, dynamic>.from(jsonDecode(repoJson)),
+      );
+    }
+    return null;
   }
 }

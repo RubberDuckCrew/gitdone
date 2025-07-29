@@ -13,12 +13,12 @@ class CurrentUserModel {
   static final CurrentUserModel _instance = CurrentUserModel._internal();
 
   /// The class identifier for logging purposes.
-  static String classId = "com.GitDone.gitdone.core.models.current_user_model";
+  static const _classId = "com.GitDone.gitdone.core.models.current_user_model";
 
   static CurrentUser? _currentUser;
 
   static Future<void> _fetchCurrentUser() async {
-    Logger.log("Fetching currentUser from GitHub", classId, LogLevel.finest);
+    Logger.log("Fetching currentUser from GitHub", _classId, LogLevel.finest);
     _currentUser = await (await GithubModel.github).users.getCurrentUser();
   }
 

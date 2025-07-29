@@ -118,10 +118,6 @@ class SettingsViewModel extends ChangeNotifier {
     _init();
   }
 
-  /// The unique identifier for this class, used for logging.
-  static const String classId =
-      "com.GitDone.gitdone.ui.settings.settings_view_model";
-
   Future<void> _init() async {
     final User user = await CurrentUserModel.currentUser;
     username = user.login ?? "Unknown User";

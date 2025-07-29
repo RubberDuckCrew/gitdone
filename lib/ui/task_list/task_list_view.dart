@@ -32,7 +32,7 @@ class _TaskListViewState extends State<TaskListView> {
       ),
     ),
     floatingActionButton: FloatingActionButton(
-      onPressed: () {},
+      onPressed: () => TaskListViewModel()..createTask(),
       child: const Icon(Icons.add),
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
