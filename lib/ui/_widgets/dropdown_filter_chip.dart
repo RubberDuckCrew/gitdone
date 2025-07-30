@@ -45,7 +45,7 @@ class FilterChipDropdown extends StatefulWidget {
   final bool allowMultipleSelection;
 
   /// Callback function to be called when an item is updated.
-  final void Function(FilterChipItem) onUpdate;
+  final void Function(FilterChipItem, {required bool selected}) onUpdate;
 
   @override
   State<FilterChipDropdown> createState() => _FilterChipDropdownState();
@@ -64,10 +64,9 @@ class FilterChipDropdown extends StatefulWidget {
         ),
       )
       ..add(
-        ObjectFlagProperty<void Function(FilterChipItem p1)>.has(
-          "onUpdate",
-          onUpdate,
-        ),
+        ObjectFlagProperty<
+          void Function(FilterChipItem p1, {required bool selected})
+        >.has("onUpdate", onUpdate),
       );
   }
 }
@@ -215,7 +214,12 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                                       : Colors.transparent,
                                   child: InkWell(
                                     onTap: () {
-                                      widget.onUpdate(item);
+                                      widget.onUpdate(
+                                        item,
+                                        selected: !viewModel.isItemSelected(
+                                          item,
+                                        ),
+                                      );
 
                                       if (viewModel.isItemSelected(item) &&
                                           widget.allowMultipleSelection) {
@@ -300,7 +304,13 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                 onDeleted: viewModel.isSelected
-                    ? viewModel.clearSelection
+                    ? () {
+                        viewModel.clearSelection();
+                        widget.onUpdate(
+                          FilterChipItem(label: widget.initialLabel, value: ""),
+                          selected: false,
+                        );
+                      }
                     : viewModel.toggleDropdown,
                 onSelected: (_) => viewModel.toggleDropdown(),
               ),
