@@ -15,10 +15,7 @@ import "package:shared_preferences/shared_preferences.dart";
 class TaskListViewModel extends ChangeNotifier {
   /// Creates a new instance of [TaskListViewModel] and initializes the filters.
   TaskListViewModel() {
-    _homeViewModel.addListener(() {
-      _applyFilters();
-      notifyListeners();
-    });
+    _homeViewModel.addListener(_listener);
     _filteredTasks = _homeViewModel.tasks;
     _filterLabels.addAll(_homeViewModel.allLabels);
   }
@@ -59,6 +56,24 @@ class TaskListViewModel extends ChangeNotifier {
 
     notifyListeners();
     _applyFilters();
+  }
+
+  void _listener() {
+    Logger.logInfo(
+      "Received notification from task_list_model. Tunneling notification to TaskListView",
+      _classId,
+    );
+    _filteredTasks = _homeViewModel.tasks;
+    _applyFilters();
+
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    Logger.logInfo("Disposing TaskListViewModel", _classId);
+    _homeViewModel.removeListener(_listener);
+    super.dispose();
   }
 
   /// The current search query used to filter tasks.
