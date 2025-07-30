@@ -45,7 +45,7 @@ class FilterChipDropdown extends StatefulWidget {
   final bool allowMultipleSelection;
 
   /// Callback function to be called when an item is updated.
-  final void Function(FilterChipItem, {bool? selected}) onUpdate;
+  final void Function(FilterChipItem, {required bool selected}) onUpdate;
 
   @override
   State<FilterChipDropdown> createState() => _FilterChipDropdownState();
@@ -64,7 +64,7 @@ class FilterChipDropdown extends StatefulWidget {
         ),
       )
       ..add(
-        ObjectFlagProperty<void Function(FilterChipItem p1)>.has(
+        ObjectFlagProperty<void Function(FilterChipItem p1, {required bool selected})>.has(
           "onUpdate",
           onUpdate,
         ),
