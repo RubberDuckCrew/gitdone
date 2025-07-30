@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import "package:gitdone/core/models/github_model.dart";
 import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/core/models/task.dart";
+import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
 import "package:shared_preferences/shared_preferences.dart";
@@ -12,8 +13,11 @@ import "package:shared_preferences/shared_preferences.dart";
 class TaskListModel extends ChangeNotifier {
   /// Creates a new instance of [TaskListModel] and loads the tasks.
   TaskListModel() {
-    loadTasks();
+    _taskHandler
+      ..addListener(_listener)
+      ..loadTasks();
   }
+  final TaskHandler _taskHandler = TaskHandler();
 
   final List<Task> _task = [];
   final List<IssueLabel> _allLabels = [];
@@ -25,6 +29,24 @@ class TaskListModel extends ChangeNotifier {
   List<IssueLabel> get allLabels => List.unmodifiable(_allLabels);
 
   static const _classId = "com.GitDone.gitdone.ui.task_list.task_list_model";
+
+  void _listener() {
+    Logger.logInfo(
+      "Recieved notification from task_handler. Loading tasks",
+      _classId,
+    );
+    _task
+      ..clear()
+      ..addAll(_taskHandler.tasks);
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    Logger.logInfo("Disposing TaskListModel", _classId);
+    _taskHandler.removeListener(_listener);
+    super.dispose();
+  }
 
   /// Loads the tasks from the repository.
   Future<void> loadTasks() async {
