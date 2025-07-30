@@ -87,14 +87,13 @@ class TaskListViewModel extends ChangeNotifier {
   }
 
   List<Task> _applyCompletedFilter(
-    final List<Task> tasks, {
-    required final bool completed,
-  }) {
-    if (completed) {
+    final List<Task> tasks, final String filter) {
+    if (filter == "Completed") {
       return tasks.where((final task) => task.closedAt != null).toList();
-    } else {
+    } else if (filter == "Pending") {
       return tasks.where((final task) => task.closedAt == null).toList();
     }
+    return tasks;
   }
 
   List<Task> _applySearchQuery(final List<Task> tasks, final String query) {
@@ -143,7 +142,7 @@ class TaskListViewModel extends ChangeNotifier {
     _filteredTasks = _homeViewModel.tasks;
     _filteredTasks = _applyCompletedFilter(
       _filteredTasks,
-      completed: _filter == "Completed",
+      _filter
     );
     _filteredTasks = _applySearchQuery(_filteredTasks, _searchQuery);
     _filteredTasks = _applyLabelFilter(_filteredTasks, _filterLabels);
