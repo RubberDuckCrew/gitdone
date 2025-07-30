@@ -19,7 +19,7 @@ class TaskHandler extends ChangeNotifier {
   final List<Task> _tasks = [];
 
   /// The list of all tasks available in the repository.
-  List<String> get tasks => List.unmodifiable(_tasks);
+  List<Task> get tasks => List.unmodifiable(_tasks);
 
   /// The list of all tasks available in the repository.
   /// After the notification the current list of task is stored in [tasks].
@@ -36,6 +36,7 @@ class TaskHandler extends ChangeNotifier {
     } on Exception catch (e) {
       Logger.logError("Failed to load tasks", _classId, e);
     } finally {
+      Logger.logInfo("Loaded ${_tasks.length} tasks from repository", _classId);
       notifyListeners();
     }
   }
