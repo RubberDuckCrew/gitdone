@@ -86,55 +86,71 @@ class TaskListViewModel extends ChangeNotifier {
     _applyFilters();
   }
 
+  List<Task> _applyCompletedFilter(
+    final List<Task> tasks, {
+    required final bool completed,
+  }) {
+    if (completed) {
+      return tasks.where((final task) => task.closedAt != null).toList();
+    } else {
+      return tasks.where((final task) => task.closedAt == null).toList();
+    }
+  }
+
+  List<Task> _applySearchQuery(final List<Task> tasks, final String query) {
+    if (query.isEmpty) return tasks;
+
+    return tasks.where((final task) {
+      final String query = _searchQuery.toLowerCase();
+      return task.title.toLowerCase().contains(query) ||
+          task.description.toLowerCase().contains(query);
+    }).toList();
+  }
+
+  List<Task> _applyLabelFilter(
+    final List<Task> tasks,
+    final List<IssueLabel> labels,
+  ) {
+    if (labels.isEmpty) return tasks;
+
+    return tasks
+        .where(
+          (final todo) => todo.labels
+              .map((final label) => label.name)
+              .any(
+                (final labelName) => _filterLabels
+                    .map((final filterLabel) => filterLabel.name)
+                    .contains(labelName),
+              ),
+        )
+        .toList();
+  }
+
+  List<Task> _sortTasks(final List<Task> tasks, final String sort) {
+    if (sort == "Alphabetical") {
+      return tasks..sort((final a, final b) => a.title.compareTo(b.title));
+    } else if (sort == "Last updated") {
+      return tasks
+        ..sort((final a, final b) => b.updatedAt.compareTo(a.updatedAt));
+    } else if (sort == "Created") {
+      return tasks
+        ..sort((final a, final b) => b.createdAt.compareTo(a.createdAt));
+    }
+    return tasks;
+  }
+
   void _applyFilters() {
     _filteredTasks = _homeViewModel.tasks;
-
-    if (_searchQuery.isNotEmpty) {
-      _filteredTasks = _filteredTasks.where((final task) {
-        final String query = _searchQuery.toLowerCase();
-        return task.title.toLowerCase().contains(query) ||
-            task.description.toLowerCase().contains(query);
-      }).toList();
-    }
-
-    if (_filter == "Completed") {
-      _filteredTasks = _filteredTasks
-          .where((final task) => task.closedAt != null)
-          .toList();
-    } else if (_filter == "Pending") {
-      _filteredTasks = _filteredTasks
-          .where((final task) => task.closedAt == null)
-          .toList();
-    }
+    _filteredTasks = _applyCompletedFilter(
+      _filteredTasks,
+      completed: _filter == "Completed",
+    );
+    _filteredTasks = _applySearchQuery(_filteredTasks, _searchQuery);
+    _filteredTasks = _applyLabelFilter(_filteredTasks, _filterLabels);
 
     /// FIXME: This is a workaround to ensure that the list is not immutable
     _filteredTasks = List.of(_filteredTasks);
-
-    if (_sort == "Alphabetical") {
-      _filteredTasks.sort((final a, final b) => a.title.compareTo(b.title));
-    } else if (_sort == "Last updated") {
-      _filteredTasks.sort(
-        (final a, final b) => b.updatedAt.compareTo(a.updatedAt),
-      );
-    } else if (_sort == "Created") {
-      _filteredTasks.sort(
-        (final a, final b) => b.createdAt.compareTo(a.createdAt),
-      );
-    }
-
-    if (_filterLabels.isNotEmpty) {
-      _filteredTasks = _filteredTasks
-          .where(
-            (final todo) => todo.labels
-                .map((final label) => label.name)
-                .any(
-                  (final labelName) => _filterLabels
-                      .map((final filterLabel) => filterLabel.name)
-                      .contains(labelName),
-                ),
-          )
-          .toList();
-    }
+    _filteredTasks = _sortTasks(_filteredTasks, _sort);
 
     notifyListeners();
   }

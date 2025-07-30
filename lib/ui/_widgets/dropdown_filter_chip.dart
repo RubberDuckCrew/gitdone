@@ -64,10 +64,9 @@ class FilterChipDropdown extends StatefulWidget {
         ),
       )
       ..add(
-        ObjectFlagProperty<void Function(FilterChipItem p1, {required bool selected})>.has(
-          "onUpdate",
-          onUpdate,
-        ),
+        ObjectFlagProperty<
+          void Function(FilterChipItem p1, {required bool selected})
+        >.has("onUpdate", onUpdate),
       );
   }
 }
