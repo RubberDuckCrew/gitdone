@@ -33,6 +33,23 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                       "You need to generate a personal access token from GitHub and enter it here. You can either use an fine-grained personal access token (recommended) or a classic personal access token.\n\n",
                 ),
                 const TextSpan(
+                  text: "Required Token Permissions:\n",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const TextSpan(
+                  text:
+                  "To use GitDone, you need to grant the following permissions to your token:\n\n"
+                      "• Classic Token:\n"
+                      "    - read:user\n"
+                      "    - repo\n\n"
+                      "• Fine-Grained Token:\n"
+                      "    Account:\n"
+                      "        - Profile\n"
+                      "    Repository:\n"
+                      "        - Issues (read & write)\n"
+                      "        - Metadata\n\n",
+                ),
+                const TextSpan(
                   text: "GitHub Documentation:\n",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
