@@ -1,3 +1,7 @@
+import "dart:convert";
+import "dart:math";
+import "dart:typed_data";
+import "package:crypto/crypto.dart";
 import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
@@ -7,13 +11,26 @@ import "package:url_launcher/url_launcher.dart";
 class GitHubAuth {
   /// Creates an instance of GitHubAuth with a callback function.
   GitHubAuth(this.callbackFunction)
-    : _deviceFlow = DeviceFlow(clientId, scopes: ["repo", "user"]);
+    : _deviceFlow = DeviceFlow(clientId, scopes: ["repo", "user"])
+    , _codeVerifier = _randomCodeVerifier(64);
 
   /// The client ID for the GitHub OAuth application.
   static const clientId = "Ov23li2QBbpgRa3P0GHJ";
 
   static const _classId =
       "com.GitDone.gitdone.core.models.github_oauth_handler";
+
+  static String _randomCodeVerifier(final int length) {
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    final random = Random.secure();
+    return List.generate(length, (_) => chars[random.nextInt(chars.length)]).join();
+  }
+
+  static String _sha256FromString(final String input) {
+    final Uint8List bytes = utf8.encode(input);
+    final Digest digest = sha256.convert(bytes);
+    return digest.toString();
+  }
 
   /// Indicates whether the login process is currently active.
   bool inLoginProcess = false;
@@ -27,6 +44,9 @@ class GitHubAuth {
   int _attempts = 1;
   final DeviceFlow _deviceFlow;
   String? _userCode;
+
+  final String _codeVerifier;
+  String _codeChallenge = "";
 
   /// Starts the GitHub OAuth login process.
   Future<String> startLoginProcess() async {
@@ -54,6 +74,7 @@ class GitHubAuth {
 
   /// Launches the browser to the GitHub OAuth authorization URL.
   Future<void> launchBrowser() async {
+    _codeChallenge = _sha256FromString(_codeVerifier);
     final String url = _deviceFlow.createAuthorizeUrl();
     if (await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
       Logger.log("Launching URL: $url", _classId, LogLevel.finest);
