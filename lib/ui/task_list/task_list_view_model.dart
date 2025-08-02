@@ -128,24 +128,23 @@ class TaskListViewModel extends ChangeNotifier {
   }
 
   /// Sanitizes a string by removing all non-alphanumeric characters.
+  /// This is used to ensure consistent alphabetic sorting of task titles.
   String _sanitizeString(final String input) =>
       input.replaceAll(RegExp("[^a-zA-Z0-9]"), "");
 
-  List<Task> _sortTasks(final List<Task> tasks, final String sort) {
-    if (sort == "Alphabetical") {
-      tasks.sort(
-        (final a, final b) =>
-            _sanitizeString(a.title).compareTo(_sanitizeString(b.title)),
-      );
-    } else if (sort == "Last updated") {
-      return tasks
-        ..sort((final a, final b) => b.updatedAt.compareTo(a.updatedAt));
-    } else if (sort == "Created") {
-      return tasks
-        ..sort((final a, final b) => b.createdAt.compareTo(a.createdAt));
-    }
-    return tasks;
-  }
+  List<Task> _sortTasks(final List<Task> tasks, final String sort) =>
+      switch (sort) {
+        "Alphabetical" =>
+          tasks..sort(
+            (final a, final b) =>
+                _sanitizeString(a.title).compareTo(_sanitizeString(b.title)),
+          ),
+        "Last updated" =>
+          tasks..sort((final a, final b) => b.updatedAt.compareTo(a.updatedAt)),
+        "Created" =>
+          tasks..sort((final a, final b) => b.createdAt.compareTo(a.createdAt)),
+        _ => tasks,
+      };
 
   void _applyFilters() {
     _filteredTasks = _homeViewModel.tasks;
