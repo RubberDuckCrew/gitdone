@@ -49,7 +49,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.14.3
   mocktail: ^1.0.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -100,11 +99,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-
-flutter_launcher_icons:
-  android: true
-  ios: false
-  image_path: "assets/icons/app/gitdone@2000.png"
-  adaptive_icon_background: "#212121"
-  adaptive_icon_foreground: "assets/icons/app/gitdone@2000.png"
-  adaptive_icon_foreground_inset: 20
