@@ -1,9 +1,13 @@
 import "dart:convert";
 import "dart:math";
 import "dart:typed_data";
+
 import "package:crypto/crypto.dart";
+import "package:flutter_web_auth_2/flutter_web_auth_2.dart";
 import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
+import "package:gitdone/core/utils/navigation.dart";
+import "package:gitdone/ui/main_screen.dart";
 import "package:github_flutter/github.dart";
 import "package:url_launcher/url_launcher.dart";
 
@@ -11,8 +15,13 @@ import "package:url_launcher/url_launcher.dart";
 class GitHubAuth {
   /// Creates an instance of GitHubAuth with a callback function.
   GitHubAuth(this.callbackFunction)
-    : _deviceFlow = DeviceFlow(clientId, scopes: ["repo", "user"])
-    , _codeVerifier = _randomCodeVerifier(64);
+    : _oauth = OAuth2PKCE(
+        clientId,
+        "https://gitdone-cloudflare-worker.rubberduckcrew.workers.dev/",
+        scopes: ["repo", "user"],
+        redirectUri: "gitdone://callback",
+      ),
+      _codeVerifier = _randomCodeVerifier(64);
 
   /// The client ID for the GitHub OAuth application.
   static const clientId = "Ov23li2QBbpgRa3P0GHJ";
@@ -21,15 +30,22 @@ class GitHubAuth {
       "com.GitDone.gitdone.core.models.github_oauth_handler";
 
   static String _randomCodeVerifier(final int length) {
-    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const chars =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     final random = Random.secure();
-    return List.generate(length, (_) => chars[random.nextInt(chars.length)]).join();
+    return List.generate(
+      length,
+      (_) => chars[random.nextInt(chars.length)],
+    ).join();
   }
 
   static String _sha256FromString(final String input) {
     final Uint8List bytes = utf8.encode(input);
     final Digest digest = sha256.convert(bytes);
-    return digest.toString();
+    final String base64Digest = base64Url
+        .encode(digest.bytes)
+        .replaceAll("=", "");
+    return base64Digest;
   }
 
   /// Indicates whether the login process is currently active.
@@ -42,18 +58,19 @@ class GitHubAuth {
   bool _authenticated = false;
   final int _maxLoginAttempts = 2;
   int _attempts = 1;
-  final DeviceFlow _deviceFlow;
+  final OAuth2PKCE _oauth;
   String? _userCode;
 
   final String _codeVerifier;
   String _codeChallenge = "";
 
+  /*
   /// Starts the GitHub OAuth login process.
   Future<String> startLoginProcess() async {
     Logger.log("Starting GitHub login process", _classId, LogLevel.finest);
 
     try {
-      _userCode = await _deviceFlow.fetchUserCode();
+      _userCode = await _oauth.fetchUserCode();
       inLoginProcess = true;
       Logger.log(
         "Could retrieve oauth information from GitHub",
@@ -70,12 +87,12 @@ class GitHubAuth {
       );
       return "";
     }
-  }
+  }*/
 
   /// Launches the browser to the GitHub OAuth authorization URL.
   Future<void> launchBrowser() async {
     _codeChallenge = _sha256FromString(_codeVerifier);
-    final String url = _deviceFlow.createAuthorizeUrl();
+    final String url = _oauth.createAuthorizeUrl(_codeChallenge);
     if (await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
       Logger.log("Launching URL: $url", _classId, LogLevel.finest);
     } else {
@@ -83,56 +100,53 @@ class GitHubAuth {
     }
   }
 
+  Future<String> authenticate() async {
+    _codeChallenge = _sha256FromString(_codeVerifier);
+    print(_oauth.createAuthorizeUrl(_codeChallenge));
+    final String result = await FlutterWebAuth2.authenticate(
+      url: _oauth.createAuthorizeUrl(_codeChallenge),
+      callbackUrlScheme: "gitdone",
+      options: const FlutterWebAuth2Options(intentFlags: defaultIntentFlags),
+    );
+    final String? code = Uri.parse(result).queryParameters["code"];
+    if (code == null || code.isEmpty) {
+      Logger.log(
+        "Authentication failed: No code received",
+        _classId,
+        LogLevel.warning,
+      );
+      throw Exception("No code received from authentication");
+    }
+
+    Logger.log("Authentication successful", _classId, LogLevel.finest);
+    return code;
+  }
+
   /// Polls for the access token using the user code.
-  Future<bool> pollForToken() async {
-    _attempts = 1;
-    int interval = 0;
-
-    if (userCode.isEmpty) {
-      Logger.log(
-        "pollForToken called with result being null",
-        _classId,
-        LogLevel.warning,
+  Future<bool> pollForToken(final String code) async {
+    // Request to the intermediary server to exchange the user code for an access token
+    Logger.log("Polling for token", _classId, LogLevel.finest);
+    try {
+      final ExchangeResponse response = await _oauth.exchange(
+        code,
+        _codeVerifier,
       );
-      return false;
-    }
 
-    while (_attempts <= _maxLoginAttempts) {
-      DeviceFlowExchangeResponse response;
-      try {
-        response = await _deviceFlow.exchange();
-
-        if (response.token != null) {
-          _tokenHandler.saveToken(response.token!);
-
-          Logger.log(
-            "Successfully retrieved access token",
-            _classId,
-            LogLevel.finest,
-          );
-          inLoginProcess = false;
-          _authenticated = true;
-          return true;
-        } else {
-          interval = response.interval;
-        }
-      } on Exception catch (e) {
-        Logger.logError(
-          "Unexpected error occurred while polling for token",
-          _classId,
-          e,
-        );
+      if (response.token != null && response.token!.isNotEmpty) {
+        Logger.log("Token received successfully", _classId, LogLevel.finest);
+        await _tokenHandler.saveToken(response.token!);
+        _authenticated = true;
+        inLoginProcess = false;
+        callbackFunction("Login successful");
+        Navigation.navigateClean(const MainScreen());
+        return true;
+      } else {
+        Logger.log("No access token received", _classId, LogLevel.warning);
       }
-      await Future.delayed(Duration(seconds: interval));
-      _attempts++;
+    } catch (e) {
+      Logger.log("Error during token exchange: $e", _classId, LogLevel.warning);
     }
-    if (_attempts >= _maxLoginAttempts) {
-      Logger.log(
-        "Exceeded maximum attempts to poll for token",
-        _classId,
-        LogLevel.warning,
-      );
-    }
+
     return false;
   }
 
