@@ -127,15 +127,15 @@ class TaskListViewModel extends ChangeNotifier {
         .toList();
   }
 
+  /// Sanitizes a string by removing all non-alphanumeric characters.
+  String _sanitizeString(final String input) =>
+      input.replaceAll(RegExp("[^a-zA-Z0-9]"), "");
+
   List<Task> _sortTasks(final List<Task> tasks, final String sort) {
     if (sort == "Alphabetical") {
       tasks.sort(
-        (final a, final b) => a.title
-            .replaceAll(RegExp("[^a-zA-Z0-9]"), "")
-            .toLowerCase()
-            .compareTo(
-              b.title.replaceAll(RegExp("[^a-zA-Z0-9]"), "").toLowerCase(),
-            ),
+        (final a, final b) =>
+            _sanitizeString(a.title).compareTo(_sanitizeString(b.title)),
       );
     } else if (sort == "Last updated") {
       return tasks
