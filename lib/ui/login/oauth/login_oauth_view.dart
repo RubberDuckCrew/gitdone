@@ -13,28 +13,11 @@ class LoginGithubView extends StatefulWidget {
   State<LoginGithubView> createState() => _LoginGithubViewState();
 }
 
-class _LoginGithubViewState extends State<LoginGithubView>
-    with WidgetsBindingObserver {
+class _LoginGithubViewState extends State<LoginGithubView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     context.read<LoginGithubViewModel>().startLogin();
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(final AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    context.read<LoginGithubViewModel>().handleAppLifecycleState(
-      state,
-      context,
-    );
   }
 
   @override
@@ -70,65 +53,8 @@ class _LoginGithubViewState extends State<LoginGithubView>
             ),
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-          Center(
-            child: ValueListenableBuilder<String>(
-              valueListenable: context
-                  .watch<LoginGithubViewModel>()
-                  .fetchedUserCode,
-              builder: (final context, final fetchedUserCode, final child) {
-                if (fetchedUserCode == "") {
-                  return const CircularProgressIndicator();
-                }
-                return Column(
-                  children: [
-                    const Text("Please enter this code in the browser: "),
-                    SelectableText(
-                      fetchedUserCode,
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                    FilledButton(
-                      onPressed: () => Provider.of<LoginGithubViewModel>(
-                        context,
-                        listen: false,
-                      ).launchBrowser(),
-                      child: const Text("Copy code and open browser"),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-          ValueListenableBuilder(
-            valueListenable: context
-                .watch<LoginGithubViewModel>()
-                .showProgressIndicatorNotifier,
-            builder:
-                (
-                  final context,
-                  final showProgressIndicatorNotifier,
-                  final child,
-                ) {
-                  if (showProgressIndicatorNotifier) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _showProgressIndicator();
-                    });
-                  }
-                  return const SizedBox.shrink();
-                },
-          ),
         ],
       ),
     ),
   );
-
-  void _showProgressIndicator() {
-    showGeneralDialog(
-      context: context,
-      barrierDismissible: false,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      pageBuilder: (final context, final animation, final secondaryAnimation) =>
-          const Center(child: CircularProgressIndicator()),
-      transitionDuration: const Duration(milliseconds: 200),
-    );
-  }
 }
