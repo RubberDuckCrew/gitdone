@@ -129,13 +129,13 @@ class TaskListViewModel extends ChangeNotifier {
 
   List<Task> _sortTasks(final List<Task> tasks, final String sort) {
     if (sort == "Alphabetical") {
-      _filteredTasks.sort(
-            (final a, final b) => a.title
+      tasks.sort(
+        (final a, final b) => a.title
             .replaceAll(RegExp("[^a-zA-Z0-9]"), "")
             .toLowerCase()
             .compareTo(
-          b.title.replaceAll(RegExp("[^a-zA-Z0-9]"), "").toLowerCase(),
-        ),
+              b.title.replaceAll(RegExp("[^a-zA-Z0-9]"), "").toLowerCase(),
+            ),
       );
     } else if (sort == "Last updated") {
       return tasks
