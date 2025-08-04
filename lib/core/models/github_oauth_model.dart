@@ -4,12 +4,8 @@ import "dart:typed_data";
 
 import "package:crypto/crypto.dart";
 import "package:flutter_web_auth_2/flutter_web_auth_2.dart";
-import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
-import "package:gitdone/core/utils/navigation.dart";
-import "package:gitdone/ui/main_screen.dart";
 import "package:github_flutter/github.dart";
-import "package:url_launcher/url_launcher.dart";
 
 /// This class handles the GitHub OAuth authentication process .
 class GitHubAuth {
@@ -54,60 +50,23 @@ class GitHubAuth {
   /// A callback function to be executed after the login process.
   Function(String) callbackFunction;
 
-  final _tokenHandler = TokenHandler();
-  bool _authenticated = false;
-  final int _maxLoginAttempts = 2;
-  int _attempts = 1;
+  final bool _authenticated = false;
   final OAuth2PKCE _oauth;
   String? _userCode;
 
   final String _codeVerifier;
   String _codeChallenge = "";
 
-  /*
-  /// Starts the GitHub OAuth login process.
-  Future<String> startLoginProcess() async {
-    Logger.log("Starting GitHub login process", _classId, LogLevel.finest);
-
-    try {
-      _userCode = await _oauth.fetchUserCode();
-      inLoginProcess = true;
-      Logger.log(
-        "Could retrieve oauth information from GitHub",
-        _classId,
-        LogLevel.finest,
-      );
-      return _userCode ?? "";
-    } on Exception catch (e) {
-      Logger.log(
-        "Could not retrieve oauth information from GitHub",
-        _classId,
-        LogLevel.warning,
-        error: e,
-      );
-      return "";
-    }
-  }*/
-
-  /// Launches the browser to the GitHub OAuth authorization URL.
-  Future<void> launchBrowser() async {
-    _codeChallenge = _sha256FromString(_codeVerifier);
-    final String url = _oauth.createAuthorizeUrl(_codeChallenge);
-    if (await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
-      Logger.log("Launching URL: $url", _classId, LogLevel.finest);
-    } else {
-      Logger.log("Could not launch URL: $url", _classId, LogLevel.warning);
-    }
-  }
-
+  /// Handles the authentication process with GitHub OAuth.
+  /// This method initiates the OAuth flow and returns the authorization code.
   Future<String> authenticate() async {
     _codeChallenge = _sha256FromString(_codeVerifier);
-    print(_oauth.createAuthorizeUrl(_codeChallenge));
+
     final String result = await FlutterWebAuth2.authenticate(
       url: _oauth.createAuthorizeUrl(_codeChallenge),
       callbackUrlScheme: "gitdone",
-      options: const FlutterWebAuth2Options(intentFlags: defaultIntentFlags),
     );
+
     final String? code = Uri.parse(result).queryParameters["code"];
     if (code == null || code.isEmpty) {
       Logger.log(
@@ -120,34 +79,6 @@ class GitHubAuth {
 
     Logger.log("Authentication successful", _classId, LogLevel.finest);
     return code;
-  }
-
-  /// Polls for the access token using the user code.
-  Future<bool> pollForToken(final String code) async {
-    // Request to the intermediary server to exchange the user code for an access token
-    Logger.log("Polling for token", _classId, LogLevel.finest);
-    try {
-      final ExchangeResponse response = await _oauth.exchange(
-        code,
-        _codeVerifier,
-      );
-
-      if (response.token != null && response.token!.isNotEmpty) {
-        Logger.log("Token received successfully", _classId, LogLevel.finest);
-        await _tokenHandler.saveToken(response.token!);
-        _authenticated = true;
-        inLoginProcess = false;
-        callbackFunction("Login successful");
-        Navigation.navigateClean(const MainScreen());
-        return true;
-      } else {
-        Logger.log("No access token received", _classId, LogLevel.warning);
-      }
-    } catch (e) {
-      Logger.log("Error during token exchange: $e", _classId, LogLevel.warning);
-    }
-
-    return false;
   }
 
   /// Resets the login process state.
