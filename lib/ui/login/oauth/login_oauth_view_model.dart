@@ -17,8 +17,6 @@ class LoginGithubViewModel extends ChangeNotifier {
   Future<String?> startLogin() async {
     final String userCode = await _githubAuth.authenticate();
 
-    _githubAuth.pollForToken(userCode);
-
     return userCode;
   }
 }
