@@ -38,7 +38,7 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                 ),
                 const TextSpan(
                   text:
-                  "To use GitDone, you need to grant the following permissions to your token:\n\n"
+                      "To use GitDone, you need to grant the following permissions to your token:\n\n"
                       "• Classic Token:\n"
                       "    - read:user\n"
                       "    - repo\n\n"
