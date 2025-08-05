@@ -1,0 +1,59 @@
+name: ✨ Feature request
+description: Suggest an idea or possible new feature for this project.
+body:
+  # Greetings
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+        To expedite issue processing, please search open and closed issues before submitting a new one.
+
+  # Description
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature description
+      description: Please provide a clear and concise description of the feature you are requesting.
+      placeholder: e.g. "It would be great to have dark mode support in the UI."
+    validations:
+      required: true
+
+  # Purpose / Use Case
+  - type: textarea
+    id: purpose-use-case
+    attributes:
+      label: Purpose / Use Case
+      description: Why is this feature needed? What problem does it solve or what value does it add?
+      placeholder: e.g. "This would improve usability for users working in low-light environments."
+    validations:
+      required: true
+
+  # Suggested solution
+  - type: textarea
+    id: suggested-solution
+    attributes:
+      label: Suggested Solution (optional)
+      description: If you have an idea of how this feature could be implemented, feel free to describe it here.
+      placeholder: e.g. "Add a toggle in the settings panel and use a CSS class switch to change themes."
+    validations:
+      required: false
+
+  # Additional context
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context (optional)
+      description: Add any other context, screenshots, mockups, or references that may help understand the request better.
+      placeholder: e.g. "This is similar to the feature in XYZ app [link]."
+    validations:
+      required: false
+
+  # No duplicate check
+  - type: checkboxes
+    id: check-duplicate
+    attributes:
+      label: No duplicate
+      description: By submitting this issue, you confirm to have checked for duplicate issues beforehand.
+      options:
+        - label: I confirm that this issue is not a duplicate
+          required: true

@@ -2,11 +2,14 @@ name: 🐞 Bug report
 description: Report a bug to help the project improve.
 labels: [ "Type: Bug" ]
 body:
+  # Greetings
   - type: markdown
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
         To expedite issue processing, please search open and closed issues before submitting a new one.
+
+  # Description
   - type: textarea
     id: description
     attributes:
@@ -14,6 +17,8 @@ body:
       description: A clear and concise description of what the bug is
     validations:
       required: true
+
+  # Reproduction steps
   - type: textarea
     id: reproduction-steps
     attributes:
@@ -26,6 +31,8 @@ body:
         4. See error
     validations:
       required: true
+
+  # Expected behaviour
   - type: textarea
     id: expectation
     attributes:
@@ -33,38 +40,8 @@ body:
       description: A clear and concise description of what you expected to happen
     validations:
       required: true
-  - type: markdown
-    attributes:
-      value: "## Version and environment information"
-  - type: input
-    id: version
-    attributes:
-      label: Affected version
-      description: Version of the project the bug is concerned to
-      placeholder: e.g. 1.0.2
-    validations:
-      required: true
-  - type: dropdown
-    id: template
-    attributes:
-      label: Affected template
-      multiple: true
-      description: Name(s) of the affected template(s) (if applicable)
-      options:
-        - refarch-frontend
-        - refarch-backend
-        - refarch-eai
-        - refarch-webcomponent
-    validations:
-      required: false
-  - type: input
-    id: last-working-version
-    attributes:
-      label: Last working version (optional)
-      description: Last version of the project where the bug was not present
-      placeholder: e.g. 1.0.1
-    validations:
-      required: false
+
+  # OS
   - type: dropdown
     id: os
     attributes:
@@ -78,6 +55,8 @@ body:
         - Other
     validations:
       required: false
+
+  # Browser
   - type: dropdown
     id: browser
     attributes:
@@ -92,9 +71,28 @@ body:
         - Other
     validations:
       required: false
-  - type: markdown
+
+  # Affected version
+  - type: input
+    id: version
     attributes:
-      value: "## Extras"
+      label: Affected version
+      description: Version of the project the bug is concerned to
+      placeholder: e.g. 1.0.2
+    validations:
+      required: true
+
+  # Last working version
+  - type: input
+    id: last-working-version
+    attributes:
+      label: Last working version (optional)
+      description: Last version of the project where the bug was not present
+      placeholder: e.g. 1.0.1
+    validations:
+      required: false
+
+  # Log output
   - type: textarea
     id: logs
     attributes:
@@ -103,6 +101,8 @@ body:
       render: shell
     validations:
       required: false
+
+  # Screenshots
   - type: textarea
     id: screenshots
     attributes:
@@ -110,9 +110,8 @@ body:
       description: You can attach images or log files by clicking this area to highlight it and then dragging files in.
     validations:
       required: false
-  - type: markdown
-    attributes:
-      value: "## Confirmations"
+
+  # No duplicate issue
   - type: checkboxes
     id: check-duplicate
     attributes:
