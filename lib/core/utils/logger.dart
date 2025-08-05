@@ -1,5 +1,7 @@
 import "dart:async";
-import "dart:developer" as dev;
+
+import "package:gitdone/core/utils/logger/default_logger.dart";
+import "package:gitdone/core/utils/logger/logger_module.dart";
 
 /// Enum representing different logging levels specified in the gitdone Wiki.
 ///
@@ -64,6 +66,8 @@ enum LogLevel {
 
 /// A utility class for logging messages with different levels of severity.
 class Logger {
+  static final LoggerModule _loggerModule = DefaultLogger();
+
   /// Logs a message with the specified level, time, sequence number, name,
   /// zone, error, and stack trace.
   /// @param message The message to log.
@@ -78,16 +82,15 @@ class Logger {
     final Object? error,
     final StackTrace? stackTrace,
   }) {
-    final int logLevel = level.logLevel;
-    dev.log(
+    _loggerModule.log(
       message,
+      name,
+      level,
       time: time,
       sequenceNumber: sequenceNumber,
-      name: name,
       zone: zone,
       error: error,
       stackTrace: stackTrace,
-      level: logLevel,
     );
   }
 
@@ -102,15 +105,14 @@ class Logger {
     final Zone? zone,
     final StackTrace? stackTrace,
   }) {
-    log(
+    _loggerModule.logError(
       message,
+      name,
+      error,
       time: time,
       sequenceNumber: sequenceNumber,
-      name,
       zone: zone,
-      error: error,
       stackTrace: stackTrace,
-      LogLevel.severe,
     );
   }
 
@@ -125,15 +127,14 @@ class Logger {
     final Object? error,
     final StackTrace? stackTrace,
   }) {
-    log(
+    _loggerModule.logWarning(
       message,
+      name,
       time: time,
       sequenceNumber: sequenceNumber,
-      name,
       zone: zone,
       error: error,
       stackTrace: stackTrace,
-      LogLevel.warning,
     );
   }
 
@@ -148,15 +149,14 @@ class Logger {
     final Object? error,
     final StackTrace? stackTrace,
   }) {
-    log(
+    _loggerModule.logInfo(
       message,
+      name,
       time: time,
       sequenceNumber: sequenceNumber,
-      name,
       zone: zone,
       error: error,
       stackTrace: stackTrace,
-      LogLevel.info,
     );
   }
 }

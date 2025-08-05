@@ -80,7 +80,7 @@ class TaskListModel extends ChangeNotifier {
   Future<List<Task>> _fetchIssuesForRepository(
     final RepositoryDetails repo,
   ) async => (await GithubModel.github).issues
-      .listByRepo(repo.toSlug())
+      .listByRepo(repo.toSlug(), state: "all")
       .where((final issue) => issue.pullRequest == null)
       .map((final issue) => Task.fromIssue(issue, repo.toSlug()))
       .toList();

@@ -80,7 +80,7 @@ class _TaskListViewState extends State<TaskListView> {
   Widget _buildFilterChipDropdown({
     required final List<String> items,
     required final String initialLabel,
-    required final Function(String) onUpdate,
+    required final Function(String, {required bool selected}) onUpdate,
     final bool allowMultipleSelection = false,
   }) => FilterChipDropdown(
     items: items
@@ -88,7 +88,8 @@ class _TaskListViewState extends State<TaskListView> {
         .toList(),
     initialLabel: initialLabel,
     allowMultipleSelection: allowMultipleSelection,
-    onUpdate: (final item) => onUpdate(item.value),
+    onUpdate: (final item, {required final selected}) =>
+        onUpdate(item.value, selected: selected),
   );
 
   Widget _buildTaskList(final TaskListViewModel model) {
