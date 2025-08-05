@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/github_oauth_model.dart";
+import "package:gitdone/core/utils/navigation.dart";
+import "package:gitdone/ui/main_screen.dart";
 
 /// ViewModel for managing the login process using GitHub OAuth.
 class LoginGithubViewModel extends ChangeNotifier {
@@ -14,9 +16,18 @@ class LoginGithubViewModel extends ChangeNotifier {
   /// Starts the login process and returns the user code.
   ///
   /// Returns the `userCode` to be displayed to the user.
-  Future<String?> startLogin() async {
+  Future<void> startLogin() async {
     final String userCode = await _githubAuth.authenticate();
+    if (userCode.isEmpty) {
+      infoCallback("Login failed. Please try again.");
+      return;
+    }
+    final bool loginResult = await _githubAuth.completeLogin(userCode);
 
-    return userCode;
+    if (!loginResult) {
+      infoCallback("Login failed. Please try again.");
+      return;
+    }
+    Navigation.navigate(const MainScreen());
   }
 }
