@@ -4,6 +4,7 @@ import "dart:typed_data";
 
 import "package:crypto/crypto.dart";
 import "package:flutter_web_auth_2/flutter_web_auth_2.dart";
+import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
 
@@ -60,6 +61,7 @@ class GitHubAuth {
   /// Handles the authentication process with GitHub OAuth.
   /// This method initiates the OAuth flow and returns the authorization code.
   Future<String> authenticate() async {
+    inLoginProcess = true;
     _codeChallenge = _sha256FromString(_codeVerifier);
 
     final String result = await FlutterWebAuth2.authenticate(
@@ -79,6 +81,65 @@ class GitHubAuth {
 
     Logger.log("Authentication successful", _classId, LogLevel.finest);
     return code;
+  }
+
+  /// Completes the login process by exchanging the authorization code for an access token.
+  Future<bool> completeLogin(final String code) async {
+    int tries = 0;
+    const int maxTries = 3;
+
+    if (inLoginProcess) {
+      Logger.log(
+        "Completing login with code: $code",
+        _classId,
+        LogLevel.finest,
+      );
+      while (tries < maxTries) {
+        final ExchangeResponse response = await _sendExchangeRequest(code);
+        if (response.token != null && response.token!.isNotEmpty) {
+          _userCode = response.token;
+          Logger.log(
+            "Login completed successfully with token!",
+            _classId,
+            LogLevel.finest,
+          );
+          TokenHandler().saveToken(response.token!);
+
+          return true;
+        } else {
+          Logger.log(
+            "Login attempt ${tries + 1} failed. Retrying...",
+            _classId,
+            LogLevel.warning,
+          );
+          tries++;
+          if (tries >= maxTries) {
+            Logger.log(
+              "Max retries reached. Login failed.",
+              _classId,
+              LogLevel.warning,
+            );
+            return false;
+          }
+        }
+        tries++;
+      }
+    } else {
+      Logger.log(
+        "Login process is not active. Cannot complete login.",
+        _classId,
+        LogLevel.warning,
+      );
+    }
+    return false;
+  }
+
+  Future<ExchangeResponse> _sendExchangeRequest(final String code) async {
+    final ExchangeResponse response = await _oauth.exchange(
+      code,
+      _codeVerifier,
+    );
+    return response;
   }
 
   /// Resets the login process state.
