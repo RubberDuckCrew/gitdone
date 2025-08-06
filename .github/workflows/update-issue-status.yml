@@ -10,7 +10,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
-      issues: read
+      issues: write
 
     steps:
       - name: Extract linked issue number from PR body
@@ -25,9 +25,10 @@ jobs:
 
       - name: Get Issue ID and Project Item ID
         id: ids
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: octokit/graphql-action@v2.x
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           query: |
             query($owner: String!, $repo: String!, $issueNumber: Int!, $projectId: ID!) {
               repository(owner: $owner, name: $repo) {
@@ -69,8 +70,9 @@ jobs:
 
       - name: Update status to "In Review"
         uses: octokit/graphql-action@v2.x
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           query: |
             mutation {
               updateProjectV2ItemFieldValue(input: {
