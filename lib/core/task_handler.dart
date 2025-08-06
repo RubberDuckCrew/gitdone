@@ -68,15 +68,36 @@ class TaskHandler extends ChangeNotifier {
     }
   }
 
-  /// Creates a new task and adds it to the list of tasks. Notifies listeners
+  /// Creates a new task or updates an existing task and adds it to the list of tasks. Notifies listeners
   /// about the change.
-  Future<void> createTask(final Task task) async {
+  /// Returns the created task if successful, otherwise returns the original task.
+  Future<Task> saveTask(final Task task) async {
     try {
       final Task createdTask = await task.saveRemote();
       _tasks.add(createdTask);
       notifyListeners();
+      return createdTask;
     } on Exception catch (e) {
       Logger.logError("Failed to create task", _classId, e);
+    }
+    return task;
+  }
+
+  /// Updates an existing task in the list of tasks. Notifies listeners
+  /// about the change.
+  /// Does not save the task to the remote repository!
+  void updateLocalTask(final Task task) {
+    final int index = _tasks.indexWhere(
+      (final t) => t.issueNumber == task.issueNumber,
+    );
+    if (index != -1) {
+      _tasks[index] = task;
+      notifyListeners();
+    } else {
+      Logger.logWarning(
+        "Task with id ${task.issueNumber} not found in local tasks",
+        _classId,
+      );
     }
   }
 
