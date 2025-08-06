@@ -8,7 +8,7 @@ jobs:
   update_project_status:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       pull-requests: read
       issues: write
 
