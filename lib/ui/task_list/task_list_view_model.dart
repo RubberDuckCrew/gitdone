@@ -3,11 +3,11 @@ import "dart:convert";
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/core/models/task.dart";
+import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/task_details/task_details_view.dart";
 import "package:gitdone/ui/task_edit/task_edit_view.dart";
-import "package:gitdone/ui/task_list/task_list_model.dart";
 import "package:github_flutter/github.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
@@ -15,12 +15,13 @@ import "package:shared_preferences/shared_preferences.dart";
 class TaskListViewModel extends ChangeNotifier {
   /// Creates a new instance of [TaskListViewModel] and initializes the filters.
   TaskListViewModel() {
-    _homeViewModel.addListener(_listener);
-    _filteredTasks = _homeViewModel.tasks;
-    _filterLabels.addAll(_homeViewModel.allLabels);
+    _taskHandler
+      ..addListener(_listener)
+      ..loadTasks()
+      ..loadLabels();
   }
 
-  final TaskListModel _homeViewModel = TaskListModel();
+  final TaskHandler _taskHandler = TaskHandler();
   final List<IssueLabel> _filterLabels = [];
   List<Task> _filteredTasks = [];
   String _searchQuery = "";
@@ -35,7 +36,7 @@ class TaskListViewModel extends ChangeNotifier {
   List<Task> get tasks => _filteredTasks;
 
   /// The list of labels currently being filtered.
-  List<IssueLabel> get allLabels => _homeViewModel.allLabels;
+  List<IssueLabel> get allLabels => _taskHandler.allLabels;
 
   /// The list of labels used for filtering tasks.
   bool get isEmpty => _isEmpty;
@@ -46,7 +47,7 @@ class TaskListViewModel extends ChangeNotifier {
 
     if (selected) {
       _filterLabels.addAll(
-        _homeViewModel.allLabels.where((final l) => l.name == label),
+        _taskHandler.allLabels.where((final l) => l.name == label),
       );
     } else {
       _filterLabels.removeWhere((final l) => l.name == label);
@@ -60,10 +61,10 @@ class TaskListViewModel extends ChangeNotifier {
 
   void _listener() {
     Logger.logInfo(
-      "Received notification from task_list_model. Tunneling notification to TaskListView",
+      "Received notification from task_handler. Tunneling notification to TaskListView",
       _classId,
     );
-    _filteredTasks = _homeViewModel.tasks;
+    _filteredTasks = _taskHandler.tasks;
     _applyFilters();
 
     notifyListeners();
@@ -72,14 +73,14 @@ class TaskListViewModel extends ChangeNotifier {
   @override
   void dispose() {
     Logger.logInfo("Disposing TaskListViewModel", _classId);
-    _homeViewModel.removeListener(_listener);
+    _taskHandler.removeListener(_listener);
     super.dispose();
   }
 
   /// The current search query used to filter tasks.
   Future<void> loadTasks() async {
-    await _homeViewModel.loadTasks();
-    _isEmpty = _homeViewModel.tasks.isEmpty;
+    await _taskHandler.loadTasks();
+    _isEmpty = _taskHandler.tasks.isEmpty;
     notifyListeners();
   }
 
@@ -162,7 +163,7 @@ class TaskListViewModel extends ChangeNotifier {
       };
 
   void _applyFilters() {
-    _filteredTasks = _homeViewModel.tasks;
+    _filteredTasks = _taskHandler.tasks;
     _filteredTasks = _applyCompletedFilter(_filteredTasks, _filter);
     _filteredTasks = _applySearchQuery(_filteredTasks, _searchQuery);
     _filteredTasks = _applyLabelFilter(_filteredTasks, _filterLabels);
