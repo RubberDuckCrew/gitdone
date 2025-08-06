@@ -1,4 +1,5 @@
 import "package:gitdone/core/models/task.dart";
+import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
 
@@ -24,9 +25,10 @@ class TaskEditViewModel {
   /// Saves the changes made to the to do item.
   void save() {
     Logger.log("Saving task: $newTask", _classId, LogLevel.detailed);
-    newTask
-      ..saveRemote()
-      ..updatedAt = DateTime.now();
+    TaskHandler().saveTask(newTask);
+    newTask.updatedAt = DateTime.now();
+    TaskHandler().updateLocalTask(newTask);
+
     _originalTask.replace(newTask);
     Navigation.navigateBack(newTask);
   }
