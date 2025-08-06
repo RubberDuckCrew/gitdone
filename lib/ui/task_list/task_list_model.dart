@@ -1,13 +1,8 @@
-import "dart:convert";
-
 import "package:flutter/material.dart";
-import "package:gitdone/core/models/github_model.dart";
-import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
-import "package:shared_preferences/shared_preferences.dart";
 
 /// ViewModel for the Home View.
 class TaskListModel extends ChangeNotifier {
@@ -15,7 +10,8 @@ class TaskListModel extends ChangeNotifier {
   TaskListModel() {
     _taskHandler
       ..addListener(_listener)
-      ..loadTasks();
+      ..loadTasks()
+      ..loadLabels();
   }
   final TaskHandler _taskHandler = TaskHandler();
 
@@ -38,6 +34,11 @@ class TaskListModel extends ChangeNotifier {
     _task
       ..clear()
       ..addAll(_taskHandler.tasks);
+
+    _allLabels
+      ..clear()
+      ..addAll(_taskHandler.allLabels);
+
     notifyListeners();
   }
 
@@ -51,7 +52,7 @@ class TaskListModel extends ChangeNotifier {
   /// Loads the tasks from the repository.
   Future<void> loadTasks() async {
     Logger.logInfo("Loading tasks", _classId);
-    await _loadTasks();
+    await loadTasks();
   }
 
   /// Adds a new task to the list.
@@ -66,49 +67,4 @@ class TaskListModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  Future<void> _loadTasks() async {
-    try {
-      _task.clear();
-      final RepositoryDetails? repo = await _getSelectedRepository();
-      if (repo != null) {
-        final List<Task> issues = await _fetchIssuesForRepository(repo);
-        _task
-          ..clear()
-          ..addAll(issues);
-        final List<IssueLabel> labels = await _fetchAllLabels(repo);
-        _allLabels
-          ..clear()
-          ..addAll(labels);
-      }
-    } on Exception catch (e) {
-      Logger.logError("Failed to load tasks", _classId, e);
-    } finally {
-      notifyListeners();
-    }
-  }
-
-  Future<RepositoryDetails?> _getSelectedRepository() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String repoJson = prefs.getString("selected_repository") ?? "";
-    if (repoJson.isNotEmpty) {
-      return RepositoryDetails.fromJson(
-        Map<String, dynamic>.from(jsonDecode(repoJson)),
-      );
-    }
-    return null;
-  }
-
-  Future<List<Task>> _fetchIssuesForRepository(
-    final RepositoryDetails repo,
-  ) async => (await GithubModel.github).issues
-      .listByRepo(repo.toSlug(), state: "all")
-      .where((final issue) => issue.pullRequest == null)
-      .map((final issue) => Task.fromIssue(issue, repo.toSlug()))
-      .toList();
-
-  Future<List<IssueLabel>> _fetchAllLabels(
-    final RepositoryDetails repo,
-  ) async =>
-      (await GithubModel.github).issues.listLabels(repo.toSlug()).toList();
 }
