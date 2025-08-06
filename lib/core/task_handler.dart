@@ -29,9 +29,7 @@ class TaskHandler extends ChangeNotifier {
       final RepositoryDetails? repo = await _getSelectedRepository();
       if (repo != null) {
         final List<Task> issues = await _fetchIssuesForRepository(repo);
-        _tasks
-          ..clear()
-          ..addAll(issues);
+        _tasks.addAll(issues);
       }
     } on Exception catch (e) {
       Logger.logError("Failed to load tasks", _classId, e);
