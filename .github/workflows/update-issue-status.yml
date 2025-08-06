@@ -1,0 +1,88 @@
+name: Move Linked Issue to Review in GitHub Project
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  update_project_status:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+
+    steps:
+      - name: Extract linked issue number from PR body
+        id: extract
+        run: |
+          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | grep -oE '#[0-9]+' | tr -d '#' | head -n1)
+          if [ -z "$ISSUE_NUMBER" ]; then
+            echo "No linked issue found in PR body."
+            exit 0
+          fi
+          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+
+      - name: Get Issue ID and Project Item ID
+        id: ids
+        uses: octokit/graphql-action@v2.x
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          query: |
+            query($owner: String!, $repo: String!, $issueNumber: Int!, $projectId: ID!) {
+              repository(owner: $owner, name: $repo) {
+                issue(number: $issueNumber) {
+                  id
+                }
+              }
+              node(id: $projectId) {
+                ... on ProjectV2 {
+                  items(first: 100) {
+                    nodes {
+                      id
+                        content {
+                          ... on Issue {
+                            id
+                            number
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          variables: |
+            {
+              "owner": "${{ github.repository_owner }}",
+              "repo": "${{ github.event.repository.name }}",
+              "issueNumber": ${{ steps.extract.outputs.issue_number }},
+              "projectId": "PVT_kwDODFbjbM4A-8yd"
+            }
+
+      - name: Extract matching item ID
+        id: match
+        run: |
+          ISSUE_ID=$(echo '${{ steps.ids.outputs.data }}' | jq -r '.repository.issue.id')
+          ITEM_ID=$(echo '${{ steps.ids.outputs.data }}' | jq -r '.node.items.nodes[] | select(.content.id == "'"$ISSUE_ID"'") | .id')
+          echo "issue_id=$ISSUE_ID" >> $GITHUB_OUTPUT
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+
+      - name: Update status to "In Review"
+        uses: octokit/graphql-action@v2.x
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          query: |
+            mutation {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: "PVT_kwDODFbjbM4A-8yd",
+                itemId: "${{ steps.match.outputs.item_id }}",
+                fieldId: "PVTSSF_lADODFbjbM4A-8ydzgyMt1Q",
+                value: {
+                  singleSelectOptionId: "5ef0dc97"
+                }
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }
