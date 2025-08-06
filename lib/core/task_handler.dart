@@ -68,6 +68,18 @@ class TaskHandler extends ChangeNotifier {
     }
   }
 
+  /// Creates a new task and adds it to the list of tasks. Notifies listeners
+  /// about the change.
+  Future<void> createTask(final Task task) async {
+    try {
+      final Task createdTask = await task.saveRemote();
+      _tasks.add(createdTask);
+      notifyListeners();
+    } on Exception catch (e) {
+      Logger.logError("Failed to create task", _classId, e);
+    }
+  }
+
   Future<List<Task>> _fetchIssuesForRepository(
     final RepositoryDetails repo,
   ) async => (await GithubModel.github).issues
