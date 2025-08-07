@@ -188,12 +188,12 @@ jobs:
 
     steps:
       - name: Download APK artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: GitDone_${{ needs.build.outputs.version_name }}.apk
 
       - name: Download app bundle artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: GitDone_${{ needs.build.outputs.version_name }}.aab
 
