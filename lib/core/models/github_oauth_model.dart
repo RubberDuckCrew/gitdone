@@ -71,20 +71,11 @@ class GitHubAuth {
           url: _oauth.createAuthorizeUrl(_codeChallenge),
           callbackUrlScheme: "gitdone",
         ).catchError((final error, final stackTrace) {
-          throw Exception(error);
+          throw AuthenticationException(error);
         });
 
-    final String? code = Uri.parse(result).queryParameters["code"];
-    if (code == null || code.isEmpty) {
-      Logger.log(
-        "Authentication failed: No code received",
-        _classId,
-        LogLevel.shout,
-      );
-      throw AuthenticationException("No code received from authentication");
-    }
+    final String code = _validateAuthenticationResult(result);
 
-    Logger.log("Authentication successful", _classId, LogLevel.finest);
     return code;
   }
 
@@ -94,32 +85,21 @@ class GitHubAuth {
     const int maxTries = 3;
 
     if (inLoginProcess) {
-      Logger.log(
-        "Completing login with code: $code",
-        _classId,
-        LogLevel.finest,
-      );
-      while (tries < maxTries) {
-        final ExchangeResponse response = await _sendExchangeRequest(code);
+      while (tries <= maxTries) {
+        tries++;
+        final ExchangeResponse response = await _sendExchangeRequest(
+          code,
+        ).onError(_throwAuthenticationException);
 
-        if (response.token != null && response.token!.isNotEmpty) {
-          _userCode = response.token;
+        try {
+          _validateExchangeResponse(response);
+          continue;
+        } on AuthenticationException catch (_, _) {
           Logger.log(
-            "Login completed successfully with token!",
-            _classId,
-            LogLevel.finest,
-          );
-          TokenHandler().saveToken(response.token!);
-          _authenticated = true;
-          inLoginProcess = false;
-          return true;
-        } else {
-          Logger.log(
-            "Login attempt ${tries + 1} failed. Retrying...",
+            "Login attempt $tries failed. Retrying...",
             _classId,
             LogLevel.warning,
           );
-          tries++;
           if (tries >= maxTries) {
             Logger.log(
               "Max retries reached. Login failed.",
@@ -129,7 +109,17 @@ class GitHubAuth {
             return false;
           }
         }
-        tries++;
+
+        _userCode = response.token;
+        Logger.log(
+          "Login completed successfully with token!",
+          _classId,
+          LogLevel.finest,
+        );
+        TokenHandler().saveToken(response.token!);
+        _authenticated = true;
+        inLoginProcess = false;
+        return true;
       }
     } else {
       Logger.log(
@@ -139,6 +129,48 @@ class GitHubAuth {
       );
     }
     return false;
+  }
+
+  /// Validates the response from the exchange request.
+  /// Throws an [AuthenticationException] if the token is null or empty.
+  void _validateExchangeResponse(final ExchangeResponse response) {
+    if (response.token == null || response.token!.isEmpty) {
+      Logger.log(
+        "Authentication failed: No token received",
+        _classId,
+        LogLevel.shout,
+      );
+      inLoginProcess = false;
+      throw AuthenticationException("No token received from authentication");
+    } else {
+      Logger.log("Token received successfully", _classId, LogLevel.finest);
+    }
+  }
+
+  ExchangeResponse _throwAuthenticationException(
+    final Exception error,
+    final StackTrace stackTrace,
+  ) {
+    Logger.log("Authentication failed: $error", _classId, LogLevel.shout);
+    inLoginProcess = false;
+    throw AuthenticationException(error.toString());
+  }
+
+  /// Validates the authentication result and extracts the authorization code.
+  /// Throws an [AuthenticationException] if the code is missing or empty.
+  String _validateAuthenticationResult(final String result) {
+    final String? code = Uri.parse(result).queryParameters["code"];
+    if (code == null || code.isEmpty) {
+      Logger.log(
+        "Authentication failed: No code received",
+        _classId,
+        LogLevel.shout,
+      );
+      inLoginProcess = false;
+      throw AuthenticationException("No code received from authentication");
+    }
+    Logger.log("Authentication successful", _classId, LogLevel.finest);
+    return code;
   }
 
   Future<ExchangeResponse> _sendExchangeRequest(final String code) async {
