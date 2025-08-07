@@ -49,22 +49,12 @@ class _LoginGithubViewState extends State<LoginGithubView> {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       style: const TextStyle(fontSize: 18, height: 1.3),
-                      children: [
-                        const TextSpan(
-                          text: "The following error occurred during login: \n",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        TextSpan(
-                          text: viewModel.errorMessage,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
+                      children: [TextSpan(text: viewModel.errorMessage)],
                     ),
                   ),
                 ),
+              if (viewModel.errorOccurred)
+                Image.asset("assets/imgs/sadDuck.png"),
               if (!viewModel.errorOccurred)
                 const Center(child: CircularProgressIndicator()),
               const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
