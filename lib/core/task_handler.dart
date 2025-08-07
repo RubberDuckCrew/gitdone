@@ -17,9 +17,9 @@ class TaskHandler extends ChangeNotifier {
   static const _classId = "com.GitDone.gitdone.core.task_handler";
   static final TaskHandler _instance = TaskHandler._internal();
 
-  final List<Task> _tasks = [];
+  List<Task> _tasks = [];
 
-  final List<IssueLabel> _labels = [];
+  List<IssueLabel> _labels = [];
 
   /// The list of all tasks available in the repository.
   List<Task> get tasks => List.unmodifiable(_tasks);
@@ -31,14 +31,21 @@ class TaskHandler extends ChangeNotifier {
   /// After the notification the current list of task is stored in [tasks].
   Future<void> loadTasks() async {
     try {
-      _tasks.clear();
       final RepositoryDetails? repo = await _getSelectedRepository();
       if (repo == null) {
         Logger.logWarning("No repository selected", _classId);
         return;
       }
       final List<Task> issues = await _fetchIssuesForRepository(repo);
-      _tasks.addAll(issues);
+      Logger.logInfo(
+        "Adding ${issues.length} tasks to the repository",
+        _classId,
+      );
+      _tasks = issues;
+      Logger.logInfo(
+        "Currently ${_tasks.length} tasks in the repository",
+        _classId,
+      );
     } on Exception catch (e) {
       Logger.logError("Failed to load tasks", _classId, e);
     } finally {
@@ -57,11 +64,9 @@ class TaskHandler extends ChangeNotifier {
         Logger.logWarning("No repository selected", _classId);
         return;
       }
-      _labels.addAll(
-        await (await GithubModel.github).issues
-            .listLabels(repo.toSlug())
-            .toList(),
-      );
+      _labels = await (await GithubModel.github).issues
+          .listLabels(repo.toSlug())
+          .toList();
       notifyListeners();
     } on Exception catch (e) {
       Logger.logError("Failed to load labels", _classId, e);
