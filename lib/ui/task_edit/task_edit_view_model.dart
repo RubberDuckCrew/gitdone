@@ -2,6 +2,7 @@ import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
+import "package:github_flutter/github.dart";
 
 /// A view model for editing a task item.
 class TaskEditViewModel {
@@ -39,7 +40,12 @@ class TaskEditViewModel {
     Logger.log("Updated title: $title", _classId, LogLevel.detailed);
   }
 
-  /// Update the description of the to do item.
+  /// Update the labels of the task item.
+  void updateLabels(final List<IssueLabel> labels) {
+    newTask.labels = labels;
+    Logger.log("Updated labels: $labels", _classId, LogLevel.detailed);
+  }
+
   /// Update the description of the task item.
   void updateDescription(final String description) {
     newTask.description = description;
