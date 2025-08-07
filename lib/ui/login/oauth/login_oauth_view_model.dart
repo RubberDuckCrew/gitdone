@@ -76,13 +76,13 @@ class LoginGithubViewModel extends ChangeNotifier {
   void _handleError(final Object error) {
     _errorOccurred = true;
 
-    if (error.runtimeType == PlatformException) {
+    if (error is PlatformException) {
       errorMessage = "It seems that you have cancelled the login process.";
-    } else if (error.runtimeType == OAuthRequestException) {
+    } else if (error is OAuthRequestException) {
       errorMessage =
           "It seems that the Server does not respond. "
           "Please try again later.";
-    } else if (error.runtimeType == AuthenticationException) {
+    } else if (error is AuthenticationException) {
       errorMessage =
           "We did not receive a valid response from the server. "
           "Please try again later.";
