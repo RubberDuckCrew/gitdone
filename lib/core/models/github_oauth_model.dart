@@ -1,8 +1,8 @@
 import "dart:convert";
 import "dart:math";
-import "dart:typed_data";
 
 import "package:crypto/crypto.dart";
+import "package:flutter/services.dart";
 import "package:flutter_web_auth_2/flutter_web_auth_2.dart";
 import "package:gitdone/core/exceptions/authentication_exception.dart";
 import "package:gitdone/core/exceptions/oauth_request_exception.dart";
@@ -10,6 +10,7 @@ import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
 
+// TODO(everyone): Add AuthenticationExceptionType to exceptions
 /// This class handles the GitHub OAuth authentication process .
 class GitHubAuth {
   /// Creates an instance of GitHubAuth with a callback function.
@@ -65,14 +66,15 @@ class GitHubAuth {
   Future<String> authenticate() async {
     inLoginProcess = true;
     _codeChallenge = _sha256FromString(_codeVerifier);
-
-    final String result =
-        await FlutterWebAuth2.authenticate(
-          url: _oauth.createAuthorizeUrl(_codeChallenge),
-          callbackUrlScheme: "gitdone",
-        ).catchError((final error, final stackTrace) {
-          throw AuthenticationException(error);
-        });
+    String result;
+    try {
+      result = await FlutterWebAuth2.authenticate(
+        url: _oauth.createAuthorizeUrl(_codeChallenge),
+        callbackUrlScheme: "gitdone",
+      );
+    } on PlatformException {
+      throw AuthenticationException("Platform exception");
+    }
 
     final String code = _validateAuthenticationResult(result);
 
@@ -87,9 +89,12 @@ class GitHubAuth {
     if (inLoginProcess) {
       while (tries <= maxTries) {
         tries++;
-        final ExchangeResponse response = await _sendExchangeRequest(
-          code,
-        ).onError(_throwAuthenticationException);
+        ExchangeResponse response;
+        try {
+          response = await _sendExchangeRequest(code);
+        } catch (_, _) {
+          rethrow;
+        }
 
         try {
           _validateExchangeResponse(response);
@@ -145,15 +150,6 @@ class GitHubAuth {
     } else {
       Logger.log("Token received successfully", _classId, LogLevel.finest);
     }
-  }
-
-  ExchangeResponse _throwAuthenticationException(
-    final Exception error,
-    final StackTrace stackTrace,
-  ) {
-    Logger.log("Authentication failed: $error", _classId, LogLevel.shout);
-    inLoginProcess = false;
-    throw AuthenticationException(error.toString());
   }
 
   /// Validates the authentication result and extracts the authorization code.
