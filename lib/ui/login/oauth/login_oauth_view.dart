@@ -17,43 +17,60 @@ class _LoginGithubViewState extends State<LoginGithubView> {
   @override
   void initState() {
     super.initState();
-    context.read<LoginGithubViewModel>().startLogin();
+    //context.read<LoginGithubViewModel>().startLogin();
   }
 
   @override
   Widget build(final BuildContext context) => Scaffold(
     appBar: const NormalAppBar(),
-    body: SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(padding: EdgeInsets.symmetric(vertical: 32)),
-          const PageTitleWidget(title: "GitHub OAuth Login"),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: RichText(
-              text: const TextSpan(
-                style: TextStyle(fontSize: 18, height: 1.3),
-                children: [
-                  TextSpan(
-                    text:
-                        "To log in with GitHub, please follow these steps:\n\n",
+    body: ChangeNotifierProvider(
+      create: (_) {
+        final viewModel = LoginGithubViewModel(
+          infoCallback: (final message) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(message)));
+          },
+        )..startLogin();
+        return viewModel;
+      },
+      child: Consumer<LoginGithubViewModel>(
+        builder: (final context, final viewModel, _) => SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(padding: EdgeInsets.symmetric(vertical: 32)),
+              const PageTitleWidget(title: "GitHub OAuth Login"),
+              if (viewModel.errorOccurred)
+                Align(
+                  alignment: Alignment.center,
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: const TextStyle(fontSize: 18, height: 1.3),
+                      children: [
+                        const TextSpan(
+                          text: "The following error occurred during login: \n",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        TextSpan(
+                          text: viewModel.errorMessage,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  TextSpan(
-                    text: "1. Copy the code below to open the browser\n",
-                  ),
-                  TextSpan(text: "2. Log in with your GitHub account\n"),
-                  TextSpan(
-                    text: "3. Paste the device code and authorize the app\n",
-                  ),
-                  TextSpan(text: "4. Close the browser\n"),
-                ],
-              ),
-            ),
+                ),
+              if (!viewModel.errorOccurred)
+                const Center(child: CircularProgressIndicator()),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+            ],
           ),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-        ],
+        ),
       ),
     ),
   );
