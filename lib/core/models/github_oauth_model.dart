@@ -4,6 +4,8 @@ import "dart:typed_data";
 
 import "package:crypto/crypto.dart";
 import "package:flutter_web_auth_2/flutter_web_auth_2.dart";
+import "package:gitdone/core/exceptions/authentication_exception.dart";
+import "package:gitdone/core/exceptions/oauth_request_exception.dart";
 import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
@@ -51,7 +53,7 @@ class GitHubAuth {
   /// A callback function to be executed after the login process.
   Function(String) callbackFunction;
 
-  final bool _authenticated = false;
+  bool _authenticated = false;
   final OAuth2PKCE _oauth;
   String? _userCode;
 
@@ -64,19 +66,22 @@ class GitHubAuth {
     inLoginProcess = true;
     _codeChallenge = _sha256FromString(_codeVerifier);
 
-    final String result = await FlutterWebAuth2.authenticate(
-      url: _oauth.createAuthorizeUrl(_codeChallenge),
-      callbackUrlScheme: "gitdone",
-    );
+    final String result =
+        await FlutterWebAuth2.authenticate(
+          url: _oauth.createAuthorizeUrl(_codeChallenge),
+          callbackUrlScheme: "gitdone",
+        ).catchError((final error, final stackTrace) {
+          throw Exception(error);
+        });
 
     final String? code = Uri.parse(result).queryParameters["code"];
     if (code == null || code.isEmpty) {
       Logger.log(
         "Authentication failed: No code received",
         _classId,
-        LogLevel.warning,
+        LogLevel.shout,
       );
-      throw Exception("No code received from authentication");
+      throw AuthenticationException("No code received from authentication");
     }
 
     Logger.log("Authentication successful", _classId, LogLevel.finest);
@@ -96,6 +101,7 @@ class GitHubAuth {
       );
       while (tries < maxTries) {
         final ExchangeResponse response = await _sendExchangeRequest(code);
+
         if (response.token != null && response.token!.isNotEmpty) {
           _userCode = response.token;
           Logger.log(
@@ -104,7 +110,8 @@ class GitHubAuth {
             LogLevel.finest,
           );
           TokenHandler().saveToken(response.token!);
-
+          _authenticated = true;
+          inLoginProcess = false;
           return true;
         } else {
           Logger.log(
@@ -135,10 +142,16 @@ class GitHubAuth {
   }
 
   Future<ExchangeResponse> _sendExchangeRequest(final String code) async {
-    final ExchangeResponse response = await _oauth.exchange(
-      code,
-      _codeVerifier,
-    );
+    final ExchangeResponse response = await _oauth
+        .exchange(code, _codeVerifier)
+        .onError((final error, final stackTrace) {
+          Logger.log(
+            "Error during token exchange: $error",
+            _classId,
+            LogLevel.shout,
+          );
+          throw OAuthRequestException(error.toString());
+        });
     return response;
   }
 
