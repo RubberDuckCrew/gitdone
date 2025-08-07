@@ -3,9 +3,9 @@ import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
 
-/// A view model for editing a to do item.
+/// A view model for editing a task item.
 class TaskEditViewModel {
-  /// Creates a [TaskEditViewModel] with the given to do item.
+  /// Creates a [TaskEditViewModel] with the given task item.
   TaskEditViewModel(this._originalTask) : newTask = _originalTask.copy();
 
   static const _classId =
@@ -13,16 +13,16 @@ class TaskEditViewModel {
 
   final Task _originalTask;
 
-  /// The updated to do item that is being edited.
+  /// The updated task item that is being edited.
   final Task newTask;
 
-  /// Cancels the editing of the to do item.
+  /// Cancels the editing of the task item.
   void cancel() {
     Logger.log("Cancel editing task", _classId, LogLevel.detailed);
     Navigation.navigateBack();
   }
 
-  /// Saves the changes made to the to do item.
+  /// Saves the changes made to the task item.
   void save() {
     Logger.log("Saving task: $newTask", _classId, LogLevel.detailed);
     TaskHandler().saveTask(newTask);
@@ -33,13 +33,14 @@ class TaskEditViewModel {
     Navigation.navigateBack(newTask);
   }
 
-  /// Update the title of the to do item.
+  /// Update the title of the task item.
   void updateTitle(final String title) {
     newTask.title = title;
     Logger.log("Updated title: $title", _classId, LogLevel.detailed);
   }
 
   /// Update the description of the to do item.
+  /// Update the description of the task item.
   void updateDescription(final String description) {
     newTask.description = description;
     Logger.log(
