@@ -30,4 +30,10 @@ enum AuthenticationErrorType {
 
   /// An error occurred on the server.
   serverError,
+
+  /// Invalid grant error.
+  invalidGrant,
+
+  /// Bad verification code error.
+  badVerificationCode,
 }
