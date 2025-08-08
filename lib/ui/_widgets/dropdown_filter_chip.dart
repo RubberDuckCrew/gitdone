@@ -132,8 +132,9 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
   @override
   void initState() {
     super.initState();
-    if (widget._defaultSelectedValues.isNotEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget._defaultSelectedValues.isNotEmpty) {
+        _viewModel._selectedLabels = widget._defaultSelectedValues.toSet();
         for (final String value in widget._defaultSelectedValues) {
           final FilterChipItem item = widget.items.firstWhere(
             (final item) => item.label == value,
@@ -141,8 +142,8 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
           );
           widget.onUpdate(item, selected: true);
         }
-      });
-    }
+      }
+    });
   }
 
   /// Calculate the offset to ensure the dropdown does not overflow
