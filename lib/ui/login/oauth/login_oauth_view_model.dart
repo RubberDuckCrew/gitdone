@@ -93,7 +93,7 @@ class LoginGithubViewModel extends ChangeNotifier {
 
       case AuthenticationErrorType.invalidGrant:
         errorMessage =
-            "GitHub reported an invalid grant. Please try again. If the problem persists, please contact us. [Error Type: invalidGrant]";
+            "GitHub reported an invalid grant. This is likely due to errors within our confidential intermediary server. Please try again. If the problem persists, please contact us. [Error Type: invalidGrant]";
 
       case AuthenticationErrorType.badVerificationCode:
         errorMessage =
