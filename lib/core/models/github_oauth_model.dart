@@ -4,8 +4,7 @@ import "dart:math";
 import "package:crypto/crypto.dart";
 import "package:flutter/services.dart";
 import "package:flutter_web_auth_2/flutter_web_auth_2.dart";
-import "package:gitdone/core/exceptions/authentication_exception.dart";
-import "package:gitdone/core/exceptions/oauth_request_exception.dart";
+import "package:gitdone/core/exceptions/oauth_exception.dart";
 import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
@@ -26,8 +25,7 @@ class GitHubAuth {
   /// The client ID for the GitHub OAuth application.
   static const clientId = "Ov23li2QBbpgRa3P0GHJ";
 
-  static const _classId =
-      "com.GitDone.gitdone.core.models.github_oauth_handler";
+  static const _classId = "com.GitDone.gitdone.core.models.github_auth";
 
   static String _randomCodeVerifier(final int length) {
     const chars =
@@ -73,7 +71,7 @@ class GitHubAuth {
         callbackUrlScheme: "gitdone",
       );
     } on PlatformException {
-      throw AuthenticationException("Platform exception");
+      throw OAuthException(errorType: AuthenticationErrorType.userCancelled);
     }
 
     final String code = _validateAuthenticationResult(result);
@@ -82,7 +80,7 @@ class GitHubAuth {
   }
 
   /// Completes the login process by exchanging the authorization code for an access token.
-  Future<bool> completeLogin(final String code) async {
+  Future<bool> completeLogin(final String userCode) async {
     int tries = 0;
     const int maxTries = 3;
 
@@ -91,15 +89,16 @@ class GitHubAuth {
         tries++;
         ExchangeResponse response;
         try {
-          response = await _sendExchangeRequest(code);
+          response = await _sendExchangeRequest(userCode);
         } catch (_, _) {
           rethrow;
         }
 
         try {
           _validateExchangeResponse(response);
-          continue;
-        } on AuthenticationException catch (_, _) {
+          _successCallback(response.token!);
+          return true;
+        } on OAuthException catch (_, _) {
           Logger.log(
             "Login attempt $tries failed. Retrying...",
             _classId,
@@ -114,17 +113,6 @@ class GitHubAuth {
             return false;
           }
         }
-
-        _userCode = response.token;
-        Logger.log(
-          "Login completed successfully with token!",
-          _classId,
-          LogLevel.finest,
-        );
-        TokenHandler().saveToken(response.token!);
-        _authenticated = true;
-        inLoginProcess = false;
-        return true;
       }
     } else {
       Logger.log(
@@ -136,8 +124,19 @@ class GitHubAuth {
     return false;
   }
 
+  void _successCallback(final String token) {
+    Logger.log(
+      "Login completed successfully with token!",
+      _classId,
+      LogLevel.finest,
+    );
+    TokenHandler().saveToken(token);
+    _authenticated = true;
+    inLoginProcess = false;
+  }
+
   /// Validates the response from the exchange request.
-  /// Throws an [AuthenticationException] if the token is null or empty.
+  /// Throws an [OAuthException] if the token is null or empty.
   void _validateExchangeResponse(final ExchangeResponse response) {
     if (response.token == null || response.token!.isEmpty) {
       Logger.log(
@@ -146,14 +145,14 @@ class GitHubAuth {
         LogLevel.shout,
       );
       inLoginProcess = false;
-      throw AuthenticationException("No token received from authentication");
+      throw OAuthException(errorType: AuthenticationErrorType.noTokenReceived);
     } else {
       Logger.log("Token received successfully", _classId, LogLevel.finest);
     }
   }
 
   /// Validates the authentication result and extracts the authorization code.
-  /// Throws an [AuthenticationException] if the code is missing or empty.
+  /// Throws an [OAuthException] if the code is missing or empty.
   String _validateAuthenticationResult(final String result) {
     final String? code = Uri.parse(result).queryParameters["code"];
     if (code == null || code.isEmpty) {
@@ -163,7 +162,11 @@ class GitHubAuth {
         LogLevel.shout,
       );
       inLoginProcess = false;
-      throw AuthenticationException("No code received from authentication");
+      // TODO(everyone): Discuss error type
+      throw OAuthException(
+        errorType: AuthenticationErrorType.noUserCodeReceived,
+        message: "No code received from authentication",
+      );
     }
     Logger.log("Authentication successful", _classId, LogLevel.finest);
     return code;
@@ -178,7 +181,11 @@ class GitHubAuth {
             _classId,
             LogLevel.shout,
           );
-          throw OAuthRequestException(error.toString());
+          // TODO(everyone): Discuss error type
+          throw OAuthException(
+            message: "Failed to exchange code for token",
+            errorType: AuthenticationErrorType.serverError,
+          );
         });
     return response;
   }

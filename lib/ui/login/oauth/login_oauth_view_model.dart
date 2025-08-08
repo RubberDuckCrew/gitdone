@@ -1,7 +1,5 @@
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
-import "package:gitdone/core/exceptions/authentication_exception.dart";
-import "package:gitdone/core/exceptions/oauth_request_exception.dart";
+import "package:gitdone/core/exceptions/oauth_exception.dart";
 import "package:gitdone/core/models/github_oauth_model.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
@@ -32,33 +30,33 @@ class LoginGithubViewModel extends ChangeNotifier {
   ///
   /// Returns the `userCode` to be displayed to the user.
   Future<void> startLogin() async {
-    final String userCode = await _githubAuth.authenticate().catchError((
-      final error,
-      final stackTrace,
-    ) {
+    String userCode;
+    try {
+      userCode = await _githubAuth.authenticate();
+    } on OAuthException catch (error) {
       _handleError(error);
-      return "";
-    });
-
-    if (userCode.isEmpty) {
-      infoCallback("Login failed. Please try again.");
-      _handleError(userCode);
-      notifyListeners();
       return;
     }
-    final bool loginResult = await _githubAuth
-        .completeLogin(userCode)
-        .catchError((final error, final stackTrace) {
-          _handleError(error);
-          return false;
-        });
 
+    notifyListeners();
+
+    bool loginResult;
+
+    try {
+      loginResult = await _githubAuth.completeLogin(userCode);
+    } on OAuthException catch (error) {
+      _handleError(error);
+      return;
+    }
+
+    // TODO(everyone): This should be replaced with exceptions inside completeLogin()
     if (!loginResult) {
       infoCallback("Login failed. Please try again.");
       _errorOccurred = true;
       notifyListeners();
       return;
     }
+
     Navigation.navigate(const MainScreen());
   }
 
@@ -73,27 +71,23 @@ class LoginGithubViewModel extends ChangeNotifier {
     }
   }
 
-  void _handleError(final Object error) {
+  void _handleError(final OAuthException error) {
     _errorOccurred = true;
 
-    if (error is PlatformException) {
-      errorMessage = "It seems that you have cancelled the login process.";
-    } else if (error is OAuthRequestException) {
-      errorMessage =
-          "It seems that the Server does not respond. "
-          "Please try again later.";
-    } else if (error is AuthenticationException) {
-      errorMessage =
-          "We did not receive a valid response from the server. "
-          "Please try again later.";
-    } else {
-      errorMessage = "An unexpected error occurred.";
+    switch (error.errorType) {
+      case AuthenticationErrorType.userCancelled:
+        errorMessage = "It seems that you cancelled the login process.";
+
+      case AuthenticationErrorType.noTokenReceived:
+        errorMessage = "Github did not return a token. Please try again.";
+
+      case AuthenticationErrorType.noUserCodeReceived:
+        errorMessage = "Github did not return a user code. Please try again.";
+
+      case AuthenticationErrorType.serverError:
+        errorMessage = "An error occurred on the server. Please try again.";
     }
     notifyListeners();
-    Logger.log(
-      "Error in LoginGithubViewModel: $error",
-      _classId,
-      LogLevel.shout,
-    );
+    Logger.log("Received OAuthException: $error", _classId, LogLevel.warning);
   }
 }
