@@ -181,11 +181,26 @@ class GitHubAuth {
             _classId,
             LogLevel.shout,
           );
-          // TODO(everyone): Discuss error type
-          throw OAuthException(
-            message: "Failed to exchange code for token",
-            errorType: AuthenticationErrorType.serverError,
-          );
+
+          switch (error) {
+            case "invalid_grant":
+              throw OAuthException(
+                message: "Invalid grant. Please try again.",
+                errorType: AuthenticationErrorType.invalidGrant,
+              );
+
+            case "bad_verification_code":
+              throw OAuthException(
+                message: "Bad verification code. Please try again.",
+                errorType: AuthenticationErrorType.badVerificationCode,
+              );
+            case _:
+              // TODO(everyone): Discuss error type
+              throw OAuthException(
+                message: "Failed to exchange code for token",
+                errorType: AuthenticationErrorType.serverError,
+              );
+          }
         });
     return response;
   }
