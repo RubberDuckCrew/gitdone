@@ -76,16 +76,28 @@ class LoginGithubViewModel extends ChangeNotifier {
 
     switch (error.errorType) {
       case AuthenticationErrorType.userCancelled:
-        errorMessage = "It seems like you cancelled the login process.";
+        errorMessage =
+            "It seems like you cancelled the login process. [Error Type: userCancelled]";
 
       case AuthenticationErrorType.noTokenReceived:
-        errorMessage = "Github did not return a token. Please try again.";
+        errorMessage =
+            "Github did not return a token. Please try again. If the problem persists, please contact us. [Error Type: noTokenReceived]";
 
       case AuthenticationErrorType.noUserCodeReceived:
-        errorMessage = "Github did not return a user code. Please try again.";
+        errorMessage =
+            "Github did not return a user code. Please try again. If the problem persists, please contact us. [Error Type: noUserCodeReceived]";
 
       case AuthenticationErrorType.serverError:
-        errorMessage = "An error occurred on the server. Please try again.";
+        errorMessage =
+            "An error occurred on the server. Please try again. [Error Type: serverError]";
+
+      case AuthenticationErrorType.invalidGrant:
+        errorMessage =
+            "GitHub reported an invalid grant. Please try again. If the problem persists, please contact us. [Error Type: invalidGrant]";
+
+      case AuthenticationErrorType.badVerificationCode:
+        errorMessage =
+            "GitHub reported a bad verification code. Please try again. If the problem persists, please contact us. [Error Type: badVerificationCode]";
     }
     notifyListeners();
     Logger.log("Received OAuthException: $error", _classId, LogLevel.warning);
