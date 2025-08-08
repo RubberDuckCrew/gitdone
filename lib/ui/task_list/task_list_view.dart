@@ -85,9 +85,9 @@ class _TaskListViewState extends State<TaskListView> {
     required final Function(String, {required bool selected}) onUpdate,
     final bool allowMultipleSelection = false,
     final List<String>? defaultSelectedValues,
-  }) => FilterChipDropdown(
+  }) => FilterChipDropdown<String>(
     items: items
-        .map((final item) => FilterChipItem(value: item, label: item))
+        .map((final item) => FilterChipItem<String>(value: item, label: item))
         .toList(),
     initialLabel: initialLabel,
     allowMultipleSelection: allowMultipleSelection,
