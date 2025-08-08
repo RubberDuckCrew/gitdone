@@ -28,6 +28,7 @@ class TaskListViewModel extends ChangeNotifier {
   String _filter = "";
   String _sort = "";
   bool _isEmpty = false;
+  bool _loading = true;
 
   static const _classId =
       "com.GitDone.gitdone.ui.task_edit.task_list_view_model";
@@ -40,6 +41,9 @@ class TaskListViewModel extends ChangeNotifier {
 
   /// The list of labels used for filtering tasks.
   bool get isEmpty => _isEmpty;
+
+  /// Whether the task list is currently loading.
+  bool get isLoading => _loading;
 
   /// The list of labels currently being used for filtering.
   void updateLabels(final String label, {final bool selected = false}) {
@@ -79,8 +83,11 @@ class TaskListViewModel extends ChangeNotifier {
 
   /// The current search query used to filter tasks.
   Future<void> loadTasks() async {
+    _loading = true;
+    notifyListeners();
     await _taskHandler.loadTasks();
     _isEmpty = _taskHandler.tasks.isEmpty;
+    _loading = false;
     notifyListeners();
   }
 
