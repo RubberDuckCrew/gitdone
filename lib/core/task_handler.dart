@@ -67,6 +67,10 @@ class TaskHandler extends ChangeNotifier {
       _labels = await (await GithubModel.github).issues
           .listLabels(repo.toSlug())
           .toList();
+      Logger.logInfo(
+        "Loaded ${_labels.length} labels from repository ${repo.toSlug()}",
+        _classId,
+      );
       notifyListeners();
     } on Exception catch (e) {
       Logger.logError("Failed to load labels", _classId, e);
