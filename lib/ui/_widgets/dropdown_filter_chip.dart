@@ -83,7 +83,6 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
   final OverlayPortalController _portalController = OverlayPortalController();
   final LayerLink _layerLink = LayerLink();
   late _FilterChipDropdownViewModel _viewModel;
-
   double _actualDropdownWidth = 0;
   double _offsetX = 0;
 
@@ -132,7 +131,6 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
     final double actualDropdownWidth,
   ) {
     double dx = 0;
-
     final double leftEdge = chipPosition.dx;
     final double rightEdge = chipPosition.dx + actualDropdownWidth;
     if (rightEdge > screenWidth) {
@@ -141,7 +139,6 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
     if (leftEdge + dx < 0) {
       dx += -(leftEdge + dx);
     }
-
     return dx;
   }
 
@@ -340,17 +337,11 @@ class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
   double _maxItemWidth = 0;
   double _iconWidth = 0;
   final bool allowMultipleSelection;
-
   Set<T> get selectedLabels => _selectedLabels;
-
   bool get isDropdownOpen => _isDropdownOpen;
-
   bool get isSelected => _selectedLabels.isNotEmpty;
-
   double get maxItemWidth => _maxItemWidth;
-
   double get iconWidth => _iconWidth;
-
   int get amountOfSelectedItems => _selectedLabels.length;
 
   void toggleDropdown() {
@@ -358,9 +349,7 @@ class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleItemSelected() {
-    notifyListeners();
-  }
+  void toggleItemSelected() => notifyListeners();
 
   void selectItem(final FilterChipItem<T> item) {
     if (allowMultipleSelection) {
@@ -409,13 +398,11 @@ class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
       final double localMaxWidth = textPainter.width + 2 * labelPadding + 5;
       maxWidth = maxWidth < localMaxWidth ? localMaxWidth : maxWidth;
     }
-
     _maxItemWidth = maxWidth;
   }
 
   void calculateIconWidth(final BuildContext context) {
-    final double iconWidth = IconTheme.of(context).size ?? 24.0;
-    _iconWidth = iconWidth;
+    _iconWidth = IconTheme.of(context).size ?? 24.0;
   }
 
   /// Returns `initialLabel` if no items are selected, otherwise
