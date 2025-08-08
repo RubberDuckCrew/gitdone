@@ -9,7 +9,6 @@ import "package:gitdone/core/models/token_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
 
-// TODO(everyone): Add AuthenticationExceptionType to exceptions
 /// This class handles the GitHub OAuth authentication process .
 class GitHubAuth {
   /// Creates an instance of GitHubAuth with a callback function.
@@ -87,12 +86,9 @@ class GitHubAuth {
     if (inLoginProcess) {
       while (tries <= maxTries) {
         tries++;
-        ExchangeResponse response;
-        try {
-          response = await _sendExchangeRequest(userCode);
-        } catch (_, _) {
-          rethrow;
-        }
+
+        // Throws an exception if an error occurs during the exchange request.
+        final ExchangeResponse response = await _sendExchangeRequest(userCode);
 
         try {
           _validateExchangeResponse(response);
