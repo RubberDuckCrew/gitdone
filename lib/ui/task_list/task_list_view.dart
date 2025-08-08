@@ -59,12 +59,14 @@ class _TaskListViewState extends State<TaskListView> {
           items: ["Completed", "Pending"],
           initialLabel: "Filter",
           onUpdate: model.updateFilter,
+          defaultSelectedValues: ["Pending"],
         ),
         const SizedBox(width: 8),
         _buildFilterChipDropdown(
           items: ["Alphabetical", "Last updated", "Created"],
           initialLabel: "Sort",
           onUpdate: model.updateSort,
+          defaultSelectedValues: ["Created"],
         ),
         const SizedBox(width: 8),
         _buildFilterChipDropdown(
@@ -82,6 +84,7 @@ class _TaskListViewState extends State<TaskListView> {
     required final String initialLabel,
     required final Function(String, {required bool selected}) onUpdate,
     final bool allowMultipleSelection = false,
+    final List<String>? defaultSelectedValues,
   }) => FilterChipDropdown(
     items: items
         .map((final item) => FilterChipItem(value: item, label: item))
@@ -90,6 +93,7 @@ class _TaskListViewState extends State<TaskListView> {
     allowMultipleSelection: allowMultipleSelection,
     onUpdate: (final item, {required final selected}) =>
         onUpdate(item.value, selected: selected),
+    defaultSelectedValues: defaultSelectedValues,
   );
 
   Widget _buildTaskList(final TaskListViewModel model) {
