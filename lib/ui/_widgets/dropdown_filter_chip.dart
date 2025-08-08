@@ -135,24 +135,6 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
     super.dispose();
   }
 
-  /// Initializes the state of the widget and sets up the default selected values.
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget._defaultSelectedValues.isNotEmpty) {
-        _viewModel._selectedLabels = widget._defaultSelectedValues.toSet();
-        for (final String value in widget._defaultSelectedValues) {
-          final FilterChipItem item = widget.items.firstWhere(
-            (final item) => item.label == value,
-            orElse: () => widget.items.first,
-          );
-          widget.onUpdate(item, selected: true);
-        }
-      }
-    });
-  }
-
   /// Calculate the offset to ensure the dropdown does not overflow
   double _getChipOffset(
     final Offset chipPosition,
@@ -181,6 +163,9 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
       final _FilterChipDropdownViewModel viewModel =
           _FilterChipDropdownViewModel(
             allowMultipleSelection: widget.allowMultipleSelection,
+            defaultSelectedValues: widget._defaultSelectedValues,
+            items: widget.items,
+            onUpdate: widget.onUpdate,
           );
       _viewModel = viewModel;
       _viewModel.addListener(_handleDropdownToggle);
@@ -358,7 +343,26 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
 }
 
 class _FilterChipDropdownViewModel extends ChangeNotifier {
-  _FilterChipDropdownViewModel({required this.allowMultipleSelection});
+  _FilterChipDropdownViewModel({
+    required this.allowMultipleSelection,
+    required final List<String> defaultSelectedValues,
+    required final List<FilterChipItem> items,
+    required final void Function(FilterChipItem, {required bool selected})
+    onUpdate,
+  }) {
+    _selectedLabels = defaultSelectedValues.toSet();
+    for (final FilterChipItem item in items) {
+      item.selected = _selectedLabels.contains(item.label);
+    }
+    for (final String value in defaultSelectedValues) {
+      final Iterable<FilterChipItem> match = items.where(
+        (final item) => item.label == value,
+      );
+      if (match.isNotEmpty) {
+        onUpdate(match.first, selected: true);
+      }
+    }
+  }
 
   Set<String> _selectedLabels = {};
   bool _isDropdownOpen = false;
