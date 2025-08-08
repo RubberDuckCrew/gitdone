@@ -3,15 +3,22 @@ import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
 /// A model class representing a filter chip item with a label and value.
-class FilterChipItem {
+class FilterChipItem<T> {
   /// Creates a new instance of [FilterChipItem].
-  FilterChipItem({required this.label, required this.value});
+  FilterChipItem({
+    required this.value,
+    final String? label,
+    this.selected = false,
+  }) : label = label ?? value.toString();
+
+  /// The value of the filter chip item.
+  final T value;
 
   /// The label of the filter chip item.
   final String label;
 
-  /// The value of the filter chip item.
-  final String value;
+  /// Whether the filter chip item is selected.
+  bool selected;
 }
 
 /// A custom dropdown filter chip widget that allows users to select a filter
