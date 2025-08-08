@@ -76,7 +76,7 @@ class LoginGithubViewModel extends ChangeNotifier {
 
     switch (error.errorType) {
       case AuthenticationErrorType.userCancelled:
-        errorMessage = "It seems that you cancelled the login process.";
+        errorMessage = "It seems like you cancelled the login process.";
 
       case AuthenticationErrorType.noTokenReceived:
         errorMessage = "Github did not return a token. Please try again.";
