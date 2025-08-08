@@ -354,7 +354,7 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
 class _FilterChipDropdownViewModel extends ChangeNotifier {
   _FilterChipDropdownViewModel({
     required this.allowMultipleSelection,
-    List<String>? defaultSelectedValues,
+    final List<String>? defaultSelectedValues,
   }) {
     if (defaultSelectedValues != null && defaultSelectedValues.isNotEmpty) {
       _selectedLabels = defaultSelectedValues.toSet();
