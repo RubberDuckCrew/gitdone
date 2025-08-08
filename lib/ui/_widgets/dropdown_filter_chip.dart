@@ -31,11 +31,10 @@ class FilterChipDropdown<T> extends StatefulWidget {
     required this.initialLabel,
     required this.allowMultipleSelection,
     required this.onUpdate,
-    final List<T>? defaultSelectedValues,
     super.key,
     this.leading,
     this.labelPadding = 16,
-  }) : _defaultSelectedValues = defaultSelectedValues ?? const [];
+  });
 
   /// The list of filter chip items to display in the dropdown.
   final List<FilterChipItem<T>> items;
@@ -54,9 +53,6 @@ class FilterChipDropdown<T> extends StatefulWidget {
 
   /// Callback function to be called when an item is updated.
   final void Function(FilterChipItem<T>, {required bool selected}) onUpdate;
-
-  /// The default selected values for the filter chip dropdown (applied only at init).
-  final List<T> _defaultSelectedValues;
 
   @override
   State<FilterChipDropdown<T>> createState() => _FilterChipDropdownState<T>();
@@ -78,9 +74,6 @@ class FilterChipDropdown<T> extends StatefulWidget {
         ObjectFlagProperty<
           void Function(FilterChipItem<T> p1, {required bool selected})
         >.has("onUpdate", onUpdate),
-      )
-      ..add(
-        IterableProperty<T>("defaultSelectedValues", _defaultSelectedValues),
       );
   }
 }
@@ -160,9 +153,6 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
       final _FilterChipDropdownViewModel<T> viewModel =
           _FilterChipDropdownViewModel<T>(
             allowMultipleSelection: widget.allowMultipleSelection,
-            defaultSelectedValues: widget._defaultSelectedValues,
-            items: widget.items,
-            onUpdate: widget.onUpdate,
           );
       _viewModel = viewModel;
       _viewModel.addListener(_handleDropdownToggle);
@@ -343,26 +333,7 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
 }
 
 class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
-  _FilterChipDropdownViewModel({
-    required this.allowMultipleSelection,
-    required final List<T> defaultSelectedValues,
-    required final List<FilterChipItem<T>> items,
-    required final void Function(FilterChipItem<T>, {required bool selected})
-    onUpdate,
-  }) {
-    _selectedLabels = defaultSelectedValues.toSet();
-    for (final FilterChipItem<T> item in items) {
-      item.selected = _selectedLabels.contains(item.value);
-    }
-    for (final T value in defaultSelectedValues) {
-      final Iterable<FilterChipItem<T>> match = items.where(
-        (final item) => item.value == value,
-      );
-      if (match.isNotEmpty) {
-        onUpdate(match.first, selected: true);
-      }
-    }
-  }
+  _FilterChipDropdownViewModel({required this.allowMultipleSelection});
 
   Set<T> _selectedLabels = {};
   bool _isDropdownOpen = false;
