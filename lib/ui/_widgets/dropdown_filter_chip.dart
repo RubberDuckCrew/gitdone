@@ -24,11 +24,11 @@ class FilterChipDropdown extends StatefulWidget {
     required this.initialLabel,
     required this.allowMultipleSelection,
     required this.onUpdate,
-    final List<String> defaultSelectedValues = const [],
+    final List<String>? defaultSelectedValues,
     super.key,
     this.leading,
     this.labelPadding = 16,
-  }) : _defaultSelectedValues = defaultSelectedValues;
+  }) : _defaultSelectedValues = defaultSelectedValues ?? const [];
 
   /// The list of filter chip items to display in the dropdown.
   final List<FilterChipItem> items;
