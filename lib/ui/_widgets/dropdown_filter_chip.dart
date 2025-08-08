@@ -24,6 +24,7 @@ class FilterChipDropdown extends StatefulWidget {
     required this.initialLabel,
     required this.allowMultipleSelection,
     required this.onUpdate,
+    this.defaultSelectedValues,
     super.key,
     this.leading,
     this.labelPadding = 16,
@@ -47,6 +48,9 @@ class FilterChipDropdown extends StatefulWidget {
   /// Callback function to be called when an item is updated.
   final void Function(FilterChipItem, {required bool selected}) onUpdate;
 
+  /// The default selected values for the filter chip dropdown.
+  final List<String>? defaultSelectedValues;
+
   @override
   State<FilterChipDropdown> createState() => _FilterChipDropdownState();
 
@@ -67,6 +71,12 @@ class FilterChipDropdown extends StatefulWidget {
         ObjectFlagProperty<
           void Function(FilterChipItem p1, {required bool selected})
         >.has("onUpdate", onUpdate),
+      )
+      ..add(
+        IterableProperty<String>(
+          "defaultSelectedValues",
+          defaultSelectedValues,
+        ),
       );
   }
 }
@@ -118,6 +128,24 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
     super.dispose();
   }
 
+  /// Initializes the state of the widget and sets up the default selected values.
+  @override
+  void initState() {
+    super.initState();
+    if (widget.defaultSelectedValues != null &&
+        widget.defaultSelectedValues!.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        for (final String value in widget.defaultSelectedValues!) {
+          final FilterChipItem item = widget.items.firstWhere(
+            (final item) => item.label == value,
+            orElse: () => widget.items.first,
+          );
+          widget.onUpdate(item, selected: true);
+        }
+      });
+    }
+  }
+
   /// Calculate the offset to ensure the dropdown does not overflow
   double _getChipOffset(
     final Offset chipPosition,
@@ -146,6 +174,7 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
       final _FilterChipDropdownViewModel viewModel =
           _FilterChipDropdownViewModel(
             allowMultipleSelection: widget.allowMultipleSelection,
+            defaultSelectedValues: widget.defaultSelectedValues,
           );
       _viewModel = viewModel;
       _viewModel.addListener(_handleDropdownToggle);
@@ -323,7 +352,14 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
 }
 
 class _FilterChipDropdownViewModel extends ChangeNotifier {
-  _FilterChipDropdownViewModel({required this.allowMultipleSelection});
+  _FilterChipDropdownViewModel({
+    required this.allowMultipleSelection,
+    List<String>? defaultSelectedValues,
+  }) {
+    if (defaultSelectedValues != null && defaultSelectedValues.isNotEmpty) {
+      _selectedLabels = defaultSelectedValues.toSet();
+    }
+  }
 
   Set<String> _selectedLabels = {};
   bool _isDropdownOpen = false;
