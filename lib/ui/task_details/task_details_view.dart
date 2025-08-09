@@ -1,14 +1,13 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/task.dart";
-import "package:gitdone/core/utils/logger.dart";
-import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
 import "package:gitdone/ui/_widgets/task_labels.dart";
-import "package:gitdone/ui/task_edit/task_edit_view.dart";
+import "package:gitdone/ui/task_details/task_details_view_model.dart";
 import "package:intl/intl.dart";
 import "package:markdown_widget/markdown_widget.dart";
+import "package:provider/provider.dart";
 
 /// A widget that displays a card for a task item.
 class TaskDetailsView extends StatefulWidget {
@@ -29,32 +28,34 @@ class TaskDetailsView extends StatefulWidget {
 }
 
 class _TaskDetailsViewState extends State<TaskDetailsView> {
-  static const _classId =
-      "com.GitDone.gitdone.ui.task_details.task_details_view_model";
-
   @override
-  Widget build(final BuildContext context) => Scaffold(
-    appBar: NormalAppBar(menuItems: [_deleteTaskButton()]),
-    body: SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _renderTitle(),
-          _renderLabels(),
-          const Padding(padding: EdgeInsets.all(8)),
-          _renderDescription(),
-          const Padding(padding: EdgeInsets.all(8)),
-          _renderStatus(),
-          const Padding(padding: EdgeInsets.all(8)),
-        ],
+  Widget build(final BuildContext context) => ChangeNotifierProvider(
+    create: (_) => TaskDetailsViewModel(widget.task),
+    child: Consumer<TaskDetailsViewModel>(
+      builder: (final context, final viewModel, _) => Scaffold(
+        appBar: NormalAppBar(menuItems: [_deleteTaskButton(viewModel)]),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _renderTitle(),
+              _renderLabels(),
+              const Padding(padding: EdgeInsets.all(8)),
+              _renderDescription(),
+              const Padding(padding: EdgeInsets.all(8)),
+              _renderStatus(),
+              const Padding(padding: EdgeInsets.all(8)),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: viewModel.editTask,
+          child: const Icon(Icons.edit),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: _editTask,
-      child: const Icon(Icons.edit),
-    ),
-    floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
   );
 
   Widget _renderTitle() => PageTitleWidget(title: widget.task.title);
@@ -96,27 +97,11 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
     ),
   );
 
-  Future<void> _editTask() async {
-    Logger.log("Edit task: ${widget.task.title}", _classId, LogLevel.detailed);
-    final Task? updated = await Navigation.navigate(TaskEditView(widget.task));
-    if (updated == null) {
-      Logger.log("Task edit cancelled or failed", _classId, LogLevel.detailed);
-      return;
-    }
-    setState(() {
-      widget.task.replace(updated);
-    });
-    Logger.log(
-      "Task updated: ${widget.task.title}",
-      _classId,
-      LogLevel.detailed,
-    );
-  }
-
-  MenuItemButton _deleteTaskButton() => MenuItemButton(
-    onPressed: () => debugPrint("Delete task: ${widget.task.title}"),
-    child: const Text("Delete Task"),
-  );
+  MenuItemButton _deleteTaskButton(final TaskDetailsViewModel viewModel) =>
+      MenuItemButton(
+        onPressed: viewModel.deleteTask,
+        child: const Text("Delete Task"),
+      );
 
   String _formatDateTime(final DateTime dateTime) =>
       DateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime.toLocal());
