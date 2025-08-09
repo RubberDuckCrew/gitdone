@@ -98,8 +98,7 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
 
   Future<void> _editTask() async {
     Logger.log("Edit task: ${widget.task.title}", _classId, LogLevel.detailed);
-    final Task? updated =
-        await Navigation.navigate(TaskEditView(widget.task)) as Task?;
+    final Task? updated = await Navigation.navigate(TaskEditView(widget.task));
     if (updated == null) {
       Logger.log("Task edit cancelled or failed", _classId, LogLevel.detailed);
       return;
