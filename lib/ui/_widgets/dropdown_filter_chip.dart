@@ -3,21 +3,28 @@ import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
 /// A model class representing a filter chip item with a label and value.
-class FilterChipItem {
+class FilterChipItem<T> {
   /// Creates a new instance of [FilterChipItem].
-  FilterChipItem({required this.label, required this.value});
+  FilterChipItem({
+    required this.value,
+    final String? label,
+    this.selected = false,
+  }) : label = label ?? value.toString();
+
+  /// The value of the filter chip item.
+  final T value;
 
   /// The label of the filter chip item.
   final String label;
 
-  /// The value of the filter chip item.
-  final String value;
+  /// Whether the filter chip item is selected.
+  bool selected;
 }
 
 /// A custom dropdown filter chip widget that allows users to select a filter
 ///
 /// See https://github.com/flutter/flutter/issues/108683 for more details.
-class FilterChipDropdown extends StatefulWidget {
+class FilterChipDropdown<T> extends StatefulWidget {
   /// Creates a new instance of [FilterChipDropdown].
   const FilterChipDropdown({
     required this.items,
@@ -30,7 +37,7 @@ class FilterChipDropdown extends StatefulWidget {
   });
 
   /// The list of filter chip items to display in the dropdown.
-  final List<FilterChipItem> items;
+  final List<FilterChipItem<T>> items;
 
   /// The leading widget to display in the filter chip.
   final Widget? leading;
@@ -45,16 +52,16 @@ class FilterChipDropdown extends StatefulWidget {
   final bool allowMultipleSelection;
 
   /// Callback function to be called when an item is updated.
-  final void Function(FilterChipItem, {required bool selected}) onUpdate;
+  final void Function(FilterChipItem<T>, {required bool selected}) onUpdate;
 
   @override
-  State<FilterChipDropdown> createState() => _FilterChipDropdownState();
+  State<FilterChipDropdown<T>> createState() => _FilterChipDropdownState<T>();
 
   @override
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(IterableProperty<FilterChipItem>("items", items))
+      ..add(IterableProperty<FilterChipItem<T>>("items", items))
       ..add(StringProperty("initialLabel", initialLabel))
       ..add(DoubleProperty("labelPadding", labelPadding))
       ..add(
@@ -65,18 +72,17 @@ class FilterChipDropdown extends StatefulWidget {
       )
       ..add(
         ObjectFlagProperty<
-          void Function(FilterChipItem p1, {required bool selected})
+          void Function(FilterChipItem<T> p1, {required bool selected})
         >.has("onUpdate", onUpdate),
       );
   }
 }
 
-class _FilterChipDropdownState extends State<FilterChipDropdown> {
+class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
   final GlobalKey _chipKey = GlobalKey();
   final OverlayPortalController _portalController = OverlayPortalController();
   final LayerLink _layerLink = LayerLink();
   late _FilterChipDropdownViewModel _viewModel;
-
   double _actualDropdownWidth = 0;
   double _offsetX = 0;
 
@@ -125,7 +131,6 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
     final double actualDropdownWidth,
   ) {
     double dx = 0;
-
     final double leftEdge = chipPosition.dx;
     final double rightEdge = chipPosition.dx + actualDropdownWidth;
     if (rightEdge > screenWidth) {
@@ -134,24 +139,23 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
     if (leftEdge + dx < 0) {
       dx += -(leftEdge + dx);
     }
-
     return dx;
   }
 
   @override
   Widget build(
     final BuildContext context,
-  ) => ChangeNotifierProvider<_FilterChipDropdownViewModel>(
+  ) => ChangeNotifierProvider<_FilterChipDropdownViewModel<T>>(
     create: (_) {
-      final _FilterChipDropdownViewModel viewModel =
-          _FilterChipDropdownViewModel(
+      final _FilterChipDropdownViewModel<T> viewModel =
+          _FilterChipDropdownViewModel<T>(
             allowMultipleSelection: widget.allowMultipleSelection,
           );
       _viewModel = viewModel;
       _viewModel.addListener(_handleDropdownToggle);
       return viewModel;
     },
-    child: Consumer<_FilterChipDropdownViewModel>(
+    child: Consumer<_FilterChipDropdownViewModel<T>>(
       builder: (final context, final viewModel, final child) {
         viewModel
           ..calculateMaxItemWidth(
@@ -307,7 +311,10 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                     ? () {
                         viewModel.clearSelection();
                         widget.onUpdate(
-                          FilterChipItem(label: widget.initialLabel, value: ""),
+                          FilterChipItem<T>(
+                            label: widget.initialLabel,
+                            value: "" as T,
+                          ),
                           selected: false,
                         );
                       }
@@ -322,25 +329,19 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
   );
 }
 
-class _FilterChipDropdownViewModel extends ChangeNotifier {
+class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
   _FilterChipDropdownViewModel({required this.allowMultipleSelection});
 
-  Set<String> _selectedLabels = {};
+  Set<T> _selectedLabels = {};
   bool _isDropdownOpen = false;
   double _maxItemWidth = 0;
   double _iconWidth = 0;
   final bool allowMultipleSelection;
-
-  Set<String> get selectedLabels => _selectedLabels;
-
+  Set<T> get selectedLabels => _selectedLabels;
   bool get isDropdownOpen => _isDropdownOpen;
-
   bool get isSelected => _selectedLabels.isNotEmpty;
-
   double get maxItemWidth => _maxItemWidth;
-
   double get iconWidth => _iconWidth;
-
   int get amountOfSelectedItems => _selectedLabels.length;
 
   void toggleDropdown() {
@@ -348,22 +349,20 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleItemSelected() {
-    notifyListeners();
-  }
+  void toggleItemSelected() => notifyListeners();
 
-  void selectItem(final FilterChipItem item) {
+  void selectItem(final FilterChipItem<T> item) {
     if (allowMultipleSelection) {
-      _selectedLabels.add(item.label);
+      _selectedLabels.add(item.value);
     } else {
-      _selectedLabels = {item.label};
+      _selectedLabels = {item.value};
       _isDropdownOpen = false;
     }
     notifyListeners();
   }
 
-  void unselectItem(final FilterChipItem item) {
-    _selectedLabels.remove(item.label);
+  void unselectItem(final FilterChipItem<T> item) {
+    _selectedLabels.remove(item.value);
     notifyListeners();
   }
 
@@ -381,8 +380,8 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
     }
   }
 
-  bool isItemSelected(final FilterChipItem item) =>
-      _selectedLabels.contains(item.label);
+  bool isItemSelected(final FilterChipItem<T> item) =>
+      _selectedLabels.contains(item.value);
 
   void calculateMaxItemWidth(
     final List<String> labels,
@@ -399,13 +398,11 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
       final double localMaxWidth = textPainter.width + 2 * labelPadding + 5;
       maxWidth = maxWidth < localMaxWidth ? localMaxWidth : maxWidth;
     }
-
     _maxItemWidth = maxWidth;
   }
 
   void calculateIconWidth(final BuildContext context) {
-    final double iconWidth = IconTheme.of(context).size ?? 24.0;
-    _iconWidth = iconWidth;
+    _iconWidth = IconTheme.of(context).size ?? 24.0;
   }
 
   /// Returns `initialLabel` if no items are selected, otherwise
@@ -417,7 +414,7 @@ class _FilterChipDropdownViewModel extends ChangeNotifier {
       return "${_selectedLabels.length} $initialLabel";
     }
     if (!allowMultipleSelection && _selectedLabels.isNotEmpty) {
-      return _selectedLabels.first;
+      return _selectedLabels.first.toString();
     }
     return initialLabel;
   }

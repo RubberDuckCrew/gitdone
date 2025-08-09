@@ -56,19 +56,29 @@ class _TaskListViewState extends State<TaskListView> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildFilterChipDropdown(
-          items: ["Completed", "Pending"],
+          items: [
+            FilterChipItem<String>(value: "Pending", selected: true),
+            FilterChipItem<String>(value: "Completed"),
+          ],
           initialLabel: "Filter",
           onUpdate: model.updateFilter,
         ),
         const SizedBox(width: 8),
         _buildFilterChipDropdown(
-          items: ["Alphabetical", "Last updated", "Created"],
+          items: [
+            FilterChipItem<String>(value: "Alphabetical"),
+            FilterChipItem<String>(value: "Last updated"),
+            FilterChipItem<String>(value: "Created", selected: true),
+          ],
           initialLabel: "Sort",
           onUpdate: model.updateSort,
         ),
         const SizedBox(width: 8),
         _buildFilterChipDropdown(
-          items: model.allLabels.map((final label) => label.name).toList(),
+          items: model.allLabels
+              .map((final label) => label.name)
+              .map((final value) => FilterChipItem(value: value))
+              .toList(),
           initialLabel: "Labels",
           allowMultipleSelection: true,
           onUpdate: model.updateLabels,
@@ -78,14 +88,12 @@ class _TaskListViewState extends State<TaskListView> {
   );
 
   Widget _buildFilterChipDropdown({
-    required final List<String> items,
+    required final List<FilterChipItem<String>> items,
     required final String initialLabel,
     required final Function(String, {required bool selected}) onUpdate,
     final bool allowMultipleSelection = false,
-  }) => FilterChipDropdown(
-    items: items
-        .map((final item) => FilterChipItem(value: item, label: item))
-        .toList(),
+  }) => FilterChipDropdown<String>(
+    items: items,
     initialLabel: initialLabel,
     allowMultipleSelection: allowMultipleSelection,
     onUpdate: (final item, {required final selected}) =>
