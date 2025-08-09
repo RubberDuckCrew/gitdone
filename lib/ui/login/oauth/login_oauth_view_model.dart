@@ -33,46 +33,20 @@ class LoginGithubViewModel extends ChangeNotifier {
     String userCode;
     try {
       userCode = await _githubAuth.authenticate();
+      await _githubAuth.completeLogin(userCode);
     } on OAuthException catch (error) {
       _handleError(error);
-      return;
-    }
-
-    notifyListeners();
-
-    bool loginResult;
-
-    try {
-      loginResult = await _githubAuth.completeLogin(userCode);
-    } on OAuthException catch (error) {
-      _handleError(error);
-      return;
-    }
-
-    // TODO(everyone): This should be replaced with exceptions inside completeLogin()
-    if (!loginResult) {
-      infoCallback("Login failed. Please try again.");
-      _errorOccurred = true;
-      notifyListeners();
       return;
     }
 
     Navigation.navigate(const MainScreen());
   }
 
-  /// Returns the current status of the login process.
-  String get status {
-    if (_githubAuth.inLoginProcess) {
-      return "In Progress";
-    } else if (_githubAuth.isAuthenticated) {
-      return "Authenticated";
-    } else {
-      return "Not Started";
-    }
-  }
-
   void _handleError(final OAuthException error) {
     _errorOccurred = true;
+
+    // TODO(everyone): Discuss if this necessary with the new error handling
+    infoCallback("Login failed. Please try again.");
 
     switch (error.errorType) {
       case AuthenticationErrorType.userCancelled:
@@ -98,8 +72,14 @@ class LoginGithubViewModel extends ChangeNotifier {
       case AuthenticationErrorType.badVerificationCode:
         errorMessage =
             "GitHub reported a bad verification code. Please try again. If the problem persists, please contact us. [Error Type: badVerificationCode]";
+      case AuthenticationErrorType.loginProcessNotActive:
+        errorMessage =
+            "This looks like an internal error on our end. Please contact us. [Error Type: loginProcessNotActive]";
+      case AuthenticationErrorType.maxRetriesReached:
+        errorMessage =
+            "The maximum number of retries has been reached. Check your internet connection and try again . [Error Type: maxRetriesReached]";
     }
     notifyListeners();
-    Logger.log("Received OAuthException: $error", _classId, LogLevel.warning);
+    Logger.log("Received: $error", _classId, LogLevel.warning);
   }
 }
