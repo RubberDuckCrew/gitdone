@@ -83,7 +83,13 @@ class TaskHandler extends ChangeNotifier {
   Future<Task> saveTask(final Task task) async {
     try {
       final Task createdTask = await task.saveRemote();
-      _tasks.add(createdTask);
+
+      // Add the created task to the local list of tasks if it does not already exist
+      // This prevents duplicates in the local task list.
+      if (!_tasks.any((final t) => t.issueNumber == createdTask.issueNumber)) {
+        _tasks.add(createdTask);
+      }
+
       notifyListeners();
       return createdTask;
     } on Exception catch (e) {
