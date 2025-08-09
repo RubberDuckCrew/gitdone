@@ -82,7 +82,6 @@ class TaskHandler extends ChangeNotifier {
 
       // Add the created task to the local list of tasks if it does not already exist
       // This prevents duplicates in the local task list.
-      // Reference: https://github.com/RubberDuckCrew/gitdone/issues/179
       if (!_tasks.any((final t) => t.issueNumber == createdTask.issueNumber)) {
         _tasks.add(createdTask);
       }
