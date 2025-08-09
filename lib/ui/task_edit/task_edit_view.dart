@@ -51,15 +51,14 @@ class _TaskEditViewState extends State<TaskEditView> {
       builder: (final context, final viewModel, _) => Scaffold(
         appBar: const NormalAppBar(),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 16,
             children: [
               _editTitle(viewModel),
               _editLabels(viewModel),
-              const Padding(padding: EdgeInsets.all(8)),
               _editDescription(viewModel),
-              const Padding(padding: EdgeInsets.all(10)),
             ],
           ),
         ),
@@ -83,16 +82,13 @@ class _TaskEditViewState extends State<TaskEditView> {
     ),
   );
 
-  Widget _editTitle(final TaskEditViewModel viewModel) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 16),
-    child: TextField(
-      controller: _titleController,
-      decoration: const InputDecoration(
-        labelText: "Title",
-        border: OutlineInputBorder(),
-      ),
-      onSubmitted: viewModel.updateTitle,
+  Widget _editTitle(final TaskEditViewModel viewModel) => TextField(
+    controller: _titleController,
+    decoration: const InputDecoration(
+      labelText: "Title",
+      border: OutlineInputBorder(),
     ),
+    onSubmitted: viewModel.updateTitle,
   );
 
   Widget _editLabels(final TaskEditViewModel viewModel) =>
