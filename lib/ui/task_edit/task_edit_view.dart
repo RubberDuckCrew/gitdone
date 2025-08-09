@@ -93,7 +93,7 @@ class _TaskEditViewState extends State<TaskEditView> {
 
   Widget _editLabels(final TaskEditViewModel viewModel) =>
       MultiDropdown<IssueLabel>(
-        items: viewModel.allLabels,
+        items: viewModel.taskLabels,
         controller: _labelController,
         searchEnabled: false,
         chipDecoration: ChipDecoration(

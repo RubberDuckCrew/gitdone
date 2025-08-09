@@ -21,7 +21,7 @@ class TaskEditViewModel extends ChangeNotifier {
     _taskHandler.addListener(_listener);
     _titleController.text = _task.title;
     _descriptionController.text = _task.description;
-    notifyListeners();
+    _labelController.setItems(taskLabels);
   }
 
   static const _classId =
@@ -33,20 +33,24 @@ class TaskEditViewModel extends ChangeNotifier {
   final TextEditingController _descriptionController;
   final MultiSelectController<IssueLabel> _labelController;
 
-  /// The list of all labels available in the repository.
-  List<DropdownItem<IssueLabel>> get allLabels {
-    final Set<String> selectedLabels = _task.labels
-        .map((final label) => label.name)
-        .toSet();
-    return _taskHandler.allLabels
-        .map(
-          (final label) => DropdownItem(
-            label: label.name,
-            value: label,
-            selected: selectedLabels.contains(label.name),
-          ),
-        )
-        .toList();
+  List<IssueLabel> _repoLabels = [];
+  List<DropdownItem<IssueLabel>> _taskLabelItems = [];
+
+  /// Label items for the task being edited.
+  List<DropdownItem<IssueLabel>> get taskLabels {
+    final List<IssueLabel> currentRepoLabels = _taskHandler.allLabels;
+    if (_taskLabelItems.isEmpty || !identical(_repoLabels, currentRepoLabels)) {
+      _repoLabels = currentRepoLabels;
+      _taskLabelItems = _repoLabels
+          .map((final label) => DropdownItem(label: label.name, value: label))
+          .toList(growable: false);
+    }
+    for (final DropdownItem<IssueLabel> item in _taskLabelItems) {
+      item.selected = _task.labels
+          .map((final label) => label.name)
+          .contains(item.value.name);
+    }
+    return _taskLabelItems;
   }
 
   void _listener() {
@@ -56,7 +60,7 @@ class TaskEditViewModel extends ChangeNotifier {
       LogLevel.detailed,
     );
     _titleController.text = _task.title;
-    _labelController.setItems(allLabels);
+    _labelController.setItems(taskLabels);
     _descriptionController.text = _task.description;
     notifyListeners();
   }
@@ -76,9 +80,9 @@ class TaskEditViewModel extends ChangeNotifier {
       _labelController.selectedItems.map((final item) => item.value).toList(),
     );
     Logger.log("Saving task: $_task", _classId, LogLevel.detailed);
-    TaskHandler().saveTask(_task);
+    _taskHandler.saveTask(_task);
     _task.updatedAt = DateTime.now();
-    TaskHandler().updateLocalTask(_task);
+    _taskHandler.updateLocalTask(_task);
     Navigation.navigateBack(_task);
   }
 
