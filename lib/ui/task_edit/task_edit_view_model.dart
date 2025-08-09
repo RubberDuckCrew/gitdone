@@ -55,6 +55,9 @@ class TaskEditViewModel extends ChangeNotifier {
       _classId,
       LogLevel.detailed,
     );
+    _titleController.text = _task.title;
+    _labelController.setItems(allLabels);
+    _descriptionController.text = _task.description;
     notifyListeners();
   }
 
