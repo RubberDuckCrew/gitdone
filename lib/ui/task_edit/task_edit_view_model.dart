@@ -38,7 +38,7 @@ class TaskEditViewModel extends ChangeNotifier {
 
   /// Label items for the task being edited.
   List<DropdownItem<IssueLabel>> get taskLabels {
-    final List<IssueLabel> currentRepoLabels = _taskHandler.allLabels;
+    final List<IssueLabel> currentRepoLabels = _taskHandler.repoLabels;
     if (_taskLabelItems.isEmpty || !identical(_repoLabels, currentRepoLabels)) {
       _repoLabels = currentRepoLabels;
       _taskLabelItems = _repoLabels
