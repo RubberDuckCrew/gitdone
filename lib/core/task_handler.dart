@@ -19,13 +19,13 @@ class TaskHandler extends ChangeNotifier {
 
   List<Task> _tasks = [];
 
-  List<IssueLabel> _labels = [];
+  List<IssueLabel> _repoLabels = [];
 
   /// The list of all tasks available in the repository.
   List<Task> get tasks => List.unmodifiable(_tasks);
 
   /// The list of all labels available in the repository.
-  List<IssueLabel> get allLabels => List.unmodifiable(_labels);
+  List<IssueLabel> get repoLabels => List.unmodifiable(_repoLabels);
 
   /// The list of all tasks available in the repository.
   /// After the notification the current list of task is stored in [tasks].
@@ -55,18 +55,22 @@ class TaskHandler extends ChangeNotifier {
   }
 
   /// The list of all labels available in the repository.
-  /// After the notification the current list of labels is stored in [allLabels].
+  /// After the notification the current list of labels is stored in [repoLabels].
   Future<void> loadLabels() async {
     try {
-      _labels.clear();
+      _repoLabels.clear();
       final RepositoryDetails? repo = await _getSelectedRepository();
       if (repo == null) {
         Logger.logWarning("No repository selected", _classId);
         return;
       }
-      _labels = await (await GithubModel.github).issues
+      _repoLabels = await (await GithubModel.github).issues
           .listLabels(repo.toSlug())
           .toList();
+      Logger.logInfo(
+        "Loaded ${_repoLabels.length} labels from repository ${repo.toSlug()}",
+        _classId,
+      );
       notifyListeners();
     } on Exception catch (e) {
       Logger.logError("Failed to load labels", _classId, e);
@@ -79,7 +83,13 @@ class TaskHandler extends ChangeNotifier {
   Future<Task> saveTask(final Task task) async {
     try {
       final Task createdTask = await task.saveRemote();
-      _tasks.add(createdTask);
+
+      // Add the created task to the local list of tasks if it does not already exist
+      // This prevents duplicates in the local task list.
+      if (!_tasks.any((final t) => t.issueNumber == createdTask.issueNumber)) {
+        _tasks.add(createdTask);
+      }
+
       notifyListeners();
       return createdTask;
     } on Exception catch (e) {

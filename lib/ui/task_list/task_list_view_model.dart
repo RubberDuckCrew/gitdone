@@ -36,7 +36,7 @@ class TaskListViewModel extends ChangeNotifier {
   List<Task> get tasks => _filteredTasks;
 
   /// The list of labels currently being filtered.
-  List<IssueLabel> get allLabels => _taskHandler.allLabels;
+  List<IssueLabel> get allLabels => _taskHandler.repoLabels;
 
   /// The list of labels used for filtering tasks.
   bool get isEmpty => _isEmpty;
@@ -47,7 +47,7 @@ class TaskListViewModel extends ChangeNotifier {
 
     if (selected) {
       _filterLabels.addAll(
-        _taskHandler.allLabels.where((final l) => l.name == label),
+        _taskHandler.repoLabels.where((final l) => l.name == label),
       );
     } else {
       _filterLabels.removeWhere((final l) => l.name == label);
