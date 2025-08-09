@@ -166,7 +166,6 @@ class GitHubAuth {
         LogLevel.shout,
       );
       inLoginProcess = false;
-      // TODO(everyone): Discuss error type
       throw OAuthException(
         errorType: AuthenticationErrorType.noUserCodeReceived,
         message: "No code received from authentication",
@@ -199,7 +198,6 @@ class GitHubAuth {
                 errorType: AuthenticationErrorType.badVerificationCode,
               );
             case _:
-              // TODO(everyone): Discuss error type
               throw OAuthException(
                 message: "Failed to exchange code for token",
                 errorType: AuthenticationErrorType.serverError,

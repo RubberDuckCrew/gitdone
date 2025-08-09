@@ -25,13 +25,7 @@ class _LoginGithubViewState extends State<LoginGithubView> {
     appBar: const NormalAppBar(),
     body: ChangeNotifierProvider(
       create: (_) {
-        final viewModel = LoginGithubViewModel(
-          infoCallback: (final message) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(message)));
-          },
-        )..startLogin();
+        final viewModel = LoginGithubViewModel()..startLogin();
         return viewModel;
       },
       child: Consumer<LoginGithubViewModel>(
@@ -54,7 +48,15 @@ class _LoginGithubViewState extends State<LoginGithubView> {
                   ),
                 ),
               if (viewModel.errorOccurred)
-                Image.asset("assets/imgs/sadDuck.png"),
+                Column(
+                  children: [
+                    Image.asset("assets/imgs/sadDuck.png"),
+                    FilledButton(
+                      onPressed: viewModel.retry,
+                      child: const Text("Retry"),
+                    ),
+                  ],
+                ),
               if (!viewModel.errorOccurred)
                 const Center(child: CircularProgressIndicator()),
               const Padding(padding: EdgeInsets.symmetric(vertical: 8)),

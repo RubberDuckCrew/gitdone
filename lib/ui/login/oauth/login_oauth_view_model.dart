@@ -8,15 +8,11 @@ import "package:gitdone/ui/main_screen.dart";
 /// ViewModel for managing the login process using GitHub OAuth.
 class LoginGithubViewModel extends ChangeNotifier {
   /// Creates an instance of [LoginGithubViewModel].
-  LoginGithubViewModel({required this.infoCallback})
-    : _githubAuth = GitHubAuth(infoCallback);
+  LoginGithubViewModel() : _githubAuth = GitHubAuth((final info) {});
   final GitHubAuth _githubAuth;
 
   static const String _classId =
       "com.GitDone.gitdone.ui.login.oauth.login_oauth_view_model";
-
-  /// Callback function to show the user an informational message.
-  Function(String) infoCallback;
 
   bool _errorOccurred = false;
 
@@ -42,11 +38,16 @@ class LoginGithubViewModel extends ChangeNotifier {
     Navigation.navigate(const MainScreen());
   }
 
+  /// Retries the login process after an error has occurred.
+  Future<void> retry() async {
+    _errorOccurred = false;
+    errorMessage = "";
+    notifyListeners();
+    await startLogin();
+  }
+
   void _handleError(final OAuthException error) {
     _errorOccurred = true;
-
-    // TODO(everyone): Discuss if this necessary with the new error handling
-    infoCallback("Login failed. Please try again.");
 
     switch (error.errorType) {
       case AuthenticationErrorType.userCancelled:
