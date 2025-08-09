@@ -36,4 +36,10 @@ enum AuthenticationErrorType {
 
   /// Bad verification code error.
   badVerificationCode,
+
+  /// Maximum number of retries reached.
+  maxRetriesReached,
+
+  /// Login process is not active.
+  loginProcessNotActive,
 }
