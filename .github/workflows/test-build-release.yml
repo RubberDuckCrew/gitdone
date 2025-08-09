@@ -175,7 +175,7 @@ jobs:
             - 🧐 Size Analysis
 
       - name: Comment artifact links
-        uses: RubberDuckCrew/artifact2pr@v0
+        uses: RubberDuckCrew/artifact2pr@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           comment-if-no-artifacts: true
