@@ -79,7 +79,7 @@ class GitHubAuth {
   }
 
   /// Completes the login process by exchanging the authorization code for an access token.
-  Future<bool> completeLogin(final String userCode) async {
+  Future<void> completeLogin(final String userCode) async {
     int tries = 0;
     const int maxTries = 3;
 
@@ -93,7 +93,7 @@ class GitHubAuth {
         try {
           _validateExchangeResponse(response);
           _successCallback(response.token!);
-          return true;
+          return;
         } on OAuthException catch (_, _) {
           Logger.log(
             "Login attempt $tries failed. Retrying...",
@@ -106,7 +106,10 @@ class GitHubAuth {
               _classId,
               LogLevel.warning,
             );
-            return false;
+            throw OAuthException(
+              errorType: AuthenticationErrorType.maxRetriesReached,
+              message: "Failed to complete login after $maxTries attempts.",
+            );
           }
         }
       }
@@ -117,9 +120,14 @@ class GitHubAuth {
         LogLevel.warning,
       );
     }
-    return false;
+    throw OAuthException(
+      errorType: AuthenticationErrorType.loginProcessNotActive,
+      message: "Login process is not active. Cannot complete login.",
+    );
   }
 
+  /// Callback function to be executed upon successful login.
+  /// Saves the token and updates the authentication state.
   void _successCallback(final String token) {
     Logger.log(
       "Login completed successfully with token!",
