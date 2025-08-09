@@ -34,7 +34,7 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
 
   @override
   Widget build(final BuildContext context) => Scaffold(
-    appBar: const NormalAppBar(),
+    appBar: NormalAppBar(menuItems: [_deleteTaskButton()]),
     body: SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -112,6 +112,11 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
       LogLevel.detailed,
     );
   }
+
+  MenuItemButton _deleteTaskButton() => MenuItemButton(
+    onPressed: () => debugPrint("Delete task: ${widget.task.title}"),
+    child: const Text("Delete Task"),
+  );
 
   String _formatDateTime(final DateTime dateTime) =>
       DateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime.toLocal());
