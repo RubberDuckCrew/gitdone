@@ -35,7 +35,7 @@ class LoginGithubViewModel extends ChangeNotifier {
       return;
     }
 
-    Navigation.navigate(const MainScreen());
+    Navigation.navigateClean(const MainScreen());
   }
 
   /// Retries the login process after an error has occurred.
