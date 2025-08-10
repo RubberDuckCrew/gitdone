@@ -150,6 +150,7 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
       final _FilterChipDropdownViewModel<T> viewModel =
           _FilterChipDropdownViewModel<T>(
             allowMultipleSelection: widget.allowMultipleSelection,
+            items: widget.items,
           );
       _viewModel = viewModel;
       _viewModel.addListener(_handleDropdownToggle);
@@ -330,19 +331,26 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
 }
 
 class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
-  _FilterChipDropdownViewModel({required this.allowMultipleSelection});
+  _FilterChipDropdownViewModel({
+    required this.allowMultipleSelection,
+    required this.items,
+  });
 
-  Set<T> _selectedLabels = {};
+  final List<FilterChipItem<T>> items;
   bool _isDropdownOpen = false;
   double _maxItemWidth = 0;
   double _iconWidth = 0;
   final bool allowMultipleSelection;
-  Set<T> get selectedLabels => _selectedLabels;
+  Set<T> get selectedLabels => items
+      .where((final item) => item.selected)
+      .map((final item) => item.value)
+      .toSet();
   bool get isDropdownOpen => _isDropdownOpen;
-  bool get isSelected => _selectedLabels.isNotEmpty;
+  bool get isSelected => items.any((final item) => item.selected);
   double get maxItemWidth => _maxItemWidth;
   double get iconWidth => _iconWidth;
-  int get amountOfSelectedItems => _selectedLabels.length;
+  int get amountOfSelectedItems =>
+      items.where((final item) => item.selected).length;
 
   void toggleDropdown() {
     _isDropdownOpen = !_isDropdownOpen;
@@ -353,21 +361,26 @@ class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
 
   void selectItem(final FilterChipItem<T> item) {
     if (allowMultipleSelection) {
-      _selectedLabels.add(item.value);
+      item.selected = true;
     } else {
-      _selectedLabels = {item.value};
+      for (final FilterChipItem<T> i in items) {
+        i.selected = false;
+      }
+      item.selected = true;
       _isDropdownOpen = false;
     }
     notifyListeners();
   }
 
   void unselectItem(final FilterChipItem<T> item) {
-    _selectedLabels.remove(item.value);
+    item.selected = false;
     notifyListeners();
   }
 
   void clearSelection() {
-    _selectedLabels = {};
+    for (final FilterChipItem<T> item in items) {
+      item.selected = false;
+    }
     _isDropdownOpen = false;
     notifyListeners();
   }
@@ -380,8 +393,7 @@ class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
     }
   }
 
-  bool isItemSelected(final FilterChipItem<T> item) =>
-      _selectedLabels.contains(item.value);
+  bool isItemSelected(final FilterChipItem<T> item) => item.selected;
 
   void calculateMaxItemWidth(
     final List<String> labels,
@@ -410,11 +422,12 @@ class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
   /// returns ```${_selectedLabels.length} initialLabel``` if multiple items are selected and allowMultipleSelection is true,
   /// or ```_selectedLabels.first``` if allowMultipleSelection is false.
   String getLabel(final String initialLabel) {
-    if (allowMultipleSelection && _selectedLabels.isNotEmpty) {
-      return "${_selectedLabels.length} $initialLabel";
-    }
-    if (!allowMultipleSelection && _selectedLabels.isNotEmpty) {
-      return _selectedLabels.first.toString();
+    if (amountOfSelectedItems > 0) {
+      if (allowMultipleSelection) {
+        return "$amountOfSelectedItems $initialLabel";
+      } else {
+        return items.firstWhere((final item) => item.selected).label;
+      }
     }
     return initialLabel;
   }
