@@ -28,8 +28,8 @@ body:
       description: Detailed list of steps for reproducing the bug
       placeholder: |
         1. Go to '...'
-        2. Click on '....'
-        3. Scroll down to '....'
+        2. Click on '...'
+        3. Scroll down to '...'
         4. See the error
     validations:
       required: true
@@ -97,6 +97,7 @@ body:
     id: check-duplicate
     attributes:
       label: No duplicate issue
+      description: By submitting this issue, you confirm that you have checked for open and closed issues addressing the same bug beforehand.
       options:
         - label: I confirm that this issue is not a duplicate
           required: true
