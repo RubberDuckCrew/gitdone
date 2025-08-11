@@ -17,17 +17,19 @@ class TaskListView extends StatefulWidget {
 class _TaskListViewState extends State<TaskListView> {
   List<FilterChipItem<String>>? _filterItems;
   List<FilterChipItem<String>>? _sortItems;
-  List<FilterChipItem<String>>? _labelItems;
+  late List<FilterChipItem<String>>? _labelItems;
 
   void _ensureFilterChips(final TaskListViewModel model) {
     final filterOptions = ["Pending", "Completed"];
+    const defaultFilter = "Pending";
     final sortOptions = ["Alphabetical", "Last updated", "Created"];
+    const defaultSort = "Created";
     final List<IssueLabel> allLabels = model.allLabels;
     _filterItems ??= filterOptions
         .map(
           (final option) => FilterChipItem<String>(
             value: option,
-            selected: option == "Pending",
+            selected: option == defaultFilter,
           ),
         )
         .toList();
@@ -35,7 +37,7 @@ class _TaskListViewState extends State<TaskListView> {
         .map(
           (final option) => FilterChipItem<String>(
             value: option,
-            selected: option == "Created",
+            selected: option == defaultSort,
           ),
         )
         .toList();
