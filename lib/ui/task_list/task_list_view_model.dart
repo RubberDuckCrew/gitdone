@@ -19,6 +19,11 @@ class TaskListViewModel extends ChangeNotifier {
       ..addListener(_listener)
       ..loadTasks()
       ..loadLabels();
+    print("TaskListViewModel initialized");
+    print("Label count: ${_taskHandler.repoLabels.length}");
+    print(
+      "Labels: ${_taskHandler.repoLabels.map((final label) => label.name).join(", ")}",
+    );
   }
 
   final TaskHandler _taskHandler = TaskHandler();

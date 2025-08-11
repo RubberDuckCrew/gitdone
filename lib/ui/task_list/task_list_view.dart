@@ -22,6 +22,7 @@ class _TaskListViewState extends State<TaskListView> {
   void _ensureFilterChips(final TaskListViewModel model) {
     final filterOptions = ["Pending", "Completed"];
     final sortOptions = ["Alphabetical", "Last updated", "Created"];
+
     final List<IssueLabel> allLabels = model.allLabels;
     _filterItems ??= filterOptions
         .map(
@@ -39,9 +40,17 @@ class _TaskListViewState extends State<TaskListView> {
           ),
         )
         .toList();
-    _labelItems ??= allLabels
-        .map((final label) => FilterChipItem<String>(value: label.name))
-        .toList();
+    if (allLabels.isNotEmpty) {
+      _labelItems ??= allLabels
+          .map((final label) => FilterChipItem<String>(value: label.name))
+          .toList();
+    }
+    //Debug print of labels
+    print(
+      "Lables from model:" +
+          allLabels.map((final label) => label.name).join(", "),
+    );
+    print("Label model count: ${allLabels.length}");
   }
 
   @override
