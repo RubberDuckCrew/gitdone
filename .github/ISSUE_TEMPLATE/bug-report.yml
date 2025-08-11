@@ -57,22 +57,6 @@ body:
     validations:
       required: false
 
-  # Browser
-  - type: dropdown
-    id: browser
-    attributes:
-      label: Browser
-      multiple: true
-      description: Browsers the bug occurs on (optional, only if applicable)
-      options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Edge
-        - Other
-    validations:
-      required: false
-
   # Affected version
   - type: input
     id: version
