@@ -1,5 +1,6 @@
 name: ✨ Feature request
 description: Suggest an idea or possible new feature for this project.
+labels: "✨ Enhancement"
 body:
   # Greetings
   - type: markdown
@@ -12,7 +13,7 @@ body:
   - type: textarea
     id: feature-description
     attributes:
-      label: Feature description
+      label: 🚀 Feature Description
       description: Please provide a clear and concise description of the feature you are requesting.
       placeholder: e.g. "It would be great to have dark mode support in the UI."
     validations:
@@ -22,7 +23,7 @@ body:
   - type: textarea
     id: purpose-use-case
     attributes:
-      label: Purpose / Use Case
+      label: 🎯 Purpose / Use Case
       description: Why is this feature needed? What problem does it solve or what value does it add?
       placeholder: e.g. "This would improve usability for users working in low-light environments."
     validations:
@@ -32,7 +33,7 @@ body:
   - type: textarea
     id: suggested-solution
     attributes:
-      label: Suggested Solution (optional)
+      label: 🛠️ Suggested Solution (Optional)
       description: If you have an idea of how this feature could be implemented, feel free to describe it here.
       placeholder: e.g. "Add a toggle in the settings panel and use a CSS class switch to change themes."
     validations:
@@ -42,7 +43,7 @@ body:
   - type: textarea
     id: context
     attributes:
-      label: Additional context (optional)
+      label: A📎 Additional Context (Optional)
       description: Add any other context, screenshots, mockups, or references that may help understand the request better.
       placeholder: e.g. "This is similar to the feature in XYZ app [link]."
     validations:
