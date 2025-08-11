@@ -44,18 +44,33 @@ body:
   - type: textarea
     id: context
     attributes:
-      label: A📎 Additional Context (Optional)
+      label: 📎 Additional Context (Optional)
       description: Add any other context, screenshots, mockups, or references that may help understand the request better.
       placeholder: e.g. "This is similar to the feature in XYZ app [link]."
     validations:
       required: false
 
-  # No duplicate check
+  # Confirmations
+  - type: markdown
+    attributes:
+      value: "## Confirmations"
+
+  # No duplicate issue
   - type: checkboxes
     id: check-duplicate
     attributes:
-      label: No duplicate
-      description: By submitting this issue, you confirm to have checked for duplicate issues beforehand.
+      label:
+      description:
       options:
         - label: I confirm that this issue is not a duplicate
+          required: true
+
+  # Code of Conduct
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label:
+      description:
+      options:
+        - label: I agree to follow this project's Code of Conduct
           required: true
