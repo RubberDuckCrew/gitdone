@@ -112,6 +112,8 @@ body:
   - type: checkboxes
     id: check-duplicate
     attributes:
+      label: bla bla
+      description: bla bla
       options:
         - label: I confirm that this issue is not a duplicate
           required: true
@@ -120,6 +122,8 @@ body:
   - type: checkboxes
     id: conduct
     attributes:
+      label: bla bla
+      description: bla bla
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true
