@@ -39,11 +39,13 @@ class _TaskListViewState extends State<TaskListView> {
           ),
         )
         .toList();
-    if (allLabels.isNotEmpty) {
-      _labelItems ??= allLabels
-          .map((final label) => FilterChipItem<String>(value: label.name))
-          .toList();
-    }
+    // Race condition with task handler:
+    // labels may not be loaded yet (can take over 1 sec.)
+    _labelItems = allLabels.isNotEmpty
+        ? allLabels
+              .map((final label) => FilterChipItem<String>(value: label.name))
+              .toList()
+        : <FilterChipItem<String>>[];
   }
 
   @override
