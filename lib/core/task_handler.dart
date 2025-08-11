@@ -57,9 +57,6 @@ class TaskHandler extends ChangeNotifier {
   /// The list of all labels available in the repository.
   /// After the notification the current list of labels is stored in [repoLabels].
   Future<void> loadLabels() async {
-    print("Loading labels from repository");
-    //Start timer
-    final Stopwatch stopwatch = Stopwatch()..start();
     try {
       _repoLabels.clear();
       final RepositoryDetails? repo = await _getSelectedRepository();
@@ -77,14 +74,6 @@ class TaskHandler extends ChangeNotifier {
       notifyListeners();
     } on Exception catch (e) {
       Logger.logError("Failed to load labels", _classId, e);
-    }
-    print("I was here");
-    //End timer
-    stopwatch.stop();
-    print("Labels loaded in ${stopwatch.elapsedMilliseconds} ms");
-    print("Finished Loaded ${_repoLabels.length} labels");
-    for (final IssueLabel label in _repoLabels) {
-      print("Label: ${label.name}");
     }
   }
 
