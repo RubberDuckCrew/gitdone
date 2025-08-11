@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:gitdone/ui/_widgets/dropdown_filter_chip.dart";
 import "package:gitdone/ui/_widgets/task_card.dart";
 import "package:gitdone/ui/task_list/task_list_view_model.dart";
+import "package:github_flutter/src/models/issues.dart";
 import "package:provider/provider.dart";
 
 /// A widget that displays a list of task items with search and filter options.
@@ -14,6 +15,35 @@ class TaskListView extends StatefulWidget {
 }
 
 class _TaskListViewState extends State<TaskListView> {
+  List<FilterChipItem<String>>? _filterItems;
+  List<FilterChipItem<String>>? _sortItems;
+  List<FilterChipItem<String>>? _labelItems;
+
+  void _ensureFilterChips(final TaskListViewModel model) {
+    final filterOptions = ["Pending", "Completed"];
+    final sortOptions = ["Alphabetical", "Last updated", "Created"];
+    final List<IssueLabel> allLabels = model.allLabels;
+    _filterItems ??= filterOptions
+        .map(
+          (final option) => FilterChipItem<String>(
+            value: option,
+            selected: option == "Pending",
+          ),
+        )
+        .toList();
+    _sortItems ??= sortOptions
+        .map(
+          (final option) => FilterChipItem<String>(
+            value: option,
+            selected: option == "Created",
+          ),
+        )
+        .toList();
+    _labelItems ??= allLabels
+        .map((final label) => FilterChipItem<String>(value: label.name))
+        .toList();
+  }
+
   @override
   Widget build(final BuildContext context) => Scaffold(
     body: Padding(
@@ -21,13 +51,16 @@ class _TaskListViewState extends State<TaskListView> {
       child: ChangeNotifierProvider(
         create: (_) => TaskListViewModel()..loadTasks(),
         child: Consumer<TaskListViewModel>(
-          builder: (final context, final model, _) => Column(
-            children: [
-              _buildSearchField(model),
-              _buildFilterRow(model),
-              _buildTaskList(model),
-            ],
-          ),
+          builder: (final context, final model, _) {
+            _ensureFilterChips(model);
+            return Column(
+              children: [
+                _buildSearchField(model),
+                _buildFilterRow(model),
+                _buildTaskList(model),
+              ],
+            );
+          },
         ),
       ),
     ),
@@ -56,29 +89,19 @@ class _TaskListViewState extends State<TaskListView> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildFilterChipDropdown(
-          items: [
-            FilterChipItem<String>(value: "Pending", selected: true),
-            FilterChipItem<String>(value: "Completed"),
-          ],
+          items: _filterItems!,
           initialLabel: "Filter",
           onUpdate: model.updateFilter,
         ),
         const SizedBox(width: 8),
         _buildFilterChipDropdown(
-          items: [
-            FilterChipItem<String>(value: "Alphabetical"),
-            FilterChipItem<String>(value: "Last updated"),
-            FilterChipItem<String>(value: "Created", selected: true),
-          ],
+          items: _sortItems!,
           initialLabel: "Sort",
           onUpdate: model.updateSort,
         ),
         const SizedBox(width: 8),
         _buildFilterChipDropdown(
-          items: model.allLabels
-              .map((final label) => label.name)
-              .map((final value) => FilterChipItem(value: value))
-              .toList(),
+          items: _labelItems!,
           initialLabel: "Labels",
           allowMultipleSelection: true,
           onUpdate: model.updateLabels,
