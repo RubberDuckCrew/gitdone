@@ -1,7 +1,7 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:gitdone/ui/_widgets/filter_chip_dropdown_view_model.dart";
-import "package:gitdone/ui/_widgets/filter_chip_item.dart";
+import "package:gitdone/ui/_widgets/filter_chip/filter_chip_dropdown_view_model.dart";
+import "package:gitdone/ui/_widgets/filter_chip/filter_chip_item.dart";
 import "package:provider/provider.dart";
 
 /// A dropdown widget that displays a list of filter chips for selection.

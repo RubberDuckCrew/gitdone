@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import "package:gitdone/ui/_widgets/filter_chip_dropdown.dart";
-import "package:gitdone/ui/_widgets/filter_chip_item.dart";
+import "package:gitdone/ui/_widgets/filter_chip/filter_chip_dropdown.dart";
+import "package:gitdone/ui/_widgets/filter_chip/filter_chip_item.dart";
 import "package:gitdone/ui/_widgets/task_card.dart";
 import "package:gitdone/ui/task_list/task_list_view_model.dart";
 import "package:provider/provider.dart";

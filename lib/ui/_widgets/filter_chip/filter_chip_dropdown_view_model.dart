@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:gitdone/ui/_widgets/filter_chip_item.dart";
+import "package:gitdone/ui/_widgets/filter_chip/filter_chip_item.dart";
 
 /// A ViewModel for managing the state of a filter chip dropdown widget.
 class FilterChipDropdownViewModel<T> extends ChangeNotifier {

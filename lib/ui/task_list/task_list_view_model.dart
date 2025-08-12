@@ -6,7 +6,7 @@ import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
-import "package:gitdone/ui/_widgets/filter_chip_item.dart";
+import "package:gitdone/ui/_widgets/filter_chip/filter_chip_item.dart";
 import "package:gitdone/ui/task_details/task_details_view.dart";
 import "package:gitdone/ui/task_edit/task_edit_view.dart";
 import "package:github_flutter/github.dart";
