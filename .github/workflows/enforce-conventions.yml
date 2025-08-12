@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout branches.yml
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           sparse-checkout: .github/branches.yml
           sparse-checkout-cone-mode: false
