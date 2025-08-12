@@ -16,12 +16,9 @@ class TaskListView extends StatefulWidget {
 class _TaskListViewState extends State<TaskListView> {
   List<FilterChipItem<String>>? _filterItems;
   List<FilterChipItem<String>>? _sortItems;
-  late List<FilterChipItem<String>>? _labelItems;
 
-  void _ensureFilterChips(final TaskListViewModel model) {
-    const List<String> filterOptions = TaskListViewModel.filterOptions;
-    const List<String> sortOptions = TaskListViewModel.sortOptions;
-    _filterItems ??= filterOptions
+  void _getFilterItems() {
+    _filterItems ??= TaskListViewModel.filterOptions
         .map(
           (final option) => FilterChipItem<String>(
             value: option,
@@ -29,7 +26,10 @@ class _TaskListViewState extends State<TaskListView> {
           ),
         )
         .toList();
-    _sortItems ??= sortOptions
+  }
+
+  void _getSortItems() {
+    _sortItems ??= TaskListViewModel.sortOptions
         .map(
           (final option) => FilterChipItem<String>(
             value: option,
@@ -37,20 +37,6 @@ class _TaskListViewState extends State<TaskListView> {
           ),
         )
         .toList();
-    // Race condition with task handler:
-    // labels may not be loaded yet (can take over 1 sec.)
-    _labelItems = model.allLabels.isNotEmpty
-        ? model.allLabels
-              .map(
-                (final label) => FilterChipItem<String>(
-                  value: label.name,
-                  selected: model.filterLabels.any(
-                    (final l) => l.name == label.name,
-                  ),
-                ),
-              )
-              .toList()
-        : <FilterChipItem<String>>[];
   }
 
   @override
@@ -61,7 +47,8 @@ class _TaskListViewState extends State<TaskListView> {
         create: (_) => TaskListViewModel()..loadTasks(),
         child: Consumer<TaskListViewModel>(
           builder: (final context, final model, _) {
-            _ensureFilterChips(model);
+            _getFilterItems();
+            _getSortItems();
             return Column(
               children: [
                 _buildSearchField(model),
@@ -110,7 +97,7 @@ class _TaskListViewState extends State<TaskListView> {
         ),
         const SizedBox(width: 8),
         _buildFilterChipDropdown(
-          items: _labelItems!,
+          items: model.labelFilterChipItems,
           initialLabel: model.filterLabels.isNotEmpty
               ? "${model.filterLabels.length} Labels"
               : "Labels",

@@ -6,6 +6,7 @@ import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
+import "package:gitdone/ui/_widgets/dropdown_filter_chip.dart";
 import "package:gitdone/ui/task_details/task_details_view.dart";
 import "package:gitdone/ui/task_edit/task_edit_view.dart";
 import "package:github_flutter/github.dart";
@@ -82,6 +83,18 @@ class TaskListViewModel extends ChangeNotifier {
 
   /// Whether the task list is currently loading.
   bool get isLoading => _loading;
+
+  /// Returns a list of FilterChipItems for all labels, reflecting current selection state.
+  List<FilterChipItem<String>> get labelFilterChipItems => allLabels.isNotEmpty
+      ? allLabels
+            .map(
+              (final label) => FilterChipItem<String>(
+                value: label.name,
+                selected: filterLabels.any((final l) => l.name == label.name),
+              ),
+            )
+            .toList()
+      : <FilterChipItem<String>>[];
 
   /// The list of labels currently being used for filtering.
   void updateLabels(final String label, {final bool selected = false}) {
