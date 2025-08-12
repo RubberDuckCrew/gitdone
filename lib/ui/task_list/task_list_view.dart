@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import "package:gitdone/ui/_widgets/dropdown_filter_chip.dart";
 import "package:gitdone/ui/_widgets/task_card.dart";
 import "package:gitdone/ui/task_list/task_list_view_model.dart";
-import "package:github_flutter/src/models/issues.dart";
 import "package:provider/provider.dart";
 
 /// A widget that displays a list of task items with search and filter options.
@@ -24,7 +23,6 @@ class _TaskListViewState extends State<TaskListView> {
     const defaultFilter = "Pending";
     final sortOptions = ["Alphabetical", "Last updated", "Created"];
     const defaultSort = "Created";
-    final List<IssueLabel> allLabels = model.allLabels;
     _filterItems ??= filterOptions
         .map(
           (final option) => FilterChipItem<String>(
@@ -43,8 +41,8 @@ class _TaskListViewState extends State<TaskListView> {
         .toList();
     // Race condition with task handler:
     // labels may not be loaded yet (can take over 1 sec.)
-    _labelItems = allLabels.isNotEmpty
-        ? allLabels
+    _labelItems = model.allLabels.isNotEmpty
+        ? model.allLabels
               .map((final label) => FilterChipItem<String>(value: label.name))
               .toList()
         : <FilterChipItem<String>>[];
