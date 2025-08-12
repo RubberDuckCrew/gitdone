@@ -111,7 +111,9 @@ class _TaskListViewState extends State<TaskListView> {
         const SizedBox(width: 8),
         _buildFilterChipDropdown(
           items: _labelItems!,
-          initialLabel: "Labels",
+          initialLabel: model.filterLabels.isNotEmpty
+              ? "${model.filterLabels.length} Labels"
+              : "Labels",
           allowMultipleSelection: true,
           onUpdate: model.updateLabels,
         ),
