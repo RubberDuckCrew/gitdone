@@ -135,13 +135,17 @@ class _TaskListViewState extends State<TaskListView> {
   );
 
   Widget _buildTaskList(final TaskListViewModel model) {
-    if (model.isEmpty) {
-      return const Expanded(
-        child: Center(child: Text("No Issues found in this repository")),
-      );
+    if (model.isLoading) {
+      return const Expanded(child: Center(child: CircularProgressIndicator()));
     }
     if (model.tasks.isEmpty) {
-      return const Expanded(child: Center(child: CircularProgressIndicator()));
+      return const Expanded(
+        child: Center(
+          child: Text(
+            "No Issues matching current filters found in this repository",
+          ),
+        ),
+      );
     }
     return Expanded(
       child: RefreshIndicator(
