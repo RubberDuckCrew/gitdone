@@ -1,0 +1,113 @@
+name: 🐛 Bug report
+description: Report a bug to help the project improve.
+type: bug
+labels: "🐛 Bug"
+body:
+  # Greetings
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+        To expedite issue processing, please search open and closed issues before submitting a new one.
+
+  # Description
+  - type: textarea
+    id: description
+    attributes:
+      label: 🐛 Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: e.g. "Clicking the save button doesn't do anything."
+    validations:
+      required: true
+
+  # Reproduction steps
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: 🔁 Steps to Reproduce
+      description: Detailed list of steps for reproducing the bug
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See the error
+    validations:
+      required: true
+
+  # Expected behaviour
+  - type: textarea
+    id: expectation
+    attributes:
+      label: 🤔 Expected Behavior
+      description: What did you expect to happen instead?
+      placeholder: e.g. "After clicking 'Save', the input should be saved and a confirmation message should appear."
+    validations:
+      required: true
+
+  # OS
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      multiple: true
+      description: Operating systems the bug occurs on (optional, only if applicable)
+      options:
+        - Android
+        - iOS
+    validations:
+      required: false
+
+  # Affected version
+  - type: input
+    id: version
+    attributes:
+      label: Affected version
+      description: Version or commit hash the bug is concerned to
+      placeholder: e.g. 1.0.2 or 3d411c6
+    validations:
+      required: true
+
+  # Last working version
+  - type: input
+    id: last-working-version
+    attributes:
+      label: Last working version (Optional)
+      description: Last version or commit hash where the bug was not present
+      placeholder: e.g. 1.0.1 or cb7ad15
+    validations:
+      required: false
+
+  # Additional context
+  - type: textarea
+    id: context
+    attributes:
+      label: 📎 Additional Context (Optional)
+      description: Add any other context, screenshots, screen recordings, or logs that might help understand the issue.
+      placeholder: e.g. "Here’s a screenshot of the error message..."
+    validations:
+      required: false
+
+  # Confirmations
+  - type: markdown
+    attributes:
+      value: "## Confirmations"
+
+  # No duplicate issue
+  - type: checkboxes
+    id: check-duplicate
+    attributes:
+      label: No duplicate issue
+      description: By submitting this issue, you confirm that you have checked for open and closed issues addressing the same bug beforehand.
+      options:
+        - label: I confirm that this issue is not a duplicate
+          required: true
+
+  # Code of Conduct
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/RubberDuckCrew/gitdone/blob/main/.github/CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
