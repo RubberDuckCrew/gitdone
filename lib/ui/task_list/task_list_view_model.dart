@@ -70,8 +70,11 @@ class TaskListViewModel extends ChangeNotifier {
   /// The list of filtered tasks based on the current search query, filter, and sort.
   List<Task> get tasks => _filteredTasks;
 
-  /// The list of labels currently being filtered.
+  /// The list of all labels available in the repository.
   List<IssueLabel> get allLabels => _taskHandler.repoLabels;
+
+  /// The list of labels currently being used for filtering tasks.
+  List<IssueLabel> get filterLabels => _filterLabels;
 
   /// The list of labels used for filtering tasks.
   bool get isEmpty => _isEmpty;

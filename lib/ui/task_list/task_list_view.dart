@@ -41,7 +41,14 @@ class _TaskListViewState extends State<TaskListView> {
     // labels may not be loaded yet (can take over 1 sec.)
     _labelItems = model.allLabels.isNotEmpty
         ? model.allLabels
-              .map((final label) => FilterChipItem<String>(value: label.name))
+              .map(
+                (final label) => FilterChipItem<String>(
+                  value: label.name,
+                  selected: model.filterLabels.any(
+                    (final l) => l.name == label.name,
+                  ),
+                ),
+              )
               .toList()
         : <FilterChipItem<String>>[];
   }
