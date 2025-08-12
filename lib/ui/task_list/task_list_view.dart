@@ -19,15 +19,13 @@ class _TaskListViewState extends State<TaskListView> {
   late List<FilterChipItem<String>>? _labelItems;
 
   void _ensureFilterChips(final TaskListViewModel model) {
-    final filterOptions = ["Pending", "Completed"];
-    const defaultFilter = "Pending";
-    final sortOptions = ["Alphabetical", "Last updated", "Created"];
-    const defaultSort = "Created";
+    const List<String> filterOptions = TaskListViewModel.filterOptions;
+    const List<String> sortOptions = TaskListViewModel.sortOptions;
     _filterItems ??= filterOptions
         .map(
           (final option) => FilterChipItem<String>(
             value: option,
-            selected: option == defaultFilter,
+            selected: option == TaskListViewModel.defaultFilter,
           ),
         )
         .toList();
@@ -35,7 +33,7 @@ class _TaskListViewState extends State<TaskListView> {
         .map(
           (final option) => FilterChipItem<String>(
             value: option,
-            selected: option == defaultSort,
+            selected: option == TaskListViewModel.defaultSort,
           ),
         )
         .toList();

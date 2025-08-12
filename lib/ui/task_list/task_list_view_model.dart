@@ -21,12 +21,47 @@ class TaskListViewModel extends ChangeNotifier {
       ..loadLabels();
   }
 
+  /// Filter option: show only pending tasks.
+  static const String _filterPending = "Pending";
+
+  /// Filter option: show only completed tasks.
+  static const String _filterCompleted = "Completed";
+
+  /// All available filter options.
+  static const List<String> filterOptions = [_filterPending, _filterCompleted];
+
+  /// Sort option: sort tasks alphabetically.
+  static const String _sortAlphabetical = "Alphabetical";
+
+  /// Sort option: sort tasks by last updated.
+  static const String _sortLastUpdated = "Last updated";
+
+  /// Sort option: sort tasks by creation date.
+  static const String _sortCreated = "Created";
+
+  /// All available sort options.
+  static const List<String> sortOptions = [
+    _sortAlphabetical,
+    _sortLastUpdated,
+    _sortCreated,
+  ];
+
+  /// Default filter applied to the task list.
+  static const String defaultFilter = _filterPending;
+
+  /// Default sort order applied to the task list.
+  static const String defaultSort = _sortCreated;
+
   final TaskHandler _taskHandler = TaskHandler();
   final List<IssueLabel> _filterLabels = [];
   List<Task> _filteredTasks = [];
   String _searchQuery = "";
-  String _filter = "";
-  String _sort = "";
+
+  /// The current filter applied to the task list.
+  String _filter = defaultFilter;
+
+  /// The current sort order applied to the task list.
+  String _sort = defaultSort;
   bool _isEmpty = false;
 
   static const _classId =
@@ -106,9 +141,9 @@ class TaskListViewModel extends ChangeNotifier {
     final List<Task> tasks,
     final String filter,
   ) {
-    if (filter == "Completed") {
+    if (filter == _filterCompleted) {
       return tasks.where((final task) => task.closedAt != null).toList();
-    } else if (filter == "Pending") {
+    } else if (filter == _filterPending) {
       return tasks.where((final task) => task.closedAt == null).toList();
     }
     return tasks;
@@ -150,14 +185,14 @@ class TaskListViewModel extends ChangeNotifier {
 
   List<Task> _sortTasks(final List<Task> tasks, final String sort) =>
       switch (sort) {
-        "Alphabetical" =>
+        _sortAlphabetical =>
           tasks..sort(
             (final a, final b) =>
                 _sanitizeString(a.title).compareTo(_sanitizeString(b.title)),
           ),
-        "Last updated" =>
+        _sortLastUpdated =>
           tasks..sort((final a, final b) => b.updatedAt.compareTo(a.updatedAt)),
-        "Created" =>
+        _sortCreated =>
           tasks..sort((final a, final b) => b.createdAt.compareTo(a.createdAt)),
         _ => tasks,
       };
