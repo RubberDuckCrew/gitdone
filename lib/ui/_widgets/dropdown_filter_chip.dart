@@ -86,6 +86,15 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
   double _actualDropdownWidth = 0;
   double _offsetX = 0;
 
+  // FIXME(everyone): This is a :poop: workaround
+  @override
+  void didUpdateWidget(covariant final FilterChipDropdown<T> oldWidget) {
+    if (oldWidget.items != widget.items) {
+      _viewModel.items = widget.items;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
   void _handleDropdownToggle() {
     if (_viewModel.isDropdownOpen && !_portalController.isShowing) {
       final RenderBox? renderBox =
@@ -333,24 +342,33 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
 class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
   _FilterChipDropdownViewModel({
     required this.allowMultipleSelection,
-    required this.items,
-  });
+    required final List<FilterChipItem<T>> items,
+  }) : _items = items;
 
-  final List<FilterChipItem<T>> items;
+  final List<FilterChipItem<T>> _items;
+
+  List<FilterChipItem<T>> get items => _items;
+  set items(final List<FilterChipItem<T>> items) {
+    _items
+      ..clear()
+      ..addAll(items);
+    notifyListeners();
+  }
+
   bool _isDropdownOpen = false;
   double _maxItemWidth = 0;
   double _iconWidth = 0;
   final bool allowMultipleSelection;
-  Set<T> get selectedLabels => items
+  Set<T> get selectedLabels => _items
       .where((final item) => item.selected)
       .map((final item) => item.value)
       .toSet();
   bool get isDropdownOpen => _isDropdownOpen;
-  bool get isSelected => items.any((final item) => item.selected);
+  bool get isSelected => _items.any((final item) => item.selected);
   double get maxItemWidth => _maxItemWidth;
   double get iconWidth => _iconWidth;
   int get amountOfSelectedItems =>
-      items.where((final item) => item.selected).length;
+      _items.where((final item) => item.selected).length;
 
   void toggleDropdown() {
     _isDropdownOpen = !_isDropdownOpen;
@@ -363,7 +381,7 @@ class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
     if (allowMultipleSelection) {
       item.selected = true;
     } else {
-      for (final FilterChipItem<T> i in items) {
+      for (final FilterChipItem<T> i in _items) {
         i.selected = false;
       }
       item.selected = true;
@@ -378,7 +396,7 @@ class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
   }
 
   void clearSelection() {
-    for (final FilterChipItem<T> item in items) {
+    for (final FilterChipItem<T> item in _items) {
       item.selected = false;
     }
     _isDropdownOpen = false;
@@ -426,7 +444,7 @@ class _FilterChipDropdownViewModel<T> extends ChangeNotifier {
       if (allowMultipleSelection) {
         return "$amountOfSelectedItems $initialLabel";
       } else {
-        return items.firstWhere((final item) => item.selected).label;
+        return _items.firstWhere((final item) => item.selected).label;
       }
     }
     return initialLabel;
