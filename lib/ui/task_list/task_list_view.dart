@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import "package:gitdone/core/task_handler.dart";
+import "package:gitdone/core/theme/app_color.dart";
 import "package:gitdone/ui/_widgets/filter_chip/filter_chip_dropdown.dart";
 import "package:gitdone/ui/_widgets/filter_chip/filter_chip_item.dart";
 import "package:gitdone/ui/_widgets/task_card.dart";
@@ -142,7 +144,32 @@ class _TaskListViewState extends State<TaskListView> {
           shrinkWrap: true,
           physics: const AlwaysScrollableScrollPhysics(),
           children: model.tasks
-              .map((final task) => TaskCard(task: task))
+              .map(
+                (final task) => task.state == IssueState.open.value
+                    ? Dismissible(
+                        key: ValueKey(task.issueNumber),
+                        direction: DismissDirection.startToEnd,
+                        background: Container(
+                          color: AppColor.colorScheme.primary,
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: const Row(
+                            children: [
+                              Text("Mark as done"),
+                              Icon(Icons.done, color: Colors.white),
+                            ],
+                          ),
+                        ),
+                        onDismissed: (_) {
+                          TaskHandler().updateIssueState(
+                            task,
+                            IssueState.closed,
+                          );
+                        },
+                        child: TaskCard(task: task),
+                      )
+                    : TaskCard(task: task),
+              )
               .toList(),
         ),
       ),
