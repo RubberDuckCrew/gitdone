@@ -69,7 +69,7 @@ class Task {
   int? get issueNumber => _issueNumber;
   final int? _issueNumber;
 
-  /// The state of the task, e.g., "OPEN" or "CLOSED".
+  /// The state of the task, e.g., "open" or "closed".
   String state;
 
   /// Saves the current task to the remote repository.
