@@ -12,7 +12,9 @@ class Task {
     required final slug,
     required this.createdAt,
     required this.updatedAt,
+    this.state = "open",
     this.closedAt,
+    this.stateReason,
     final issueNumber,
   }) : _slug = slug,
        _issueNumber = issueNumber;
@@ -25,7 +27,9 @@ class Task {
       updatedAt = issue.updatedAt!,
       closedAt = issue.closedAt,
       labels = issue.labels,
-      _issueNumber = issue.number;
+      _issueNumber = issue.number,
+      state = issue.state,
+      stateReason = issue.stateReason;
 
   /// Creates an empty task with the given [slug].
   Task.createEmpty(final RepositorySlug slug)
@@ -36,7 +40,8 @@ class Task {
       updatedAt = DateTime.now(),
       closedAt = null,
       _slug = slug,
-      _issueNumber = null;
+      _issueNumber = null,
+      state = "open";
 
   static const _classId = "com.GitDone.gitdone.core.models.task";
 
@@ -65,6 +70,12 @@ class Task {
   /// The unique identifier for the issue in the repository, if applicable.
   int? get issueNumber => _issueNumber;
   final int? _issueNumber;
+
+  /// The state of the task, e.g., "OPEN" or "CLOSED".
+  String state;
+
+  /// The reason for the current state of the task, if applicable.
+  String? stateReason;
 
   /// Saves the current task to the remote repository.
   Future<Task> saveRemote() {
