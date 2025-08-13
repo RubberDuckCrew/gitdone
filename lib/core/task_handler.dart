@@ -135,7 +135,7 @@ class TaskHandler extends ChangeNotifier {
     return null;
   }
 
-  /// Marks a task as done by updating its state to "CLOSED" and setting the closedAt timestamp.
+  /// Marks a task as done by updating its state to "closed" and setting the closedAt timestamp.
   Future<Task> updateIssueState(
     final Task task,
     final IssueState newState,
