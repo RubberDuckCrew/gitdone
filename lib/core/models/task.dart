@@ -14,7 +14,6 @@ class Task {
     required this.updatedAt,
     this.state = "open",
     this.closedAt,
-    this.stateReason,
     final issueNumber,
   }) : _slug = slug,
        _issueNumber = issueNumber;
@@ -28,8 +27,7 @@ class Task {
       closedAt = issue.closedAt,
       labels = issue.labels,
       _issueNumber = issue.number,
-      state = issue.state,
-      stateReason = issue.stateReason;
+      state = issue.state;
 
   /// Creates an empty task with the given [slug].
   Task.createEmpty(final RepositorySlug slug)
@@ -74,9 +72,6 @@ class Task {
   /// The state of the task, e.g., "OPEN" or "CLOSED".
   String state;
 
-  /// The reason for the current state of the task, if applicable.
-  String? stateReason;
-
   /// Saves the current task to the remote repository.
   Future<Task> saveRemote() {
     if (_issueNumber == null) {
@@ -95,6 +90,7 @@ class Task {
           title: title,
           body: description,
           labels: labels.map((final label) => label.name).toList(),
+          state: state,
         ),
       )
       .then((final issue) {
@@ -110,6 +106,7 @@ class Task {
           title: title,
           body: description,
           labels: labels.map((final label) => label.name).toList(),
+          state: state,
         ),
       )
       .then((final issue) {
@@ -127,6 +124,7 @@ class Task {
     closedAt: closedAt,
     slug: _slug,
     issueNumber: _issueNumber,
+    state: state,
   );
 
   /// Replaces the current instance with the values from another to do instance.
@@ -136,6 +134,7 @@ class Task {
     labels = List<IssueLabel>.from(update.labels);
     updatedAt = update.updatedAt;
     closedAt = update.closedAt;
+    state = update.state;
   }
 
   @override
