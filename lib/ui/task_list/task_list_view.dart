@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
-import "package:gitdone/ui/_widgets/dropdown_filter_chip.dart";
+import "package:gitdone/ui/_widgets/filter_chip/filter_chip_dropdown.dart";
+import "package:gitdone/ui/_widgets/filter_chip/filter_chip_item.dart";
 import "package:gitdone/ui/_widgets/task_card.dart";
 import "package:gitdone/ui/task_list/task_list_view_model.dart";
 import "package:provider/provider.dart";
@@ -14,6 +15,31 @@ class TaskListView extends StatefulWidget {
 }
 
 class _TaskListViewState extends State<TaskListView> {
+  List<FilterChipItem<String>>? _filterItems;
+  List<FilterChipItem<String>>? _sortItems;
+
+  void _getFilterItems() {
+    _filterItems ??= TaskListViewModel.filterOptions
+        .map(
+          (final option) => FilterChipItem<String>(
+            value: option,
+            selected: option == TaskListViewModel.defaultFilter,
+          ),
+        )
+        .toList();
+  }
+
+  void _getSortItems() {
+    _sortItems ??= TaskListViewModel.sortOptions
+        .map(
+          (final option) => FilterChipItem<String>(
+            value: option,
+            selected: option == TaskListViewModel.defaultSort,
+          ),
+        )
+        .toList();
+  }
+
   @override
   Widget build(final BuildContext context) => Scaffold(
     body: Padding(
@@ -21,13 +47,17 @@ class _TaskListViewState extends State<TaskListView> {
       child: ChangeNotifierProvider(
         create: (_) => TaskListViewModel()..loadTasks(),
         child: Consumer<TaskListViewModel>(
-          builder: (final context, final model, _) => Column(
-            children: [
-              _buildSearchField(model),
-              _buildFilterRow(model),
-              _buildTaskList(model),
-            ],
-          ),
+          builder: (final context, final model, _) {
+            _getFilterItems();
+            _getSortItems();
+            return Column(
+              children: [
+                _buildSearchField(model),
+                _buildFilterRow(model),
+                _buildTaskList(model),
+              ],
+            );
+          },
         ),
       ),
     ),
@@ -56,36 +86,36 @@ class _TaskListViewState extends State<TaskListView> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildFilterChipDropdown(
-          items: ["Completed", "Pending"],
+          items: _filterItems!,
           initialLabel: "Filter",
           onUpdate: model.updateFilter,
         ),
         const SizedBox(width: 8),
         _buildFilterChipDropdown(
-          items: ["Alphabetical", "Last updated", "Created"],
+          items: _sortItems!,
           initialLabel: "Sort",
           onUpdate: model.updateSort,
         ),
         const SizedBox(width: 8),
-        _buildFilterChipDropdown(
-          items: model.allLabels.map((final label) => label.name).toList(),
-          initialLabel: "Labels",
-          allowMultipleSelection: true,
-          onUpdate: model.updateLabels,
+        Consumer<TaskListViewModel>(
+          builder: (final context, final model, _) => _buildFilterChipDropdown(
+            items: model.labelFilterChipItems,
+            initialLabel: "Labels",
+            allowMultipleSelection: true,
+            onUpdate: model.updateLabels,
+          ),
         ),
       ],
     ),
   );
 
   Widget _buildFilterChipDropdown({
-    required final List<String> items,
+    required final List<FilterChipItem<String>> items,
     required final String initialLabel,
     required final Function(String, {required bool selected}) onUpdate,
     final bool allowMultipleSelection = false,
-  }) => FilterChipDropdown(
-    items: items
-        .map((final item) => FilterChipItem(value: item, label: item))
-        .toList(),
+  }) => FilterChipDropdown<String>(
+    items: items,
     initialLabel: initialLabel,
     allowMultipleSelection: allowMultipleSelection,
     onUpdate: (final item, {required final selected}) =>
