@@ -178,7 +178,7 @@ enum IssueState {
   open("open"),
 
   /// The issue is closed and inactive.
-  closed("close");
+  closed("closed");
 
   const IssueState(this._value);
   final String _value;
