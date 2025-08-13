@@ -185,4 +185,14 @@ enum IssueState {
 
   /// Returns the string representation of the issue state.
   String get value => _value;
+
+  /// Returns the IssueState corresponding to the given string value.
+  static IssueState fromValue(final String value) {
+    for (final IssueState state in IssueState.values) {
+      if (state.value == value) {
+        return state;
+      }
+    }
+    throw ArgumentError("Illegal value: $value");
+  }
 }

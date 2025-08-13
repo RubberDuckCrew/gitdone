@@ -1,4 +1,5 @@
 import "package:gitdone/core/models/github_model.dart";
+import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
 
@@ -12,10 +13,11 @@ class Task {
     required final slug,
     required this.createdAt,
     required this.updatedAt,
-    this.state = "open",
+    required final IssueState issueState,
     this.closedAt,
     final issueNumber,
-  }) : _slug = slug,
+  }) : state = issueState.value,
+       _slug = slug,
        _issueNumber = issueNumber;
 
   /// Creates a to do instance from a GitHub [Issue].
@@ -39,7 +41,7 @@ class Task {
       closedAt = null,
       _slug = slug,
       _issueNumber = null,
-      state = "open";
+      state = IssueState.open.value;
 
   static const _classId = "com.GitDone.gitdone.core.models.task";
 
@@ -124,7 +126,7 @@ class Task {
     closedAt: closedAt,
     slug: _slug,
     issueNumber: _issueNumber,
-    state: state,
+    issueState: IssueState.fromValue(state),
   );
 
   /// Replaces the current instance with the values from another to do instance.
