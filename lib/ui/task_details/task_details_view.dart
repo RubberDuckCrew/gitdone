@@ -1,6 +1,7 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/task.dart";
+import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
@@ -50,9 +51,24 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
         ],
       ),
     ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: _editTask,
-      child: const Icon(Icons.edit),
+    floatingActionButton: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        FloatingActionButton.small(
+          heroTag: "markTask",
+          onPressed: widget.task.state == IssueState.open.value
+              ? _markTaskAsDone
+              : _markTaskAsOpen,
+          child: widget.task.state == IssueState.open.value
+              ? const Icon(Icons.done)
+              : const Icon(Icons.undo),
+        ),
+        FloatingActionButton(
+          heroTag: "editTask",
+          onPressed: _editTask,
+          child: const Icon(Icons.edit),
+        ),
+      ],
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
   );
@@ -95,6 +111,18 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
       ],
     ),
   );
+
+  Future<void> _markTaskAsDone() async {
+    await TaskHandler().updateIssueState(
+      widget.task,
+      IssueState.closed,
+      reason: StateReason.completed,
+    );
+  }
+
+  Future<void> _markTaskAsOpen() async {
+    await TaskHandler().updateIssueState(widget.task, IssueState.open);
+  }
 
   Future<void> _editTask() async {
     Logger.log("Edit task: ${widget.task.title}", _classId, LogLevel.detailed);
