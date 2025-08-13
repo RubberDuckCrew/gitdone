@@ -138,9 +138,8 @@ class TaskHandler extends ChangeNotifier {
   /// Marks a task as done by updating its state to "CLOSED" and setting the closedAt timestamp.
   Future<Task> updateIssueState(
     final Task task,
-    final IssueState newState, {
-    final StateReason reason = StateReason.noReason,
-  }) async {
+    final IssueState newState,
+  ) async {
     Logger.log(
       "Marking task as ${newState.value}: ${task.title}",
       _classId,
@@ -149,16 +148,25 @@ class TaskHandler extends ChangeNotifier {
 
     task
       ..state = newState.value
-      ..stateReason = reason.value
       ..closedAt = newState == IssueState.closed
           ? DateTime.now().toUtc()
           : task.closedAt
       ..updatedAt = DateTime.now().toUtc()
       ..saveRemote();
 
-    print("Task updated: ${task.title}, State: ${task.state}");
-    print("Closed at: ${task.closedAt}, Updated at: ${task.updatedAt}");
-    print("State reason: ${task.stateReason}");
+    final int index = _tasks.indexWhere(
+      (final t) => t.issueNumber == task.issueNumber,
+    );
+    if (index != -1) {
+      _tasks[index] = task;
+    } else {
+      Logger.logWarning(
+        "Task with id ${task.issueNumber} not found in local tasks",
+        _classId,
+      );
+    }
+
+    notifyListeners();
 
     return task;
   }
@@ -177,28 +185,4 @@ enum IssueState {
 
   /// Returns the string representation of the issue state.
   String get value => _value;
-}
-
-/// Enum representing the reason for the state of an issue in a repository.
-enum StateReason {
-  /// The issue is completed.
-  completed("completed"),
-
-  /// The issue is not planned.
-  notPlanned("not_planned"),
-
-  /// The issue is a duplicate of another issue.
-  duplicate("duplicate"),
-
-  /// The issue is invalid.
-  reopened("reopened"),
-
-  /// The issue is not relevant.
-  noReason(null);
-
-  const StateReason(this._value);
-  final String? _value;
-
-  /// Returns the string representation of the state reason.
-  String? get value => _value;
 }
