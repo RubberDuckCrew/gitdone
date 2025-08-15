@@ -134,4 +134,65 @@ class TaskHandler extends ChangeNotifier {
     }
     return null;
   }
+
+  /// Marks a task as done by updating its state to "closed" and setting the closedAt timestamp.
+  Future<Task> updateIssueState(
+    final Task task,
+    final IssueState newState,
+  ) async {
+    Logger.log(
+      "Marking task as ${newState.value}: ${task.title}",
+      _classId,
+      LogLevel.detailed,
+    );
+
+    task
+      ..state = newState.value
+      ..closedAt = newState == IssueState.closed
+          ? DateTime.now().toUtc()
+          : task.closedAt
+      ..updatedAt = DateTime.now().toUtc()
+      ..saveRemote();
+
+    final int index = _tasks.indexWhere(
+      (final t) => t.issueNumber == task.issueNumber,
+    );
+    if (index != -1) {
+      _tasks[index] = task;
+    } else {
+      Logger.logWarning(
+        "Task with id ${task.issueNumber} not found in local tasks",
+        _classId,
+      );
+    }
+
+    notifyListeners();
+
+    return task;
+  }
+}
+
+/// Enum representing the state of an issue in a repository.
+enum IssueState {
+  /// The issue is open and active.
+  open("open"),
+
+  /// The issue is closed and inactive.
+  closed("closed");
+
+  const IssueState(this._value);
+  final String _value;
+
+  /// Returns the string representation of the issue state.
+  String get value => _value;
+
+  /// Returns the IssueState corresponding to the given string value.
+  static IssueState fromValue(final String value) {
+    for (final IssueState state in IssueState.values) {
+      if (state.value == value) {
+        return state;
+      }
+    }
+    throw ArgumentError("Illegal value: $value");
+  }
 }
