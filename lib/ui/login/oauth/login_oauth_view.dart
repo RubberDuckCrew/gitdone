@@ -45,7 +45,6 @@ class _LoginGithubViewState extends State<LoginGithubView>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(padding: EdgeInsets.symmetric(vertical: 32)),
           const PageTitleWidget(title: "GitHub OAuth Login"),
           Align(
             alignment: Alignment.centerLeft,
