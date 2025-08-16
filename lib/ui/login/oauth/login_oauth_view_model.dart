@@ -1,80 +1,86 @@
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
+import "package:gitdone/core/exceptions/oauth_exception.dart";
 import "package:gitdone/core/models/github_oauth_model.dart";
+import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/main_screen.dart";
 
 /// ViewModel for managing the login process using GitHub OAuth.
 class LoginGithubViewModel extends ChangeNotifier {
   /// Creates an instance of [LoginGithubViewModel].
-  LoginGithubViewModel({required this.infoCallback})
-    : _githubAuth = GitHubAuth(infoCallback);
+  LoginGithubViewModel() : _githubAuth = GitHubAuth((final info) {});
   final GitHubAuth _githubAuth;
 
-  /// Notifier to show/hide the progress indicator.
-  final ValueNotifier<bool> showProgressIndicatorNotifier = ValueNotifier(
-    false,
-  );
+  static const String _classId =
+      "com.GitDone.gitdone.ui.login.oauth.login_oauth_view_model";
 
-  /// Notifier to hold the fetched user code.
-  final ValueNotifier<String> fetchedUserCode = ValueNotifier("");
+  bool _errorOccurred = false;
 
-  /// Callback function to show the user an informational message.
-  Function(String) infoCallback;
+  /// Returns whether an error occurred during the login process.
+  bool get errorOccurred => _errorOccurred;
+
+  /// The error message to be displayed if an error occurred.
+  String errorMessage = "";
 
   /// Starts the login process and returns the user code.
   ///
   /// Returns the `userCode` to be displayed to the user.
-  Future<String?> startLogin() async {
-    final String userCode = await _githubAuth.startLoginProcess();
-
-    if (userCode.isNotEmpty) {
-      fetchedUserCode.value = userCode;
+  Future<void> startLogin() async {
+    String userCode;
+    try {
+      userCode = await _githubAuth.authenticate();
+      await _githubAuth.completeLogin(userCode);
+    } on OAuthException catch (error) {
+      _handleError(error);
+      return;
     }
-    return userCode;
+
+    Navigation.navigateClean(const MainScreen());
   }
 
-  /// Launches the browser and copies the user code to the clipboard.
-  Future<void> launchBrowser() async {
-    showProgressIndicatorNotifier.value = true;
-    Clipboard.setData(ClipboardData(text: _githubAuth.userCode));
-    _githubAuth.launchBrowser();
+  /// Retries the login process after an error has occurred.
+  Future<void> retry() async {
+    _errorOccurred = false;
+    errorMessage = "";
+    notifyListeners();
+    await startLogin();
   }
 
-  /// Continues the login process by polling for the token and executing the
-  /// provided callbacks.
-  Future<void> continueLogin({
-    required final VoidCallback onSuccess,
-    required final VoidCallback onFailure,
-  }) async {
-    final bool authenticated = await _githubAuth.pollForToken();
+  void _handleError(final OAuthException error) {
+    _errorOccurred = true;
 
-    // Notify listeners that the progress indicator should be hidden
-    showProgressIndicatorNotifier.value = false;
+    switch (error.errorType) {
+      case AuthenticationErrorType.userCancelled:
+        errorMessage =
+            "It seems like you cancelled the login process. [Error Type: userCancelled]";
 
-    if (authenticated) {
-      onSuccess();
-    } else {
-      onFailure();
+      case AuthenticationErrorType.noTokenReceived:
+        errorMessage =
+            "Github did not return a token. Please try again. If the problem persists, please contact us. [Error Type: noTokenReceived]";
+
+      case AuthenticationErrorType.noUserCodeReceived:
+        errorMessage =
+            "Github did not return a user code. Please try again. If the problem persists, please contact us. [Error Type: noUserCodeReceived]";
+
+      case AuthenticationErrorType.serverError:
+        errorMessage =
+            "An error occurred on the server. Please try again. [Error Type: serverError]";
+
+      case AuthenticationErrorType.invalidGrant:
+        errorMessage =
+            "GitHub reported an invalid grant. This is likely due to errors within our confidential intermediary server. Please try again. If the problem persists, please contact us. [Error Type: invalidGrant]";
+
+      case AuthenticationErrorType.badVerificationCode:
+        errorMessage =
+            "GitHub reported a bad verification code. Please try again. If the problem persists, please contact us. [Error Type: badVerificationCode]";
+      case AuthenticationErrorType.loginProcessNotActive:
+        errorMessage =
+            "This looks like an internal error on our end. Please contact us. [Error Type: loginProcessNotActive]";
+      case AuthenticationErrorType.maxRetriesReached:
+        errorMessage =
+            "The maximum number of retries has been reached. Check your internet connection and try again . [Error Type: maxRetriesReached]";
     }
+    notifyListeners();
+    Logger.log("Received: $error", _classId, LogLevel.warning);
   }
-
-  /// Handles Lifecycle events from the UI
-  void handleAppLifecycleState(
-    final AppLifecycleState state,
-    final BuildContext context,
-  ) {
-    if (state == AppLifecycleState.resumed && _githubAuth.inLoginProcess) {
-      continueLogin(
-        onSuccess: () => Navigation.navigateClean(const MainScreen()),
-        onFailure: () {
-          Navigation.navigateBack();
-          infoCallback("Login failed. Please try again.");
-        },
-      );
-    }
-  }
-
-  /// Returns the user code from the GitHub OAuth model.
-  String get userCode => _githubAuth.userCode;
 }
