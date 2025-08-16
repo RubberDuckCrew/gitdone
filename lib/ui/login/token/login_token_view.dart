@@ -36,18 +36,15 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const TextSpan(
-                  text: "To use GitDone, you need to grant the following permissions to your token:\n\n",
+                  text:
+                      "To use GitDone, you need to grant the following permissions to your token:\n\n",
                   children: [
-                    TextSpan(
-                      text: "• Fine-grained token (recommended): ",
-                    ),
+                    TextSpan(text: "• Fine-grained token (recommended): "),
                     TextSpan(
                       text: "Repository: Issues, Metadata, Account: Profile\n",
                       style: TextStyle(fontFamily: 'monospace'),
                     ),
-                    TextSpan(
-                      text: "• Classic token: ",
-                    ),
+                    TextSpan(text: "• Classic token: "),
                     TextSpan(
                       text: "repo, read:user",
                       style: TextStyle(fontFamily: 'monospace'),
