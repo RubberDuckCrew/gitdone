@@ -42,12 +42,12 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                     TextSpan(text: "• Fine-grained token (recommended): "),
                     TextSpan(
                       text: "Repository: Issues, Metadata, Account: Profile\n",
-                      style: TextStyle(fontFamily: 'monospace'),
+                      style: TextStyle(fontFamily: "monospace"),
                     ),
                     TextSpan(text: "• Classic token: "),
                     TextSpan(
                       text: "repo, read:user",
-                      style: TextStyle(fontFamily: 'monospace'),
+                      style: TextStyle(fontFamily: "monospace"),
                     ),
                   ],
                 ),
