@@ -1,23 +1,11 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import "package:gitdone/ui/_widgets/filter_chip/filter_chip_dropdown_view_model.dart";
+import "package:gitdone/ui/_widgets/filter_chip/filter_chip_item.dart";
 import "package:provider/provider.dart";
 
-/// A model class representing a filter chip item with a label and value.
-class FilterChipItem {
-  /// Creates a new instance of [FilterChipItem].
-  FilterChipItem({required this.label, required this.value});
-
-  /// The label of the filter chip item.
-  final String label;
-
-  /// The value of the filter chip item.
-  final String value;
-}
-
-/// A custom dropdown filter chip widget that allows users to select a filter
-///
-/// See https://github.com/flutter/flutter/issues/108683 for more details.
-class FilterChipDropdown extends StatefulWidget {
+/// A dropdown widget that displays a list of filter chips for selection.
+class FilterChipDropdown<T> extends StatefulWidget {
   /// Creates a new instance of [FilterChipDropdown].
   const FilterChipDropdown({
     required this.items,
@@ -29,32 +17,32 @@ class FilterChipDropdown extends StatefulWidget {
     this.labelPadding = 16,
   });
 
-  /// The list of filter chip items to display in the dropdown.
-  final List<FilterChipItem> items;
+  /// The list of items to display in the dropdown.
+  final List<FilterChipItem<T>> items;
 
-  /// The leading widget to display in the filter chip.
+  /// The leading widget to display in the chip.
   final Widget? leading;
 
-  /// The initial label to display in the filter chip when no items are selected.
+  /// The initial label to display in the chip.
   final String initialLabel;
 
-  /// The padding around the label in the filter chip.
+  /// The padding around the label in the chip.
   final double labelPadding;
 
-  /// Whether multiple items can be selected in the dropdown.
+  /// Whether multiple selection is allowed in the dropdown.
   final bool allowMultipleSelection;
 
-  /// Callback function to be called when an item is updated.
-  final void Function(FilterChipItem, {required bool selected}) onUpdate;
+  /// Callback function to handle updates when an item is selected or deselected.
+  final void Function(FilterChipItem<T>, {required bool selected}) onUpdate;
 
   @override
-  State<FilterChipDropdown> createState() => _FilterChipDropdownState();
+  State<FilterChipDropdown<T>> createState() => _FilterChipDropdownState<T>();
 
   @override
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(IterableProperty<FilterChipItem>("items", items))
+      ..add(IterableProperty<FilterChipItem<T>>("items", items))
       ..add(StringProperty("initialLabel", initialLabel))
       ..add(DoubleProperty("labelPadding", labelPadding))
       ..add(
@@ -65,20 +53,27 @@ class FilterChipDropdown extends StatefulWidget {
       )
       ..add(
         ObjectFlagProperty<
-          void Function(FilterChipItem p1, {required bool selected})
+          void Function(FilterChipItem<T> p1, {required bool selected})
         >.has("onUpdate", onUpdate),
       );
   }
 }
 
-class _FilterChipDropdownState extends State<FilterChipDropdown> {
+class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
   final GlobalKey _chipKey = GlobalKey();
   final OverlayPortalController _portalController = OverlayPortalController();
   final LayerLink _layerLink = LayerLink();
-  late _FilterChipDropdownViewModel _viewModel;
-
+  late FilterChipDropdownViewModel<T> _viewModel;
   double _actualDropdownWidth = 0;
   double _offsetX = 0;
+
+  @override
+  void didUpdateWidget(covariant final FilterChipDropdown<T> oldWidget) {
+    if (oldWidget.items != widget.items) {
+      _viewModel.items = widget.items;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
 
   void _handleDropdownToggle() {
     if (_viewModel.isDropdownOpen && !_portalController.isShowing) {
@@ -118,14 +113,12 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
     super.dispose();
   }
 
-  /// Calculate the offset to ensure the dropdown does not overflow
   double _getChipOffset(
     final Offset chipPosition,
     final double screenWidth,
     final double actualDropdownWidth,
   ) {
     double dx = 0;
-
     final double leftEdge = chipPosition.dx;
     final double rightEdge = chipPosition.dx + actualDropdownWidth;
     if (rightEdge > screenWidth) {
@@ -134,24 +127,24 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
     if (leftEdge + dx < 0) {
       dx += -(leftEdge + dx);
     }
-
     return dx;
   }
 
   @override
   Widget build(
     final BuildContext context,
-  ) => ChangeNotifierProvider<_FilterChipDropdownViewModel>(
+  ) => ChangeNotifierProvider<FilterChipDropdownViewModel<T>>(
     create: (_) {
-      final _FilterChipDropdownViewModel viewModel =
-          _FilterChipDropdownViewModel(
+      final FilterChipDropdownViewModel<T> viewModel =
+          FilterChipDropdownViewModel<T>(
             allowMultipleSelection: widget.allowMultipleSelection,
+            items: widget.items,
           );
       _viewModel = viewModel;
       _viewModel.addListener(_handleDropdownToggle);
       return viewModel;
     },
-    child: Consumer<_FilterChipDropdownViewModel>(
+    child: Consumer<FilterChipDropdownViewModel<T>>(
       builder: (final context, final viewModel, final child) {
         viewModel
           ..calculateMaxItemWidth(
@@ -307,7 +300,10 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
                     ? () {
                         viewModel.clearSelection();
                         widget.onUpdate(
-                          FilterChipItem(label: widget.initialLabel, value: ""),
+                          FilterChipItem<T>(
+                            label: widget.initialLabel,
+                            value: "" as T,
+                          ),
                           selected: false,
                         );
                       }
@@ -320,105 +316,4 @@ class _FilterChipDropdownState extends State<FilterChipDropdown> {
       },
     ),
   );
-}
-
-class _FilterChipDropdownViewModel extends ChangeNotifier {
-  _FilterChipDropdownViewModel({required this.allowMultipleSelection});
-
-  Set<String> _selectedLabels = {};
-  bool _isDropdownOpen = false;
-  double _maxItemWidth = 0;
-  double _iconWidth = 0;
-  final bool allowMultipleSelection;
-
-  Set<String> get selectedLabels => _selectedLabels;
-
-  bool get isDropdownOpen => _isDropdownOpen;
-
-  bool get isSelected => _selectedLabels.isNotEmpty;
-
-  double get maxItemWidth => _maxItemWidth;
-
-  double get iconWidth => _iconWidth;
-
-  int get amountOfSelectedItems => _selectedLabels.length;
-
-  void toggleDropdown() {
-    _isDropdownOpen = !_isDropdownOpen;
-    notifyListeners();
-  }
-
-  void toggleItemSelected() {
-    notifyListeners();
-  }
-
-  void selectItem(final FilterChipItem item) {
-    if (allowMultipleSelection) {
-      _selectedLabels.add(item.label);
-    } else {
-      _selectedLabels = {item.label};
-      _isDropdownOpen = false;
-    }
-    notifyListeners();
-  }
-
-  void unselectItem(final FilterChipItem item) {
-    _selectedLabels.remove(item.label);
-    notifyListeners();
-  }
-
-  void clearSelection() {
-    _selectedLabels = {};
-    _isDropdownOpen = false;
-    notifyListeners();
-  }
-
-  /// Needs to have parameter `PointerDownEvent` to be compatible with the TapRegion widget
-  void handleOutsideTap(final PointerDownEvent evt) {
-    if (_isDropdownOpen) {
-      _isDropdownOpen = false;
-      notifyListeners();
-    }
-  }
-
-  bool isItemSelected(final FilterChipItem item) =>
-      _selectedLabels.contains(item.label);
-
-  void calculateMaxItemWidth(
-    final List<String> labels,
-    final double labelPadding,
-    final BuildContext context,
-  ) {
-    double maxWidth = 0;
-    for (final String label in labels) {
-      final textPainter = TextPainter(
-        text: TextSpan(text: label, style: DefaultTextStyle.of(context).style),
-        maxLines: 1,
-        textDirection: TextDirection.ltr,
-      )..layout(minWidth: 0, maxWidth: double.infinity);
-      final double localMaxWidth = textPainter.width + 2 * labelPadding + 5;
-      maxWidth = maxWidth < localMaxWidth ? localMaxWidth : maxWidth;
-    }
-
-    _maxItemWidth = maxWidth;
-  }
-
-  void calculateIconWidth(final BuildContext context) {
-    final double iconWidth = IconTheme.of(context).size ?? 24.0;
-    _iconWidth = iconWidth;
-  }
-
-  /// Returns `initialLabel` if no items are selected, otherwise
-  ///
-  /// returns ```${_selectedLabels.length} initialLabel``` if multiple items are selected and allowMultipleSelection is true,
-  /// or ```_selectedLabels.first``` if allowMultipleSelection is false.
-  String getLabel(final String initialLabel) {
-    if (allowMultipleSelection && _selectedLabels.isNotEmpty) {
-      return "${_selectedLabels.length} $initialLabel";
-    }
-    if (!allowMultipleSelection && _selectedLabels.isNotEmpty) {
-      return _selectedLabels.first;
-    }
-    return initialLabel;
-  }
 }

@@ -1,4 +1,5 @@
 import "package:gitdone/core/models/github_model.dart";
+import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
 
@@ -12,9 +13,11 @@ class Task {
     required final slug,
     required this.createdAt,
     required this.updatedAt,
+    required final IssueState issueState,
     this.closedAt,
     final issueNumber,
-  }) : _slug = slug,
+  }) : state = issueState.value,
+       _slug = slug,
        _issueNumber = issueNumber;
 
   /// Creates a to do instance from a GitHub [Issue].
@@ -25,7 +28,8 @@ class Task {
       updatedAt = issue.updatedAt!,
       closedAt = issue.closedAt,
       labels = issue.labels,
-      _issueNumber = issue.number;
+      _issueNumber = issue.number,
+      state = issue.state;
 
   /// Creates an empty task with the given [slug].
   Task.createEmpty(final RepositorySlug slug)
@@ -36,7 +40,8 @@ class Task {
       updatedAt = DateTime.now(),
       closedAt = null,
       _slug = slug,
-      _issueNumber = null;
+      _issueNumber = null,
+      state = IssueState.open.value;
 
   static const _classId = "com.GitDone.gitdone.core.models.task";
 
@@ -66,6 +71,9 @@ class Task {
   int? get issueNumber => _issueNumber;
   final int? _issueNumber;
 
+  /// The state of the task, e.g., "open" or "closed".
+  String state;
+
   /// Saves the current task to the remote repository.
   Future<Task> saveRemote() {
     if (_issueNumber == null) {
@@ -84,6 +92,7 @@ class Task {
           title: title,
           body: description,
           labels: labels.map((final label) => label.name).toList(),
+          state: state,
         ),
       )
       .then((final issue) {
@@ -99,6 +108,7 @@ class Task {
           title: title,
           body: description,
           labels: labels.map((final label) => label.name).toList(),
+          state: state,
         ),
       )
       .then((final issue) {
@@ -130,6 +140,7 @@ class Task {
     closedAt: closedAt,
     slug: _slug,
     issueNumber: _issueNumber,
+    issueState: IssueState.fromValue(state),
   );
 
   /// Replaces the current instance with the values from another to do instance.
@@ -139,6 +150,7 @@ class Task {
     labels = List<IssueLabel>.from(update.labels);
     updatedAt = update.updatedAt;
     closedAt = update.closedAt;
+    state = update.state;
   }
 
   @override

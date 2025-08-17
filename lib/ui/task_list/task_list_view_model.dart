@@ -6,6 +6,7 @@ import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
+import "package:gitdone/ui/_widgets/filter_chip/filter_chip_item.dart";
 import "package:gitdone/ui/task_details/task_details_view.dart";
 import "package:gitdone/ui/task_edit/task_edit_view.dart";
 import "package:github_flutter/github.dart";
@@ -21,13 +22,49 @@ class TaskListViewModel extends ChangeNotifier {
       ..loadLabels();
   }
 
+  /// Filter option: show only pending tasks.
+  static const String _filterPending = "Pending";
+
+  /// Filter option: show only completed tasks.
+  static const String _filterCompleted = "Completed";
+
+  /// All available filter options.
+  static const List<String> filterOptions = [_filterPending, _filterCompleted];
+
+  /// Sort option: sort tasks alphabetically.
+  static const String _sortAlphabetical = "Alphabetical";
+
+  /// Sort option: sort tasks by last updated.
+  static const String _sortLastUpdated = "Last updated";
+
+  /// Sort option: sort tasks by creation date.
+  static const String _sortCreated = "Created";
+
+  /// All available sort options.
+  static const List<String> sortOptions = [
+    _sortAlphabetical,
+    _sortLastUpdated,
+    _sortCreated,
+  ];
+
+  /// Default filter applied to the task list.
+  static const String defaultFilter = _filterPending;
+
+  /// Default sort order applied to the task list.
+  static const String defaultSort = _sortCreated;
+
   final TaskHandler _taskHandler = TaskHandler();
   final List<IssueLabel> _filterLabels = [];
   List<Task> _filteredTasks = [];
   String _searchQuery = "";
-  String _filter = "";
-  String _sort = "";
+
+  /// The current filter applied to the task list.
+  String _filter = defaultFilter;
+
+  /// The current sort order applied to the task list.
+  String _sort = defaultSort;
   bool _isEmpty = false;
+  bool _loading = true;
 
   static const _classId =
       "com.GitDone.gitdone.ui.task_edit.task_list_view_model";
@@ -35,11 +72,29 @@ class TaskListViewModel extends ChangeNotifier {
   /// The list of filtered tasks based on the current search query, filter, and sort.
   List<Task> get tasks => _filteredTasks;
 
-  /// The list of labels currently being filtered.
+  /// The list of all labels available in the repository.
   List<IssueLabel> get allLabels => _taskHandler.repoLabels;
+
+  /// The list of labels currently being used for filtering tasks.
+  List<IssueLabel> get filterLabels => _filterLabels;
 
   /// The list of labels used for filtering tasks.
   bool get isEmpty => _isEmpty;
+
+  /// Whether the task list is currently loading.
+  bool get isLoading => _loading;
+
+  /// Returns a list of FilterChipItems for all labels, reflecting current selection state.
+  List<FilterChipItem<String>> get labelFilterChipItems => allLabels.isNotEmpty
+      ? allLabels
+            .map(
+              (final label) => FilterChipItem<String>(
+                value: label.name,
+                selected: filterLabels.any((final l) => l.name == label.name),
+              ),
+            )
+            .toList()
+      : <FilterChipItem<String>>[];
 
   /// The list of labels currently being used for filtering.
   void updateLabels(final String label, {final bool selected = false}) {
@@ -79,8 +134,11 @@ class TaskListViewModel extends ChangeNotifier {
 
   /// The current search query used to filter tasks.
   Future<void> loadTasks() async {
+    _loading = true;
+    notifyListeners();
     await _taskHandler.loadTasks();
     _isEmpty = _taskHandler.tasks.isEmpty;
+    _loading = false;
     notifyListeners();
   }
 
@@ -106,9 +164,9 @@ class TaskListViewModel extends ChangeNotifier {
     final List<Task> tasks,
     final String filter,
   ) {
-    if (filter == "Completed") {
+    if (filter == _filterCompleted) {
       return tasks.where((final task) => task.closedAt != null).toList();
-    } else if (filter == "Pending") {
+    } else if (filter == _filterPending) {
       return tasks.where((final task) => task.closedAt == null).toList();
     }
     return tasks;
@@ -150,14 +208,14 @@ class TaskListViewModel extends ChangeNotifier {
 
   List<Task> _sortTasks(final List<Task> tasks, final String sort) =>
       switch (sort) {
-        "Alphabetical" =>
+        _sortAlphabetical =>
           tasks..sort(
             (final a, final b) =>
                 _sanitizeString(a.title).compareTo(_sanitizeString(b.title)),
           ),
-        "Last updated" =>
+        _sortLastUpdated =>
           tasks..sort((final a, final b) => b.updatedAt.compareTo(a.updatedAt)),
-        "Created" =>
+        _sortCreated =>
           tasks..sort((final a, final b) => b.createdAt.compareTo(a.createdAt)),
         _ => tasks,
       };

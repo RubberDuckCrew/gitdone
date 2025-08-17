@@ -8,7 +8,7 @@ on:
 
 env:
   FLUTTER_CHANNEL: stable
-  FLUTTER_VERSION: 3.32.0
+  FLUTTER_VERSION: 3.35.0
 
 jobs:
   test:
@@ -21,12 +21,12 @@ jobs:
 
     steps:
       - name: Checkout app repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: app
 
       - name: Clone Package Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: RubberDuckCrew/github_flutter
           path: github_flutter
@@ -65,12 +65,12 @@ jobs:
 
     steps:
       - name: Checkout app repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: app
 
       - name: Checkout github_flutter repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: RubberDuckCrew/github_flutter
           path: github_flutter

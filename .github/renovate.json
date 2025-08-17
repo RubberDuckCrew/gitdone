@@ -6,7 +6,7 @@
   "major": {
     "automerge": false
   },
-  "reviewers": ["team:development"],
+  "reviewers": ["team:gitdone-development"],
   "labels": [
     "📌 Dependencies"
   ],

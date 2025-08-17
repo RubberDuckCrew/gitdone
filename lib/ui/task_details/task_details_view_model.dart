@@ -8,30 +8,51 @@ import "package:gitdone/ui/task_edit/task_edit_view.dart";
 /// A view model for the task details view.
 class TaskDetailsViewModel extends ChangeNotifier {
   /// Creates a [TaskDetailsViewModel] with the given task item.
-  TaskDetailsViewModel(this._task);
+  TaskDetailsViewModel(this.task);
 
-  final Task _task;
+  /// The task item to be displayed in the view.
+  final Task task;
 
   static const _classId =
       "com.GitDone.gitdone.ui.task_details.task_details_view_model";
 
   /// Starts editing the task.
   Future<void> editTask() async {
-    Logger.log("Edit task: ${_task.title}", _classId, LogLevel.detailed);
-    final Task? updated = await Navigation.navigate(TaskEditView(_task));
+    Logger.log("Edit task: ${task.title}", _classId, LogLevel.detailed);
+    final Task? updated = await Navigation.navigate(TaskEditView(task));
     if (updated == null) {
       Logger.log("Task edit cancelled or failed", _classId, LogLevel.detailed);
       return;
     }
-    _task.replace(updated);
+    task.replace(updated);
     notifyListeners();
-    Logger.log("Task updated: ${_task.title}", _classId, LogLevel.detailed);
+    Logger.log("Task updated: ${task.title}", _classId, LogLevel.detailed);
   }
 
   /// Deletes the task.
   Future<void> deleteTask() async {
-    Logger.log("Delete task: ${_task.title}", _classId, LogLevel.detailed);
+    Logger.log("Delete task: ${task.title}", _classId, LogLevel.detailed);
     // TODO: Implement deletion confirmation dialog
-    TaskHandler().deleteTask(_task);
+    TaskHandler().deleteTask(task);
+  }
+
+  /// Marks the task as done.
+  Future<void> markTaskAsDone() async {
+    final Task updated = await TaskHandler().updateIssueState(
+      task,
+      IssueState.closed,
+    );
+    task.replace(updated);
+    notifyListeners();
+  }
+
+  /// Marks the task as open.
+  Future<void> markTaskAsOpen() async {
+    final Task updated = await TaskHandler().updateIssueState(
+      task,
+      IssueState.open,
+    );
+    task.replace(updated);
+    notifyListeners();
   }
 }

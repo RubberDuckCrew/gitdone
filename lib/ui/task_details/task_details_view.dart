@@ -1,6 +1,7 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/task.dart";
+import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
 import "package:gitdone/ui/_widgets/task_labels.dart";
@@ -49,10 +50,7 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: viewModel.editTask,
-          child: const Icon(Icons.edit),
-        ),
+        floatingActionButton: _renderFloatingActionButton(viewModel),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     ),
@@ -96,6 +94,27 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
       ],
     ),
   );
+
+  Widget _renderFloatingActionButton(final TaskDetailsViewModel viewModel) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton.small(
+            heroTag: "markTask",
+            onPressed: viewModel.task.state == IssueState.open.value
+                ? viewModel.markTaskAsDone
+                : viewModel.markTaskAsOpen,
+            child: viewModel.task.state == IssueState.open.value
+                ? const Icon(Icons.done)
+                : const Icon(Icons.undo),
+          ),
+          FloatingActionButton(
+            heroTag: "editTask",
+            onPressed: viewModel.editTask,
+            child: const Icon(Icons.edit),
+          ),
+        ],
+      );
 
   MenuItemButton _deleteTaskButton(final TaskDetailsViewModel viewModel) =>
       MenuItemButton(
