@@ -35,7 +35,7 @@ improvements.
 We welcome contributions!
 
 To keep things clean and consistent, please follow
-the [Contributing Conventions](https://github.com/RubberDuckCrew/gitdone/wiki/Contributing-Conventions).
+the [Contributing Conventions](https://rubberduckcrew.pages.dev/contributing/conventions).
 
 ### 🛠️ Development
 
