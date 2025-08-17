@@ -98,8 +98,7 @@ class TaskHandler extends ChangeNotifier {
     return task;
   }
 
-  /// Updates an existing task in the list of tasks. Notifies listeners
-  /// about the change.
+  /// Updates an existing task in the list of tasks. Notifies listeners about the change.
   /// Does not save the task to the remote repository!
   void updateLocalTask(final Task task) {
     final int index = _tasks.indexWhere(
@@ -113,6 +112,19 @@ class TaskHandler extends ChangeNotifier {
         "Task with id ${task.issueNumber} not found in local tasks",
         _classId,
       );
+    }
+  }
+
+  /// Deletes a task from the list of tasks. Notifies listeners about the change.
+  /// Also deletes the task from the remote repository.
+  /// If the task does not exist in the remote repository, it will be removed from the local list.
+  Future<void> deleteTask(final Task task) async {
+    try {
+      await task.deleteRemote();
+      _tasks.removeWhere((final t) => t.issueNumber == task.issueNumber);
+      notifyListeners();
+    } on Exception catch (e) {
+      Logger.logError("Failed to delete task", _classId, e);
     }
   }
 

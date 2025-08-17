@@ -1,5 +1,6 @@
 import "package:flutter/foundation.dart";
 import "package:gitdone/core/models/task.dart";
+import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/task_edit/task_edit_view.dart";
@@ -30,5 +31,7 @@ class TaskDetailsViewModel extends ChangeNotifier {
   /// Deletes the task.
   Future<void> deleteTask() async {
     Logger.log("Delete task: ${_task.title}", _classId, LogLevel.detailed);
+    // TODO: Implement deletion confirmation dialog
+    TaskHandler().deleteTask(_task);
   }
 }
