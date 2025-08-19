@@ -1,9 +1,12 @@
 name: Sync labels
 
 on:
+  schedule:
+    - cron: "0 3 * * 0"
   push:
-    branches: [ main ]
-    paths: [ ".github/labels.yml", ".github/workflows/sync-labels.yml" ]
+    branches: [main]
+    paths: [.github/workflows/sync-labels.yml]
+  workflow_dispatch:
 
 jobs:
   sync-labels:
@@ -14,13 +17,8 @@ jobs:
       issues: write
 
     steps:
-      - name: Checkout labels.yml
-        uses: actions/checkout@v5
-        with:
-          sparse-checkout: .github/labels.yml
-          sparse-checkout-cone-mode: false
-
       - name: Sync labels
         uses: srealmoreno/label-sync-action@v2.0.0
         with:
           clean-labels: true
+          config-file: https://raw.githubusercontent.com/RubberDuckCrew/.github/refs/heads/main/configs/conventions/labels.yml
