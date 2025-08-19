@@ -66,7 +66,7 @@ jobs:
     needs: test
     if: ${{ ( startsWith(github.ref, 'refs/tags/')
         || contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
-        || inputs.type == 'build' || inputs.type == 'size-analysis' )
+        || inputs.build-type == 'build' || inputs.build-type == 'size-analysis' )
         && !github.event.pull_request.head.repo.fork }}
     runs-on: ubuntu-latest
 
@@ -141,7 +141,7 @@ jobs:
         run: flutter build appbundle ${{ steps.build_options.outputs.build_args }}
 
       - name: Build APK for size analysis
-        if: inputs.type != 'size-analysis'
+        if: inputs.build-type != 'size-analysis'
         run: flutter build apk ${{ steps.build_options.outputs.build_args }} --analyze-size --target-platform android-arm64
 
       - name: Rename APK & App Bundle
@@ -169,7 +169,7 @@ jobs:
           path: app/build/app/symbols
 
       - name: Upload size analysis apk
-        if: inputs.type != 'size-analysis'
+        if: inputs.build-type != 'size-analysis'
         uses: actions/upload-artifact@v4
         with:
           name: Size Analysis APK ARM64
