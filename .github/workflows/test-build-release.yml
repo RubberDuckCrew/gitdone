@@ -109,25 +109,30 @@ jobs:
         working-directory: .
         run: |
           PROPERTIES_PATH="./app/android/key.properties"
-          echo keyPassword=\${{ secrets.KEY_STORE }} > $PROPERTIES_PATH
-          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> $PROPERTIES_PATH
-          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> $PROPERTIES_PATH
+          {
+            echo keyPassword=${{ secrets.KEY_STORE }}
+            echo storePassword=${{ secrets.KEY_PASSWORD }}
+            echo keyAlias=${{ secrets.KEY_ALIAS }}
+          } > $PROPERTIES_PATH
           echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
 
       - name: Set build options
         id: build_options
         run: |
-          SHA=${{ github.event.pull_request.head.sha || github.sha }}
-          SHORT_SHA=${SHA:0:7}
+          SHA="${{ github.event.pull_request.head.sha || github.sha }}"
+          SHORT_SHA="${SHA:0:7}"
           VERSION_NAME="$(echo "$GITHUB_REF_NAME" | tr / _)_$SHORT_SHA"
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+          if [[ "${GITHUB_REF}" == 'refs/tags/*' ]]; then
             FLAVOR="production"
           else
             FLAVOR="staging"
           fi
-          echo "flavor=$FLAVOR" >> $GITHUB_OUTPUT
-          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
-          echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA --obfuscate --split-debug-info=build/app/symbols" >> $GITHUB_OUTPUT
+          {
+            echo "flavor=$FLAVOR"
+            echo "version_name=$VERSION_NAME"
+            echo "build_args=--release --flavor $FLAVOR --dart-define=GIT_COMMIT=$SHORT_SHA
+                  --obfuscate --split-debug-info=build/app/symbols"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Build APK
         run: flutter build apk ${{ steps.build_options.outputs.build_args }}
