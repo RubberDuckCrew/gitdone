@@ -1,32 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "github>RubberDuckCrew/.github//configs/renovate/renovate-rubberduckcrew.json"
   ],
-  "major": {
-    "automerge": false
-  },
   "reviewers": ["team:gitdone-development"],
-  "labels": [
-    "📌 Dependencies"
-  ],
-  "commitMessagePrefix": "⬆️",
-  "commitMessageAction": "Upgrade",
   "packageRules": [
-    {
-      "matchUpdateTypes": [
-        "pin"
-      ],
-      "commitMessagePrefix": "📌",
-      "commitMessageAction": "Pin"
-    },
-    {
-      "matchUpdateTypes": [
-        "rollback"
-      ],
-      "commitMessagePrefix": "⬇️",
-      "commitMessageAction": "Downgrade"
-    },
     {
       "matchPackageNames": [
         "dev.flutter.flutter-plugin-loader",
@@ -35,9 +13,5 @@
       ],
       "enabled": false
     }
-  ],
-  "dependencyDashboardTitle": "📌 Dependency Dashboard",
-  "dependencyDashboardLabels": [
-    "📌 Dependencies"
   ]
 }
