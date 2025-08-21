@@ -36,7 +36,7 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Enforce pull request branch names
-        uses: IamPekka058/branchMatchRegex@v0
+        uses: IamPekka058/branchMatchRegex@v1
         with:
           path: .github/branches.yml
           useWildcard: true
