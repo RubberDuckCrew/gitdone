@@ -23,51 +23,89 @@ class _LoginTokenViewState extends State<LoginTokenView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const PageTitleWidget(title: "Personal Access Token Login"),
-          RichText(
-            text: TextSpan(
-              style: const TextStyle(fontSize: 18),
-              children: <TextSpan>[
-                const TextSpan(
-                  text:
-                      "You need to generate a personal access token from GitHub and enter it here. You can either use an fine-grained personal access token (recommended) or a classic personal access token.\n\n",
-                ),
-                const TextSpan(
-                  text: "Required Token Permissions:\n",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const TextSpan(
-                  text:
-                      "To use GitDone, you need to grant the following permissions to your token:\n\n",
-                  children: [
-                    TextSpan(text: "• Fine-grained token (recommended): "),
-                    TextSpan(
-                      text: "Repository: Issues, Metadata, Account: Profile\n",
-                      style: TextStyle(fontFamily: "monospace"),
-                    ),
-                    TextSpan(text: "• Classic token: "),
-                    TextSpan(
-                      text: "repo, read:user",
-                      style: TextStyle(fontFamily: "monospace"),
-                    ),
-                  ],
-                ),
-                const TextSpan(
-                  text: "GitHub Documentation:\n",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                  children: <TextSpan>[
-                    TextLinkWidget(
-                      text: "Creating a fine-grained personal access token\n",
-                      url:
-                          "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token",
-                    ).toTextSpan(),
-                    TextLinkWidget(
-                      text: "Creating a personal access token (classic)\n",
-                      url:
-                          "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic",
-                    ).toTextSpan(),
-                  ],
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    style: const TextStyle(fontSize: 18),
+                    children: <TextSpan>[
+                      const TextSpan(
+                        text:
+                            "To login via Token, "
+                            "you need to generate a GitHub personal access token. "
+                            "We recommend using a fine-grained personal access token, "
+                            "but a classic token is also supported.\n\n",
+                      ),
+                      const TextSpan(
+                        text: "Required Token Permissions:\n",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      // Fine-grained token
+                      const TextSpan(
+                        text: "\n• Fine-grained token (recommended): ",
+                      ),
+                      const TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Repository: Issues, Metadata",
+                            style: TextStyle(fontFamily: "monospace"),
+                          ),
+                          TextSpan(text: ", "),
+                          TextSpan(
+                            text: "Account: Profile\n",
+                            style: TextStyle(fontFamily: "monospace"),
+                          ),
+
+                          TextSpan(text: "\n"),
+                        ],
+                      ),
+                      // Classic token
+                      const TextSpan(text: "• Classic token: "),
+                      const TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "repo",
+                            style: TextStyle(fontFamily: "monospace"),
+                          ),
+                          TextSpan(text: ", "),
+                          TextSpan(
+                            text: "read:user",
+                            style: TextStyle(fontFamily: "monospace"),
+                          ),
+                          TextSpan(text: "\n\n"),
+                        ],
+                      ),
+                      const TextSpan(
+                        text:
+                            "For more information, see the GitHub documentation.\n\n",
+                      ),
+                      const TextSpan(
+                        text: "GitHub Documentation:\n",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        children: <TextSpan>[
+                          TextLinkWidget(
+                            text:
+                                "Creating a fine-grained personal access token\n",
+                            url:
+                                "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/"
+                                "managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token",
+                          ).toTextSpan(),
+                          TextLinkWidget(
+                            text:
+                                "Creating a personal access token (classic)\n",
+                            url:
+                                "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/"
+                                "managing-your-personal-access-tokens#creating-a-personal-access-token-classic",
+                          ).toTextSpan(),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
