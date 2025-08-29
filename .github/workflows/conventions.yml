@@ -2,7 +2,7 @@ name: Enforce conventions
 
 on:
   pull_request_target:
-    types: [ opened, labeled, unlabeled, synchronize ]
+    types: [ opened, labeled, unlabeled ]
 
 jobs:
   enforce-labels:
@@ -19,10 +19,10 @@ jobs:
         with:
           mode: minimum
           count: 1
-          labels: "^(?!🚧 Work in Progress$).+"
+          labels: "^(?!(⚗️ Request Build$|💬 Discussion$|❓ Question$|❌ Wontfix$|🔄 Duplicate$|🚧 Work in Progress$)).+" # Exclude meta labels (do not describe PR content)
           use_regex: true
           add_comment: true
-          message: "You need to assign at least one label before merging this pull request."
+          message: "🏷️ Please assign at least one label to this pull request before requesting a review. See our [contributing conventions](https://rubberduckcrew.pages.dev/contributing/conventions) for details."
 
   enforce-branch-names:
     name: Enforce pull request branch names
@@ -36,7 +36,7 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Enforce pull request branch names
-        uses: IamPekka058/branchMatchRegex@v0
+        uses: IamPekka058/branchMatchRegex@v1
         with:
-          path: .github/branches.yml
+          inputPath: https://raw.githubusercontent.com/RubberDuckCrew/.github/refs/heads/main/configs/conventions/branches.yml
           useWildcard: true
