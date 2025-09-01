@@ -29,14 +29,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout branches.yml
-        uses: actions/checkout@v5
-        with:
-          sparse-checkout: .github/branches.yml
-          sparse-checkout-cone-mode: false
-
       - name: Enforce pull request branch names
         uses: IamPekka058/branchMatchRegex@v1
         with:
-          inputPath: https://raw.githubusercontent.com/RubberDuckCrew/.github/refs/heads/main/configs/conventions/branches.yml
+          path: https://raw.githubusercontent.com/RubberDuckCrew/.github/refs/heads/main/configs/conventions/branches.yml
           useWildcard: true
