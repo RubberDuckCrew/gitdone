@@ -87,11 +87,6 @@ body:
     validations:
       required: false
 
-  # Confirmations
-  - type: markdown
-    attributes:
-      value: "## Confirmations"
-
   # No duplicate issue
   - type: checkboxes
     id: check-duplicate
