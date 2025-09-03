@@ -1,0 +1,27 @@
+{
+    "name": "gitdone",
+    "version": "1.0.0",
+    "description": "Store your todos in GitHub issues",
+    "homepage": "https://github.com/RubberDuckCrew/gitdone#readme",
+    "bugs": {
+        "url": "https://github.com/RubberDuckCrew/gitdone/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/RubberDuckCrew/gitdone.git"
+    },
+    "license": "MIT",
+    "author": "RubberDuckCrew",
+    "type": "module",
+    "scripts": {
+        "dev": "vitepress dev",
+        "build": "vitepress build",
+        "preview": "vitepress preview"
+    },
+    "devDependencies": {
+        "vitepress": "^1.6.4"
+    },
+    "overrides": {
+        "esbuild": "^0.25.0"
+    }
+}
