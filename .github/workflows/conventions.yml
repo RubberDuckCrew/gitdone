@@ -33,4 +33,4 @@ jobs:
         uses: IamPekka058/branchMatchRegex@v2
         with:
           path: https://raw.githubusercontent.com/RubberDuckCrew/.github/refs/heads/main/configs/conventions/branches.yml
-          useWildcard: true
+          useWildcardPatterns: true
