@@ -141,7 +141,7 @@ jobs:
         run: flutter build appbundle ${{ steps.build_options.outputs.build_args }}
 
       - name: Build APK for size analysis
-        if: inputs.build-type != 'size-analysis'
+        if: inputs.build-type == 'size-analysis'
         run: flutter build apk ${{ steps.build_options.outputs.build_args }} --analyze-size --target-platform android-arm64
 
       - name: Rename APK & App Bundle
