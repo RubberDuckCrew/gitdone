@@ -33,7 +33,8 @@ class TaskDetailsViewModel extends ChangeNotifier {
   Future<void> deleteTask() async {
     Logger.log("Delete task: ${task.title}", _classId, LogLevel.detailed);
     // TODO(all): Implement deletion confirmation dialog
-    TaskHandler().deleteTask(task);
+    await TaskHandler().deleteTask(task);
+    Navigation.navigateBack();
   }
 
   /// Marks the task as done.
