@@ -2,7 +2,9 @@ import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/task_handler.dart";
+import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
+import "package:gitdone/ui/_widgets/confirm_dialog.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
 import "package:gitdone/ui/_widgets/task_labels.dart";
 import "package:gitdone/ui/task_details/task_details_view_model.dart";
@@ -118,7 +120,23 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
 
   MenuItemButton _deleteTaskButton(final TaskDetailsViewModel viewModel) =>
       MenuItemButton(
-        onPressed: viewModel.deleteTask,
+        onPressed: () => ConfirmDialog.show(
+          context,
+          title: const Text("Delete Task"),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text("Are you sure you want to delete this task?"),
+                Text("This action cannot be undone."),
+              ],
+            ),
+          ),
+          confirmText: "Delete",
+          onConfirm: () async {
+            await viewModel.deleteTask();
+            Navigation.navigateBack();
+          },
+        ),
         child: const Text("Delete Task"),
       );
 

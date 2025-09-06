@@ -4,6 +4,7 @@ import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/task_edit/task_edit_view.dart";
+import "package:gitdone/ui/task_list/task_list_view.dart";
 
 /// A view model for the task details view.
 class TaskDetailsViewModel extends ChangeNotifier {
@@ -34,7 +35,7 @@ class TaskDetailsViewModel extends ChangeNotifier {
     Logger.log("Delete task: ${task.title}", _classId, LogLevel.detailed);
     // TODO(all): Implement deletion confirmation dialog
     await TaskHandler().deleteTask(task);
-    Navigation.navigateBack();
+    Navigation.navigateReplace(const TaskListView());
   }
 
   /// Marks the task as done.
