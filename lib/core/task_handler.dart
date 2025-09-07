@@ -118,14 +118,16 @@ class TaskHandler extends ChangeNotifier {
   /// Deletes a task from the list of tasks. Notifies listeners about the change.
   /// Also deletes the task from the remote repository.
   /// If the task does not exist in the remote repository, it will be removed from the local list.
-  Future<void> deleteTask(final Task task) async {
+  Future<bool> deleteTask(final Task task) async {
     try {
       await task.deleteRemote();
       _tasks.removeWhere((final t) => t.issueNumber == task.issueNumber);
       notifyListeners();
+      return true;
     } on Exception catch (e) {
       Logger.logError("Failed to delete task", _classId, e);
     }
+    return false;
   }
 
   Future<List<Task>> _fetchIssuesForRepository(

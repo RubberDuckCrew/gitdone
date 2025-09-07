@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/navigation.dart";
+import "package:gitdone/core/utils/snack_bar.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/_widgets/confirm_dialog.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
@@ -133,8 +134,20 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
           ),
           confirmText: "Delete",
           onConfirm: () async {
-            await viewModel.deleteTask();
-            Navigation.navigateBack();
+            final bool success = await viewModel.deleteTask();
+            if (!mounted) return;
+            if (success) {
+              SnackBarUtils.show(
+                context: context,
+                message: "Task deleted successfully.",
+              );
+              Navigation.navigateBack();
+            } else {
+              SnackBarUtils.show(
+                context: context,
+                message: "Failed to delete task.",
+              );
+            }
           },
         ),
         child: const Text("Delete Task"),
