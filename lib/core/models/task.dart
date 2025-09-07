@@ -116,6 +116,20 @@ class Task {
         return Task.fromIssue(issue, slug);
       });
 
+  /// Deletes the issue from the remote repository.
+  Future<void> deleteRemote() async {
+    if (_issueNumber == null) {
+      Logger.logWarning(
+        "Cannot delete issue $_issueNumber, it does not exist",
+        _classId,
+      );
+      return;
+    }
+    Logger.logInfo("Deleting issue $_issueNumber", _classId);
+    await (await GithubModel.github).issues.deleteIssue(_slug, _issueNumber);
+    Logger.logInfo("Successfully deleted issue $_issueNumber", _classId);
+  }
+
   /// Creates a copy of the current instance.
   Task copy() => Task(
     title: title,
