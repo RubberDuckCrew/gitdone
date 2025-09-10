@@ -227,7 +227,6 @@ jobs:
 
       - name: Zip symbols folder
         run: |
-          cd build-artifacts
           zip -r "GitDone_${{ needs.build.outputs.version_name }}_Symbols.zip" symbols
 
       - name: Release artifacts
