@@ -214,11 +214,6 @@ jobs:
         with:
           name: GitDone ${{ needs.build.outputs.version_name }} AAB
 
-      - name: Download symbols artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: GitDone ${{ needs.build.outputs.version_name }} Symbols
-
       - name: Release artifacts
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
