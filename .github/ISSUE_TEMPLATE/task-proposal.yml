@@ -1,0 +1,40 @@
+name: 📋 Task
+description: Propose a piece of work or activity for the project.
+type: task
+body:
+  # Greetings
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this task proposal!
+        To expedite issue processing, please search open and closed issues before submitting a new one.
+
+  # Task
+  - type: textarea
+    id: task
+    attributes:
+      label: 📋 Task
+      description: Describe the task, activity, or work to be done.
+      placeholder: e.g. "Update documentation for new API endpoints."
+    validations:
+      required: true
+
+  # No duplicate issue
+  - type: checkboxes
+    id: check-duplicate
+    attributes:
+      label: No duplicate issue
+      description: By submitting this issue, you confirm that you have checked for open and closed issues addressing the same task beforehand.
+      options:
+        - label: I confirm that this issue is not a duplicate
+          required: true
+
+  # Code of Conduct
+  - type: checkboxes
+    id: conduct
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://rubberduckcrew.pages.dev/contributing/code-of-conduct).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
