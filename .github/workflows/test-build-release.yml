@@ -165,7 +165,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: GitDone ${{ steps.build_options.outputs.version_name }} Symbols
-          path: build/app/symbols/
+          path: build/app/symbols
 
       - name: Upload size analysis apk
         if: inputs.build-type == 'size-analysis'
