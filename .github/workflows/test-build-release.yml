@@ -175,6 +175,9 @@ jobs:
           name: Size Analysis APK ARM64
           path: /home/runner/.flutter-devtools/apk-code-size-analysis_01.json
 
+      - name: List directories
+        run: find . -type d
+
   post-request:
     name: Post requested build and size analysis
     needs: build
