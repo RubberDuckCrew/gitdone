@@ -238,4 +238,4 @@ jobs:
           files: |
             GitDone_${{ needs.build.outputs.version_name }}.apk
             GitDone_${{ needs.build.outputs.version_name }}.aab
-            GitDone ${{ needs.build.outputs.version_name }} Symbols.zip
+            GitDone_${{ needs.build.outputs.version_name }}_Symbols.zip
