@@ -225,6 +225,9 @@ jobs:
         with:
           name: GitDone ${{ needs.build.outputs.version_name }} Symbols
 
+      - name: Show files
+        run: find . -type d
+
       - name: Zip symbols folder
         run: |
           zip -r "GitDone_${{ needs.build.outputs.version_name }}_Symbols.zip" symbols
