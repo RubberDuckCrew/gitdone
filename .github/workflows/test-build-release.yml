@@ -177,9 +177,6 @@ jobs:
           name: Size Analysis APK ARM64
           path: /home/runner/.flutter-devtools/apk-code-size-analysis_01.json
 
-      - name: List directories
-        run: find . -type d
-
   post-request:
     name: Post requested build and size analysis
     needs: build
@@ -222,6 +219,16 @@ jobs:
         with:
           name: GitDone ${{ needs.build.outputs.version_name }} AAB
 
+      - name: Download symbols artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: GitDone ${{ needs.build.outputs.version_name }} Symbols
+
+      - name: Zip symbols folder
+        run: |
+          cd build-artifacts
+          zip -r symbols.zip symbols
+
       - name: Release artifacts
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
@@ -230,3 +237,4 @@ jobs:
           files: |
             GitDone_${{ needs.build.outputs.version_name }}.apk
             GitDone_${{ needs.build.outputs.version_name }}.aab
+            symbols.zip
