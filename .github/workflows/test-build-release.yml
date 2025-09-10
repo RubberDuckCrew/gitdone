@@ -207,12 +207,17 @@ jobs:
       - name: Download APK artifact
         uses: actions/download-artifact@v5
         with:
-          name: GitDone_${{ needs.build.outputs.version_name }}.apk
+          name: GitDone ${{ needs.build.outputs.version_name }} APK
 
       - name: Download app bundle artifact
         uses: actions/download-artifact@v5
         with:
-          name: GitDone_${{ needs.build.outputs.version_name }}.aab
+          name: GitDone ${{ needs.build.outputs.version_name }} AAB
+
+      - name: Download symbols artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: GitDone ${{ needs.build.outputs.version_name }} Symbols
 
       - name: Release artifacts
         if: startsWith(github.ref, 'refs/tags/')
