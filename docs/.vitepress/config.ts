@@ -11,12 +11,12 @@ export default defineConfig({
         nav: [
             { text: "Home", link: "/" },
             {
-                text: "Contributing",
-                link: "/contributing",
-            },
-            {
                 text: "Development",
                 items: [
+                    {
+                        text: "Contributing",
+                        link: "/development/contributing",
+                    },
                     {
                         text: "App Icon Generation",
                         link: "/development/app-icon-generation",
@@ -24,19 +24,24 @@ export default defineConfig({
                 ],
             },
             {
-                text: "Repository",
-                link: "https://github.com/RubberDuckCrew/gitdone",
+                text: "Concepts",
+                items: [
+                    {
+                        text: "MVVM Pattern",
+                        link: "/concepts/mvvm",
+                    },
+                ],
             },
         ],
 
         sidebar: [
             {
-                text: "Contributing",
-                link: "/contributing",
-            },
-            {
                 text: "Development",
                 items: [
+                    {
+                        text: "Contributing",
+                        link: "/development/contributing",
+                    },
                     {
                         text: "App Icon Generation",
                         link: "/development/app-icon-generation",
@@ -44,8 +49,13 @@ export default defineConfig({
                 ],
             },
             {
-                text: "Repository",
-                link: "https://github.com/RubberDuckCrew/gitdone",
+                text: "Concepts",
+                items: [
+                    {
+                        text: "MVVM Pattern",
+                        link: "/concepts/mvvm",
+                    },
+                ],
             },
         ],
         editLink: {
