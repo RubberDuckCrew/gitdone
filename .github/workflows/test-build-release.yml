@@ -227,7 +227,7 @@ jobs:
 
       - name: Zip symbols folder
         run: |
-          zip -r "GitDone_${{ needs.build.outputs.version_name }}_Symbols.zip" *.symbols
+          zip -r "GitDone_${{ needs.build.outputs.version_name }}_Symbols.zip" ./*.symbols
 
       - name: Release artifacts
         if: startsWith(github.ref, 'refs/tags/')
