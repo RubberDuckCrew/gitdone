@@ -18,8 +18,8 @@ export default defineConfig({
                         link: "/development/contributing",
                     },
                     {
-                        text: "App Icon Generation",
-                        link: "/development/app-icon-generation",
+                        text: "App icons",
+                        link: "/development/app-icons",
                     },
                 ],
             },
@@ -43,8 +43,8 @@ export default defineConfig({
                         link: "/development/contributing",
                     },
                     {
-                        text: "App Icon Generation",
-                        link: "/development/app-icon-generation",
+                        text: "App icons",
+                        link: "/development/app-icons",
                     },
                 ],
             },
