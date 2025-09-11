@@ -3,22 +3,10 @@ name: Sync labels
 on:
   schedule:
     - cron: "0 3 * * 0"
-  push:
-    branches: [main]
-    paths: [.github/workflows/sync-labels.yml]
   workflow_dispatch:
 
 jobs:
-  sync-labels:
-    name: Sync labels
-    runs-on: ubuntu-latest
-
+  run:
+    uses: RubberDuckCrew/.github/.github/workflows/action-sync-labels.yml@main
     permissions:
       issues: write
-
-    steps:
-      - name: Sync labels
-        uses: srealmoreno/label-sync-action@v2.0.0
-        with:
-          clean-labels: true
-          config-file: https://raw.githubusercontent.com/RubberDuckCrew/.github/refs/heads/main/configs/conventions/labels.yml
