@@ -122,11 +122,7 @@ jobs:
           SHA="${{ github.event.pull_request.head.sha || github.sha }}"
           SHORT_SHA="${SHA:0:7}"
           VERSION_NAME="$(echo "$GITHUB_REF_NAME" | tr / _)_$SHORT_SHA"
-          if [[ "${GITHUB_REF}" == 'refs/tags/*' ]]; then
-            FLAVOR="production"
-          else
-            FLAVOR="staging"
-          fi
+          FLAVOR="${{ startsWith(github.ref, 'refs/tags/') && 'production' || 'staging' }}"
           {
             echo "flavor=$FLAVOR"
             echo "version_name=$VERSION_NAME"
