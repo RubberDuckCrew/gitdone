@@ -14,7 +14,7 @@ hero:
           link: https://github.com/RubberDuckCrew/gitdone
         - theme: alt
           text: Contributing
-          link: /contributing
+          link: /development/contributing
 
 features:
     - title: Task Management
