@@ -1,4 +1,4 @@
-# App Icon Generation
+# App icons
 
 The app icons are generated using [IconKitchen](https://icon.kitchen).
 
