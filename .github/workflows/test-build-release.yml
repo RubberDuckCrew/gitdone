@@ -105,15 +105,16 @@ jobs:
         run: flutter pub get
 
       - name: Set up keystore
-        working-directory: .
+        id: keystore
+        if: github.repository == 'RubberDuckCrew/gitdone'
         run: |
-          PROPERTIES_PATH="./app/android/key.properties"
           {
             echo keyPassword=${{ secrets.KEY_STORE }}
             echo storePassword=${{ secrets.KEY_PASSWORD }}
             echo keyAlias=${{ secrets.KEY_ALIAS }}
-          } > $PROPERTIES_PATH
-          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > app/android/app/key.jks
+          } > android/key.properties
+          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > android/app/key.jks
+          echo "signing_available=true" >> "$GITHUB_OUTPUT"
 
       - name: Set build options
         id: build_options
@@ -122,7 +123,7 @@ jobs:
           SHORT_SHA="${SHA:0:7}"
           VERSION_NAME="$(echo "$GITHUB_REF_NAME" | tr / _)_$SHORT_SHA"
           FLAVOR="${{ startsWith(github.ref, 'refs/tags/') && 'production' || 'staging' }}"
-          SKIP_SIGN="${{ github.repository != 'RubberDuckCrew/gitdone' && '-PskipSigning=true' || '' }}"
+          SKIP_SIGN="${{ steps.keystore.outputs.signing_available }} != 'true' && '-PskipSigning=true' || '' }}"
           {
             echo "flavor=$FLAVOR"
             echo "version_name=$VERSION_NAME"
