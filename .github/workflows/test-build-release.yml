@@ -139,14 +139,11 @@ jobs:
         if: inputs.build-type == 'size-analysis'
         run: flutter build apk ${{ steps.build_options.outputs.build_args }} --analyze-size --target-platform android-arm64
 
-      - name: Rename APK & App Bundle
+      - name: Rename build artifacts
         run: |
           mkdir -p ../build-artifacts
           mv build/app/outputs/flutter-apk/app-${{ steps.build_options.outputs.flavor }}-release.apk ../build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.apk
           mv build/app/outputs/bundle/${{ steps.build_options.outputs.flavor }}Release/app-${{ steps.build_options.outputs.flavor }}-release.aab ../build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
-
-      - name: Rename symbols folder
-        run: |
           mv build/app/symbols ../build-artifacts/symbols
 
       - name: Upload APK
