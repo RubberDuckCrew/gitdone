@@ -9,8 +9,9 @@ android {
     namespace = "com.GitDone.gitdone"
     compileSdk = flutter.compileSdkVersion
     // Some packages require a higher ndk version than the default one provided by Flutter.
-    //ndkVersion = flutter.ndkVersion
     ndkVersion = "27.2.12479018"
+    // ndkVersion = flutter.ndkVersion
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
@@ -27,24 +28,33 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
-    def keystoreProperties = new Properties()
-    def keystorePropertiesFile = rootProject.file('key.properties')
-    if (keystorePropertiesFile.exists()) {
-        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-    }
+
+    // Control signing via -PskipSigning=true
+    def skipSigning = project.hasProperty("skipSigning") && project.getProperty("skipSigning") == "true"
+
     signingConfigs {
-        create("release") {
-            storeFile = file('key.jks')
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storePassword keystoreProperties['storePassword']
+        if (!skipSigning) {
+            create("release") {
+                def keystoreProperties = new Properties()
+                keystoreProperties.load(new FileInputStream(rootProject.file("key.properties")))
+                storeFile = file("key.jks")
+                keyAlias keystoreProperties["keyAlias"]
+                keyPassword keystoreProperties["keyPassword"]
+                storePassword keystoreProperties["storePassword"]
+            }
         }
     }
+
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+            if (!skipSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            } else {
+                println "Building unsigned release (signing skipped)."
+            }
         }
     }
+
     flavorDimensions += "default"
     productFlavors {
         create("development") {
