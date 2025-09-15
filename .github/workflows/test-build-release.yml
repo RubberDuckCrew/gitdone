@@ -106,7 +106,7 @@ jobs:
 
       - name: Set up keystore
         id: keystore
-        if: github.repository == 'RubberDuckCrew/gitdone'
+        if: github.repository == 'RubberDuckCrew/gitdone' && github.event.pull_request.head.repo.fork == false
         run: |
           {
             echo keyPassword=${{ secrets.KEY_STORE }}
