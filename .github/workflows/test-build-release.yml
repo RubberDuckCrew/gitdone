@@ -173,9 +173,9 @@ jobs:
           path: /home/runner/.flutter-devtools/apk-code-size-analysis_01.json
 
   post-request:
-    name: Post requested build and size analysis
+    name: Post requested build
     needs: build
-    if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
+    if: contains(github.event.pull_request.labels.*.name, '⚗️ Request Build') && github.event.pull_request.head.repo.fork == false
     runs-on: ubuntu-latest
 
     permissions:
