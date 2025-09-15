@@ -8,7 +8,9 @@ plugins {
 android {
     namespace = "com.GitDone.gitdone"
     compileSdk = flutter.compileSdkVersion
+    // Some packages require a higher ndk version than the default one provided by Flutter.
     ndkVersion = "27.2.12479018"
+    // ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
