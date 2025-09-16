@@ -17,6 +17,10 @@ on:
           - build
           - size-analysis
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Format, analyze and test
