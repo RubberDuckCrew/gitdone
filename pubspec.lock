@@ -211,9 +211,10 @@ packages:
   github_flutter:
     dependency: "direct main"
     description:
-      path: "../github_flutter"
-      relative: true
-    source: path
+      name: github_flutter
+      sha256: "2d908980b24295f1401f28cb4d67c9eb42b34946d23e29bd2408fd42d11c1f54"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.1"
   gql:
     dependency: transitive
