@@ -17,9 +17,9 @@ on:
           - build
           - size-analysis
 
-env:
-  FLUTTER_CHANNEL: stable
-  FLUTTER_VERSION: 3.35.3
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -45,8 +45,6 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
       - name: Install pub dependencies
@@ -91,8 +89,6 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
       - name: Set up JDK
