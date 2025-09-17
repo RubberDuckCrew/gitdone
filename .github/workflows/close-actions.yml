@@ -2,30 +2,15 @@ name: Close Actions
 
 on:
   issues:
-    types: [ closed ]
+    types: [closed]
   pull_request:
-    types: [ closed ]
+    types: [closed]
 
 jobs:
-  close-actions:
-    name: Close actions
-    runs-on: ubuntu-latest
-
+  run:
+    uses: RubberDuckCrew/.github/.github/workflows/action-close-actions.yml@main
+    secrets: inherit
     permissions:
       issues: write
       pull-requests: write
       actions: write
-
-    steps:
-      - name: Remove labels
-        uses: IamPekka058/removeLabels@v2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: "🚧 Work in Progress"
-
-      - name: Delete branch caches
-        if: github.event_name == 'pull_request'
-        uses: Friedinger/DeleteBranchCaches@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          ref: "refs/pull/${{ github.event.pull_request.number }}/merge"
