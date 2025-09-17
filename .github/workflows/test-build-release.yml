@@ -17,10 +17,13 @@ on:
           - build
           - size-analysis
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Format, analyze and test
-    if: (github.event.action == 'labeled') == contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
     runs-on: ubuntu-latest
 
     defaults:
