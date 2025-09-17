@@ -1,24 +1,21 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
-    id "com.android.application"
-    id "kotlin-android"
+    id("com.android.application")
+    id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "dev.flutter.flutter-gradle-plugin"
+    id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
     namespace = "com.GitDone.gitdone"
     compileSdk = flutter.compileSdkVersion
-    // Some packages require a higher ndk version than the default one provided by Flutter.
     ndkVersion = "27.2.12479018"
-    // ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_21
     }
 
     defaultConfig {
@@ -29,18 +26,21 @@ android {
         versionName = flutter.versionName
     }
 
-    // Control signing via -PskipSigning=true
-    def skipSigning = project.hasProperty("skipSigning") && project.getProperty("skipSigning") == "true"
+    // Signing via -PskipSigning=true
+    val skipSigning = project.hasProperty("skipSigning") && project.property("skipSigning") == "true"
 
     signingConfigs {
         if (!skipSigning) {
             create("release") {
-                def keystoreProperties = new Properties()
-                keystoreProperties.load(new FileInputStream(rootProject.file("key.properties")))
+                val keystoreProperties = Properties()
+                val keystorePropertiesFile = rootProject.file("key.properties")
+                if (keystorePropertiesFile.exists()) {
+                    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+                }
                 storeFile = file("key.jks")
-                keyAlias keystoreProperties["keyAlias"]
-                keyPassword keystoreProperties["keyPassword"]
-                storePassword keystoreProperties["storePassword"]
+                keyAlias = keystoreProperties["keyAlias"] as? String
+                keyPassword = keystoreProperties["keyPassword"] as? String
+                storePassword = keystoreProperties["storePassword"] as? String
             }
         }
     }
@@ -50,7 +50,7 @@ android {
             if (!skipSigning) {
                 signingConfig = signingConfigs.getByName("release")
             } else {
-                println "Building unsigned release (signing skipped)."
+                println("Building unsigned release (signing skipped).")
             }
         }
     }
@@ -60,16 +60,16 @@ android {
         create("development") {
             dimension = "default"
             applicationIdSuffix = ".dev"
-            resValue "string", "app_name", "GitDone Dev"
+            resValue("string", "app_name", "GitDone Dev")
         }
         create("staging") {
             dimension = "default"
             applicationIdSuffix = ".stg"
-            resValue "string", "app_name", "GitDone Test"
+            resValue("string", "app_name", "GitDone Test")
         }
         create("production") {
             dimension = "default"
-            resValue "string", "app_name", "GitDone"
+            resValue("string", "app_name", "GitDone")
         }
     }
 }
