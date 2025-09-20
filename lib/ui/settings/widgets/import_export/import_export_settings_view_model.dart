@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:gitdone/core/settings_handler.dart';
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:gitdone/core/settings_handler.dart";
 import "package:gitdone/core/utils/snack_bar.dart";
 
 /// ViewModel for importing and exporting settings.

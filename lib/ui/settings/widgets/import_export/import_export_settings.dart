@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:gitdone/core/utils/navigation.dart";
-import "package:gitdone/ui/settings/widgets/import_export_settings_view_model.dart";
+import "package:gitdone/ui/settings/widgets/import_export/import_export_settings_view_model.dart";
 
 /// A widget that provides buttons to import and export application settings.
 class ImportExportSettings extends StatelessWidget {
