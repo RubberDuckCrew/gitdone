@@ -44,7 +44,7 @@ jobs:
       - name: Sync Dart SDK version
         uses: IamPekka058/flutter-dart-sync@v0
         with:
-          pubspec_path: ./pubspec.yaml
+          pubspec_path: app/pubspec.yaml
 
       - name: Install pub dependencies
         run: flutter pub get
@@ -87,7 +87,7 @@ jobs:
       - name: Sync Dart SDK version
         uses: IamPekka058/flutter-dart-sync@v0
         with:
-          pubspec_path: ./pubspec.yaml
+          pubspec_path: app/pubspec.yaml
 
       - name: Set up JDK
         uses: actions/setup-java@v5
