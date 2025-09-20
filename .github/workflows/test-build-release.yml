@@ -32,12 +32,12 @@ jobs:
 
     steps:
       - name: Checkout app repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           path: app
 
       - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@fd55f4c5af5b953cc57a2be44cb082c8f6635e8e # v2
         with:
           cache: true
 
@@ -75,12 +75,12 @@ jobs:
 
     steps:
       - name: Checkout app repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           path: app
 
       - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@fd55f4c5af5b953cc57a2be44cb082c8f6635e8e # v2
         with:
           cache: true
 
@@ -90,7 +90,7 @@ jobs:
           pubspec_path: app/pubspec.yaml
 
       - name: Set up JDK
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
         with:
           distribution: 'temurin'
           java-version: '21'
@@ -142,26 +142,26 @@ jobs:
           mv build/app/symbols ../build-artifacts/symbols
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: GitDone ${{ steps.build_options.outputs.version_name }} APK
           path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.apk
 
       - name: Upload app bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: GitDone ${{ steps.build_options.outputs.version_name }} AAB
           path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
 
       - name: Upload symbols file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: GitDone ${{ steps.build_options.outputs.version_name }} Symbols
           path: build-artifacts/symbols
 
       - name: Upload size analysis apk
         if: inputs.build-type == 'size-analysis'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: Size Analysis APK ARM64
           path: /home/runner/.flutter-devtools/apk-code-size-analysis_01.json
@@ -177,13 +177,13 @@ jobs:
 
     steps:
       - name: Remove build request label
-        uses: IamPekka058/removeLabels@v2
+        uses: IamPekka058/removeLabels@82c8d070189f04448d6ffe291a0e398c2a749a09 # v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: '⚗️ Request Build'
 
       - name: Comment artifact links
-        uses: RubberDuckCrew/artifact2pr@v1
+        uses: RubberDuckCrew/artifact2pr@bc4223cc428e7f58d4278de0372c679688710aa4 # v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           comment-if-no-artifacts: true
@@ -199,17 +199,17 @@ jobs:
 
     steps:
       - name: Download APK artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
           name: GitDone ${{ needs.build.outputs.version_name }} APK
 
       - name: Download app bundle artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
           name: GitDone ${{ needs.build.outputs.version_name }} AAB
 
       - name: Download symbols artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
           name: GitDone ${{ needs.build.outputs.version_name }} Symbols
 
@@ -219,7 +219,7 @@ jobs:
 
       - name: Release artifacts
         if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@6cbd405e2c4e67a21c47fa9e383d020e4e28b836 # v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: |
