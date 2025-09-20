@@ -112,4 +112,60 @@ class SettingsHandler extends ChangeNotifier {
       Logger.logError("Failed to clear settings", _classId, e);
     }
   }
+
+  /// Exports all settings as a JSON string.
+  Future<String> exportSettings() async {
+    _ensurePrefsInitialized();
+    try {
+      final Set<String> allKeys = _prefs!.getKeys();
+      final Map<String, dynamic> settingsMap = {};
+      for (final key in allKeys) {
+        final Object? value = _prefs!.get(key);
+        settingsMap[key] = value;
+      }
+      final String jsonString = jsonEncode(settingsMap);
+      Logger.log("Exported settings as JSON", _classId, LogLevel.finest);
+      return jsonString;
+    } on Exception catch (e) {
+      Logger.logError("Failed to export settings as JSON", _classId, e);
+      rethrow;
+    }
+  }
+
+  /// Imports settings from a JSON string
+  Future<void> importSettings(final String json) async {
+    _ensurePrefsInitialized();
+    try {
+      final Map<String, dynamic> importSettings = jsonDecode(json);
+      final Set<String> validKeys = SettingKey.values
+          .map((final e) => e.name)
+          .toSet();
+      for (final MapEntry<String, dynamic> entry in importSettings.entries) {
+        if (!validKeys.contains(entry.key)) {
+          throw Exception("Invalid setting key: ${entry.key}");
+        }
+      }
+      for (final MapEntry<String, dynamic> entry in importSettings.entries) {
+        final dynamic value = entry.value;
+        if (value is bool) {
+          await _prefs!.setBool(entry.key, value);
+        } else if (value is int) {
+          await _prefs!.setInt(entry.key, value);
+        } else if (value is double) {
+          await _prefs!.setDouble(entry.key, value);
+        } else if (value is String) {
+          await _prefs!.setString(entry.key, value);
+        } else if (value is List) {
+          if (value.every((final element) => element is String)) {
+            await _prefs!.setStringList(entry.key, List<String>.from(value));
+          }
+        }
+      }
+      notifyListeners();
+      Logger.log("Imported settings from JSON", _classId, LogLevel.finest);
+    } on Exception catch (e) {
+      Logger.logError("Failed to import settings from JSON", _classId, e);
+      rethrow;
+    }
+  }
 }
