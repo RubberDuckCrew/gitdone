@@ -1,10 +1,8 @@
-import "dart:convert";
-
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/github_model.dart";
 import "package:gitdone/core/models/repository_details.dart";
+import "package:gitdone/core/settings_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
-import "package:shared_preferences/shared_preferences.dart";
 
 /// Model for managing repository selection in the settings.
 class RepositorySelectorModel extends ChangeNotifier {
@@ -28,63 +26,46 @@ class RepositorySelectorModel extends ChangeNotifier {
   /// Loads local repository if available.
   Future<void> loadLocalRepository() async {
     Logger.log("Loading local repository", _classId, LogLevel.finest);
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String repoJson = prefs.getString("selected_repository") ?? "";
-    if (repoJson.isNotEmpty) {
-      final RepositoryDetails repo = RepositoryDetails.fromJson(
-        Map<String, dynamic>.from(jsonDecode(repoJson)),
-      );
-      Logger.log(
-        "Found local repository: $repoJson",
-        _classId,
-        LogLevel.finest,
-      );
-      _repositories.add(repo);
-      _selectedRepository = repo;
-      notifyListeners();
+    final RepositoryDetails? repo = await SettingsHandler()
+        .getSelectedRepository();
+    if (repo == null) {
+      Logger.log("No local repository found", _classId, LogLevel.finest);
+      return;
     }
+    Logger.log(
+      "Found local repository: ${repo.name}",
+      _classId,
+      LogLevel.finest,
+    );
+    _repositories.add(repo);
+    _selectedRepository = repo;
+    notifyListeners();
   }
 
   /// Fetches all user repositories from GitHub and adds them to the list,
   Future<void> getAllUserRepositories() async {
-    await loadLocalRepository();
     Logger.log("Fetching repositories", _classId, LogLevel.finest);
-    _repositories.addAll(
-      await (await GithubModel.github).repositories
-          .listRepositories(type: "all")
-          .where((final repo) => repo.name != _selectedRepository?.name)
-          .map(RepositoryDetails.fromRepository)
-          .toList(),
-    );
-
+    _repositories
+      ..clear()
+      ..addAll(
+        await (await GithubModel.github).repositories
+            .listRepositories(type: "all")
+            .where((final repo) => repo.name != _selectedRepository?.name)
+            .map(RepositoryDetails.fromRepository)
+            .toList(),
+      );
     notifyListeners();
-  }
-
-  /// Clears the list of repositories and resets the selected repository.
-  void clearRepositories() {
-    Logger.log("Clearing repositories", _classId, LogLevel.finest);
-    _repositories.clear();
-    notifyListeners();
-  }
-
-  /// Saves the selected repository to shared preferences.
-  Future<void> saveRepository(final RepositoryDetails repository) async {
-    Logger.log(
-      "Saving repository: ${repository.name} to shared preferences",
-      _classId,
-      LogLevel.finest,
-    );
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-      "selected_repository",
-      jsonEncode(repository.toJson()),
-    );
   }
 
   /// Selects a repository from the list and updates the selected repository.
-  void selectRepository(final RepositoryDetails? repo) {
-    Logger.log("Selected repository: ${repo?.name}", _classId, LogLevel.finest);
+  Future<void> selectRepository(final RepositoryDetails? repo) async {
+    if (repo == null) {
+      Logger.log("No repository selected", _classId, LogLevel.finest);
+      return;
+    }
     _selectedRepository = repo;
+    await SettingsHandler().setSelectedRepository(repo);
     notifyListeners();
+    Logger.log("Selected repository: ${repo.name}", _classId, LogLevel.finest);
   }
 }
