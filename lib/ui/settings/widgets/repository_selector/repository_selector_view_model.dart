@@ -8,8 +8,8 @@ class RepositorySelectorViewModel extends ChangeNotifier {
   RepositorySelectorViewModel() {
     _model
       ..addListener(notifyListeners)
-      ..clearRepositories()
-      ..getAllUserRepositories();
+      ..getAllUserRepositories()
+      ..loadLocalRepository();
   }
   final RepositorySelectorModel _model = RepositorySelectorModel();
 
@@ -19,15 +19,8 @@ class RepositorySelectorViewModel extends ChangeNotifier {
   /// The currently selected repository.
   RepositoryDetails? get selectedRepository => _model.selectedRepository;
 
-  /// Selects a repository from the list of available repositories.
+  /// Selects a repository and saves it to local storage.
   void selectRepository(final RepositoryDetails? repo) {
     _model.selectRepository(repo);
-  }
-
-  /// Saves the currently selected repository to local storage.
-  Future<void> saveSelectedRepository() async {
-    if (selectedRepository != null) {
-      _model.saveRepository(selectedRepository!);
-    }
   }
 }

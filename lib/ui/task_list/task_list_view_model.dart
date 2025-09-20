@@ -1,8 +1,7 @@
-import "dart:convert";
-
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/core/models/task.dart";
+import "package:gitdone/core/settings_handler.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:gitdone/core/utils/navigation.dart";
@@ -10,7 +9,6 @@ import "package:gitdone/ui/_widgets/filter_chip/filter_chip_item.dart";
 import "package:gitdone/ui/task_details/task_details_view.dart";
 import "package:gitdone/ui/task_edit/task_edit_view.dart";
 import "package:github_flutter/github.dart";
-import "package:shared_preferences/shared_preferences.dart";
 
 /// ViewModel for the Home View.
 class TaskListViewModel extends ChangeNotifier {
@@ -236,7 +234,8 @@ class TaskListViewModel extends ChangeNotifier {
   /// Creates a new to do and navigates to the TaskDetailsView.
   Future<void> createTask() async {
     Logger.log("Creating task", _classId, LogLevel.detailed);
-    final RepositoryDetails? repo = await _getSelectedRepository();
+    final RepositoryDetails? repo = await SettingsHandler()
+        .getSelectedRepository();
     if (repo == null) {
       Logger.log("No repository selected", _classId, LogLevel.info);
       return;
@@ -254,16 +253,5 @@ class TaskListViewModel extends ChangeNotifier {
     }
     Logger.log("Task created: $newTask", _classId, LogLevel.detailed);
     Navigation.navigate(TaskDetailsView(newTask));
-  }
-
-  Future<RepositoryDetails?> _getSelectedRepository() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String repoJson = prefs.getString("selected_repository") ?? "";
-    if (repoJson.isNotEmpty) {
-      return RepositoryDetails.fromJson(
-        Map<String, dynamic>.from(jsonDecode(repoJson)),
-      );
-    }
-    return null;
   }
 }

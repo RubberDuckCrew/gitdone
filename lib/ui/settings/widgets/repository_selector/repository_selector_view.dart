@@ -44,9 +44,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
               value: model.selectedRepository,
               items: model.repositories.map(convertRepoToItem).toList(),
               onChanged: (final repo) {
-                model
-                  ..selectRepository(repo)
-                  ..saveSelectedRepository();
+                model.selectRepository(repo);
                 SnackBarUtils.show(
                   context: context,
                   message: "Selected repository: ${repo?.name}",
