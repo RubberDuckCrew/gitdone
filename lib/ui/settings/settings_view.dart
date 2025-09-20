@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:gitdone/app_config.dart";
+import "package:gitdone/app_environment.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
 import "package:gitdone/ui/settings/widgets/account_management.dart";
 import "package:gitdone/ui/settings/widgets/repository_selector/repository_selector_view.dart";
@@ -57,7 +57,7 @@ class SettingsView extends StatelessWidget {
             style: TextStyle(fontSize: 12, color: Colors.grey),
           ),
           Text(
-            "Version: ${AppConfig.version} (${AppConfig.gitCommit}, ${AppConfig.flavor})",
+            "Version: ${AppEnvironment.version} (${AppEnvironment.gitCommit}, ${AppEnvironment.flavor})",
             style: const TextStyle(fontSize: 12, color: Colors.grey),
           ),
           const Padding(padding: EdgeInsets.all(8)),
