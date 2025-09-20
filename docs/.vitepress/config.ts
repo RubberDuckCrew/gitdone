@@ -18,6 +18,10 @@ export default defineConfig({
                         link: "/development/contributing",
                     },
                     {
+                        text: "Setup",
+                        link: "/development/setup",
+                    },
+                    {
                         text: "App icons",
                         link: "/development/app-icons",
                     },
@@ -41,6 +45,10 @@ export default defineConfig({
                     {
                         text: "Contributing",
                         link: "/development/contributing",
+                    },
+                    {
+                        text: "Setup",
+                        link: "/development/setup",
                     },
                     {
                         text: "App icons",
