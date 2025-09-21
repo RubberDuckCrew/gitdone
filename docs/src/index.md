@@ -13,8 +13,8 @@ hero:
           text: GitHub Repository
           link: https://github.com/RubberDuckCrew/gitdone
         - theme: alt
-          text: Contributing
-          link: /development/contributing
+          text: Development
+          link: /development/
 
 features:
     - title: Task Management
