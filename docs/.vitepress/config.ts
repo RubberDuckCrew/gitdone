@@ -15,7 +15,7 @@ export default defineConfig({
                 items: [
                     {
                         text: "Getting Started",
-                        link: "/development",
+                        link: "/development/",
                     },
                     {
                         text: "Local Setup",
@@ -52,7 +52,7 @@ export default defineConfig({
                 items: [
                     {
                         text: "Getting Started",
-                        link: "/development",
+                        link: "/development/",
                     },
                     {
                         text: "Local Setup",
