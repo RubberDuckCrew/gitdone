@@ -9,7 +9,11 @@
                 theme="brand"
                 v-if="releaseInfo"
                 :href="releaseInfo.url" />
-            <VPButton text="No stable release available" theme="alt" v-else />
+            <VPButton
+                text="No stable release available"
+                theme="alt"
+                disabled
+                v-else />
         </p>
         <p>
             <VPButton
@@ -19,7 +23,11 @@
                     preReleaseInfo && preReleaseInfo.name !== releaseInfo?.name
                 "
                 :href="preReleaseInfo.url" />
-            <VPButton text="No pre-release available" theme="alt" v-else />
+            <VPButton
+                text="No pre-release available"
+                theme="alt"
+                disabled
+                v-else />
         </p>
     </template>
     <template v-else>
