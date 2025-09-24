@@ -32,6 +32,7 @@ export default defineConfig({
                     },
                 ],
             },
+            { text: "Download", link: "/download/" },
         ],
 
         sidebar: [
@@ -57,6 +58,7 @@ export default defineConfig({
                     },
                 ],
             },
+            { text: "Download", link: "/download/" },
         ],
         editLink: {
             pattern:
