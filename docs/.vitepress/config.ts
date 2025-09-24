@@ -14,8 +14,20 @@ export default defineConfig({
                 text: "Development",
                 items: [
                     {
+                        text: "Getting Started",
+                        link: "/development/",
+                    },
+                    {
+                        text: "Local Setup",
+                        link: "/development/setup",
+                    },
+                    {
                         text: "Contributing",
                         link: "/development/contributing",
+                    },
+                    {
+                        text: "CI/CD Workflows",
+                        link: "/development/ci-cd",
                     },
                     {
                         text: "App icons",
@@ -40,8 +52,20 @@ export default defineConfig({
                 text: "Development",
                 items: [
                     {
+                        text: "Getting Started",
+                        link: "/development/",
+                    },
+                    {
+                        text: "Local Setup",
+                        link: "/development/setup",
+                    },
+                    {
                         text: "Contributing",
                         link: "/development/contributing",
+                    },
+                    {
+                        text: "CI/CD Workflows",
+                        link: "/development/ci-cd",
                     },
                     {
                         text: "App icons",
