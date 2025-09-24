@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
-import "package:gitdone/app_config.dart";
+import "package:gitdone/app_environment.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/app_title.dart";
 import "package:gitdone/ui/login/oauth/login_oauth_screen.dart";
@@ -53,7 +53,7 @@ class _WelcomeViewState extends State<WelcomeView> {
             style: TextStyle(fontSize: 12, color: Colors.grey),
           ),
           Text(
-            "Version: ${AppConfig.version} (${AppConfig.gitCommit}, ${AppConfig.flavor})",
+            "Version: ${AppEnvironment.version} (${AppEnvironment.gitCommit}, ${AppEnvironment.flavor})",
             style: const TextStyle(fontSize: 12, color: Colors.grey),
           ),
           const Padding(padding: EdgeInsets.all(10)),

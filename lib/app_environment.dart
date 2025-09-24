@@ -6,10 +6,10 @@
 import "package:flutter/services.dart";
 import "package:package_info_plus/package_info_plus.dart";
 
-/// Configuration class for the GitDone application.
-class AppConfig {
+/// Environment class for the GitDone application.
+class AppEnvironment {
   /// Singleton-Instance of the AppConfig class.
-  AppConfig._internal();
+  AppEnvironment._internal();
 
   /// The flavor of the app. This is set by the build system.
   static const String flavor = appFlavor ?? "unknown flavor";
