@@ -52,7 +52,7 @@ You can log messages at different levels of severity using the `Logger.log` meth
 | `LogLevel.severe`   | 1000  | A serious failure that indicates a problem requiring attention, but which may not stop the application from running.<br> Examples include failed external service calls or unexpected exceptions during critical operations. |
 | `LogLevel.shout`    | 1200  | The highest logging level, used for critical errors or emergencies.<br> Use this for unrecoverable failures such as data loss or system shutdowns.                                                                           |
 
-To log errors, warnings or information, you can also use the `Logger.error`, `Logger.warning`, or `Logger.info` methods:
+To log errors, warnings or information, you can also use the `Logger.logError`, `Logger.logWarning`, or `Logger.logInfo` methods:
 
 ```dart
 Logger.logError(
