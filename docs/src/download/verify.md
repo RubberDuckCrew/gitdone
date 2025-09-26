@@ -29,7 +29,7 @@ You will see output similar to:
 ```text
 Verified using v2 scheme (APK Signature Scheme v2): true
 Number of signers: 1
-Signer #1 certificate SHA-256 digest: 52e123badfc3cdfe29b8196aaabccb312d070caed52f6331bc6bf790dba42e45
+Signer #1 certificate SHA-256 digest: d331ca3706ba574eb665212665c9b9d43203202f348ed828ee4652f16a28a13d
 ```
 
 ## 4. Compare the Certificate Fingerprint
