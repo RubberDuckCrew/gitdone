@@ -6,7 +6,7 @@ Verification ensures that the app you install is authentic and safe.
 ## 1. Downloads
 
 -   [Download the latest APK release](/download/)
--   [Download the public signing certificate (`key.pem`)](https://github.com/RubberDuckCrew/gitdone/tree/main/assets/keyys/key.pem)
+-   [Download the public signing certificate (`signing-key.pem`)](https://github.com/RubberDuckCrew/gitdone/tree/main/assets/keys/signing-key.pem)
 
 ## 2. Tools Required
 
@@ -21,12 +21,12 @@ To perform the verification, you need:
 Run the following command on the downloaded APK:
 
 ```bash
-$ANDROID_SDK/build-tools/<VERSION>/apksigner verify --verbose --print-certs <DOWNLOADED_APK>.apk
+<ANDROID_SDK>/build-tools/<VERSION>/apksigner verify --verbose --print-certs <DOWNLOADED_APK>.apk
 ```
 
 You will see output similar to:
 
-```
+```text
 Verified using v2 scheme (APK Signature Scheme v2): true
 Number of signers: 1
 Signer #1 certificate SHA-256 digest: 52e123badfc3cdfe29b8196aaabccb312d070caed52f6331bc6bf790dba42e45
@@ -36,10 +36,10 @@ Signer #1 certificate SHA-256 digest: 52e123badfc3cdfe29b8196aaabccb312d070caed5
 
 Check that the `SHA-256 digest` shown in the output matches the fingerprint of our official certificate.
 
-To calculate the fingerprint of the published certificate (`key.pem`):
+To calculate the fingerprint of the published certificate (`signing-key.pem`):
 
 ```bash
-keytool -printcert -file key.pem
+keytool -printcert -file signing-key.pem
 ```
 
 You should see the same **SHA-256 digest** as in the `apksigner` output.
