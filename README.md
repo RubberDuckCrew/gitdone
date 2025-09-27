@@ -25,7 +25,6 @@ For more information, visit the [GitDone Documentation](https://gitdone.pages.de
 -   📦 Lightweight Flutter Android app
 
 > ⚠️ Project is in early development.
-
 > ⚠️ At the moment Gitdone is provided for Android Devices only. We encourage anyone who has access to MAC/iOS devices and wants to contribute to the project to implement an iOS version! The only requirements are Xcode and an Apple Developer Account.
 
 ### 📅 Roadmap
