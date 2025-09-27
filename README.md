@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/icons/app/gitdone.svg" alt="gitdone logo" width="150"/>
+  <img src="assets/icons/app/gitdone.svg" alt="GitDone Logo" width="150"/>
   <br><br>
   <a href="https://github.com/RubberDuckCrew/gitdone/releases" target="_blank"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/RubberDuckCrew/gitdone?include_prereleases"></a>
   <a href="https://gitdone.pages.dev/download/"><img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/RubberDuckCrew/gitdone/total"></a>
@@ -9,7 +9,7 @@
 
 # GitDone
 
-**Gitdone** is a Flutter-based mobile app designed to simplify your workflow by turning your to-dos
+**GitDone** is a Flutter-based mobile app designed to simplify your workflow by turning your to-dos
 directly into GitHub issues. Stay organized and keep your development tasks in sync, right from your
 phone.
 
@@ -25,7 +25,7 @@ For more information, visit the [GitDone Documentation](https://gitdone.pages.de
 -   📦 Lightweight Flutter Android app
 
 > ⚠️ Project is in early development.
-> ⚠️ At the moment Gitdone is provided for Android Devices only. We encourage anyone who has access to MAC/iOS devices and wants to contribute to the project to implement an iOS version! The only requirements are Xcode and an Apple Developer Account.
+> ⚠️ At the moment GitDone is provided for Android Devices only. We encourage anyone who has access to MAC/iOS devices and wants to contribute to the project to implement an iOS version! The only requirements are Xcode and an Apple Developer Account.
 
 ### 📅 Roadmap
 
