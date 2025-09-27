@@ -5,6 +5,8 @@
   <a href="https://gitdone.pages.dev/download/"><img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/RubberDuckCrew/gitdone/total"></a>
   <a href="https://github.com/RubberDuckCrew/gitdone/actions/workflows/test-build-release.yml" target="_blank"><img alt="GitHub Pipeline" src="https://github.com/RubberDuckCrew/gitdone/actions/workflows/test-build-release.yml/badge.svg"></a>
   <a href="https://gitdone.pages.dev/" target="_blank"><img alt="Documentation" src="https://img.shields.io/badge/docs-gitdone.pages.dev-blue"></a>
+  <br><br>
+  <a href="https://gitdone.pages.dev/download/" target="_blank"><img alt="Download" src="https://img.shields.io/badge/Download-app-blue?style=for-the-badge"></a>
 </div>
 
 # GitDone
@@ -12,8 +14,6 @@
 **GitDone** is a Flutter-based mobile app designed to simplify your workflow by turning your to-dos
 directly into GitHub issues. Stay organized and keep your development tasks in sync, right from your
 phone.
-
-[![Download](https://img.shields.io/badge/Download-app-blue?style=for-the-badge)](https://gitdone.pages.dev/download/)
 
 For more information, visit the [GitDone Documentation](https://gitdone.pages.dev/).
 
