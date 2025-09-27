@@ -103,11 +103,11 @@ jobs:
         if: github.repository == 'RubberDuckCrew/gitdone' && github.event.pull_request.head.repo.fork == false
         run: |
           {
-            echo keyPassword=${{ secrets.KEY_STORE }}
-            echo storePassword=${{ secrets.KEY_PASSWORD }}
+            echo keyPassword=${{ secrets.KEY_PASSWORD }}
+            echo storePassword=${{ secrets.KEYSTORE_PASSWORD }}
             echo keyAlias=${{ secrets.KEY_ALIAS }}
           } > android/key.properties
-          echo "${{ secrets.KEYSTORE2 }}" | base64 --decode > android/app/key.jks
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/key.jks
           echo "signing_available=true" >> "$GITHUB_OUTPUT"
 
       - name: Set build options

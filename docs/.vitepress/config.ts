@@ -52,8 +52,13 @@ export default defineConfig({
                     },
                 ],
             },
-
-            { text: "Download", link: "/download/" },
+            {
+                text: "Download",
+                items: [
+                    { text: "Download App", link: "/download/" },
+                    { text: "Verify APK Signing", link: "/download/verify" },
+                ],
+            },
         ],
 
         sidebar: [
@@ -99,7 +104,13 @@ export default defineConfig({
                     },
                 ],
             },
-            { text: "Download", link: "/download/" },
+            {
+                text: "Download",
+                items: [
+                    { text: "Download App", link: "/download/" },
+                    { text: "Verify APK Signing", link: "/download/verify" },
+                ],
+            },
         ],
         editLink: {
             pattern:
