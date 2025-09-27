@@ -2,32 +2,16 @@
   <img src="assets/icons/app/gitdone.svg" alt="GitDone Logo" width="150"/>
   <br><br>
   <a href="https://github.com/RubberDuckCrew/gitdone/releases" target="_blank">
-    <img alt="GitHub Release" src="https://img.shields.io/github/v/release/RubberDuckCrew/gitdone?include_prereleases&style=flat-square&color=FF6A00">
-  </a>
+    <img alt="GitHub Release" src="https://img.shields.io/github/v/release/RubberDuckCrew/gitdone?include_prereleases&style=flat-square&color=FF6A00"></a>
   <a href="https://gitdone.pages.dev/download/">
-    <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/RubberDuckCrew/gitdone/total?style=flat-square&color=FF6A00">
-  </a>
+    <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/RubberDuckCrew/gitdone/total?style=flat-square&color=FF6A00"></a>
   <a href="https://github.com/RubberDuckCrew/gitdone/actions/workflows/test-build-release.yml" target="_blank">
-    <img alt="GitHub Pipeline" src="https://img.shields.io/github/actions/workflow/status/RubberDuckCrew/gitdone/test-build-release.yml?style=flat-square&label=Test%20%26%20Build&color=00B3A8">
-  </a>
+    <img alt="GitHub Pipeline" src="https://img.shields.io/github/actions/workflow/status/RubberDuckCrew/gitdone/test-build-release.yml?style=flat-square&label=Test%20%26%20Build&color=00B3A8"></a>
   <a href="https://gitdone.pages.dev/" target="_blank">
-    <img alt="Documentation" src="https://img.shields.io/badge/docs-gitdone.pages.dev-005999?style=flat-square">
-  </a>
+    <img alt="Documentation" src="https://img.shields.io/badge/docs-gitdone.pages.dev-005999?style=flat-square"></a>
   <br><br>
-  <a href="https://gitdone.pages.dev/download/" download>
-  <button style="
-    background-color:#FF6A00;
-    border:none;
-    color:white;
-    padding:15px 30px;
-    text-align:center;
-    text-decoration:none;
-    display:inline-block;
-    font-size:18px;
-    cursor:pointer;">
-    Download
-  </button>
-  </a>
+  <a href="https://gitdone.pages.dev/download/" target="_blank">
+    <img alt="Download" src="https://img.shields.io/badge/Download-FF6A00?style=for-the-badge"></a>
   <br><br>
 </div>
 
