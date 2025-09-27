@@ -8,6 +8,8 @@ You can download the latest release of GitDone from the links below.
 
 <DownloadRelease />
 
+Check out the [Verifying the Downloaded APK](./verify) guide to ensure the authenticity of the APK.
+
 ::: warning
 Please note that the pre-release version may contain bugs and is not recommended for production use. The stable release is recommended for most users.
 :::
