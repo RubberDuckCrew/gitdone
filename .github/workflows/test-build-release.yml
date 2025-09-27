@@ -102,11 +102,9 @@ jobs:
         id: keystore
         if: github.repository == 'RubberDuckCrew/gitdone' && github.event.pull_request.head.repo.fork == false
         run: |
-          {
-            echo "keyPassword=\"${{ secrets.KEYSTORE_PASSWORD }}\""
-            echo "storePassword=\"${{ secrets.KEY_PASSWORD }}\""
-            echo "keyAlias=\"${{ secrets.KEY_ALIAS }}\""
-          } > android/key.properties
+          echo keyPassword=${{ secrets.KEY_PASSWORD }} > android/key.properties
+          echo storePassword=${{ secrets.KEYSTORE_PASSWORD }} >> android/key.properties
+          echo keyAlias=${{ secrets.KEY_ALIAS }} >> android/key.properties
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/key.jks
           echo "signing_available=true" >> "$GITHUB_OUTPUT"
 
