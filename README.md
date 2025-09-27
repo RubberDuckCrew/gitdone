@@ -1,17 +1,17 @@
 <div align="center">
-  <img src="assets/icons/app/gitdone.svg" alt="GitDone Logo" width="150"/>
+  <img src="assets/icons/app/gitdone.svg" alt="GitDone Logo" width="150">
   <br><br>
   <a href="https://github.com/RubberDuckCrew/gitdone/releases" target="_blank">
-    <img alt="GitHub Release" src="https://img.shields.io/github/v/release/RubberDuckCrew/gitdone?include_prereleases&style=flat-square&color=FF6A00"></a>
+    <img alt="GitHub Release" src="https://img.shields.io/github/v/release/RubberDuckCrew/gitdone?include_prereleases&style=flat-square&color=red&label=Release"></a>
   <a href="https://gitdone.pages.dev/download/">
-    <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/RubberDuckCrew/gitdone/total?style=flat-square&color=FF6A00"></a>
+    <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/RubberDuckCrew/gitdone/total?style=flat-square&color=yellow&label=Downloads"></a>
   <a href="https://github.com/RubberDuckCrew/gitdone/actions/workflows/test-build-release.yml" target="_blank">
-    <img alt="GitHub Pipeline" src="https://img.shields.io/github/actions/workflow/status/RubberDuckCrew/gitdone/test-build-release.yml?style=flat-square&label=Test%20%26%20Build&color=00B3A8"></a>
+    <img alt="GitHub Pipeline" src="https://img.shields.io/github/actions/workflow/status/RubberDuckCrew/gitdone/test-build-release.yml?style=flat-square&label=Test%20%26%20Build"></a>
   <a href="https://gitdone.pages.dev/" target="_blank">
-    <img alt="Documentation" src="https://img.shields.io/badge/Documentation-gitdone.pages.dev-005999?style=flat-square"></a>
+    <img alt="Documentation" src="https://img.shields.io/badge/Documentation-gitdone.pages.dev-blue?style=flat-square"></a>
   <br><br>
   <a href="https://gitdone.pages.dev/download/" target="_blank">
-    <img alt="Download" src="https://img.shields.io/badge/Download-FF6A00?style=for-the-badge"></a>
+    <img alt="Download" src="https://img.shields.io/badge/Download-FF6A00?style=for-the-badge" width="150"></a>
 </div>
 
 # GitDone
