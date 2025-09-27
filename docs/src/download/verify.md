@@ -6,7 +6,7 @@ Verification ensures that the app you install is authentic and safe.
 ## 1. Downloads
 
 -   [Download the latest APK release](/download/)
--   [Download the public signing certificate (`signing-key.pem`)](https://github.com/RubberDuckCrew/gitdone/tree/main/assets/keys/signing-key.pem)
+-   [Download the public signing certificate (`gitdone-certificate.pem`)](https://github.com/RubberDuckCrew/gitdone/tree/main/assets/keys/gitdone-certificate.pem)
 
 ## 2. Tools Required
 
@@ -36,10 +36,10 @@ Signer #1 certificate SHA-256 digest: d331ca3706ba574eb665212665c9b9d43203202f34
 
 Check that the `SHA-256 digest` shown in the output matches the fingerprint of our official certificate.
 
-To calculate the fingerprint of the published certificate (`signing-key.pem`):
+To calculate the fingerprint of the published certificate (`gitdone-certificate.pem`):
 
 ```bash
-keytool -printcert -file signing-key.pem
+keytool -printcert -file gitdone-certificate.pem
 ```
 
 You should see the same **SHA-256 digest** as in the `apksigner` output.
