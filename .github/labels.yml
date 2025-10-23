@@ -1,0 +1,6 @@
+- name: "⚗️ Request Build"
+  description: "Requests a build of the project"
+  color: "00ff9d"
+- name: "🚀 Request Deploy"
+  description: "Requests a deployment of the project"
+  color: "00ff9d"
