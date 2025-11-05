@@ -20,7 +20,7 @@ version: 1.0.0-alpha
 
 environment:
   sdk: 3.9.2
-  flutter: 3.35.6
+  flutter: 3.35.7
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -44,7 +44,7 @@ dependencies:
   package_info_plus: 9.0.0
   markdown_widget: 2.3.2
   intl: 0.20.2
-  crypto: 3.0.6
+  crypto: 3.0.7
   flutter_web_auth_2: 4.1.0
   multi_dropdown: 3.0.1
   github_flutter: 0.0.1
