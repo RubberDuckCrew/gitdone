@@ -10,3 +10,5 @@ jobs:
     uses: RubberDuckCrew/.github/.github/workflows/action-sync-labels.yml@main
     permissions:
       issues: write
+    with:
+      additional-config: ".github/labels.yml"
