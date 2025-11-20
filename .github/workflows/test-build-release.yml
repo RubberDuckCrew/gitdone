@@ -41,6 +41,8 @@ jobs:
 
       - name: Read Flutter version from pubspec.yaml
         id: get_flutter_version
+        with:
+          path: app
         run: |
           version=$(grep -E '^flutter:' -A 1 pubspec.yaml | awk '{print $2}')
           echo "flutter_version=$version" >> $GITHUB_OUTPUT
