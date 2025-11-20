@@ -26,6 +26,9 @@ jobs:
     name: Format, analyze and test
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     defaults:
       run:
         working-directory: app
@@ -49,7 +52,7 @@ jobs:
           gh_app_id: ${{ secrets.GH_APP_ID }}
           gh_private_key: ${{ secrets.GH_PRIVATE_KEY }}
           gh_installation_id: ${{ secrets.GH_INSTALLATION_ID }}
-          
+
       - name: Install pub dependencies
         run: flutter pub get
 
