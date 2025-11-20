@@ -42,10 +42,14 @@ jobs:
           cache: true
 
       - name: Sync Dart SDK version
-        uses: IamPekka058/flutter-dart-sync@82d6343523d0774645d651ebed03ea0600b78668 # v0
+        uses: IamPekka058/flutter-dart-sync@f16b483fe330948cb9890a911fe68b8cb34d4ba8 # v0.1.0
         with:
           pubspec_path: app/pubspec.yaml
-
+          commit_changes: true
+          gh_app_id: ${{ secrets.GH_APP_ID }}
+          gh_private_key: ${{ secrets.GH_PRIVATE_KEY }}
+          gh_installation_id: ${{ secrets.GH_INSTALLATION_ID }}
+          
       - name: Install pub dependencies
         run: flutter pub get
 
