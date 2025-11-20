@@ -39,9 +39,16 @@ jobs:
         with:
           path: app
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@fd55f4c5af5b953cc57a2be44cb082c8f6635e8e # v2
+      - name: Read Flutter version from pubspec.yaml
+        id: get_flutter_version
+        run: |
+          version=$(grep -E '^flutter:' -A 1 pubspec.yaml | awk '{print $2}')
+          echo "flutter_version=$version" >> $GITHUB_OUTPUT
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ steps.get_flutter_version.outputs.flutter_version }}
           cache: true
 
       - name: Sync Dart SDK version
