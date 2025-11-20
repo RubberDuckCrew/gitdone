@@ -1,0 +1,35 @@
+name: gitdone
+description: GitDone is a simple app to utilise Git as a todo list.
+publish_to: none
+version: 1.0.0-alpha
+environment:
+  sdk: 3.10.0
+  flutter: 3.35.7
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: 1.0.8
+  flutter_secure_storage: 9.2.4
+  http: 1.5.0
+  provider: 6.1.5
+  url_launcher: 6.3.2
+  flutter_svg: 2.2.2
+  shared_preferences: 2.5.3
+  package_info_plus: 9.0.0
+  markdown_widget: 2.3.2
+  intl: 0.20.2
+  crypto: 3.0.7
+  flutter_web_auth_2: 4.1.0
+  multi_dropdown: 3.0.1
+  github_flutter: 0.0.1
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: 1.0.4
+  flutter_lints: 6.0.0
+flutter:
+  default-flavor: development
+  uses-material-design: true
+  assets:
+    - assets/icons/app/gitdone.svg
+    - assets/imgs/sadDuck.png
