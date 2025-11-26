@@ -41,11 +41,6 @@ jobs:
         with:
           cache: true
 
-      - name: Sync Dart SDK version
-        uses: IamPekka058/flutter-dart-sync@82d6343523d0774645d651ebed03ea0600b78668 # v0
-        with:
-          pubspec_path: app/pubspec.yaml
-
       - name: Install pub dependencies
         run: flutter pub get
 
