@@ -84,11 +84,6 @@ jobs:
         with:
           cache: true
 
-      - name: Sync Dart SDK version
-        uses: IamPekka058/flutter-dart-sync@82d6343523d0774645d651ebed03ea0600b78668 # v0
-        with:
-          pubspec_path: app/pubspec.yaml
-
       - name: Set up JDK
         uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
         with:
