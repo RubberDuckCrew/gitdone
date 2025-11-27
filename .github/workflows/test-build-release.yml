@@ -115,6 +115,8 @@ jobs:
         run: |
           SHA="${{ github.event.pull_request.head.sha || github.sha }}"
           SHORT_SHA="${SHA:0:7}"
+          VERSION="${{ github.event.inputs.release-version }}"
+          VERSION_NAME="${VERSION:-$(echo "$GITHUB_REF_NAME" | tr / _)}_${SHORT_SHA}"
           VERSION_NAME="$(echo "$GITHUB_REF_NAME" | tr / _)_$SHORT_SHA"
           FLAVOR="${{ inputs.build-type == 'release' && 'production' || 'staging' }}"
           SKIP_SIGN="${{ steps.keystore.outputs.signing_available != 'true' && '-PskipSigning=true' || '' }}"
@@ -259,7 +261,7 @@ jobs:
         uses: softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe # v2
         with:
           tag_name: 'v${{ inputs.release-version }}'
-          name: 'artifact2pr ${{ inputs.release-version }}'
+          name: '🔖 v${{ inputs.release-version }}'
           draft: true
           prerelease: false
           files: |
