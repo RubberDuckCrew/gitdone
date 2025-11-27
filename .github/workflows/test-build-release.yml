@@ -10,7 +10,7 @@ on:
       build-type:
         description: 'Type of build to perform'
         required: true
-        default: 'test'
+        default: 'release'
         type: choice
         options:
           - build
