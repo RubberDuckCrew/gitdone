@@ -91,7 +91,9 @@ jobs:
 
       - name: Update pubspec.yaml version
         if: inputs.build-type == 'release' && inputs.release-version
-        run: flutter pub version ${{ inputs.release-version }}
+        run: |
+          flutter pub global activate pub_version_plus
+          pubversion set ${{ inputs.release-version }}
 
       - name: Install pub dependencies
         run: flutter pub get
