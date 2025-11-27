@@ -3,9 +3,8 @@ run-name: Test, Build and Release ${{ inputs.release-version }}
 
 on:
   push:
-    tags: [ 'v*' ]
   pull_request:
-    types: [ opened, labeled, synchronize ]
+    types: [ opened, labeled ]
   workflow_dispatch:
     inputs:
       build-type:
