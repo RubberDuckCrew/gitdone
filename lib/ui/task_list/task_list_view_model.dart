@@ -62,7 +62,6 @@ class TaskListViewModel extends ChangeNotifier {
   /// The current sort order applied to the task list.
   String _sort = defaultSort;
   bool _isEmpty = false;
-  bool _loading = true;
 
   static const _classId =
       "com.GitDone.gitdone.ui.task_edit.task_list_view_model";
@@ -80,7 +79,7 @@ class TaskListViewModel extends ChangeNotifier {
   bool get isEmpty => _isEmpty;
 
   /// Whether the task list is currently loading.
-  bool get isLoading => _loading;
+  bool get isLoading => _taskHandler.tasksLoading;
 
   /// Returns a list of FilterChipItems for all labels, reflecting current selection state.
   List<FilterChipItem<String>> get labelFilterChipItems => allLabels.isNotEmpty
@@ -132,11 +131,8 @@ class TaskListViewModel extends ChangeNotifier {
 
   /// The current search query used to filter tasks.
   Future<void> loadTasks() async {
-    _loading = true;
-    notifyListeners();
     await _taskHandler.loadTasks();
     _isEmpty = _taskHandler.tasks.isEmpty;
-    _loading = false;
     notifyListeners();
   }
 

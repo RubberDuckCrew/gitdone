@@ -19,6 +19,15 @@ class TaskHandler extends ChangeNotifier {
 
   List<IssueLabel> _repoLabels = [];
 
+  bool _tasksLoading = false;
+  bool _labelsLoading = false;
+
+  /// Whether the task handler is currently loading task data.
+  bool get tasksLoading => _tasksLoading;
+
+  /// Whether the task handler is currently loading label data.
+  bool get labelsLoading => _labelsLoading;
+
   /// The list of all tasks available in the repository.
   List<Task> get tasks => List.unmodifiable(_tasks);
 
@@ -28,11 +37,14 @@ class TaskHandler extends ChangeNotifier {
   /// The list of all tasks available in the repository.
   /// After the notification the current list of task is stored in [tasks].
   Future<void> loadTasks() async {
+    _tasksLoading = true;
+    notifyListeners();
     try {
       final RepositoryDetails? repo = await SettingsHandler()
           .getSelectedRepository();
       if (repo == null) {
         Logger.logWarning("No repository selected", _classId);
+        _tasksLoading = false;
         return;
       }
       final List<Task> issues = await _fetchIssuesForRepository(repo);
@@ -49,6 +61,7 @@ class TaskHandler extends ChangeNotifier {
       Logger.logError("Failed to load tasks", _classId, e);
     } finally {
       Logger.logInfo("Loaded ${_tasks.length} tasks from repository", _classId);
+      _tasksLoading = false;
       notifyListeners();
     }
   }
@@ -56,6 +69,8 @@ class TaskHandler extends ChangeNotifier {
   /// The list of all labels available in the repository.
   /// After the notification the current list of labels is stored in [repoLabels].
   Future<void> loadLabels() async {
+    _labelsLoading = true;
+    notifyListeners();
     try {
       _repoLabels.clear();
       final RepositoryDetails? repo = await SettingsHandler()
@@ -71,9 +86,11 @@ class TaskHandler extends ChangeNotifier {
         "Loaded ${_repoLabels.length} labels from repository ${repo.toSlug()}",
         _classId,
       );
-      notifyListeners();
     } on Exception catch (e) {
       Logger.logError("Failed to load labels", _classId, e);
+    } finally {
+      _labelsLoading = false;
+      notifyListeners();
     }
   }
 
