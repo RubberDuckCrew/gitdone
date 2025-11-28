@@ -214,8 +214,6 @@ jobs:
           echo "secrets_available=${{
             vars.RUBBERDUCKCREW_BOT_APP_ID &&
             secrets.RUBBERDUCKCREW_BOT_APP_PRIVATE_KEY &&
-            secrets.RUBBERDUCKCREW_BOT_GPG_PRIVATE_KEY &&
-            secrets.RUBBERDUCKCREW_BOT_GPG_PASSPHRASE &&
             'true' || ''
           }}" >> "$GITHUB_OUTPUT"
 
@@ -226,16 +224,6 @@ jobs:
         with:
           app-id: ${{ vars.RUBBERDUCKCREW_BOT_APP_ID }}
           private-key: ${{ secrets.RUBBERDUCKCREW_BOT_APP_PRIVATE_KEY }}
-
-      - name: Import GPG key
-        id: import-gpg
-        if: ${{ steps.check-secrets.outputs.secrets_available }}
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.RUBBERDUCKCREW_BOT_GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.RUBBERDUCKCREW_BOT_GPG_PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
 
       - name: Checkout repository
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
@@ -252,9 +240,8 @@ jobs:
         with:
           commit_message: '🔖 Release v${{ inputs.release-version }} [skip ci]'
           file_pattern: 'pubspec.yaml'
-          commit_author: '${{ steps.import-gpg.outputs.name }} <${{ steps.import-gpg.outputs.email }}>'
-          commit_user_name: ${{ steps.import-gpg.outputs.name }}
-          commit_user_email: ${{ steps.import-gpg.outputs.email }}
+          commit_user_name: 'RubberDuckCrew Bot'
+          commit_user_email: '231319061+rubberduckcrew-bot[bot]@users.noreply.github.com'
 
       - name: Download APK artifact
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
