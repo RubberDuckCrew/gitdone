@@ -199,7 +199,7 @@ jobs:
           comment-if-no-artifacts: true
 
   release:
-    name: Release
+    name: Create release
     needs: build
     if: inputs.build-type == 'release' && inputs.release-version
     runs-on: ubuntu-latest
