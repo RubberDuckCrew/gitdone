@@ -1,10 +1,10 @@
-<script setup>
-import DownloadRelease from "./DownloadRelease.vue";
-</script>
-
 # Download
 
 You can download the latest release of GitDone from the links below.
+
+<script setup>
+import DownloadRelease from "./DownloadRelease.vue";
+</script>
 
 <DownloadRelease />
 
