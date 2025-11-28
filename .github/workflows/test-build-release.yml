@@ -1,21 +1,26 @@
 name: Test, Build and Release
+run-name: Test, Build and Release ${{ inputs.release-version }}
 
 on:
   push:
-    tags: [ 'v*' ]
+    branches: [main]
   pull_request:
-    types: [ opened, labeled, synchronize ]
+    types: [opened, labeled, synchronize]
   workflow_dispatch:
     inputs:
       build-type:
         description: 'Type of build to perform'
         required: true
-        default: 'test'
+        default: 'release'
         type: choice
         options:
-          - test
           - build
           - size-analysis
+          - release
+      release-version:
+        description: 'The version to release (e.g., 1.2.3). The "v" prefix is added automatically.'
+        required: false
+        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -57,8 +62,8 @@ jobs:
     name: Build app
     needs: test
     if: ${{ ( startsWith(github.ref, 'refs/tags/')
-        || contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
-        || inputs.build-type == 'build' || inputs.build-type == 'size-analysis' ) }}
+      || contains(github.event.pull_request.labels.*.name, '⚗️ Request Build')
+      || inputs.build-type ) }}
     runs-on: ubuntu-latest
 
     defaults:
@@ -85,6 +90,12 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: Update pubspec.yaml version
+        if: inputs.build-type == 'release' && inputs.release-version
+        run: |
+          flutter pub global activate pub_version_plus
+          pubversion set ${{ inputs.release-version }}
+
       - name: Install pub dependencies
         run: flutter pub get
 
@@ -105,8 +116,10 @@ jobs:
         run: |
           SHA="${{ github.event.pull_request.head.sha || github.sha }}"
           SHORT_SHA="${SHA:0:7}"
+          VERSION="${{ github.event.inputs.release-version }}"
+          VERSION_NAME="${VERSION:-$(echo "$GITHUB_REF_NAME" | tr / _)}_${SHORT_SHA}"
           VERSION_NAME="$(echo "$GITHUB_REF_NAME" | tr / _)_$SHORT_SHA"
-          FLAVOR="${{ startsWith(github.ref, 'refs/tags/') && 'production' || 'staging' }}"
+          FLAVOR="${{ inputs.build-type == 'release' && 'production' || 'staging' }}"
           SKIP_SIGN="${{ steps.keystore.outputs.signing_available != 'true' && '-PskipSigning=true' || '' }}"
           {
             echo "flavor=$FLAVOR"
@@ -156,6 +169,13 @@ jobs:
           name: Size Analysis APK ARM64
           path: /home/runner/.flutter-devtools/apk-code-size-analysis_01.json
 
+      - name: Upload pubspec.yaml
+        if: inputs.build-type == 'release' && inputs.release-version
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: pubspec.yaml
+          path: app/pubspec.yaml
+
   post-request:
     name: Post requested build
     needs: build
@@ -178,16 +198,51 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           comment-if-no-artifacts: true
 
-  post-build-tagged:
-    name: Post tagged build
+  release:
+    name: Create release
     needs: build
-    if: startsWith(github.ref, 'refs/tags/')
+    if: inputs.build-type == 'release' && inputs.release-version
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
 
     steps:
+      - name: Check if secrets are available
+        id: check-secrets
+        run: |
+          echo "secrets_available=${{
+            vars.RUBBERDUCKCREW_BOT_APP_ID &&
+            secrets.RUBBERDUCKCREW_BOT_APP_PRIVATE_KEY &&
+            'true' || ''
+          }}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub App token
+        uses: actions/create-github-app-token@7e473efe3cb98aa54f8d4bac15400b15fad77d94 # v2
+        if: ${{ steps.check-secrets.outputs.secrets_available }}
+        id: app-token
+        with:
+          app-id: ${{ vars.RUBBERDUCKCREW_BOT_APP_ID }}
+          private-key: ${{ secrets.RUBBERDUCKCREW_BOT_APP_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
+        with:
+          token: ${{ steps.app-token.outputs.token || github.token }}
+
+      - name: Download pubspec.yaml
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        with:
+          name: pubspec.yaml
+
+      - name: Commit pubspec.yaml
+        uses: suzuki-shunsuke/commit-action@87b297f0ce551411b43d1880f4fb3cbc60381055 # v0.0.14
+        with:
+          commit_message: '🔖 Release v${{ inputs.release-version }} [skip ci]'
+          files: 'pubspec.yaml'
+          github_token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
+          fail_on_self_push: false
+
       - name: Download APK artifact
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
         with:
@@ -207,11 +262,13 @@ jobs:
         run: |
           zip -r "GitDone_${{ needs.build.outputs.version_name }}_Symbols.zip" ./*.symbols
 
-      - name: Release artifacts
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe # v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: 'v${{ inputs.release-version }}'
+          name: '🔖 v${{ inputs.release-version }}'
+          draft: true
+          prerelease: false
           files: |
             GitDone_${{ needs.build.outputs.version_name }}.apk
             GitDone_${{ needs.build.outputs.version_name }}.aab
