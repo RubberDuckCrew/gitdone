@@ -9,7 +9,8 @@
       "matchPackageNames": [
         "dev.flutter.flutter-plugin-loader",
         "dev.flutter.flutter-plugin-loader.gradle.plugin",
-        "dev.flutter.flutter-plugin-loader:dev.flutter.flutter-plugin-loader.gradle.plugin"
+        "dev.flutter.flutter-plugin-loader:dev.flutter.flutter-plugin-loader.gradle.plugin",
+        "dart"
       ],
       "enabled": false
     }
