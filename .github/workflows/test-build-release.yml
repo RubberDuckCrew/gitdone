@@ -218,7 +218,7 @@ jobs:
           }}" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub App token
-        uses: actions/create-github-app-token@7e473efe3cb98aa54f8d4bac15400b15fad77d94 # v2
+        uses: actions/create-github-app-token@7e473efe3cb98aa54f8d4bac15400b15fad77d94 # v2.2.0
         if: ${{ steps.check-secrets.outputs.secrets_available }}
         id: app-token
         with:
