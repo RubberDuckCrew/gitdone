@@ -145,33 +145,33 @@ jobs:
           mv build/app/symbols ../build-artifacts/symbols
 
       - name: Upload APK
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: GitDone ${{ steps.build_options.outputs.version_name }} APK
           path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.apk
 
       - name: Upload app bundle
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: GitDone ${{ steps.build_options.outputs.version_name }} AAB
           path: build-artifacts/GitDone_${{ steps.build_options.outputs.version_name }}.aab
 
       - name: Upload symbols file
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: GitDone ${{ steps.build_options.outputs.version_name }} Symbols
           path: build-artifacts/symbols
 
       - name: Upload size analysis apk
         if: inputs.build-type == 'size-analysis'
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: Size Analysis APK ARM64
           path: /home/runner/.flutter-devtools/apk-code-size-analysis_01.json
 
       - name: Upload pubspec.yaml
         if: inputs.build-type == 'release' && inputs.release-version
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: pubspec.yaml
           path: app/pubspec.yaml
@@ -231,7 +231,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token || github.token }}
 
       - name: Download pubspec.yaml
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: pubspec.yaml
 
@@ -244,17 +244,17 @@ jobs:
           fail_on_self_push: false
 
       - name: Download APK artifact
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: GitDone ${{ needs.build.outputs.version_name }} APK
 
       - name: Download app bundle artifact
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: GitDone ${{ needs.build.outputs.version_name }} AAB
 
       - name: Download symbols artifact
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: GitDone ${{ needs.build.outputs.version_name }} Symbols
 
