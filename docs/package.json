@@ -22,7 +22,7 @@
         "vitepress": "1.6.4"
     },
     "overrides": {
-        "esbuild": "0.27.1",
+        "esbuild": "0.27.2",
         "vite": "5.4.21"
     }
 }
