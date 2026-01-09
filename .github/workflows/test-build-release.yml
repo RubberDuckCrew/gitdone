@@ -44,7 +44,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@fd55f4c5af5b953cc57a2be44cb082c8f6635e8e # v2
         with:
-          flutter-version-file: pubspec.yaml
+          flutter-version-file: app/pubspec.yaml
           cache: true
 
       - name: Install pub dependencies
@@ -83,7 +83,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@fd55f4c5af5b953cc57a2be44cb082c8f6635e8e # v2
         with:
-          flutter-version-file: pubspec.yaml
+          flutter-version-file: app/pubspec.yaml
           cache: true
 
       - name: Set up JDK
