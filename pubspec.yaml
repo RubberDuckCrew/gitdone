@@ -45,7 +45,7 @@ dependencies:
   markdown_widget: 2.3.2
   intl: 0.20.2
   crypto: 3.0.7
-  flutter_web_auth_2: 4.1.0
+  flutter_web_auth_2: 5.0.0
   multi_dropdown: 3.0.1
   github_flutter: 0.0.1
 
