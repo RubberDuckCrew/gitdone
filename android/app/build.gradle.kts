@@ -17,6 +17,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
+    kotlin {
+        compilerOptions {
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+        }
+    }
+
     defaultConfig {
         applicationId = "com.GitDone.gitdone"
         minSdk = flutter.minSdkVersion
