@@ -452,10 +452,10 @@ packages:
     dependency: "direct main"
     description:
       name: multi_dropdown
-      sha256: "0b27246ed3c17ea29abed2c2b40471948954e84cd0cee4895def26d577b094b4"
+      sha256: fa322e6d05220b2375b5117c328ac1720f0ce08eeb26ffe82a73e08db8782fe9
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.1"
   native_toolchain_c:
     dependency: transitive
     description:
