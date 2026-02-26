@@ -248,12 +248,12 @@ jobs:
       - name: Download APK artifact
         uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
-          name: GitDone ${{ needs.build.outputs.version_name }} APK
+          name: GitDone_${{ needs.build.outputs.version_name }}.apk
 
       - name: Download app bundle artifact
         uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
-          name: GitDone ${{ needs.build.outputs.version_name }} AAB
+          name: GitDone_${{ needs.build.outputs.version_name }}.aab
 
       - name: Download symbols artifact
         uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
