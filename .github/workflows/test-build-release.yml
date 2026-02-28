@@ -238,7 +238,7 @@ jobs:
           name: pubspec.yaml
 
       - name: Commit pubspec.yaml
-        uses: suzuki-shunsuke/commit-action@f28421acc277a6d6a9c1f94ea449076ad77dba67 # v0.1.0
+        uses: suzuki-shunsuke/commit-action@f12e2d628a4ab72dcefe7890ae07e8dbf1e201b9 # v0.1.1
         with:
           commit_message: '🔖 Release v${{ inputs.release-version }} [skip ci]'
           files: 'pubspec.yaml'
