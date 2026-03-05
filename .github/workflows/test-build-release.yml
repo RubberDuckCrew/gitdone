@@ -195,7 +195,7 @@ jobs:
           labels: '⚗️ Request Build'
 
       - name: Comment artifact links
-        uses: RubberDuckCrew/artifact2pr@21442c018dee20199544b118f1c56263bcf17d27 # v1.1.0
+        uses: RubberDuckCrew/artifact2pr@1d2777cac9898de6a6cb16eb32b5c738ea428787 # v1.1.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           comment-if-no-artifacts: true
