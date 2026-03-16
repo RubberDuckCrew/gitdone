@@ -292,10 +292,10 @@ packages:
     dependency: transitive
     description:
       name: graphql
-      sha256: "297a1680520e7b4d3c5784cfcea11a16d599702911b74a8ab50857c6d58741b9"
+      sha256: a7cb0b5e8719546bf8d4edf5f57c3690ddf0fcce379c0d9d2287fdab73481090
       url: "https://pub.dev"
     source: hosted
-    version: "5.2.3"
+    version: "5.2.4"
   highlight:
     dependency: transitive
     description:
@@ -476,10 +476,10 @@ packages:
     dependency: transitive
     description:
       name: normalize
-      sha256: f78bf0552b9640c76369253f0b8fdabad4f3fbfc06bdae9359e71bee9a5b071b
+      sha256: "703f0af9e6f43a5a71536e977b945238bc89f1a941347e7ba467865a20cc1a9f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.1"
+    version: "0.10.0"
   objective_c:
     dependency: transitive
     description:
@@ -817,10 +817,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics
-      sha256: a4f059dc26fc8295b5921376600a194c4ec7d55e72f2fe4c7d2831e103d461e6
+      sha256: "7076216a10d5c390315fbe536a30f1254c341e7543e6c4c8a815e591307772b1"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.19"
+    version: "1.1.20"
   vector_graphics_codec:
     dependency: transitive
     description:
