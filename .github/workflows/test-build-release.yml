@@ -22,10 +22,6 @@ on:
         required: false
         type: string
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   run:
     uses: RubberDuckCrew/flutter-action/.github/workflows/test-build-release.yml@main
