@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   main:
-    uses: RubberDuckCrew/flutter-action/test-build-release.yml@main
+    uses: RubberDuckCrew/flutter-action/.github/workflows/test-build-release.yml@main
 
     with:
       app-name: 'GitDone'
