@@ -27,7 +27,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  main:
+  run:
     uses: RubberDuckCrew/flutter-action/.github/workflows/test-build-release.yml@main
 
     with:
