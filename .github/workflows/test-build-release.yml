@@ -24,7 +24,7 @@ on:
 
 jobs:
   run:
-    uses: RubberDuckCrew/flutter-action/.github/workflows/test-build-release.yml@main
+    uses: RubberDuckCrew/flutter-workflow/.github/workflows/test-build-release.yml@v0.0.0
 
     permissions:
       contents: write
