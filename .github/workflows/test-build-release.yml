@@ -30,6 +30,10 @@ jobs:
   run:
     uses: RubberDuckCrew/flutter-action/.github/workflows/test-build-release.yml@main
 
+    permissions:
+      contents: write
+      pull-requests: write
+
     with:
       app-name: 'GitDone'
       working-directory: '.'
