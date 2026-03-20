@@ -6,4 +6,4 @@ on:
 
 jobs:
   run:
-    uses: RubberDuckCrew/.github/.github/workflows/action-actionlint.yml@main
+    uses: RubberDuckCrew/.github/.github/workflows/action-actionlint.yml@v1
