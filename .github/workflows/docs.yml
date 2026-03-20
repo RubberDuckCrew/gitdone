@@ -10,7 +10,7 @@ on:
 
 jobs:
   run:
-    uses: RubberDuckCrew/.github/.github/workflows/action-docs.yml@main
+    uses: RubberDuckCrew/.github/.github/workflows/action-docs.yml@v1
     secrets: inherit
     with:
       project-name: gitdone
