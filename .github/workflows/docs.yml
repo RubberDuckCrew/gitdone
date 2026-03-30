@@ -10,10 +10,12 @@ on:
 
 jobs:
   run:
-    uses: RubberDuckCrew/.github/.github/workflows/action-docs.yml@0968afd074c1d7ee5654414dc45027fc9c35d8d3 # v1
-    secrets: inherit
+    uses: RubberDuckCrew/.github/.github/workflows/action-docs.yml@ce18923b2f09dce39930cd8c370ea45c8e58c414 # v2.0.0
     with:
       project-name: gitdone
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     permissions:
       contents: read
       deployments: write
