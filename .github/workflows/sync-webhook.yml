@@ -1,0 +1,18 @@
+name: Sync webhook
+
+on:
+  schedule:
+    - cron: "0 3 * * 0"
+  push:
+    branches: [main]
+    paths: [.github/workflows/sync-webhook.yml]
+  workflow_dispatch:
+
+jobs:
+  run:
+    uses: RubberDuckCrew/.github/.github/workflows/action-sync-webhook.yml@56e4f827ad3706fe96a060b0aae589f9e2dd5c30 # v2.1.0
+    with:
+      bot-app-id: ${{ vars.RUBBERDUCKCREW_BOT_APP_ID }}
+    secrets:
+      BOT_APP_PRIVATE_KEY: ${{ secrets.RUBBERDUCKCREW_BOT_APP_PRIVATE_KEY }}
+      WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
