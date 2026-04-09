@@ -10,7 +10,7 @@ on:
 
 jobs:
   run:
-    uses: RubberDuckCrew/.github/.github/workflows/action-sync-webhook.yml@56e4f827ad3706fe96a060b0aae589f9e2dd5c30 # v2.1.0
+    uses: RubberDuckCrew/.github/.github/workflows/action-sync-webhook.yml@f6f2f76c549b7a82aafccde367f33d09c7cf0eae # v2.1.1
     with:
       bot-app-id: ${{ vars.RUBBERDUCKCREW_BOT_APP_ID }}
     secrets:
