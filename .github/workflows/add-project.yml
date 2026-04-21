@@ -6,7 +6,7 @@ on:
 
 jobs:
   run:
-    uses: RubberDuckCrew/.github/.github/workflows/action-add-project.yml@44514881ffd4d4403f96b145e1438af5d93d47f4 # v2.2.1
+    uses: RubberDuckCrew/.github/.github/workflows/action-add-project.yml@9359cf3f39584573a76ae17b2efc76b192c5050e # v2.3.0
     with:
       bot-app-id: ${{ vars.RUBBERDUCKCREW_BOT_APP_ID }}
     secrets:
