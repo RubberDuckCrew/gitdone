@@ -21,7 +21,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "settings.gradle.kts"
+        "/(^|/)build\\.gradle\\.kts$/"
       ],
       "matchStrings": [
         "ndkVersion = \"(?<currentValue>[^\"]+)\""
