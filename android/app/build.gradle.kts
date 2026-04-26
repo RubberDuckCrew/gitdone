@@ -11,7 +11,7 @@ plugins {
 android {
     namespace = "com.GitDone.gitdone"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.2.12479018"
+    ndkVersion = "29.0.14206865"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
