@@ -2,9 +2,8 @@ import "package:flutter/material.dart";
 
 /// A widget that represents a permission chip.
 class PermissionChip extends StatelessWidget {
-
   /// Creates a permission chip.
-  const PermissionChip({ super.key, required this.label});
+  const PermissionChip({super.key, required this.label});
 
   /// The label of the permission chip.
   final String label;
