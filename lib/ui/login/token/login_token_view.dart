@@ -55,7 +55,9 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                             spacing: 8,
                             runSpacing: 8,
                             children: [
-                              PermissionChip(label: "Repository: Issues, Metadata"),
+                              PermissionChip(
+                                label: "Repository: Issues, Metadata",
+                              ),
                               PermissionChip(label: "Account: Profile"),
                             ],
                           ),
@@ -122,4 +124,3 @@ class _LoginTokenViewState extends State<LoginTokenView> {
     ),
   );
 }
-
