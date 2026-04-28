@@ -1,9 +1,10 @@
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
 /// A widget that represents a permission chip.
 class PermissionChip extends StatelessWidget {
   /// Creates a permission chip.
-  const PermissionChip({super.key, required this.label});
+  const PermissionChip({required this.label, super.key});
 
   /// The label of the permission chip.
   final String label;
@@ -26,4 +27,10 @@ class PermissionChip extends StatelessWidget {
       ),
     ),
   );
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty("label", label));
+  }
 }
