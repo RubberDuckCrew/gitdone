@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
 import "package:gitdone/ui/_widgets/text_link.dart";
+import "package:gitdone/ui/login/token/widgets/PermissionChip.dart";
 import "package:gitdone/ui/login/token/widgets/login_token_input.dart";
 
 /// A view for logging in with a personal access token.
@@ -31,10 +32,10 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                 RichText(
                   text: TextSpan(
                     style: const TextStyle(fontSize: 18),
-                    children: <TextSpan>[
+                    children: [
                       const TextSpan(
                         text:
-                            "To login via Token, "
+                            "To login via token, "
                             "you need to generate a GitHub personal access token. "
                             "We recommend using a fine-grained personal access token, "
                             "but a classic token is also supported.\n\n",
@@ -45,39 +46,38 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                       ),
                       // Fine-grained token
                       const TextSpan(
-                        text: "\n• Fine-grained token (recommended): ",
+                        text: "\n• Fine-grained token (recommended):\n",
                       ),
-                      const TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Repository: Issues, Metadata",
-                            style: TextStyle(fontFamily: "monospace"),
+                      const WidgetSpan(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              PermissionChip(label: "Repository: Issues, Metadata"),
+                              PermissionChip(label: "Account: Profile"),
+                            ],
                           ),
-                          TextSpan(text: ", "),
-                          TextSpan(
-                            text: "Account: Profile\n",
-                            style: TextStyle(fontFamily: "monospace"),
-                          ),
-
-                          TextSpan(text: "\n"),
-                        ],
+                        ),
                       ),
+                      const TextSpan(text: "\n"),
                       // Classic token
-                      const TextSpan(text: "• Classic token: "),
-                      const TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "repo",
-                            style: TextStyle(fontFamily: "monospace"),
+                      const TextSpan(text: "• Classic token:\n"),
+                      const WidgetSpan(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              PermissionChip(label: "repo"),
+                              PermissionChip(label: "read:user"),
+                            ],
                           ),
-                          TextSpan(text: ", "),
-                          TextSpan(
-                            text: "read:user",
-                            style: TextStyle(fontFamily: "monospace"),
-                          ),
-                          TextSpan(text: "\n\n"),
-                        ],
+                        ),
                       ),
+                      const TextSpan(text: "\n"),
                       const TextSpan(
                         text:
                             "For more information, see the GitHub documentation.\n\n",
@@ -122,3 +122,4 @@ class _LoginTokenViewState extends State<LoginTokenView> {
     ),
   );
 }
+
