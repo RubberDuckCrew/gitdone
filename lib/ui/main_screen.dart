@@ -20,11 +20,10 @@ class _MainScreenState extends State<MainScreen> {
     child: Consumer<MainScreenViewModel>(
       builder: (final context, final viewModel, final child) => Scaffold(
         appBar: const NormalAppBar(),
-        body: switch (viewModel.selectedIndex) {
-          0 => const TaskListView(),
-          1 => const SettingsView(),
-          _ => const TaskListView(),
-        },
+        body: IndexedStack(
+          index: viewModel.selectedIndex,
+          children: const [TaskListView(), SettingsView()],
+        ),
         bottomNavigationBar: NavigationBar(
           destinations: const [
             NavigationDestination(icon: Icon(Icons.inbox), label: "Todos"),

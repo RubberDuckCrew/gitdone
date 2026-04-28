@@ -1,17 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>RubberDuckCrew/.github//configs/renovate/renovate-rubberduckcrew.json"
+    "github>RubberDuckCrew/.github//configs/renovate/renovate-rubberduckcrew.json#v2.3.0",
+    "github>RubberDuckCrew/flutter-workflow//renovate-flutter.json#v1.1.0",
   ],
-  "reviewers": ["team:gitdone-development"],
-  "packageRules": [
-    {
-      "matchPackageNames": [
-        "dev.flutter.flutter-plugin-loader",
-        "dev.flutter.flutter-plugin-loader.gradle.plugin",
-        "dev.flutter.flutter-plugin-loader:dev.flutter.flutter-plugin-loader.gradle.plugin"
-      ],
-      "enabled": false
-    }
+  "reviewers": [
+    "team:gitdone-development"
   ]
 }

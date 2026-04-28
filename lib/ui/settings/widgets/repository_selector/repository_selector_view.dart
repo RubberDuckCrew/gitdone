@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/repository_details.dart";
+import "package:gitdone/core/utils/snack_bar.dart";
 import "package:gitdone/ui/settings/widgets/repository_selector/repository_selector_view_model.dart";
 import "package:provider/provider.dart";
 
@@ -43,12 +44,10 @@ class _RepositorySelectorState extends State<RepositorySelector> {
               value: model.selectedRepository,
               items: model.repositories.map(convertRepoToItem).toList(),
               onChanged: (final repo) {
-                model
-                  ..selectRepository(repo)
-                  ..saveSelectedRepository();
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Selected repository: ${repo?.name}")),
+                model.selectRepository(repo);
+                SnackBarUtils.show(
+                  context: context,
+                  message: "Selected repository: ${repo?.name}",
                 );
               },
             ),

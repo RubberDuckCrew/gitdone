@@ -1,12 +1,10 @@
-import "dart:convert";
-
 import "package:flutter/foundation.dart";
 import "package:gitdone/core/models/github_model.dart";
 import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/core/models/task.dart";
+import "package:gitdone/core/settings_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
 import "package:github_flutter/github.dart";
-import "package:shared_preferences/shared_preferences.dart";
 
 /// A singleton class that manages tasks for the application.
 class TaskHandler extends ChangeNotifier {
@@ -21,6 +19,15 @@ class TaskHandler extends ChangeNotifier {
 
   List<IssueLabel> _repoLabels = [];
 
+  bool _tasksLoading = false;
+  bool _labelsLoading = false;
+
+  /// Whether the task handler is currently loading task data.
+  bool get tasksLoading => _tasksLoading;
+
+  /// Whether the task handler is currently loading label data.
+  bool get labelsLoading => _labelsLoading;
+
   /// The list of all tasks available in the repository.
   List<Task> get tasks => List.unmodifiable(_tasks);
 
@@ -30,10 +37,14 @@ class TaskHandler extends ChangeNotifier {
   /// The list of all tasks available in the repository.
   /// After the notification the current list of task is stored in [tasks].
   Future<void> loadTasks() async {
+    _tasksLoading = true;
+    notifyListeners();
     try {
-      final RepositoryDetails? repo = await _getSelectedRepository();
+      final RepositoryDetails? repo = await SettingsHandler()
+          .getSelectedRepository();
       if (repo == null) {
         Logger.logWarning("No repository selected", _classId);
+        _tasksLoading = false;
         return;
       }
       final List<Task> issues = await _fetchIssuesForRepository(repo);
@@ -50,6 +61,7 @@ class TaskHandler extends ChangeNotifier {
       Logger.logError("Failed to load tasks", _classId, e);
     } finally {
       Logger.logInfo("Loaded ${_tasks.length} tasks from repository", _classId);
+      _tasksLoading = false;
       notifyListeners();
     }
   }
@@ -57,9 +69,12 @@ class TaskHandler extends ChangeNotifier {
   /// The list of all labels available in the repository.
   /// After the notification the current list of labels is stored in [repoLabels].
   Future<void> loadLabels() async {
+    _labelsLoading = true;
+    notifyListeners();
     try {
       _repoLabels.clear();
-      final RepositoryDetails? repo = await _getSelectedRepository();
+      final RepositoryDetails? repo = await SettingsHandler()
+          .getSelectedRepository();
       if (repo == null) {
         Logger.logWarning("No repository selected", _classId);
         return;
@@ -71,9 +86,11 @@ class TaskHandler extends ChangeNotifier {
         "Loaded ${_repoLabels.length} labels from repository ${repo.toSlug()}",
         _classId,
       );
-      notifyListeners();
     } on Exception catch (e) {
       Logger.logError("Failed to load labels", _classId, e);
+    } finally {
+      _labelsLoading = false;
+      notifyListeners();
     }
   }
 
@@ -98,8 +115,7 @@ class TaskHandler extends ChangeNotifier {
     return task;
   }
 
-  /// Updates an existing task in the list of tasks. Notifies listeners
-  /// about the change.
+  /// Updates an existing task in the list of tasks. Notifies listeners about the change.
   /// Does not save the task to the remote repository!
   void updateLocalTask(final Task task) {
     final int index = _tasks.indexWhere(
@@ -116,6 +132,21 @@ class TaskHandler extends ChangeNotifier {
     }
   }
 
+  /// Deletes a task from the list of tasks. Notifies listeners about the change.
+  /// Also deletes the task from the remote repository.
+  /// If the task does not exist in the remote repository, it will be removed from the local list.
+  Future<bool> deleteTask(final Task task) async {
+    try {
+      await task.deleteRemote();
+      _tasks.removeWhere((final t) => t.issueNumber == task.issueNumber);
+      notifyListeners();
+      return true;
+    } on Exception catch (e) {
+      Logger.logError("Failed to delete task", _classId, e);
+    }
+    return false;
+  }
+
   Future<List<Task>> _fetchIssuesForRepository(
     final RepositoryDetails repo,
   ) async => (await GithubModel.github).issues
@@ -123,17 +154,6 @@ class TaskHandler extends ChangeNotifier {
       .where((final issue) => issue.pullRequest == null)
       .map((final issue) => Task.fromIssue(issue, repo.toSlug()))
       .toList();
-
-  Future<RepositoryDetails?> _getSelectedRepository() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String repoJson = prefs.getString("selected_repository") ?? "";
-    if (repoJson.isNotEmpty) {
-      return RepositoryDetails.fromJson(
-        Map<String, dynamic>.from(jsonDecode(repoJson)),
-      );
-    }
-    return null;
-  }
 
   /// Marks a task as done by updating its state to "closed" and setting the closedAt timestamp.
   Future<Task> updateIssueState(

@@ -41,14 +41,18 @@ class TaskEditViewModel extends ChangeNotifier {
     final List<IssueLabel> currentRepoLabels = _taskHandler.repoLabels;
     if (_taskLabelItems.isEmpty || !identical(_repoLabels, currentRepoLabels)) {
       _repoLabels = currentRepoLabels;
-      _taskLabelItems = _repoLabels
-          .map((final label) => DropdownItem(label: label.name, value: label))
-          .toList(growable: false);
-    }
-    for (final DropdownItem<IssueLabel> item in _taskLabelItems) {
-      item.selected = _task.labels
+      final Set<String> selectedNames = _task.labels
           .map((final label) => label.name)
-          .contains(item.value.name);
+          .toSet();
+      _taskLabelItems = _repoLabels
+          .map(
+            (final label) => DropdownItem<IssueLabel>(
+              label: label.name,
+              value: label,
+              selected: selectedNames.contains(label.name),
+            ),
+          )
+          .toList(growable: false);
     }
     return _taskLabelItems;
   }
