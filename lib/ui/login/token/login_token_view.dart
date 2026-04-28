@@ -44,13 +44,12 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                         text: "Required Token Permissions:\n",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      // Fine-grained token
                       const TextSpan(
-                        text: "\n• Fine-grained token (recommended):\n",
+                        text: "\nFine-grained token (recommended):\n",
                       ),
                       const WidgetSpan(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8),
+                          padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
                           child: Wrap(
                             spacing: 8,
                             runSpacing: 8,
@@ -65,10 +64,10 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                       ),
                       const TextSpan(text: "\n"),
                       // Classic token
-                      const TextSpan(text: "• Classic token:\n"),
+                      const TextSpan(text: "Classic token:\n"),
                       const WidgetSpan(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8),
+                          padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
                           child: Wrap(
                             spacing: 8,
                             runSpacing: 8,
