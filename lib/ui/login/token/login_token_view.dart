@@ -2,8 +2,8 @@ import "package:flutter/material.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
 import "package:gitdone/ui/_widgets/text_link.dart";
-import "package:gitdone/ui/login/token/widgets/PermissionChip.dart";
 import "package:gitdone/ui/login/token/widgets/login_token_input.dart";
+import "package:gitdone/ui/login/token/widgets/permission_chip.dart";
 
 /// A view for logging in with a personal access token.
 class LoginTokenView extends StatefulWidget {
