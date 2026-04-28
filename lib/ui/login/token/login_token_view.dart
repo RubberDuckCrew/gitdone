@@ -15,6 +15,36 @@ class LoginTokenView extends StatefulWidget {
 }
 
 class _LoginTokenViewState extends State<LoginTokenView> {
+  Widget _permissionChips(final List<String> labels) => Padding(
+    padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+    child: Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: labels
+          .map((final label) => PermissionChip(label: label))
+          .toList(),
+    ),
+  );
+
+  TextSpan _classicToken() => TextSpan(
+    children: [
+      const TextSpan(text: "Classic token:\n"),
+      WidgetSpan(child: _permissionChips(["repo", "read:user"])),
+    ],
+  );
+
+  TextSpan _personalToken() => TextSpan(
+    children: [
+      const TextSpan(text: "\nFine-grained token (recommended):\n"),
+      WidgetSpan(
+        child: _permissionChips([
+          "Repository: Issues, Metadata",
+          "Account: Profile",
+        ]),
+      ),
+    ],
+  );
+
   @override
   Widget build(final BuildContext context) => Scaffold(
     appBar: const NormalAppBar(),
@@ -44,40 +74,9 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                         text: "Required Token Permissions:\n",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      const TextSpan(
-                        text: "\nFine-grained token (recommended):\n",
-                      ),
-                      const WidgetSpan(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
-                          child: Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: [
-                              PermissionChip(
-                                label: "Repository: Issues, Metadata",
-                              ),
-                              PermissionChip(label: "Account: Profile"),
-                            ],
-                          ),
-                        ),
-                      ),
+                      _personalToken(),
                       const TextSpan(text: "\n"),
-                      // Classic token
-                      const TextSpan(text: "Classic token:\n"),
-                      const WidgetSpan(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
-                          child: Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: [
-                              PermissionChip(label: "repo"),
-                              PermissionChip(label: "read:user"),
-                            ],
-                          ),
-                        ),
-                      ),
+                      _classicToken(),
                       const TextSpan(text: "\n"),
                       const TextSpan(
                         text:
