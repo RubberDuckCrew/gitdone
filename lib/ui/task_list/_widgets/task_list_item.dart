@@ -20,33 +20,37 @@ class TaskListItem extends StatelessWidget {
         ? (icon: Icons.done, label: "Mark as done", newState: IssueState.closed)
         : (icon: Icons.undo, label: "Reopen task", newState: IssueState.open);
 
-    return Dismissible(
-      key: ValueKey(task.toString()),
-      direction: DismissDirection.startToEnd,
-      background: Container(
-        color: AppColor.colorScheme.primary,
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          children: [
-            Icon(config.icon, color: Colors.white),
-            const SizedBox(width: 8),
-            Text(config.label, style: const TextStyle(color: Colors.white)),
-          ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Dismissible(
+        key: ValueKey(task.toString()),
+        direction: DismissDirection.startToEnd,
+        background: Container(
+          color: AppColor.colorScheme.primary,
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 8,
+            children: [
+              Icon(config.icon, color: Colors.white),
+              Text(config.label, style: const TextStyle(color: Colors.white)),
+            ],
+          ),
         ),
+        confirmDismiss: (final direction) async {
+          bool confirmed = false;
+          await showMarkTaskConfirmationDialog(
+            context: context,
+            currentTaskState: task.state,
+            onConfirm: () => confirmed = true,
+          );
+          return confirmed;
+        },
+        onDismissed: (final direction) =>
+            TaskHandler().updateIssueState(task, config.newState),
+        child: TaskCard(task: task),
       ),
-      confirmDismiss: (final direction) async {
-        bool confirmed = false;
-        await showMarkTaskConfirmationDialog(
-          context: context,
-          currentTaskState: task.state,
-          onConfirm: () => confirmed = true,
-        );
-        return confirmed;
-      },
-      onDismissed: (final direction) =>
-          TaskHandler().updateIssueState(task, config.newState),
-      child: TaskCard(task: task),
     );
   }
 
