@@ -26,7 +26,7 @@ android {
         versionName = flutter.versionName
     }
 
-    // Signing via -PskipSigning=true
+    // Skip signing via -PskipSigning=true
     val skipSigning = project.hasProperty("skipSigning") && project.property("skipSigning") == "true"
 
     signingConfigs {
