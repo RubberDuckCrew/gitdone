@@ -1,8 +1,7 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:gitdone/core/settings_handler.dart";
 import "package:gitdone/core/task_handler.dart";
-import "package:gitdone/ui/_widgets/confirm_dialog.dart";
+import "package:gitdone/ui/_widgets/mark_task_confirmation_dialog.dart";
 import "package:gitdone/ui/task_details/task_details_view_model.dart";
 
 /// Floating action buttons for the task details view.
@@ -21,7 +20,11 @@ class TaskDetailsFloatingActionButton extends StatelessWidget {
       children: [
         FloatingActionButton.small(
           heroTag: "markTask",
-          onPressed: () => _showMarkTaskDialog(context, config),
+          onPressed: () => showMarkTaskConfirmationDialog(
+            context: context,
+            currentTaskState: viewModel.task.state,
+            onConfirm: config.onConfirm,
+          ),
           child: config.icon,
         ),
         FloatingActionButton(
@@ -35,74 +38,8 @@ class TaskDetailsFloatingActionButton extends StatelessWidget {
 
   _MarkTaskButtonConfig _markTaskButtonConfig() =>
       viewModel.task.state == IssueState.open.value
-      ? (
-          title: "Mark as done",
-          description:
-              "Are you sure you want to mark this task as done? This will close the GitHub issue.",
-          confirmText: "Mark as done",
-          onConfirm: viewModel.markTaskAsDone,
-          icon: const Icon(Icons.done),
-        )
-      : (
-          title: "Reopen task",
-          description: "Are you sure you want to reopen this task?",
-          onConfirm: viewModel.markTaskAsOpen,
-          icon: const Icon(Icons.undo),
-          confirmText: "Reopen",
-        );
-
-  Future<void> _showMarkTaskDialog(
-    final BuildContext context,
-    final _MarkTaskButtonConfig config,
-  ) async {
-    if (!SettingsHandler().showMarkTaskStateConfirmation()) {
-      config.onConfirm();
-      return;
-    }
-    bool doNotAskAgain = false;
-    await showDialog(
-      context: context,
-      builder: (final context) => StatefulBuilder(
-        builder: (final context, final setState) => ConfirmDialog(
-          title: Text(config.title),
-          content: _buildDialogContent(
-            description: config.description,
-            doNotAskAgain: doNotAskAgain,
-            onChanged: (final value) => setState(() => doNotAskAgain = value),
-          ),
-          confirmText: config.confirmText,
-          onConfirm: () {
-            if (doNotAskAgain) {
-              SettingsHandler().setShowMarkTaskStateConfirmation(value: false);
-            }
-            config.onConfirm();
-          },
-          cancelText: "Cancel",
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDialogContent({
-    required final String description,
-    required final bool doNotAskAgain,
-    required final ValueChanged<bool> onChanged,
-  }) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(description),
-      Row(
-        children: [
-          Checkbox(
-            value: doNotAskAgain,
-            onChanged: (final value) => onChanged(value ?? false),
-          ),
-          const Text("Don't ask me again"),
-        ],
-      ),
-    ],
-  );
+      ? (onConfirm: viewModel.markTaskAsDone, icon: const Icon(Icons.done))
+      : (onConfirm: viewModel.markTaskAsOpen, icon: const Icon(Icons.undo));
 
   @override
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
@@ -113,10 +50,4 @@ class TaskDetailsFloatingActionButton extends StatelessWidget {
   }
 }
 
-typedef _MarkTaskButtonConfig = ({
-  String confirmText,
-  String description,
-  String title,
-  VoidCallback onConfirm,
-  Icon icon,
-});
+typedef _MarkTaskButtonConfig = ({VoidCallback onConfirm, Icon icon});
