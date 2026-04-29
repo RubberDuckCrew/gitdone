@@ -159,9 +159,13 @@ class TaskListViewModel extends ChangeNotifier {
     final String filter,
   ) {
     if (filter == _filterCompleted) {
-      return tasks.where((final task) => task.closedAt != null).toList();
+      return tasks
+          .where((final task) => task.state == IssueState.closed.value)
+          .toList();
     } else if (filter == _filterPending) {
-      return tasks.where((final task) => task.closedAt == null).toList();
+      return tasks
+          .where((final task) => task.state == IssueState.open.value)
+          .toList();
     }
     return tasks;
   }

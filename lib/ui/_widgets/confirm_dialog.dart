@@ -33,23 +33,26 @@ class ConfirmDialog extends StatelessWidget {
     actions: <Widget>[
       TextButton(
         onPressed: () {
-          Navigation.navigateBack();
-          _onConfirm();
-        },
-        child: Text(_confirmText),
-      ),
-      TextButton(
-        onPressed: () {
-          Navigation.navigateBack();
+          Navigation.navigateBack(false);
           if (_onCancel != null) _onCancel();
         },
         child: Text(_cancelText),
+      ),
+      FilledButton(
+        onPressed: () {
+          Navigation.navigateBack(true);
+          _onConfirm();
+        },
+        style: FilledButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+        ),
+        child: Text(_confirmText),
       ),
     ],
   );
 
   /// Shows the ConfirmDialog as a dialog.
-  static Future<void> show(
+  static Future<bool?> show(
     final BuildContext context, {
     required final Widget title,
     required final Widget content,
@@ -58,7 +61,7 @@ class ConfirmDialog extends StatelessWidget {
     final String cancelText = "Cancel",
     final VoidCallback? onCancel,
     final bool barrierDismissible = true,
-  }) => showDialog<void>(
+  }) => showDialog<bool>(
     context: context,
     barrierDismissible: barrierDismissible,
     builder: (final context) => ConfirmDialog(

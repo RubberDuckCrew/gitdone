@@ -1,13 +1,13 @@
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:gitdone/core/models/task.dart";
-import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/core/utils/snack_bar.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/_widgets/confirm_dialog.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
 import "package:gitdone/ui/_widgets/task_labels.dart";
+import "package:gitdone/ui/task_details/_widgets/task_details_floating_action_button.dart";
 import "package:gitdone/ui/task_details/task_details_view_model.dart";
 import "package:intl/intl.dart";
 import "package:markdown_widget/markdown_widget.dart";
@@ -53,7 +53,9 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
             ],
           ),
         ),
-        floatingActionButton: _renderFloatingActionButton(viewModel),
+        floatingActionButton: TaskDetailsFloatingActionButton(
+          viewModel: viewModel,
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     ),
@@ -97,27 +99,6 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
       ],
     ),
   );
-
-  Widget _renderFloatingActionButton(final TaskDetailsViewModel viewModel) =>
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton.small(
-            heroTag: "markTask",
-            onPressed: viewModel.task.state == IssueState.open.value
-                ? viewModel.markTaskAsDone
-                : viewModel.markTaskAsOpen,
-            child: viewModel.task.state == IssueState.open.value
-                ? const Icon(Icons.done)
-                : const Icon(Icons.undo),
-          ),
-          FloatingActionButton(
-            heroTag: "editTask",
-            onPressed: viewModel.editTask,
-            child: const Icon(Icons.edit),
-          ),
-        ],
-      );
 
   MenuItemButton _deleteTaskButton(final TaskDetailsViewModel viewModel) =>
       MenuItemButton(
