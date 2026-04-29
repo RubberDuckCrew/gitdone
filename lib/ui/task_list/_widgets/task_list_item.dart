@@ -23,7 +23,7 @@ class TaskListItem extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: Dismissible(
-        key: ValueKey(task.toString()),
+        key: ValueKey("${task.slug}#${task.issueNumber}"),
         direction: DismissDirection.startToEnd,
         background: Container(
           color: AppColor.colorScheme.primary,
@@ -39,16 +39,14 @@ class TaskListItem extends StatelessWidget {
           ),
         ),
         confirmDismiss: (final direction) async {
-          bool confirmed = false;
           await showMarkTaskConfirmationDialog(
             context: context,
             currentTaskState: task.state,
-            onConfirm: () => confirmed = true,
+            onConfirm: () =>
+                TaskHandler().updateIssueState(task, config.newState),
           );
-          return confirmed;
+          return false;
         },
-        onDismissed: (final direction) =>
-            TaskHandler().updateIssueState(task, config.newState),
         child: TaskCard(task: task),
       ),
     );

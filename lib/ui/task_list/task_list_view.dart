@@ -137,7 +137,12 @@ class _TaskListViewState extends State<TaskListView> {
           shrinkWrap: true,
           physics: const AlwaysScrollableScrollPhysics(),
           children: model.tasks
-              .map((final task) => TaskListItem(task: task))
+              .map(
+                (final task) => TaskListItem(
+                  task: task,
+                  key: ValueKey("${task.slug}#${task.issueNumber}"),
+                ),
+              )
               .toList(),
         ),
       ),
