@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:gitdone/app_environment.dart";
 import "package:gitdone/ui/_widgets/page_title.dart";
 import "package:gitdone/ui/settings/widgets/account_management.dart";
+import "package:gitdone/ui/settings/widgets/general_settings.dart";
 import "package:gitdone/ui/settings/widgets/import_export/import_export_settings.dart";
 import "package:gitdone/ui/settings/widgets/repository_selector/repository_selector_view.dart";
 
@@ -21,6 +22,7 @@ class SettingsView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 16,
             children: [
+              const GeneralSettings(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

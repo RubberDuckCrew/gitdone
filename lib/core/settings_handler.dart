@@ -9,13 +9,18 @@ import "package:shared_preferences/shared_preferences.dart";
 enum SettingKey {
   /// Key for storing the selected repository details.
   selectedRepository,
+
+  /// Key for storing whether to show the confirmation dialog before marking a task as done or open.
+  showMarkTaskStateConfirmation,
 }
 
 /// Centralized handler for application settings.
 class SettingsHandler extends ChangeNotifier {
   /// Creates a new instance of [SettingsHandler].
   factory SettingsHandler() => _instance;
+
   SettingsHandler._internal();
+
   static final SettingsHandler _instance = SettingsHandler._internal();
   static const _classId = "com.GitDone.gitdone.core.settings_handler";
 
@@ -87,6 +92,20 @@ class SettingsHandler extends ChangeNotifier {
     } on Exception catch (e) {
       Logger.logError("Failed to save selected repository", _classId, e);
     }
+  }
+
+  /// Returns whether to show the confirmation dialog before marking a task as done or open.
+  bool showMarkTaskStateConfirmation() {
+    _ensurePrefsInitialized();
+    return _prefs?.getBool(SettingKey.showMarkTaskStateConfirmation.name) ??
+        true;
+  }
+
+  /// Sets whether to show the confirmation dialog before marking a task as done or open.
+  Future<void> setShowMarkTaskStateConfirmation({required bool value}) async {
+    _ensurePrefsInitialized();
+    await _prefs?.setBool(SettingKey.showMarkTaskStateConfirmation.name, value);
+    notifyListeners();
   }
 
   /// Removes the [key] setting from persistent storage.
