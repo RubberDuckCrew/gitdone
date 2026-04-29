@@ -41,9 +41,11 @@ Future<void> showMarkTaskConfirmationDialog({
           onChanged: (final value) => setState(() => doNotAskAgain = value),
         ),
         confirmText: texts.confirmText,
-        onConfirm: () {
+        onConfirm: () async {
           if (doNotAskAgain) {
-            SettingsHandler().setShowMarkTaskStateConfirmation(value: false);
+            await SettingsHandler().setShowMarkTaskStateConfirmation(
+              value: false,
+            );
           }
           onConfirm();
         },
