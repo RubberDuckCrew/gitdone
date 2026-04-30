@@ -26,31 +26,29 @@ class TaskCard extends StatefulWidget {
 
 class _TaskCardState extends State<TaskCard> {
   @override
-  Widget build(final BuildContext context) => Padding(
-    padding: const EdgeInsets.all(4),
-    child: GestureDetector(
-      onTap: () => Navigation.navigate(TaskDetailsView(widget.task)),
-      child: Card(
-        color: AppColor.colorScheme.surfaceContainer,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-          child: Row(
-            spacing: 16,
-            children: [
-              const Placeholder(fallbackHeight: 50, fallbackWidth: 50),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 4,
-                  children: [
-                    _buildTitle(widget.task.title),
-                    TaskLabels(widget.task),
-                  ],
-                ),
+  Widget build(final BuildContext context) => GestureDetector(
+    onTap: () => Navigation.navigate(TaskDetailsView(widget.task)),
+    child: Card(
+      color: AppColor.colorScheme.surfaceContainer,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+        child: Row(
+          spacing: 16,
+          children: [
+            const Placeholder(fallbackHeight: 50, fallbackWidth: 50),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 4,
+                children: [
+                  _buildTitle(widget.task.title),
+                  TaskLabels(widget.task),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     ),

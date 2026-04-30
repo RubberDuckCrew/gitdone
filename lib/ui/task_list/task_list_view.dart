@@ -1,9 +1,7 @@
 import "package:flutter/material.dart";
-import "package:gitdone/core/task_handler.dart";
-import "package:gitdone/core/theme/app_color.dart";
 import "package:gitdone/ui/_widgets/filter_chip/filter_chip_dropdown.dart";
 import "package:gitdone/ui/_widgets/filter_chip/filter_chip_item.dart";
-import "package:gitdone/ui/_widgets/task_card.dart";
+import "package:gitdone/ui/task_list/_widgets/task_list_item.dart";
 import "package:gitdone/ui/task_list/task_list_view_model.dart";
 import "package:provider/provider.dart";
 
@@ -45,7 +43,7 @@ class _TaskListViewState extends State<TaskListView> {
   @override
   Widget build(final BuildContext context) => Scaffold(
     body: Padding(
-      padding: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: ChangeNotifierProvider(
         create: (_) => TaskListViewModel()..loadTasks(),
         child: Consumer<TaskListViewModel>(
@@ -53,6 +51,7 @@ class _TaskListViewState extends State<TaskListView> {
             _getFilterItems();
             _getSortItems();
             return Column(
+              spacing: 8,
               children: [
                 _buildSearchField(model),
                 _buildFilterRow(model),
@@ -70,45 +69,39 @@ class _TaskListViewState extends State<TaskListView> {
     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
   );
 
-  Widget _buildSearchField(final TaskListViewModel model) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16),
-    child: TextField(
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: "Search",
-        prefixIcon: Icon(Icons.search),
-      ),
-      onChanged: model.updateSearchQuery,
+  Widget _buildSearchField(final TaskListViewModel model) => TextField(
+    decoration: const InputDecoration(
+      border: OutlineInputBorder(),
+      labelText: "Search",
+      prefixIcon: Icon(Icons.search),
     ),
+    onChanged: model.updateSearchQuery,
   );
 
-  Widget _buildFilterRow(final TaskListViewModel model) => Padding(
-    padding: const EdgeInsets.only(right: 16, left: 16),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _buildFilterChipDropdown(
-          items: _filterItems!,
-          initialLabel: "Filter",
-          onUpdate: model.updateFilter,
+  Widget _buildFilterRow(final TaskListViewModel model) => Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      _buildFilterChipDropdown(
+        items: _filterItems!,
+        initialLabel: "Filter",
+        onUpdate: model.updateFilter,
+      ),
+      const SizedBox(width: 8),
+      _buildFilterChipDropdown(
+        items: _sortItems!,
+        initialLabel: "Sort",
+        onUpdate: model.updateSort,
+      ),
+      const SizedBox(width: 8),
+      Consumer<TaskListViewModel>(
+        builder: (final context, final model, _) => _buildFilterChipDropdown(
+          items: model.labelFilterChipItems,
+          initialLabel: "Labels",
+          allowMultipleSelection: true,
+          onUpdate: model.updateLabels,
         ),
-        const SizedBox(width: 8),
-        _buildFilterChipDropdown(
-          items: _sortItems!,
-          initialLabel: "Sort",
-          onUpdate: model.updateSort,
-        ),
-        const SizedBox(width: 8),
-        Consumer<TaskListViewModel>(
-          builder: (final context, final model, _) => _buildFilterChipDropdown(
-            items: model.labelFilterChipItems,
-            initialLabel: "Labels",
-            allowMultipleSelection: true,
-            onUpdate: model.updateLabels,
-          ),
-        ),
-      ],
-    ),
+      ),
+    ],
   );
 
   Widget _buildFilterChipDropdown({
@@ -145,30 +138,10 @@ class _TaskListViewState extends State<TaskListView> {
           physics: const AlwaysScrollableScrollPhysics(),
           children: model.tasks
               .map(
-                (final task) => task.state == IssueState.open.value
-                    ? Dismissible(
-                        key: ValueKey(task.issueNumber),
-                        direction: DismissDirection.startToEnd,
-                        background: Container(
-                          color: AppColor.colorScheme.primary,
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: const Row(
-                            children: [
-                              Text("Mark as done"),
-                              Icon(Icons.done, color: Colors.white),
-                            ],
-                          ),
-                        ),
-                        onDismissed: (_) {
-                          TaskHandler().updateIssueState(
-                            task,
-                            IssueState.closed,
-                          );
-                        },
-                        child: TaskCard(task: task),
-                      )
-                    : TaskCard(task: task),
+                (final task) => TaskListItem(
+                  task: task,
+                  key: ValueKey("${task.slug}#${task.issueNumber}"),
+                ),
               )
               .toList(),
         ),
