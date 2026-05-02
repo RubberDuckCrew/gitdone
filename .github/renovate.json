@@ -2,7 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "github>RubberDuckCrew/.github//configs/renovate/renovate-rubberduckcrew.json#v2.3.0",
-    "github>RubberDuckCrew/flutter-workflow//renovate-flutter.json#v1.1.0",
+    "github>RubberDuckCrew/flutter-workflow//renovate-flutter.json#v1.2.0",
   ],
   "reviewers": [
     "team:gitdone-development"
