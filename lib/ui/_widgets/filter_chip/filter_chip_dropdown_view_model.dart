@@ -6,8 +6,8 @@ class FilterChipDropdownViewModel<T> extends ChangeNotifier {
   /// Creates a new instance of [FilterChipDropdownViewModel].
   FilterChipDropdownViewModel({
     required this.allowMultipleSelection,
-    required final List<FilterChipItem<T>> items,
-  }) : _items = items;
+    required this._items,
+  });
 
   final List<FilterChipItem<T>> _items;
 
