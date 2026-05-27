@@ -11,13 +11,10 @@ class TaskEditViewModel extends ChangeNotifier {
   /// Creates a [TaskEditViewModel] with the given task item.
   TaskEditViewModel({
     required final Task task,
-    required final titleController,
-    required final descriptionController,
-    required final labelController,
-  }) : _task = task.copy(),
-       _titleController = titleController,
-       _descriptionController = descriptionController,
-       _labelController = labelController {
+    required this._titleController,
+    required this._descriptionController,
+    required this._labelController,
+  }) : _task = task.copy() {
     _taskHandler.addListener(_listener);
     _titleController.text = _task.title;
     _descriptionController.text = _task.description;

@@ -5,10 +5,8 @@ import "package:url_launcher/url_launcher.dart";
 
 /// A widget that displays a clickable text link.
 class TextLinkWidget {
-  /// Creates an instance of [TextLinkWidget] with the given [text] and [url].
-  TextLinkWidget({required final String text, required final String url})
-    : _url = url,
-      _text = text;
+  /// Creates an instance of [TextLinkWidget] with the given [_text] and [_url].
+  TextLinkWidget({required this._text, required this._url});
   final String _text;
   final String _url;
 

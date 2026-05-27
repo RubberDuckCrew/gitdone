@@ -10,15 +10,13 @@ class Task {
     required this.title,
     required this.description,
     required this.labels,
-    required final slug,
+    required this._slug,
     required this.createdAt,
     required this.updatedAt,
     required final IssueState issueState,
     this.closedAt,
-    final issueNumber,
-  }) : state = issueState.value,
-       _slug = slug,
-       _issueNumber = issueNumber;
+    this._issueNumber,
+  }) : state = issueState.value;
 
   /// Creates a to do instance from a GitHub [Issue].
   Task.fromIssue(final Issue issue, this._slug)

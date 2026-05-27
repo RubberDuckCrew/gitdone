@@ -4,9 +4,8 @@ import "package:gitdone/core/theme/app_color.dart";
 
 /// A widget that displays a page title with a specific style.
 class PageTitleWidget extends StatelessWidget {
-  /// Creates an instance of [PageTitleWidget] with the given [title].
-  const PageTitleWidget({required final String title, super.key})
-    : _title = title;
+  /// Creates an instance of [PageTitleWidget] with the given [_title].
+  const PageTitleWidget({required this._title, super.key});
 
   final String _title;
 

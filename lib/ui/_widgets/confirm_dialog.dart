@@ -5,19 +5,14 @@ import "package:gitdone/core/utils/navigation.dart";
 class ConfirmDialog extends StatelessWidget {
   /// Creates a [ConfirmDialog] widget with the given parameters.
   const ConfirmDialog({
-    required final Widget title,
-    required final Widget content,
-    required final String confirmText,
-    required final VoidCallback onConfirm,
-    required final String cancelText,
-    final VoidCallback? onCancel,
+    required this._title,
+    required this._content,
+    required this._confirmText,
+    required this._onConfirm,
+    required this._cancelText,
+    this._onCancel,
     super.key,
-  }) : _title = title,
-       _content = content,
-       _confirmText = confirmText,
-       _cancelText = cancelText,
-       _onConfirm = onConfirm,
-       _onCancel = onCancel;
+  });
 
   final Widget _title;
   final Widget _content;
