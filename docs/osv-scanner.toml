@@ -1,0 +1,3 @@
+[[IgnoredVulns]]
+id = "GHSA-g7r4-m6w7-qqqr"
+reason = "VitePress v1 currently depends on vulnerable esbuild; tracked until VitePress v2 upgrade is available."
