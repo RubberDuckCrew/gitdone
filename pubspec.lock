@@ -476,10 +476,10 @@ packages:
     dependency: "direct main"
     description:
       name: multi_dropdown
-      sha256: "3582128d2d70d24f9a2e8acfce38b579cceb57e885461d4dd9e669a10342f863"
+      sha256: "385322c3a595154a4ce80f39f08040c44102ed280837aa5fa1a42d24bc05fc16"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.1"
+    version: "3.2.2"
   nested:
     dependency: transitive
     description:
