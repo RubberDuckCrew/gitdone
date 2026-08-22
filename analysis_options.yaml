@@ -46,7 +46,6 @@ linter:
     - avoid_multiple_declarations_per_line
     - avoid_positional_boolean_parameters
     - avoid_print
-    - avoid_private_typedef_functions
     - avoid_relative_lib_imports
     - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
@@ -119,7 +118,6 @@ linter:
     - noop_primitive_operations
     - null_check_on_nullable_type_parameter
     - null_closures
-    - one_member_abstracts
     - only_throw_errors
     - overridden_fields
     - package_names
@@ -182,7 +180,6 @@ linter:
     - type_literal_in_constant_pattern
     - unintended_html_in_doc_comment
     - unnecessary_async
-    - unnecessary_await_in_return
     - unnecessary_brace_in_string_interps
     - unnecessary_breaks
     - unnecessary_const
