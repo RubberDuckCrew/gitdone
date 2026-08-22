@@ -9,7 +9,7 @@ class LoginGithubScreen extends StatelessWidget {
   const LoginGithubScreen({super.key});
 
   @override
-  Widget build(final BuildContext context) => ChangeNotifierProvider(
+  Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (_) => LoginGithubViewModel(),
     child: const LoginGithubView(),
   );

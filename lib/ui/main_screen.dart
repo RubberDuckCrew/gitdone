@@ -15,10 +15,10 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   @override
-  Widget build(final BuildContext context) => ChangeNotifierProvider(
+  Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (_) => MainScreenViewModel(),
     child: Consumer<MainScreenViewModel>(
-      builder: (final context, final viewModel, final child) => Scaffold(
+      builder: (context, viewModel, child) => Scaffold(
         appBar: const NormalAppBar(),
         body: IndexedStack(
           index: viewModel.selectedIndex,
@@ -48,7 +48,7 @@ class MainScreenViewModel extends ChangeNotifier {
   int get selectedIndex => _selectedIndex;
 
   /// Updates the selected index of the bottom navigation bar.
-  void updateIndex(final int index) {
+  void updateIndex(int index) {
     _selectedIndex = index;
     notifyListeners();
   }

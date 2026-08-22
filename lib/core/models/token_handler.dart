@@ -12,7 +12,7 @@ class TokenHandler {
   FlutterSecureStorage storage = const FlutterSecureStorage();
 
   /// Saves the provided token to secure storage.
-  Future<void> saveToken(final String token) async {
+  Future<void> saveToken(String token) async {
     await storage.write(key: "auth_token", value: token);
   }
 
@@ -31,7 +31,7 @@ class TokenHandler {
   }
 
   /// Logs out the user by deleting the token and navigating to the welcome view
-  static Future<void> logout(final BuildContext context) async {
+  static Future<void> logout(BuildContext context) async {
     final tokenHandler = TokenHandler();
     await tokenHandler.deleteToken();
     if (!context.mounted) return;

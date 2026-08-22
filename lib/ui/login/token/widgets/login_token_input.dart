@@ -17,7 +17,7 @@ class _LoginTokenInputState extends State<LoginTokenInput> {
   final TextEditingController _controller = TextEditingController();
 
   @override
-  Widget build(final BuildContext context) => Column(
+  Widget build(BuildContext context) => Column(
     children: [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

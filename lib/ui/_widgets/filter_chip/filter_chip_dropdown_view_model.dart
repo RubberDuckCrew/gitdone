@@ -15,7 +15,7 @@ class FilterChipDropdownViewModel<T> extends ChangeNotifier {
   List<FilterChipItem<T>> get items => _items;
 
   /// Sets the list of items in the filter chip dropdown.
-  set items(final List<FilterChipItem<T>> items) {
+  set items(List<FilterChipItem<T>> items) {
     _items
       ..clear()
       ..addAll(items);
@@ -30,16 +30,14 @@ class FilterChipDropdownViewModel<T> extends ChangeNotifier {
   final bool allowMultipleSelection;
 
   /// The set of selected labels in the filter chip dropdown.
-  Set<T> get selectedLabels => _items
-      .where((final item) => item.selected)
-      .map((final item) => item.value)
-      .toSet();
+  Set<T> get selectedLabels =>
+      _items.where((item) => item.selected).map((item) => item.value).toSet();
 
   /// Whether the dropdown is currently open.
   bool get isDropdownOpen => _isDropdownOpen;
 
   /// Whether any item in the filter chip dropdown is selected.
-  bool get isSelected => _items.any((final item) => item.selected);
+  bool get isSelected => _items.any((item) => item.selected);
 
   /// The maximum width of the items in the filter chip dropdown.
   double get maxItemWidth => _maxItemWidth;
@@ -48,8 +46,7 @@ class FilterChipDropdownViewModel<T> extends ChangeNotifier {
   double get iconWidth => _iconWidth;
 
   /// The number of selected items in the filter chip dropdown.
-  int get amountOfSelectedItems =>
-      _items.where((final item) => item.selected).length;
+  int get amountOfSelectedItems => _items.where((item) => item.selected).length;
 
   /// Toggles the dropdown state of the filter chip dropdown.
   void toggleDropdown() {
@@ -58,7 +55,7 @@ class FilterChipDropdownViewModel<T> extends ChangeNotifier {
   }
 
   /// Selects an item in the filter chip dropdown.
-  void selectItem(final FilterChipItem<T> item) {
+  void selectItem(FilterChipItem<T> item) {
     if (allowMultipleSelection) {
       item.selected = true;
     } else {
@@ -72,7 +69,7 @@ class FilterChipDropdownViewModel<T> extends ChangeNotifier {
   }
 
   /// Unselects an item in the filter chip dropdown.
-  void unselectItem(final FilterChipItem<T> item) {
+  void unselectItem(FilterChipItem<T> item) {
     item.selected = false;
     notifyListeners();
   }
@@ -87,13 +84,13 @@ class FilterChipDropdownViewModel<T> extends ChangeNotifier {
   }
 
   /// Returns true if the given item is selected.
-  bool isItemSelected(final FilterChipItem<T> item) => item.selected;
+  bool isItemSelected(FilterChipItem<T> item) => item.selected;
 
   /// Calculates the maximum width of the dropdown items.
   void calculateMaxItemWidth(
-    final List<String> labels,
-    final double labelPadding,
-    final BuildContext context,
+    List<String> labels,
+    double labelPadding,
+    BuildContext context,
   ) {
     double maxWidth = 0;
     for (final String label in labels) {
@@ -109,17 +106,17 @@ class FilterChipDropdownViewModel<T> extends ChangeNotifier {
   }
 
   /// Calculates the width of the icon in the dropdown.
-  void calculateIconWidth(final BuildContext context) {
+  void calculateIconWidth(BuildContext context) {
     _iconWidth = IconTheme.of(context).size ?? 24.0;
   }
 
   /// Returns the label to display on the chip.
-  String getLabel(final String initialLabel) {
+  String getLabel(String initialLabel) {
     if (amountOfSelectedItems > 0) {
       if (allowMultipleSelection) {
         return "$amountOfSelectedItems $initialLabel";
       } else {
-        return _items.firstWhere((final item) => item.selected).label;
+        return _items.firstWhere((item) => item.selected).label;
       }
     }
     return initialLabel;

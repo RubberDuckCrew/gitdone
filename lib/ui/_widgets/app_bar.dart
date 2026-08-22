@@ -20,7 +20,7 @@ class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<MenuItemButton> menuItems;
 
   @override
-  Widget build(final BuildContext context) => AppBar(
+  Widget build(BuildContext context) => AppBar(
     /// This fixes the issue of the app bar having a different color when
     /// the app is scrolled.
     scrolledUnderElevation: 0,
@@ -39,7 +39,7 @@ class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {
   );
 
   Widget _buildMenu() => MenuAnchor(
-    builder: (final context, final controller, final child) => IconButton(
+    builder: (context, controller, child) => IconButton(
       onPressed: () {
         if (controller.isOpen) {
           controller.close();
@@ -58,7 +58,7 @@ class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty("backVisible", backVisible));
   }

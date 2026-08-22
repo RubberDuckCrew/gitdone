@@ -39,7 +39,7 @@ class FilterChipDropdown<T> extends StatefulWidget {
   State<FilterChipDropdown<T>> createState() => _FilterChipDropdownState<T>();
 
   @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
       ..add(IterableProperty<FilterChipItem<T>>("items", items))
@@ -68,7 +68,7 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
   double _offsetX = 0;
 
   @override
-  void didUpdateWidget(covariant final FilterChipDropdown<T> oldWidget) {
+  void didUpdateWidget(covariant FilterChipDropdown<T> oldWidget) {
     if (oldWidget.items != widget.items) {
       _viewModel.items = widget.items;
     }
@@ -114,9 +114,9 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
   }
 
   double _getChipOffset(
-    final Offset chipPosition,
-    final double screenWidth,
-    final double actualDropdownWidth,
+    Offset chipPosition,
+    double screenWidth,
+    double actualDropdownWidth,
   ) {
     double dx = 0;
     final double leftEdge = chipPosition.dx;
@@ -132,7 +132,7 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
 
   @override
   Widget build(
-    final BuildContext context,
+    BuildContext context,
   ) => ChangeNotifierProvider<FilterChipDropdownViewModel<T>>(
     create: (_) {
       final FilterChipDropdownViewModel<T> viewModel =
@@ -145,10 +145,10 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
       return viewModel;
     },
     child: Consumer<FilterChipDropdownViewModel<T>>(
-      builder: (final context, final viewModel, final child) {
+      builder: (context, viewModel, child) {
         viewModel
           ..calculateMaxItemWidth(
-            widget.items.map((final item) => item.label).toList(),
+            widget.items.map((item) => item.label).toList(),
             widget.labelPadding,
             context,
           )
@@ -158,7 +158,7 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
           link: _layerLink,
           child: OverlayPortal(
             controller: _portalController,
-            overlayChildBuilder: (final context) {
+            overlayChildBuilder: (context) {
               final RenderObject? renderBox = _chipKey.currentContext
                   ?.findRenderObject();
               if (renderBox is! RenderBox || !renderBox.hasSize) {
@@ -201,7 +201,7 @@ class _FilterChipDropdownState<T> extends State<FilterChipDropdown<T>> {
                           padding: EdgeInsets.zero,
                           children: widget.items
                               .map(
-                                (final item) => Material(
+                                (item) => Material(
                                   color: viewModel.isItemSelected(item)
                                       ? Theme.of(context).colorScheme.primary
                                       : Colors.transparent,

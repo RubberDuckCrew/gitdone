@@ -21,7 +21,7 @@ class _LoginGithubViewState extends State<LoginGithubView> {
   }
 
   @override
-  Widget build(final BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => Scaffold(
     appBar: const NormalAppBar(),
     body: ChangeNotifierProvider(
       create: (_) {
@@ -29,7 +29,7 @@ class _LoginGithubViewState extends State<LoginGithubView> {
         return viewModel;
       },
       child: Consumer<LoginGithubViewModel>(
-        builder: (final context, final viewModel, _) => SingleChildScrollView(
+        builder: (context, viewModel, _) => SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

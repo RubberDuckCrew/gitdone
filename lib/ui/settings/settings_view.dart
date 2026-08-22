@@ -12,7 +12,7 @@ class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
 
   @override
-  Widget build(final BuildContext context) => Column(
+  Widget build(BuildContext context) => Column(
     children: [
       const PageTitleWidget(title: "Settings"),
       Expanded(

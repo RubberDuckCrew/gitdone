@@ -11,10 +11,10 @@ class AccountManagement extends StatelessWidget {
   const AccountManagement({super.key});
 
   @override
-  Widget build(final BuildContext context) => ChangeNotifierProvider(
+  Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (_) => AccountManagementViewModel(),
     child: Consumer<AccountManagementViewModel>(
-      builder: (final context, final model, final child) => Column(
+      builder: (context, model, child) => Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +70,7 @@ class AccountManagement extends StatelessWidget {
     ),
   );
 
-  bool _isValidUrl(final String? url) {
+  bool _isValidUrl(String? url) {
     if (url == null || url.isEmpty) return false;
     final Uri? uri = Uri.tryParse(url);
     return uri != null && uri.hasScheme && uri.hasAuthority;

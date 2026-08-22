@@ -10,7 +10,7 @@ import "package:multi_dropdown/multi_dropdown.dart";
 class TaskEditViewModel extends ChangeNotifier {
   /// Creates a [TaskEditViewModel] with the given task item.
   TaskEditViewModel({
-    required final Task task,
+    required Task task,
     required this._titleController,
     required this._descriptionController,
     required this._labelController,
@@ -39,11 +39,11 @@ class TaskEditViewModel extends ChangeNotifier {
     if (_taskLabelItems.isEmpty || !identical(_repoLabels, currentRepoLabels)) {
       _repoLabels = currentRepoLabels;
       final Set<String> selectedNames = _task.labels
-          .map((final label) => label.name)
+          .map((label) => label.name)
           .toSet();
       _taskLabelItems = _repoLabels
           .map(
-            (final label) => DropdownItem<IssueLabel>(
+            (label) => DropdownItem<IssueLabel>(
               label: label.name,
               value: label,
               selected: selectedNames.contains(label.name),
@@ -78,7 +78,7 @@ class TaskEditViewModel extends ChangeNotifier {
     updateTitle(_titleController.text);
     updateDescription(_descriptionController.text);
     updateLabels(
-      _labelController.selectedItems.map((final item) => item.value).toList(),
+      _labelController.selectedItems.map((item) => item.value).toList(),
     );
     Logger.log("Saving task: $_task", _classId, LogLevel.detailed);
     _taskHandler.saveTask(_task);
@@ -94,19 +94,19 @@ class TaskEditViewModel extends ChangeNotifier {
   }
 
   /// Update the title of the task item.
-  void updateTitle(final String title) {
+  void updateTitle(String title) {
     _task.title = title;
     Logger.log("Updated title: $title", _classId, LogLevel.detailed);
   }
 
   /// Update the labels of the task item.
-  void updateLabels(final List<IssueLabel> labels) {
+  void updateLabels(List<IssueLabel> labels) {
     _task.labels = labels;
     Logger.log("Updated labels: $labels", _classId, LogLevel.detailed);
   }
 
   /// Update the description of the task item.
-  void updateDescription(final String description) {
+  void updateDescription(String description) {
     _task.description = description;
     Logger.log(
       "Updated description: $description",

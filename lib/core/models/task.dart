@@ -13,13 +13,13 @@ class Task {
     required this._slug,
     required this.createdAt,
     required this.updatedAt,
-    required final IssueState issueState,
+    required IssueState issueState,
     this.closedAt,
     this._issueNumber,
   }) : state = issueState.value;
 
   /// Creates a to do instance from a GitHub [Issue].
-  Task.fromIssue(final Issue issue, this._slug)
+  Task.fromIssue(Issue issue, this._slug)
     : title = issue.title,
       description = issue.body,
       createdAt = issue.createdAt!,
@@ -30,7 +30,7 @@ class Task {
       state = issue.state;
 
   /// Creates an empty task with the given [slug].
-  Task.createEmpty(final RepositorySlug slug)
+  Task.createEmpty(RepositorySlug slug)
     : title = "",
       description = "",
       labels = <IssueLabel>[],
@@ -89,11 +89,11 @@ class Task {
         IssueRequest(
           title: title,
           body: description,
-          labels: labels.map((final label) => label.name).toList(),
+          labels: labels.map((label) => label.name).toList(),
           state: state,
         ),
       )
-      .then((final issue) {
+      .then((issue) {
         Logger.logInfo("Created issue ${issue.number}", _classId);
         return Task.fromIssue(issue, slug);
       });
@@ -105,11 +105,11 @@ class Task {
         IssueRequest(
           title: title,
           body: description,
-          labels: labels.map((final label) => label.name).toList(),
+          labels: labels.map((label) => label.name).toList(),
           state: state,
         ),
       )
-      .then((final issue) {
+      .then((issue) {
         Logger.logInfo("Updated issue ${issue.number}", _classId);
         return Task.fromIssue(issue, slug);
       });
@@ -142,7 +142,7 @@ class Task {
   );
 
   /// Replaces the current instance with the values from another to do instance.
-  void replace(final Task update) {
+  void replace(Task update) {
     title = update.title;
     description = update.description;
     labels = List<IssueLabel>.from(update.labels);

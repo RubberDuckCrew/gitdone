@@ -11,33 +11,30 @@ class GithubApiHandler {
   final String _token;
 
   /// Makes a GET request to the GitHub API at the specified [path].
-  Future<http.Response> get(final String path) => http.get(
+  Future<http.Response> get(String path) => http.get(
     Uri.parse("$_baseUrl$path"),
     headers: {"Authorization": "Bearer $_token"},
   );
 
   /// Makes a POST request to the GitHub API at the specified [path] with
   /// the provided [body].
-  Future<http.Response> post(final String path, {required final String body}) =>
-      http.post(
-        Uri.parse("$_baseUrl$path"),
-        headers: {"Authorization": "Bearer $_token"},
-        body: body,
-      );
-
-  /// Makes a PATCH request to the GitHub API at the specified [path] with the
-  /// provided [body].
-  Future<http.Response> patch(
-    final String path, {
-    required final String body,
-  }) => http.patch(
+  Future<http.Response> post(String path, {required String body}) => http.post(
     Uri.parse("$_baseUrl$path"),
     headers: {"Authorization": "Bearer $_token"},
     body: body,
   );
 
+  /// Makes a PATCH request to the GitHub API at the specified [path] with the
+  /// provided [body].
+  Future<http.Response> patch(String path, {required String body}) =>
+      http.patch(
+        Uri.parse("$_baseUrl$path"),
+        headers: {"Authorization": "Bearer $_token"},
+        body: body,
+      );
+
   /// Makes a DELETE request to the GitHub API at the specified [path].
-  Future<http.Response> delete(final String path) => http.delete(
+  Future<http.Response> delete(String path) => http.delete(
     Uri.parse("$_baseUrl$path"),
     headers: {"Authorization": "Bearer $_token"},
   );

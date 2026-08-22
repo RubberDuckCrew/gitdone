@@ -15,7 +15,7 @@ class RepositorySelector extends StatefulWidget {
 
 class _RepositorySelectorState extends State<RepositorySelector> {
   DropdownMenuItem<RepositoryDetails> convertRepoToItem(
-    final RepositoryDetails repo,
+    RepositoryDetails repo,
   ) => DropdownMenuItem(
     value: repo,
     child: Row(
@@ -32,10 +32,10 @@ class _RepositorySelectorState extends State<RepositorySelector> {
   );
 
   @override
-  Widget build(final BuildContext context) => ChangeNotifierProvider(
+  Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (_) => RepositorySelectorViewModel(),
     child: Consumer<RepositorySelectorViewModel>(
-      builder: (final context, final model, final child) => Column(
+      builder: (context, model, child) => Column(
         children: [
           SizedBox(
             child: DropdownButton<RepositoryDetails>(
@@ -43,7 +43,7 @@ class _RepositorySelectorState extends State<RepositorySelector> {
               hint: const Text("Select a repository"),
               value: model.selectedRepository,
               items: model.repositories.map(convertRepoToItem).toList(),
-              onChanged: (final repo) {
+              onChanged: (repo) {
                 model.selectRepository(repo);
                 SnackBarUtils.show(
                   context: context,
