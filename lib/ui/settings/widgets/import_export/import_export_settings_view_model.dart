@@ -6,7 +6,7 @@ import "package:gitdone/core/utils/snack_bar.dart";
 /// ViewModel for importing and exporting settings.
 class ImportExportSettingsViewModel extends ChangeNotifier {
   /// Exports settings as JSON and copies them to the clipboard.
-  Future<void> exportSettingsToClipboard(final BuildContext context) async {
+  Future<void> exportSettingsToClipboard(BuildContext context) async {
     try {
       final String json = await SettingsHandler().exportSettings();
       await Clipboard.setData(ClipboardData(text: json));
@@ -24,10 +24,7 @@ class ImportExportSettingsViewModel extends ChangeNotifier {
   }
 
   /// Imports settings from JSON string.
-  Future<void> importSettingsFromJson(
-    final BuildContext context,
-    final String json,
-  ) async {
+  Future<void> importSettingsFromJson(BuildContext context, String json) async {
     try {
       await SettingsHandler().importSettings(json);
       if (context.mounted) {

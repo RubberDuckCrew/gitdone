@@ -10,7 +10,7 @@ class RepositoryDetails {
   });
 
   /// Creates a [RepositoryDetails] instance from a JSON map.
-  factory RepositoryDetails.fromJson(final Map<String, dynamic> json) =>
+  factory RepositoryDetails.fromJson(Map<String, dynamic> json) =>
       RepositoryDetails(
         name: json["name"] as String,
         owner: json["owner"] as String,
@@ -18,7 +18,7 @@ class RepositoryDetails {
       );
 
   /// Creates a [RepositoryDetails] instance from a [Repository] object.
-  factory RepositoryDetails.fromRepository(final Repository repo) =>
+  factory RepositoryDetails.fromRepository(Repository repo) =>
       RepositoryDetails(
         name: repo.name,
         owner: repo.owner!.login,

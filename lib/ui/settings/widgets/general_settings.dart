@@ -7,7 +7,7 @@ class GeneralSettings extends StatelessWidget {
   const GeneralSettings({super.key});
 
   @override
-  Widget build(final BuildContext context) => Column(
+  Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text("General Settings", style: Theme.of(context).textTheme.titleLarge),

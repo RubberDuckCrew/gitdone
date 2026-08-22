@@ -25,7 +25,7 @@ class TaskDetailsView extends StatefulWidget {
   State<TaskDetailsView> createState() => _TaskDetailsViewState();
 
   @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Task>("task", task));
   }
@@ -33,10 +33,10 @@ class TaskDetailsView extends StatefulWidget {
 
 class _TaskDetailsViewState extends State<TaskDetailsView> {
   @override
-  Widget build(final BuildContext context) => ChangeNotifierProvider(
+  Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (_) => TaskDetailsViewModel(widget.task),
     child: Consumer<TaskDetailsViewModel>(
-      builder: (final context, final viewModel, _) => Scaffold(
+      builder: (context, viewModel, _) => Scaffold(
         appBar: NormalAppBar(menuItems: [_deleteTaskButton(viewModel)]),
         body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -100,7 +100,7 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
     ),
   );
 
-  MenuItemButton _deleteTaskButton(final TaskDetailsViewModel viewModel) =>
+  MenuItemButton _deleteTaskButton(TaskDetailsViewModel viewModel) =>
       MenuItemButton(
         onPressed: () => ConfirmDialog.show(
           context,
@@ -134,6 +134,6 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
         child: const Text("Delete Task"),
       );
 
-  String _formatDateTime(final DateTime dateTime) =>
+  String _formatDateTime(DateTime dateTime) =>
       DateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime.toLocal());
 }

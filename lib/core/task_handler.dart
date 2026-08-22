@@ -97,13 +97,13 @@ class TaskHandler extends ChangeNotifier {
   /// Creates a new task or updates an existing task and adds it to the list of tasks. Notifies listeners
   /// about the change.
   /// Returns the created task if successful, otherwise returns the original task.
-  Future<Task> saveTask(final Task task) async {
+  Future<Task> saveTask(Task task) async {
     try {
       final Task createdTask = await task.saveRemote();
 
       // Add the created task to the local list of tasks if it does not already exist
       // This prevents duplicates in the local task list.
-      if (!_tasks.any((final t) => t.issueNumber == createdTask.issueNumber)) {
+      if (!_tasks.any((t) => t.issueNumber == createdTask.issueNumber)) {
         _tasks.add(createdTask);
       }
 
@@ -117,9 +117,9 @@ class TaskHandler extends ChangeNotifier {
 
   /// Updates an existing task in the list of tasks. Notifies listeners about the change.
   /// Does not save the task to the remote repository!
-  void updateLocalTask(final Task task) {
+  void updateLocalTask(Task task) {
     final int index = _tasks.indexWhere(
-      (final t) => t.issueNumber == task.issueNumber,
+      (t) => t.issueNumber == task.issueNumber,
     );
     if (index != -1) {
       _tasks[index] = task;
@@ -135,10 +135,10 @@ class TaskHandler extends ChangeNotifier {
   /// Deletes a task from the list of tasks. Notifies listeners about the change.
   /// Also deletes the task from the remote repository.
   /// If the task does not exist in the remote repository, it will be removed from the local list.
-  Future<bool> deleteTask(final Task task) async {
+  Future<bool> deleteTask(Task task) async {
     try {
       await task.deleteRemote();
-      _tasks.removeWhere((final t) => t.issueNumber == task.issueNumber);
+      _tasks.removeWhere((t) => t.issueNumber == task.issueNumber);
       notifyListeners();
       return true;
     } on Exception catch (e) {
@@ -147,19 +147,15 @@ class TaskHandler extends ChangeNotifier {
     return false;
   }
 
-  Future<List<Task>> _fetchIssuesForRepository(
-    final RepositoryDetails repo,
-  ) async => (await GithubModel.github).issues
-      .listByRepo(repo.toSlug(), state: "all")
-      .where((final issue) => issue.pullRequest == null)
-      .map((final issue) => Task.fromIssue(issue, repo.toSlug()))
-      .toList();
+  Future<List<Task>> _fetchIssuesForRepository(RepositoryDetails repo) async =>
+      (await GithubModel.github).issues
+          .listByRepo(repo.toSlug(), state: "all")
+          .where((issue) => issue.pullRequest == null)
+          .map((issue) => Task.fromIssue(issue, repo.toSlug()))
+          .toList();
 
   /// Marks a task as done by updating its state to "closed" and setting the closedAt timestamp.
-  Future<Task> updateIssueState(
-    final Task task,
-    final IssueState newState,
-  ) async {
+  Future<Task> updateIssueState(Task task, IssueState newState) async {
     Logger.log(
       "Marking task as ${newState.value}: ${task.title}",
       _classId,
@@ -175,7 +171,7 @@ class TaskHandler extends ChangeNotifier {
       ..saveRemote();
 
     final int index = _tasks.indexWhere(
-      (final t) => t.issueNumber == task.issueNumber,
+      (t) => t.issueNumber == task.issueNumber,
     );
     if (index != -1) {
       _tasks[index] = task;
@@ -207,7 +203,7 @@ enum IssueState {
   String get value => _value;
 
   /// Returns the IssueState corresponding to the given string value.
-  static IssueState fromValue(final String value) {
+  static IssueState fromValue(String value) {
     for (final IssueState state in IssueState.values) {
       if (state.value == value) {
         return state;

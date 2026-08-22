@@ -15,14 +15,12 @@ class LoginTokenView extends StatefulWidget {
 }
 
 class _LoginTokenViewState extends State<LoginTokenView> {
-  Widget _permissionChips(final List<String> labels) => Padding(
+  Widget _permissionChips(List<String> labels) => Padding(
     padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
     child: Wrap(
       spacing: 8,
       runSpacing: 8,
-      children: labels
-          .map((final label) => PermissionChip(label: label))
-          .toList(),
+      children: labels.map((label) => PermissionChip(label: label)).toList(),
     ),
   );
 
@@ -46,7 +44,7 @@ class _LoginTokenViewState extends State<LoginTokenView> {
   );
 
   @override
-  Widget build(final BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => Scaffold(
     appBar: const NormalAppBar(),
     body: SafeArea(
       child: Padding(
@@ -100,8 +98,7 @@ class _LoginTokenViewState extends State<LoginTokenView> {
                         children: [
                           RichText(
                             text: TextLinkWidget(
-                              text:
-                                  "Creating a fine-grained personal access token",
+                              text: "Creating a fine-grained personal access token",
                               url:
                                   "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/"
                                   "managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token",

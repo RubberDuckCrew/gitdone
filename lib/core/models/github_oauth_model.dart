@@ -26,7 +26,7 @@ class GitHubAuth {
 
   static const _classId = "com.GitDone.gitdone.core.models.github_auth";
 
-  static String _randomCodeVerifier(final int length) {
+  static String _randomCodeVerifier(int length) {
     const chars =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     final random = Random.secure();
@@ -36,7 +36,7 @@ class GitHubAuth {
     ).join();
   }
 
-  static String _sha256FromString(final String input) {
+  static String _sha256FromString(String input) {
     final Uint8List bytes = utf8.encode(input);
     final Digest digest = sha256.convert(bytes);
     final String base64Digest = base64Url
@@ -79,7 +79,7 @@ class GitHubAuth {
   }
 
   /// Completes the login process by exchanging the authorization code for an access token.
-  Future<void> completeLogin(final String userCode) async {
+  Future<void> completeLogin(String userCode) async {
     int tries = 0;
     const int maxTries = 3;
 
@@ -94,7 +94,7 @@ class GitHubAuth {
           _validateExchangeResponse(response);
           _successCallback(response.token!);
           return;
-        } on OAuthException catch (_, _) {
+        } on OAuthException catch (_) {
           Logger.log(
             "Login attempt $tries failed. Retrying...",
             _classId,
@@ -128,7 +128,7 @@ class GitHubAuth {
 
   /// Callback function to be executed upon successful login.
   /// Saves the token and updates the authentication state.
-  void _successCallback(final String token) {
+  void _successCallback(String token) {
     Logger.log(
       "Login completed successfully with token!",
       _classId,
@@ -141,7 +141,7 @@ class GitHubAuth {
 
   /// Validates the response from the exchange request.
   /// Throws an [OAuthException] if the token is null or empty.
-  void _validateExchangeResponse(final ExchangeResponse response) {
+  void _validateExchangeResponse(ExchangeResponse response) {
     if (response.token == null || response.token!.isEmpty) {
       Logger.log(
         "Authentication failed: No token received",
@@ -157,7 +157,7 @@ class GitHubAuth {
 
   /// Validates the authentication result and extracts the authorization code.
   /// Throws an [OAuthException] if the code is missing or empty.
-  String _validateAuthenticationResult(final String result) {
+  String _validateAuthenticationResult(String result) {
     final String? code = Uri.parse(result).queryParameters["code"];
     if (code == null || code.isEmpty) {
       Logger.log(
@@ -175,10 +175,10 @@ class GitHubAuth {
     return code;
   }
 
-  Future<ExchangeResponse> _sendExchangeRequest(final String code) async {
+  Future<ExchangeResponse> _sendExchangeRequest(String code) async {
     final ExchangeResponse response = await _oauth
         .exchange(code, _codeVerifier)
-        .onError((final error, final stackTrace) {
+        .onError((error, stackTrace) {
           Logger.log(
             "Error during token exchange: $error",
             _classId,

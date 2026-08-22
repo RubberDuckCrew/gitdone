@@ -85,24 +85,24 @@ class TaskListViewModel extends ChangeNotifier {
   List<FilterChipItem<String>> get labelFilterChipItems => allLabels.isNotEmpty
       ? allLabels
             .map(
-              (final label) => FilterChipItem<String>(
+              (label) => FilterChipItem<String>(
                 value: label.name,
-                selected: filterLabels.any((final l) => l.name == label.name),
+                selected: filterLabels.any((l) => l.name == label.name),
               ),
             )
             .toList()
       : <FilterChipItem<String>>[];
 
   /// The list of labels currently being used for filtering.
-  void updateLabels(final String label, {final bool selected = false}) {
+  void updateLabels(String label, {bool selected = false}) {
     if (label.isEmpty) _filterLabels.clear();
 
     if (selected) {
       _filterLabels.addAll(
-        _taskHandler.repoLabels.where((final l) => l.name == label),
+        _taskHandler.repoLabels.where((l) => l.name == label),
       );
     } else {
-      _filterLabels.removeWhere((final l) => l.name == label);
+      _filterLabels.removeWhere((l) => l.name == label);
     }
 
     Logger.log("Selected labels: $_filterLabels", _classId, LogLevel.finest);
@@ -137,62 +137,56 @@ class TaskListViewModel extends ChangeNotifier {
   }
 
   /// The current search query used to filter tasks.
-  void updateSearchQuery(final String query) {
+  void updateSearchQuery(String query) {
     _searchQuery = query;
     _applyFilters();
   }
 
   /// The current filter applied to the task.
-  void updateFilter(final String filter, {final bool selected = false}) {
+  void updateFilter(String filter, {bool selected = false}) {
     _filter = filter;
     _applyFilters();
   }
 
   /// The current sort order applied to the task.
-  void updateSort(final String sort, {final bool selected = false}) {
+  void updateSort(String sort, {bool selected = false}) {
     _sort = sort;
     _applyFilters();
   }
 
-  List<Task> _applyCompletedFilter(
-    final List<Task> tasks,
-    final String filter,
-  ) {
+  List<Task> _applyCompletedFilter(List<Task> tasks, String filter) {
     if (filter == _filterCompleted) {
       return tasks
-          .where((final task) => task.state == IssueState.closed.value)
+          .where((task) => task.state == IssueState.closed.value)
           .toList();
     } else if (filter == _filterPending) {
       return tasks
-          .where((final task) => task.state == IssueState.open.value)
+          .where((task) => task.state == IssueState.open.value)
           .toList();
     }
     return tasks;
   }
 
-  List<Task> _applySearchQuery(final List<Task> tasks, final String query) {
+  List<Task> _applySearchQuery(List<Task> tasks, String query) {
     if (query.isEmpty) return tasks;
 
-    return tasks.where((final task) {
+    return tasks.where((task) {
       final String query = _searchQuery.toLowerCase();
       return task.title.toLowerCase().contains(query) ||
           task.description.toLowerCase().contains(query);
     }).toList();
   }
 
-  List<Task> _applyLabelFilter(
-    final List<Task> tasks,
-    final List<IssueLabel> labels,
-  ) {
+  List<Task> _applyLabelFilter(List<Task> tasks, List<IssueLabel> labels) {
     if (labels.isEmpty) return tasks;
 
     return tasks
         .where(
-          (final todo) => todo.labels
-              .map((final label) => label.name)
+          (todo) => todo.labels
+              .map((label) => label.name)
               .any(
-                (final labelName) => _filterLabels
-                    .map((final filterLabel) => filterLabel.name)
+                (labelName) => _filterLabels
+                    .map((filterLabel) => filterLabel.name)
                     .contains(labelName),
               ),
         )
@@ -201,22 +195,19 @@ class TaskListViewModel extends ChangeNotifier {
 
   /// Sanitizes a string by removing all non-alphanumeric characters.
   /// This is used to ensure consistent alphabetic sorting of task titles.
-  String _sanitizeString(final String input) =>
+  String _sanitizeString(String input) =>
       input.replaceAll(RegExp("[^a-zA-Z0-9]"), "");
 
-  List<Task> _sortTasks(final List<Task> tasks, final String sort) =>
-      switch (sort) {
-        _sortAlphabetical =>
-          tasks..sort(
-            (final a, final b) =>
-                _sanitizeString(a.title).compareTo(_sanitizeString(b.title)),
-          ),
-        _sortLastUpdated =>
-          tasks..sort((final a, final b) => b.updatedAt.compareTo(a.updatedAt)),
-        _sortCreated =>
-          tasks..sort((final a, final b) => b.createdAt.compareTo(a.createdAt)),
-        _ => tasks,
-      };
+  List<Task> _sortTasks(List<Task> tasks, String sort) => switch (sort) {
+    _sortAlphabetical =>
+      tasks..sort(
+        (a, b) => _sanitizeString(a.title).compareTo(_sanitizeString(b.title)),
+      ),
+    _sortLastUpdated =>
+      tasks..sort((a, b) => b.updatedAt.compareTo(a.updatedAt)),
+    _sortCreated => tasks..sort((a, b) => b.createdAt.compareTo(a.createdAt)),
+    _ => tasks,
+  };
 
   void _applyFilters() {
     _filteredTasks = _taskHandler.tasks;

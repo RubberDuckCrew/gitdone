@@ -50,7 +50,7 @@ class RepositorySelectorModel extends ChangeNotifier {
       ..addAll(
         await (await GithubModel.github).repositories
             .listRepositories(type: "all")
-            .where((final repo) => repo.name != _selectedRepository?.name)
+            .where((repo) => repo.name != _selectedRepository?.name)
             .map(RepositoryDetails.fromRepository)
             .toList(),
       );
@@ -58,7 +58,7 @@ class RepositorySelectorModel extends ChangeNotifier {
   }
 
   /// Selects a repository from the list and updates the selected repository.
-  Future<void> selectRepository(final RepositoryDetails? repo) async {
+  Future<void> selectRepository(RepositoryDetails? repo) async {
     if (repo == null) {
       Logger.log("No repository selected", _classId, LogLevel.finest);
       return;

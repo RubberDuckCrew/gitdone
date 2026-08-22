@@ -8,7 +8,7 @@ class ImportExportSettings extends StatelessWidget {
   const ImportExportSettings({super.key});
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     final viewModel = ImportExportSettingsViewModel();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -21,8 +21,8 @@ class ImportExportSettings extends StatelessWidget {
   }
 
   Widget _buildImport(
-    final BuildContext context,
-    final ImportExportSettingsViewModel viewModel,
+    BuildContext context,
+    ImportExportSettingsViewModel viewModel,
   ) => OutlinedButton.icon(
     style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.grey)),
     icon: const Icon(Icons.input),
@@ -31,7 +31,7 @@ class ImportExportSettings extends StatelessWidget {
       final controller = TextEditingController();
       final String? result = await showDialog<String>(
         context: context,
-        builder: (final context) => _buildImportDialog(controller),
+        builder: (context) => _buildImportDialog(controller),
       );
       if (!context.mounted) return;
       if (result != null) {
@@ -40,35 +40,34 @@ class ImportExportSettings extends StatelessWidget {
     },
   );
 
-  Widget _buildImportDialog(final TextEditingController controller) =>
-      LayoutBuilder(
-        builder: (final context, final constraints) => AlertDialog(
-          title: const Text("Import Settings (JSON)"),
-          content: TextField(
-            controller: controller,
-            maxLines: 8,
-            minLines: 8,
-            decoration: const InputDecoration(
-              hintText: "Paste your settings JSON here",
-              border: OutlineInputBorder(),
-            ),
-          ),
-          actions: [
-            const TextButton(
-              onPressed: Navigation.navigateBack,
-              child: Text("Cancel"),
-            ),
-            TextButton(
-              onPressed: () => Navigation.navigateBack(controller.text),
-              child: const Text("Import"),
-            ),
-          ],
+  Widget _buildImportDialog(TextEditingController controller) => LayoutBuilder(
+    builder: (context, constraints) => AlertDialog(
+      title: const Text("Import Settings (JSON)"),
+      content: TextField(
+        controller: controller,
+        maxLines: 8,
+        minLines: 8,
+        decoration: const InputDecoration(
+          hintText: "Paste your settings JSON here",
+          border: OutlineInputBorder(),
         ),
-      );
+      ),
+      actions: [
+        const TextButton(
+          onPressed: Navigation.navigateBack,
+          child: Text("Cancel"),
+        ),
+        TextButton(
+          onPressed: () => Navigation.navigateBack(controller.text),
+          child: const Text("Import"),
+        ),
+      ],
+    ),
+  );
 
   Widget _buildExport(
-    final BuildContext context,
-    final ImportExportSettingsViewModel viewModel,
+    BuildContext context,
+    ImportExportSettingsViewModel viewModel,
   ) => OutlinedButton.icon(
     style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.grey)),
     icon: const Icon(Icons.publish),

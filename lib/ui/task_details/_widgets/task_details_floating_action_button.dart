@@ -13,7 +13,7 @@ class TaskDetailsFloatingActionButton extends StatelessWidget {
   final TaskDetailsViewModel viewModel;
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     final _MarkTaskButtonConfig config = _markTaskButtonConfig();
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -42,7 +42,7 @@ class TaskDetailsFloatingActionButton extends StatelessWidget {
       : (onConfirm: viewModel.markTaskAsOpen, icon: const Icon(Icons.undo));
 
   @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
       DiagnosticsProperty<TaskDetailsViewModel>("viewModel", viewModel),

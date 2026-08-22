@@ -75,7 +75,7 @@ class SettingsHandler extends ChangeNotifier {
   }
 
   /// Persists the selected repository [repo].
-  Future<void> setSelectedRepository(final RepositoryDetails repo) async {
+  Future<void> setSelectedRepository(RepositoryDetails repo) async {
     _ensurePrefsInitialized();
     Logger.log(
       "Saving selected repository: ${repo.name}",
@@ -109,7 +109,7 @@ class SettingsHandler extends ChangeNotifier {
   }
 
   /// Removes the [key] setting from persistent storage.
-  Future<void> remove(final SettingKey key) async {
+  Future<void> remove(SettingKey key) async {
     _ensurePrefsInitialized();
     try {
       await _prefs?.remove(key.name);
@@ -152,12 +152,12 @@ class SettingsHandler extends ChangeNotifier {
   }
 
   /// Imports settings from a JSON string
-  Future<void> importSettings(final String json) async {
+  Future<void> importSettings(String json) async {
     _ensurePrefsInitialized();
     try {
       final Map<String, dynamic> importSettings = jsonDecode(json);
       final Set<String> validKeys = SettingKey.values
-          .map((final e) => e.name)
+          .map((e) => e.name)
           .toSet();
       for (final MapEntry<String, dynamic> entry in importSettings.entries) {
         if (!validKeys.contains(entry.key)) {
@@ -175,7 +175,7 @@ class SettingsHandler extends ChangeNotifier {
         } else if (value is String) {
           await _prefs!.setString(entry.key, value);
         } else if (value is List) {
-          if (value.every((final element) => element is String)) {
+          if (value.every((element) => element is String)) {
             await _prefs!.setStringList(entry.key, List<String>.from(value));
           }
         }

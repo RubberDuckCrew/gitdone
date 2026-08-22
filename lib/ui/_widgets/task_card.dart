@@ -18,7 +18,7 @@ class TaskCard extends StatefulWidget {
   State<TaskCard> createState() => _TaskCardState();
 
   @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Task>("task", task));
   }
@@ -26,7 +26,7 @@ class TaskCard extends StatefulWidget {
 
 class _TaskCardState extends State<TaskCard> {
   @override
-  Widget build(final BuildContext context) => GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
     onTap: () => Navigation.navigate(TaskDetailsView(widget.task)),
     child: Card(
       color: AppColor.colorScheme.surfaceContainer,
@@ -54,7 +54,7 @@ class _TaskCardState extends State<TaskCard> {
     ),
   );
 
-  Widget _buildTitle(final String title) => Text(
+  Widget _buildTitle(String title) => Text(
     title,
     style: TextStyle(
       color: AppColor.colorScheme.onSurface,

@@ -21,7 +21,7 @@ class _TaskListViewState extends State<TaskListView> {
   void _getFilterItems() {
     _filterItems ??= TaskListViewModel.filterOptions
         .map(
-          (final option) => FilterChipItem<String>(
+          (option) => FilterChipItem<String>(
             value: option,
             selected: option == TaskListViewModel.defaultFilter,
           ),
@@ -32,7 +32,7 @@ class _TaskListViewState extends State<TaskListView> {
   void _getSortItems() {
     _sortItems ??= TaskListViewModel.sortOptions
         .map(
-          (final option) => FilterChipItem<String>(
+          (option) => FilterChipItem<String>(
             value: option,
             selected: option == TaskListViewModel.defaultSort,
           ),
@@ -41,13 +41,13 @@ class _TaskListViewState extends State<TaskListView> {
   }
 
   @override
-  Widget build(final BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => Scaffold(
     body: Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: ChangeNotifierProvider(
         create: (_) => TaskListViewModel()..loadTasks(),
         child: Consumer<TaskListViewModel>(
-          builder: (final context, final model, _) {
+          builder: (context, model, _) {
             _getFilterItems();
             _getSortItems();
             return Column(
@@ -69,7 +69,7 @@ class _TaskListViewState extends State<TaskListView> {
     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
   );
 
-  Widget _buildSearchField(final TaskListViewModel model) => TextField(
+  Widget _buildSearchField(TaskListViewModel model) => TextField(
     decoration: const InputDecoration(
       border: OutlineInputBorder(),
       labelText: "Search",
@@ -78,7 +78,7 @@ class _TaskListViewState extends State<TaskListView> {
     onChanged: model.updateSearchQuery,
   );
 
-  Widget _buildFilterRow(final TaskListViewModel model) => Row(
+  Widget _buildFilterRow(TaskListViewModel model) => Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
       _buildFilterChipDropdown(
@@ -94,7 +94,7 @@ class _TaskListViewState extends State<TaskListView> {
       ),
       const SizedBox(width: 8),
       Consumer<TaskListViewModel>(
-        builder: (final context, final model, _) => _buildFilterChipDropdown(
+        builder: (context, model, _) => _buildFilterChipDropdown(
           items: model.labelFilterChipItems,
           initialLabel: "Labels",
           allowMultipleSelection: true,
@@ -105,19 +105,19 @@ class _TaskListViewState extends State<TaskListView> {
   );
 
   Widget _buildFilterChipDropdown({
-    required final List<FilterChipItem<String>> items,
-    required final String initialLabel,
-    required final Function(String, {required bool selected}) onUpdate,
-    final bool allowMultipleSelection = false,
+    required List<FilterChipItem<String>> items,
+    required String initialLabel,
+    required Function(String, {required bool selected}) onUpdate,
+    bool allowMultipleSelection = false,
   }) => FilterChipDropdown<String>(
     items: items,
     initialLabel: initialLabel,
     allowMultipleSelection: allowMultipleSelection,
-    onUpdate: (final item, {required final selected}) =>
+    onUpdate: (item, {required selected}) =>
         onUpdate(item.value, selected: selected),
   );
 
-  Widget _buildTaskList(final TaskListViewModel model) {
+  Widget _buildTaskList(TaskListViewModel model) {
     if (model.isLoading) {
       return const Expanded(child: Center(child: CircularProgressIndicator()));
     }
@@ -138,7 +138,7 @@ class _TaskListViewState extends State<TaskListView> {
           physics: const AlwaysScrollableScrollPhysics(),
           children: model.tasks
               .map(
-                (final task) => TaskListItem(
+                (task) => TaskListItem(
                   task: task,
                   key: ValueKey("${task.slug}#${task.issueNumber}"),
                 ),
