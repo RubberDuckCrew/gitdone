@@ -22,7 +22,7 @@ class RepositorySelectorViewModel extends ChangeNotifier {
   RepositoryDetails? get selectedRepository => _model.selectedRepository;
 
   /// Selects a repository and saves it to local storage.
-  void selectRepository(final RepositoryDetails? repo) {
+  void selectRepository(RepositoryDetails? repo) {
     _model.selectRepository(repo);
     _taskHandler
       ..loadTasks()

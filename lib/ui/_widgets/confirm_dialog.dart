@@ -22,7 +22,7 @@ class ConfirmDialog extends StatelessWidget {
   final VoidCallback? _onCancel;
 
   @override
-  Widget build(final BuildContext context) => AlertDialog(
+  Widget build(BuildContext context) => AlertDialog(
     title: _title,
     content: _content,
     actions: <Widget>[
@@ -48,18 +48,18 @@ class ConfirmDialog extends StatelessWidget {
 
   /// Shows the ConfirmDialog as a dialog.
   static Future<bool?> show(
-    final BuildContext context, {
-    required final Widget title,
-    required final Widget content,
-    required final String confirmText,
-    required final VoidCallback onConfirm,
-    final String cancelText = "Cancel",
-    final VoidCallback? onCancel,
-    final bool barrierDismissible = true,
+    BuildContext context, {
+    required Widget title,
+    required Widget content,
+    required String confirmText,
+    required VoidCallback onConfirm,
+    String cancelText = "Cancel",
+    VoidCallback? onCancel,
+    bool barrierDismissible = true,
   }) => showDialog<bool>(
     context: context,
     barrierDismissible: barrierDismissible,
-    builder: (final context) => ConfirmDialog(
+    builder: (context) => ConfirmDialog(
       title: title,
       content: content,
       confirmText: confirmText,

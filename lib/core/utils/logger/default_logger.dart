@@ -8,14 +8,14 @@ import "package:gitdone/core/utils/logger/logger_module.dart";
 class DefaultLogger implements LoggerModule {
   @override
   void log(
-    final String message,
-    final String name,
-    final LogLevel logLevel, {
-    final DateTime? time,
-    final int? sequenceNumber,
-    final Zone? zone,
-    final Object? error,
-    final StackTrace? stackTrace,
+    String message,
+    String name,
+    LogLevel logLevel, {
+    DateTime? time,
+    int? sequenceNumber,
+    Zone? zone,
+    Object? error,
+    StackTrace? stackTrace,
   }) {
     dev.log(
       message,
@@ -31,13 +31,13 @@ class DefaultLogger implements LoggerModule {
 
   @override
   void logError(
-    final String message,
-    final String name,
-    final Object? error, {
-    final DateTime? time,
-    final int? sequenceNumber,
-    final Zone? zone,
-    final StackTrace? stackTrace,
+    String message,
+    String name,
+    Object? error, {
+    DateTime? time,
+    int? sequenceNumber,
+    Zone? zone,
+    StackTrace? stackTrace,
   }) {
     log(
       message,
@@ -53,13 +53,13 @@ class DefaultLogger implements LoggerModule {
 
   @override
   void logInfo(
-    final String message,
-    final String name, {
-    final DateTime? time,
-    final int? sequenceNumber,
-    final Zone? zone,
-    final Object? error,
-    final StackTrace? stackTrace,
+    String message,
+    String name, {
+    DateTime? time,
+    int? sequenceNumber,
+    Zone? zone,
+    Object? error,
+    StackTrace? stackTrace,
   }) {
     log(
       message,
@@ -75,13 +75,13 @@ class DefaultLogger implements LoggerModule {
 
   @override
   void logWarning(
-    final String message,
-    final String name, {
-    final DateTime? time,
-    final int? sequenceNumber,
-    final Zone? zone,
-    final Object? error,
-    final StackTrace? stackTrace,
+    String message,
+    String name, {
+    DateTime? time,
+    int? sequenceNumber,
+    Zone? zone,
+    Object? error,
+    StackTrace? stackTrace,
   }) {
     log(
       message,

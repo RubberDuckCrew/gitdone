@@ -10,7 +10,7 @@ class PageTitleWidget extends StatelessWidget {
   final String _title;
 
   @override
-  Widget build(final BuildContext context) => Column(
+  Widget build(BuildContext context) => Column(
     children: [
       const Padding(padding: EdgeInsets.only(top: 16)),
       Row(
@@ -37,7 +37,7 @@ class PageTitleWidget extends StatelessWidget {
   );
 
   @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(StringProperty("title", _title));
   }

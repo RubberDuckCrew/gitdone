@@ -7,15 +7,14 @@ import "package:gitdone/ui/_widgets/confirm_dialog.dart";
 ///
 /// If the "don't ask again" setting is enabled, it will execute [onConfirm] immediately.
 Future<void> showMarkTaskConfirmationDialog({
-  required final BuildContext context,
-  required final String currentTaskState,
-  required final VoidCallback onConfirm,
+  required BuildContext context,
+  required String currentTaskState,
+  required VoidCallback onConfirm,
 }) async {
   final _DialogTexts texts = currentTaskState == IssueState.open.value
       ? (
           title: "Mark as done",
-          description:
-              "Are you sure you want to mark this task as done? This will close the GitHub issue.",
+          description: "Are you sure you want to mark this task as done? This will close the GitHub issue.",
           confirmText: "Mark as done",
         )
       : (
@@ -32,13 +31,13 @@ Future<void> showMarkTaskConfirmationDialog({
   bool doNotAskAgain = false;
   await showDialog(
     context: context,
-    builder: (final context) => StatefulBuilder(
-      builder: (final context, final setState) => ConfirmDialog(
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) => ConfirmDialog(
         title: Text(texts.title),
         content: _buildDialogContent(
           description: texts.description,
           doNotAskAgain: doNotAskAgain,
-          onChanged: (final value) => setState(() => doNotAskAgain = value),
+          onChanged: (value) => setState(() => doNotAskAgain = value),
         ),
         confirmText: texts.confirmText,
         onConfirm: () async {
@@ -56,9 +55,9 @@ Future<void> showMarkTaskConfirmationDialog({
 }
 
 Widget _buildDialogContent({
-  required final String description,
-  required final bool doNotAskAgain,
-  required final ValueChanged<bool> onChanged,
+  required String description,
+  required bool doNotAskAgain,
+  required ValueChanged<bool> onChanged,
 }) => Column(
   mainAxisSize: MainAxisSize.min,
   crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +67,7 @@ Widget _buildDialogContent({
       children: [
         Checkbox(
           value: doNotAskAgain,
-          onChanged: (final value) => onChanged(value ?? false),
+          onChanged: (value) => onChanged(value ?? false),
         ),
         const Text("Don't ask me again"),
       ],

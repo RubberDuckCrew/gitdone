@@ -15,14 +15,14 @@ class OctoCat extends StatefulWidget {
 
 class _OctoCatState extends State<OctoCat> {
   @override
-  Widget build(final BuildContext context) => ChangeNotifierProvider(
+  Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (_) => OctoCatProvider(),
     child: Consumer<OctoCatProvider>(
-      builder: (final context, final provider, final child) => Column(
+      builder: (context, provider, child) => Column(
         children: [
           FutureBuilder(
             future: provider.futureResponse,
-            builder: (final context, final snapshot) {
+            builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }

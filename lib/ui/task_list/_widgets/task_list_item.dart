@@ -15,7 +15,7 @@ class TaskListItem extends StatelessWidget {
   final Task task;
 
   @override
-  Widget build(final BuildContext context) {
+  Widget build(BuildContext context) {
     final _ItemConfig config = task.state == IssueState.open.value
         ? (icon: Icons.done, label: "Mark as done", newState: IssueState.closed)
         : (icon: Icons.undo, label: "Reopen task", newState: IssueState.open);
@@ -38,7 +38,7 @@ class TaskListItem extends StatelessWidget {
             ],
           ),
         ),
-        confirmDismiss: (final direction) async {
+        confirmDismiss: (direction) async {
           await showMarkTaskConfirmationDialog(
             context: context,
             currentTaskState: task.state,
@@ -53,7 +53,7 @@ class TaskListItem extends StatelessWidget {
   }
 
   @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Task>("task", task));
   }

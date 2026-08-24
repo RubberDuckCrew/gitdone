@@ -11,16 +11,16 @@ class TaskLabels extends StatelessWidget {
   final Task _task;
 
   @override
-  Widget build(final BuildContext context) => SingleChildScrollView(
+  Widget build(BuildContext context) => SingleChildScrollView(
     scrollDirection: Axis.horizontal,
     child: Row(spacing: 4, children: _buildLabelList(_task.labels)),
   );
 
-  List<Widget> _buildLabelList(final List<IssueLabel> labels) {
+  List<Widget> _buildLabelList(List<IssueLabel> labels) {
     if (labels.isNotEmpty) {
       return labels
           .map(
-            (final label) => Chip(
+            (label) => Chip(
               label: Text(label.name),
               backgroundColor: AppColor.colorScheme.surfaceContainer,
               labelStyle: TextStyle(

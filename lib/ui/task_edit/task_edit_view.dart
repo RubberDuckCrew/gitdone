@@ -20,7 +20,7 @@ class TaskEditView extends StatefulWidget {
   State<TaskEditView> createState() => _TaskEditViewState();
 
   @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Task>("task", task));
   }
@@ -40,7 +40,7 @@ class _TaskEditViewState extends State<TaskEditView> {
   }
 
   @override
-  Widget build(final BuildContext context) => ChangeNotifierProvider(
+  Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (_) => TaskEditViewModel(
       task: widget.task,
       titleController: _titleController,
@@ -48,7 +48,7 @@ class _TaskEditViewState extends State<TaskEditView> {
       labelController: _labelController,
     ),
     child: Consumer<TaskEditViewModel>(
-      builder: (final context, final viewModel, _) => Scaffold(
+      builder: (context, viewModel, _) => Scaffold(
         appBar: const NormalAppBar(),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -82,7 +82,7 @@ class _TaskEditViewState extends State<TaskEditView> {
     ),
   );
 
-  Widget _editTitle(final TaskEditViewModel viewModel) => TextField(
+  Widget _editTitle(TaskEditViewModel viewModel) => TextField(
     controller: _titleController,
     decoration: const InputDecoration(
       labelText: "Title",
@@ -91,40 +91,39 @@ class _TaskEditViewState extends State<TaskEditView> {
     onSubmitted: viewModel.updateTitle,
   );
 
-  Widget _editLabels(final TaskEditViewModel viewModel) =>
-      MultiDropdown<IssueLabel>(
-        items: viewModel.taskLabels,
-        controller: _labelController,
-        searchEnabled: false,
-        chipDecoration: ChipDecoration(
-          backgroundColor: AppColor.colorScheme.surfaceContainer,
-          runSpacing: 4,
-          wrap: true,
-        ),
-        fieldDecoration: FieldDecoration(
-          labelText: "Labels",
-          showClearIcon: false,
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColor.colorScheme.onSurface),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColor.colorScheme.primary),
-          ),
-        ),
-        dropdownDecoration: DropdownDecoration(
-          marginTop: 4,
-          backgroundColor: AppColor.colorScheme.surfaceContainer,
-          borderRadius: BorderRadius.circular(6),
-          maxHeight: 384, // Max 8 items of 48px height each
-        ),
-        dropdownItemDecoration: const DropdownItemDecoration(
-          selectedIcon: Icon(Icons.check_box),
-          selectedBackgroundColor: Colors.transparent,
-        ),
-        onSelectionChange: viewModel.updateLabels,
-      );
+  Widget _editLabels(TaskEditViewModel viewModel) => MultiDropdown<IssueLabel>(
+    items: viewModel.taskLabels,
+    controller: _labelController,
+    searchEnabled: false,
+    chipDecoration: ChipDecoration(
+      backgroundColor: AppColor.colorScheme.surfaceContainer,
+      runSpacing: 4,
+      wrap: true,
+    ),
+    fieldDecoration: FieldDecoration(
+      labelText: "Labels",
+      showClearIcon: false,
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColor.colorScheme.onSurface),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColor.colorScheme.primary),
+      ),
+    ),
+    dropdownDecoration: DropdownDecoration(
+      marginTop: 4,
+      backgroundColor: AppColor.colorScheme.surfaceContainer,
+      borderRadius: BorderRadius.circular(6),
+      maxHeight: 384, // Max 8 items of 48px height each
+    ),
+    dropdownItemDecoration: const DropdownItemDecoration(
+      selectedIcon: Icon(Icons.check_box),
+      selectedBackgroundColor: Colors.transparent,
+    ),
+    onSelectionChange: viewModel.updateLabels,
+  );
 
-  Widget _editDescription(final TaskEditViewModel viewModel) => TextField(
+  Widget _editDescription(TaskEditViewModel viewModel) => TextField(
     controller: _descriptionController,
     decoration: const InputDecoration(
       labelText: "Description",

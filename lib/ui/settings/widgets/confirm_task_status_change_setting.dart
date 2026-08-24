@@ -7,16 +7,16 @@ class ConfirmTaskStatusChangeSetting extends StatelessWidget {
   const ConfirmTaskStatusChangeSetting({super.key});
 
   @override
-  Widget build(final BuildContext context) => ListenableBuilder(
+  Widget build(BuildContext context) => ListenableBuilder(
     listenable: SettingsHandler(),
-    builder: (final context, final child) => SwitchListTile(
+    builder: (context, child) => SwitchListTile(
       contentPadding: EdgeInsets.zero,
       title: const Text("Confirm task status change"),
       subtitle: const Text(
         "Ask for confirmation before marking a task as done or reopening it.",
       ),
       value: SettingsHandler().showMarkTaskStateConfirmation(),
-      onChanged: (final value) =>
+      onChanged: (value) =>
           SettingsHandler().setShowMarkTaskStateConfirmation(value: value),
     ),
   );

@@ -11,12 +11,12 @@ class App extends StatelessWidget {
   const App({super.key});
 
   @override
-  Widget build(final BuildContext context) => MaterialApp(
+  Widget build(BuildContext context) => MaterialApp(
     theme: ThemeData(colorScheme: AppColor.colorScheme, useMaterial3: true),
     navigatorKey: Navigation.navigatorKey,
     home: FutureBuilder(
       future: checkIfAuthenticated(),
-      builder: (final context, final snapshot) {
+      builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),

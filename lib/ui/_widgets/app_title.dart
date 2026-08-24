@@ -11,7 +11,7 @@ class AppTitleWidget extends StatelessWidget {
   final double fontSize;
 
   @override
-  Widget build(final BuildContext context) => Row(
+  Widget build(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Text(
@@ -30,7 +30,7 @@ class AppTitleWidget extends StatelessWidget {
   );
 
   @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DoubleProperty("fontSize", fontSize));
   }
