@@ -3,8 +3,7 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    // The Flutter Gradle Plugin must be applied after the Android plugin.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -12,6 +11,10 @@ android {
     namespace = "com.GitDone.gitdone"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "29.0.14206865"
+
+    buildFeatures {
+        resValues = true
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
