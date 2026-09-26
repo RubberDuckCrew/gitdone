@@ -24,7 +24,7 @@ on:
 
 jobs:
   run:
-    uses: RubberDuckCrew/flutter-workflow/.github/workflows/workflow-build.yml@07dfe98c6300fc29ca227620b1a7845d3500febd # v1.2.0
+    uses: RubberDuckCrew/flutter-workflow/.github/workflows/workflow-build.yml@e94cc1054d888c1b348f8941bd753e2ad6bacbcd # v1.3.0
 
     permissions:
       contents: write
