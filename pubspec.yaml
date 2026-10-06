@@ -38,7 +38,7 @@ dependencies:
   flutter_secure_storage: 11.2.0
   http: 1.6.0
   provider: 6.1.5
-  url_launcher: 6.3.2
+  url_launcher: 6.3.3
   flutter_svg: 2.3.0
   shared_preferences: 2.5.5
   package_info_plus: 10.2.2
