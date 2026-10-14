@@ -40,7 +40,7 @@ dependencies:
   provider: 6.1.5
   url_launcher: 6.3.3
   flutter_svg: 2.3.0
-  shared_preferences: 2.5.5
+  shared_preferences: 2.5.6
   package_info_plus: 10.2.2
   markdown_widget: 2.3.2
   intl: 0.20.3
