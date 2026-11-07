@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  cupertino_ui:
+    dependency: transitive
+    description:
+      name: cupertino_ui
+      sha256: "369e39a1c5c030a6212589c3da1809920b1c2cfade7b02aade7695bfa4b88c3a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.6"
   desktop_webview_window:
     dependency: transitive
     description:
@@ -142,6 +150,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.0"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -456,6 +469,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.13.0"
+  material_ui:
+    dependency: transitive
+    description:
+      name: material_ui
+      sha256: a30f5d0625b6b83770f53ca3f7aafd6fd9d147cb3853f54a70668541046fe5d6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.10.0"
   meta:
     dependency: transitive
     description:
@@ -476,10 +497,10 @@ packages:
     dependency: "direct main"
     description:
       name: multi_dropdown
-      sha256: "385322c3a595154a4ce80f39f08040c44102ed280837aa5fa1a42d24bc05fc16"
+      sha256: "47514730b70d1c66ca1987dd2093d19aae7636b0db07a129289f6940e8b7f00e"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.2"
+    version: "4.0.0"
   nested:
     dependency: transitive
     description:
