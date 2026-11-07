@@ -103,12 +103,6 @@ class _TaskEditViewState extends State<TaskEditView> {
     fieldDecoration: FieldDecoration(
       labelText: "Labels",
       showClearIcon: false,
-      border: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColor.colorScheme.onSurface),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: AppColor.colorScheme.primary),
-      ),
     ),
     dropdownDecoration: DropdownDecoration(
       marginTop: 4,
