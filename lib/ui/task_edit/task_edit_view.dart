@@ -5,6 +5,7 @@ import "package:gitdone/core/theme/app_color.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/task_edit/task_edit_view_model.dart";
 import "package:github_flutter/github.dart";
+import "package:material_ui/material_ui.dart" as mui;
 import "package:multi_dropdown/multi_dropdown.dart";
 import "package:provider/provider.dart";
 
@@ -103,6 +104,12 @@ class _TaskEditViewState extends State<TaskEditView> {
     fieldDecoration: FieldDecoration(
       labelText: "Labels",
       showClearIcon: false,
+      border: mui.OutlineInputBorder(
+        borderSide: mui.BorderSide(color: AppColor.colorScheme.onSurface),
+      ),
+      focusedBorder: mui.OutlineInputBorder(
+        borderSide: mui.BorderSide(color: AppColor.colorScheme.primary),
+      ),
     ),
     dropdownDecoration: DropdownDecoration(
       marginTop: 4,
