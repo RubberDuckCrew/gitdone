@@ -7,7 +7,7 @@ on:
 
 jobs:
   run:
-    uses: RubberDuckCrew/.github/.github/workflows/action-sync-labels.yml@93c558c8f2895fe7287e4fd2e4e1be5b3146cbf0 # v3.0.0
+    uses: RubberDuckCrew/.github/.github/workflows/action-sync-labels.yml@32641492f6cfbc78734b6adea229ec431fd51c9e # v3.1.0
     permissions:
       issues: write
     with:
