@@ -1,5 +1,5 @@
-import "package:flutter/material.dart";
 import "package:gitdone/core/settings_handler.dart";
+import "package:material_ui/material_ui.dart";
 
 /// A setting widget that allows users to toggle the confirmation dialog for task status changes.
 class ConfirmTaskStatusChangeSetting extends StatelessWidget {

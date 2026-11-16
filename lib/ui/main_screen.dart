@@ -1,7 +1,7 @@
-import "package:flutter/material.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/settings/settings_view.dart";
 import "package:gitdone/ui/task_list/task_list_view.dart";
+import "package:material_ui/material_ui.dart";
 import "package:provider/provider.dart";
 
 /// The main screen of the app, which contains the home view and settings view.

@@ -1,4 +1,3 @@
-import "package:flutter/material.dart";
 import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/settings_handler.dart";
@@ -9,6 +8,7 @@ import "package:gitdone/ui/_widgets/filter_chip/filter_chip_item.dart";
 import "package:gitdone/ui/task_details/task_details_view.dart";
 import "package:gitdone/ui/task_edit/task_edit_view.dart";
 import "package:github_flutter/github.dart";
+import "package:material_ui/material_ui.dart";
 
 /// ViewModel for the Home View.
 class TaskListViewModel extends ChangeNotifier {

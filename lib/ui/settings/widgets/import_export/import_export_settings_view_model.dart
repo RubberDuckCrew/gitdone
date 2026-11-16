@@ -1,7 +1,7 @@
-import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:gitdone/core/settings_handler.dart";
 import "package:gitdone/core/utils/snack_bar.dart";
+import "package:material_ui/material_ui.dart";
 
 /// ViewModel for importing and exporting settings.
 class ImportExportSettingsViewModel extends ChangeNotifier {

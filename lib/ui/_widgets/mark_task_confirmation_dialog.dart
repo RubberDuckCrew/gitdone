@@ -1,7 +1,7 @@
-import "package:flutter/material.dart";
 import "package:gitdone/core/settings_handler.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/ui/_widgets/confirm_dialog.dart";
+import "package:material_ui/material_ui.dart";
 
 /// Shows a confirmation dialog for marking a task as done or open.
 ///

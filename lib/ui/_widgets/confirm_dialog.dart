@@ -1,5 +1,5 @@
-import "package:flutter/material.dart";
 import "package:gitdone/core/utils/navigation.dart";
+import "package:material_ui/material_ui.dart";
 
 /// A dialog that asks the user to confirm an action.
 class ConfirmDialog extends StatelessWidget {

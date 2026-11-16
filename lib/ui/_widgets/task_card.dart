@@ -1,10 +1,10 @@
 import "package:flutter/foundation.dart";
-import "package:flutter/material.dart";
 import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/theme/app_color.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/task_labels.dart";
 import "package:gitdone/ui/task_details/task_details_view.dart";
+import "package:material_ui/material_ui.dart";
 
 /// A widget that displays a card for a task item.
 class TaskCard extends StatefulWidget {

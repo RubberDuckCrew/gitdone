@@ -1,8 +1,8 @@
 import "package:flutter/foundation.dart";
-import "package:flutter/material.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/ui/_widgets/mark_task_confirmation_dialog.dart";
 import "package:gitdone/ui/task_details/task_details_view_model.dart";
+import "package:material_ui/material_ui.dart";
 
 /// Floating action buttons for the task details view.
 class TaskDetailsFloatingActionButton extends StatelessWidget {

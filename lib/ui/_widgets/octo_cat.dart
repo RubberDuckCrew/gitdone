@@ -1,7 +1,7 @@
-import "package:flutter/material.dart";
 import "package:gitdone/core/github_api_handler.dart";
 import "package:gitdone/core/models/token_handler.dart";
 import "package:http/http.dart";
+import "package:material_ui/material_ui.dart";
 import "package:provider/provider.dart";
 
 /// A widget that fetches and displays the octocat from the GitHub API.

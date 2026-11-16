@@ -1,7 +1,7 @@
-import "package:flutter/material.dart";
 import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/theme/app_color.dart";
 import "package:github_flutter/github.dart";
+import "package:material_ui/material_ui.dart";
 
 /// A widget that displays the labels of a to do item.
 class TaskLabels extends StatelessWidget {

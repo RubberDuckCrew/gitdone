@@ -1,7 +1,7 @@
-import "package:flutter/material.dart";
 import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/core/utils/snack_bar.dart";
 import "package:gitdone/ui/settings/widgets/repository_selector/repository_selector_view_model.dart";
+import "package:material_ui/material_ui.dart";
 import "package:provider/provider.dart";
 
 /// A widget that allows users to select a repository from a dropdown list.

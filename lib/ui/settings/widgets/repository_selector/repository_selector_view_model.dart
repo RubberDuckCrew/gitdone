@@ -1,7 +1,7 @@
-import "package:flutter/material.dart";
 import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/ui/settings/widgets/repository_selector/repository_selector_model.dart";
+import "package:material_ui/material_ui.dart";
 
 /// ViewModel for managing the state of the repository selector widget.
 class RepositorySelectorViewModel extends ChangeNotifier {
