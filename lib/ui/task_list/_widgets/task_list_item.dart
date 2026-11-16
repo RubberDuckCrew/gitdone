@@ -1,10 +1,10 @@
 import "package:flutter/foundation.dart";
-import "package:flutter/material.dart";
 import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/theme/app_color.dart";
 import "package:gitdone/ui/_widgets/mark_task_confirmation_dialog.dart";
 import "package:gitdone/ui/_widgets/task_card.dart";
+import "package:material_ui/material_ui.dart";
 
 /// A widget that displays a single task item in the task list with swipe-to-dismiss functionality.
 class TaskListItem extends StatelessWidget {

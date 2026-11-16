@@ -1,7 +1,7 @@
-import "package:flutter/material.dart";
 import "package:gitdone/core/models/current_user_model.dart";
 import "package:gitdone/core/models/token_handler.dart";
 import "package:github_flutter/github.dart";
+import "package:material_ui/material_ui.dart";
 import "package:provider/provider.dart";
 import "package:url_launcher/url_launcher.dart";
 

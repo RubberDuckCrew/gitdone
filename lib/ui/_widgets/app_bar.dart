@@ -1,8 +1,8 @@
 import "package:flutter/foundation.dart";
-import "package:flutter/material.dart";
 import "package:gitdone/core/theme/app_color.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/app_title.dart";
+import "package:material_ui/material_ui.dart";
 
 /// A normal app bar that is used in most of the views.
 class NormalAppBar extends StatelessWidget implements PreferredSizeWidget {

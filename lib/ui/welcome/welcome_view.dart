@@ -1,10 +1,10 @@
-import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 import "package:gitdone/app_environment.dart";
 import "package:gitdone/core/utils/navigation.dart";
 import "package:gitdone/ui/_widgets/app_title.dart";
 import "package:gitdone/ui/login/oauth/login_oauth_screen.dart";
 import "package:gitdone/ui/login/token/login_token_view.dart";
+import "package:material_ui/material_ui.dart";
 
 /// A view that displays the welcome screen of the application.
 class WelcomeView extends StatefulWidget {

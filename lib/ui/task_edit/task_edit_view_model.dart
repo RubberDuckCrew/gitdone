@@ -1,4 +1,4 @@
-import "package:flutter/cupertino.dart";
+import "package:cupertino_ui/cupertino_ui.dart";
 import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/task_handler.dart";
 import "package:gitdone/core/utils/logger.dart";

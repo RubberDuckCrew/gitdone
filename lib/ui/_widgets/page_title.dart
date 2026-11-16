@@ -1,6 +1,6 @@
 import "package:flutter/foundation.dart";
-import "package:flutter/material.dart";
 import "package:gitdone/core/theme/app_color.dart";
+import "package:material_ui/material_ui.dart";
 
 /// A widget that displays a page title with a specific style.
 class PageTitleWidget extends StatelessWidget {

@@ -1,8 +1,8 @@
-import "package:flutter/material.dart";
 import "package:gitdone/core/models/github_model.dart";
 import "package:gitdone/core/models/repository_details.dart";
 import "package:gitdone/core/settings_handler.dart";
 import "package:gitdone/core/utils/logger.dart";
+import "package:material_ui/material_ui.dart";
 
 /// Model for managing repository selection in the settings.
 class RepositorySelectorModel extends ChangeNotifier {

@@ -1,4 +1,4 @@
-import "package:flutter/material.dart";
+import "package:material_ui/material_ui.dart";
 
 /// Singleton class for navigation throughout the app lifecycle.
 class Navigation {

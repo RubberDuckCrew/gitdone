@@ -1,11 +1,10 @@
 import "package:flutter/foundation.dart";
-import "package:flutter/material.dart";
 import "package:gitdone/core/models/task.dart";
 import "package:gitdone/core/theme/app_color.dart";
 import "package:gitdone/ui/_widgets/app_bar.dart";
 import "package:gitdone/ui/task_edit/task_edit_view_model.dart";
 import "package:github_flutter/github.dart";
-import "package:material_ui/material_ui.dart" as mui;
+import "package:material_ui/material_ui.dart";
 import "package:multi_dropdown/multi_dropdown.dart";
 import "package:provider/provider.dart";
 
@@ -104,11 +103,11 @@ class _TaskEditViewState extends State<TaskEditView> {
     fieldDecoration: FieldDecoration(
       labelText: "Labels",
       showClearIcon: false,
-      border: mui.OutlineInputBorder(
-        borderSide: mui.BorderSide(color: AppColor.colorScheme.onSurface),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColor.colorScheme.onSurface),
       ),
-      focusedBorder: mui.OutlineInputBorder(
-        borderSide: mui.BorderSide(color: AppColor.colorScheme.primary),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColor.colorScheme.primary),
       ),
     ),
     dropdownDecoration: DropdownDecoration(

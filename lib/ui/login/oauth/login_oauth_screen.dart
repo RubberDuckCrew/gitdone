@@ -1,6 +1,6 @@
-import "package:flutter/material.dart";
 import "package:gitdone/ui/login/oauth/login_oauth_view.dart";
 import "package:gitdone/ui/login/oauth/login_oauth_view_model.dart";
+import "package:material_ui/material_ui.dart";
 import "package:provider/provider.dart";
 
 /// A screen for logging in with GitHub OAuth.
